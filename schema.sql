@@ -82,6 +82,7 @@ CREATE TABLE CaseFileHeader (
   current_location VARCHAR(255),
   location_date DATE,
   employee_name VARCHAR(255),
+  mark_identification_soundex TEXT[],
   FOREIGN KEY (serial_number) REFERENCES CaseFile(serial_number)
 );
 
