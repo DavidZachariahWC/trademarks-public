@@ -1,0 +1,128 @@
+Below is a guide on how to add individual searchable elements (fields) in a structured and maintainable way, focusing on single-criterion searches at a time. We will not worry about combining searches or complex boolean logic yet. Instead, we’ll focus on a pattern that simplifies adding new fields as their own "strategies" or "searchable components."
+
+### The Core Idea
+
+1. **One Class or Method per Searchable Element:**  
+   For each column or field you want to search, create a separate "strategy" class (similar to `WordmarkSearchStrategy` or `PhoneticSearchStrategy`) that handles:
+   - How to filter the database based on user input for that field.
+   - How to compute any scoring if applicable (if not, it can just return no score or a default score).
+   
+   This keeps each field’s logic isolated and easy to maintain.
+
+2. **No Complex Combination Yet:**  
+   Since you’re currently focusing on one criterion at a time, you can simply call a single strategy’s `execute()` method to get results. Later, when you're ready, you can revisit how to combine strategies using a `LogicBuilder` or similar approach.
+
+### Step-by-Step Guide
+
+**Step 1: Identify the Fields You Want to Search**  
+Look at your `models.py` and pick out fields you want to be individually searchable. For example, you might choose:
+
+- `CaseFileHeader.mark_identification` for text-based searching.
+- `CaseFileHeader.status_code` for exact matching.
+- `Owner.party_name` or `Owner.entity_statement` for owner-related text searches.
+
+You’ll define a separate strategy for each field or concept you want to search.
+
+**Step 2: Create a Base Field Strategy Class**  
+We already have a `BaseSearchStrategy` that defines a common interface (`get_filters_and_scoring()`, `build_query()`, `execute()`). You can continue to use this as a template.
+
+For each field, create a new strategy class that inherits from `BaseSearchStrategy`. For example, if you want to search by owner name:
+
+```python
+class OwnerNameSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # Filters
+        # Assuming the user query_str is something the user types, e.g., "ACME Corp"
+        # We'll do a simple LIKE filter
+        filters = [
+            func.lower(Owner.party_name).like(func.lower(f"%{self.query_str}%"))
+        ]
+
+        # No scoring needed here, but if you wanted, you could add a simple score like
+        # match_quality = case((...), else_='Low').label('match_quality')
+        # For now, just return no scoring columns
+        return filters, []
+```
+
+**Step 3: Add More Strategies for Other Fields**  
+If you want to search by `status_code` from `CaseFileHeader`, create a `StatusCodeSearchStrategy`:
+
+```python
+class StatusCodeSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # Exact match on status code
+        filters = [
+            CaseFileHeader.status_code == self.query_str.upper()  # Assume user inputs "A01"
+        ]
+        return filters, []
+```
+
+If you want a field that involves scoring (like the wordmark similarity), you can replicate the logic from `WordmarkSearchStrategy`:
+
+```python
+class MarkIdentificationSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [
+            or_(
+                func.similarity(CaseFileHeader.mark_identification, self.query_str) > 0.3,
+                func.lower(CaseFileHeader.mark_identification).like(func.lower(f"%{self.query_str}%"))
+            )
+        ]
+        
+        similarity_score = (func.similarity(CaseFileHeader.mark_identification, self.query_str) * 100).label('similarity_score')
+        
+        match_quality = case(
+            (func.similarity(CaseFileHeader.mark_identification, self.query_str) >= 0.8, 'Very High'),
+            (func.similarity(CaseFileHeader.mark_identification, self.query_str) >= 0.6, 'High'),
+            (func.similarity(CaseFileHeader.mark_identification, self.query_str) >= 0.4, 'Medium'),
+            else_='Low'
+        ).label('match_quality')
+        
+        return filters, [similarity_score, match_quality]
+```
+
+**Step 4: Testing a Single Strategy**  
+Since we’re not combining searches yet, you can test each strategy individually. We can test by using the web interface.
+
+**Step 5: Integrating with Your Web Interface **  
+You can add a new entry in `SearchEngine.STRATEGY_MAP` for your new field strategies:
+
+```python
+STRATEGY_MAP = {
+    'wordmark': WordmarkSearchStrategy,
+    'phonetic': PhoneticSearchStrategy,
+    'status_code': StatusCodeSearchStrategy,
+    'owner_name': OwnerNameSearchStrategy,
+    # Add more as needed
+}
+```
+
+Then users can use the web interface to search by the new field.
+
+**Step 6: Add More Fields as Needed**  
+Repeat the pattern for each searchable field:
+- Pick the field.
+- Decide if it’s a simple exact match, partial match (LIKE), or similarity-based search.
+- Implement a strategy class that returns the filters and any scoring columns.
+- Register it in `STRATEGY_MAP` if you want the API to handle it directly.
+
+**Step 7: Document What Each Strategy Returns**  
+Keep track of which strategies produce scoring columns and which don’t. For now, you can keep it simple:
+- For fields that are just matched exactly, return no scoring columns.
+- For fields that involve similarity or phonetic comparison, return a scoring column and a match_quality column.
+
+When you later reintroduce combined searches, you’ll have a library of clearly defined strategies. Each will have known filters and known scoring columns, making it easier to combine them or to decide which fields to include in a combined search.
+
+**Why This Approach is Good for Adding Individual Elements Now:**
+- **Clarity:** Each strategy deals with only one field’s logic.
+- **Modularity:** You don’t modify existing code drastically to add a new search field. Just create a new class.
+- **Extensibility:** Later, when you return to combined logic, you’ll have well-defined building blocks.
+
+### Summary
+- Create a new strategy class for each field.
+- Implement `get_filters_and_scoring()` for that field's filtering logic.
+- Add scoring only if needed.
+- Test the strategy individually.
+- Register the strategy in `STRATEGY_MAP` for easy integration with the existing API.
+
+This pattern ensures you can rapidly add more fields without causing complexity in your main search logic. Once all fields are in place and tested individually, you can explore how to best combine them.

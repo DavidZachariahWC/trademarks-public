@@ -8,7 +8,7 @@ CREATE TABLE CaseFile (
     serial_number INT PRIMARY KEY,
     registration_number VARCHAR(255),
     transaction_date DATE,
-    caswapplication_information_id INT,
+    application_information_id INT,
     FOREIGN KEY (application_information_id) REFERENCES ApplicationInformation(application_information_id)
 );
 

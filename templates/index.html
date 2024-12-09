@@ -93,13 +93,13 @@
     <div class="search-container">
         <div class="search-options">
             <label class="search-type">
-                <input type="radio" name="searchType" value="wordmark" checked> Wordmark
+                <input type="checkbox" name="searchType" value="wordmark" checked> Wordmark
             </label>
             <label class="search-type">
-                <input type="radio" name="searchType" value="phonetic"> Phonetic
+                <input type="checkbox" name="searchType" value="phonetic"> Phonetic
             </label>
             <label class="search-type">
-                <input type="radio" name="searchType" value="combined"> Combined
+                <input type="checkbox" name="searchType" value="combined"> Combined
             </label>
         </div>
         <input type="text" id="searchInput" placeholder="Search for trademarks...">
@@ -141,8 +141,20 @@
         // Perform search
         async function performSearch(query, page = 1) {
             try {
-                const searchType = document.querySelector('input[name="searchType"]:checked').value;
-                const response = await fetch(`/api/search?query=${encodeURIComponent(query)}&type=${searchType}&page=${page}`);
+                const selectedTypes = Array.from(document.querySelectorAll('input[name="searchType"]:checked'))
+                    .map(cb => cb.value);
+                
+                if (selectedTypes.length === 0) {
+                    resultsDiv.innerHTML = '<p>Please select at least one search type</p>';
+                    return;
+                }
+
+                const searchParams = new URLSearchParams();
+                searchParams.append('query', query);
+                searchParams.append('page', page);
+                selectedTypes.forEach(type => searchParams.append('type[]', type));
+                
+                const response = await fetch(`/api/search?${searchParams.toString()}`);
                 const data = await response.json();
                 
                 if (data.error) {
@@ -153,7 +165,7 @@
                 currentPage = data.pagination.current_page;
                 totalPages = data.pagination.total_pages;
                 
-                // Display results with similarity scores
+                // Display results
                 resultsDiv.innerHTML = data.results.map(result => `
                     <div class="result-item">
                         <h3>${highlightText(result.mark_identification, query)}</h3>
@@ -179,7 +191,6 @@
                     </div>
                 `).join('');
                 
-                // Update pagination
                 updatePagination();
                 
             } catch (error) {
@@ -256,9 +267,9 @@
             }
         });
         
-        // Add event listener for search type change
-        document.querySelectorAll('input[name="searchType"]').forEach(radio => {
-            radio.addEventListener('change', () => {
+        // Update event listener for search type changes
+        document.querySelectorAll('input[name="searchType"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
                 if (searchInput.value.trim()) {
                     performSearch(searchInput.value.trim());
                 }
