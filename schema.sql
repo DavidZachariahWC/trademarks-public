@@ -9,6 +9,7 @@ CREATE TABLE CaseFile (
     registration_number VARCHAR(255),
     transaction_date DATE,
     application_information_id INT,
+    action_key VARCHAR(2),
     FOREIGN KEY (application_information_id) REFERENCES ApplicationInformation(application_information_id)
 );
 
@@ -234,3 +235,33 @@ CREATE TABLE MadridHistoryEvent (
   madrid_history_entry_number INT,
  FOREIGN KEY (madrid_international_filing_id) REFERENCES MadridInternationalFilingRequest(madrid_international_filing_id)
 );
+
+-- Calculate phonetic score, added to database already. 
+CREATE OR REPLACE FUNCTION calculate_phonetic_score(query_soundex text[], mark_soundex text[])
+RETURNS integer AS $$
+DECLARE
+    matching_count integer;
+    total_count integer;
+    score integer;
+BEGIN
+    -- Count matching elements between arrays
+    SELECT COUNT(*) INTO matching_count
+    FROM (
+        SELECT UNNEST(query_soundex) AS elem
+        INTERSECT
+        SELECT UNNEST(mark_soundex) AS elem
+    ) AS matching;
+
+    -- Get total unique elements in query
+    SELECT COUNT(DISTINCT elem) INTO total_count
+    FROM UNNEST(query_soundex) AS elem;
+
+    -- Calculate score (0-100)
+    IF total_count = 0 THEN
+        RETURN 0;
+    END IF;
+
+    score := (matching_count::float / total_count::float * 100)::integer;
+    RETURN score;
+END;
+$$ LANGUAGE plpgsql IMMUTABLE;

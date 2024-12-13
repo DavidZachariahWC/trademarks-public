@@ -112,20 +112,25 @@ class PhoneticSearchStrategy(BaseSearchStrategy):
         self.query_soundex = create_soundex_array(self.query_str)
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # Create a properly typed array expression for the overlap condition
-        soundex_array_expr = cast(literal(self.query_soundex), ARRAY(PgText))
+        # Create the overlap condition
+        overlap_condition = CaseFileHeader.mark_identification_soundex.overlap(self.query_soundex)
         
-        # Create the overlap condition that SQLAlchemy can understand
-        filters = [
-            (CaseFileHeader.mark_identification_soundex.op('&&')(soundex_array_expr) == True)
-        ]
+        # Create a subquery to calculate the match count
+        subq = text("""
+            (SELECT CAST(COUNT(*) AS FLOAT) 
+             FROM unnest(:query_soundex) q_soundex 
+             WHERE q_soundex = ANY(mark_identification_soundex)) / 
+            GREATEST(array_length(:query_soundex, 1), 
+                    array_length(mark_identification_soundex, 1))
+        """).bindparams(query_soundex=self.query_soundex)
         
-        # Create scoring expressions
-        phonetic_score = func.calculate_phonetic_score(
-            self.query_soundex,
-            CaseFileHeader.mark_identification_soundex
-        ).label('phonetic_score')
+        # Create the phonetic score expression
+        phonetic_score = (func.coalesce(subq, 0.0) * 100.0).label('phonetic_score')
         
+        # Filters - only include results where arrays overlap
+        filters = [overlap_condition]
+        
+        # Match quality based on the phonetic_score
         match_quality = case(
             (phonetic_score >= 80, 'Very High'),
             (phonetic_score >= 60, 'High'),
@@ -140,6 +145,7 @@ class PhoneticSearchStrategy(BaseSearchStrategy):
         _, scoring = self.get_filters_and_scoring()
         phonetic_score = scoring[0]  # First scoring expression is phonetic_score
         
+        # Filter results with score > 35%
         query = query.filter(phonetic_score > 35)
         return query.order_by(phonetic_score.desc())
 
