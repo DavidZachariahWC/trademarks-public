@@ -53,16 +53,68 @@ def get_autocomplete_suggestions(prefix: str, limit: int = 5) -> List[str]:
     """Get autocomplete suggestions based on prefix"""
     try:
         session = get_db_session()
-        suggestions = (
-            session.query(CaseFileHeader.mark_identification)
-            .filter(func.lower(CaseFileHeader.mark_identification).like(func.lower(f"{prefix}%")))
+        # For mark identification
+        mark_suggestions = (
+            session.query(
+                CaseFileHeader.mark_identification.label('mark_id'),
+                func.similarity(CaseFileHeader.mark_identification, prefix).label('sim'),
+                func.lower(CaseFileHeader.mark_identification).label('mark_lower')
+            )
+            .filter(
+                CaseFileHeader.mark_identification.isnot(None),
+                func.lower(CaseFileHeader.mark_identification).like(func.lower(f"%{prefix}%"))
+            )
             .distinct()
-            .order_by(CaseFileHeader.mark_identification)
-            .limit(limit)
-            .all()
-        )
+            .order_by(
+                text("sim DESC"),
+                text("mark_lower ASC")
+            )
+        ).all()
+
+        # For attorney names when attorney search is selected
+        attorney_suggestions = (
+            session.query(
+                CaseFileHeader.attorney_name.label('attorney_name'),
+                func.similarity(CaseFileHeader.attorney_name, prefix).label('sim'),
+                func.lower(CaseFileHeader.attorney_name).label('attorney_lower')
+            )
+            .filter(
+                CaseFileHeader.attorney_name.isnot(None),
+                func.lower(CaseFileHeader.attorney_name).like(func.lower(f"%{prefix}%"))
+            )
+            .distinct()
+            .order_by(
+                text("sim DESC"),
+                text("attorney_lower ASC")
+            )
+        ).all()
+
+        # Combine and sort results by similarity
+        combined_results = []
+        
+        # Add mark suggestions with their computed similarities
+        combined_results.extend([
+            (result[0], result[1], 'mark') 
+            for result in mark_suggestions 
+            if result[0]
+        ])
+        
+        # Add attorney suggestions with their computed similarities
+        combined_results.extend([
+            (result[0], result[1], 'attorney') 
+            for result in attorney_suggestions 
+            if result[0]
+        ])
+
+        # Sort by similarity score and then alphabetically by text
+        combined_results.sort(key=lambda x: (-x[1], x[0].lower()))
+        
+        # Now apply the final limit after sorting all results
+        combined_results = combined_results[:limit]
+        
         session.close()
-        return [row[0] for row in suggestions]
+        # Return simple list of strings for autocomplete compatibility
+        return [result[0] for result in combined_results]
     except Exception as e:
         logging.error(f"Autocomplete error: {str(e)}")
         raise

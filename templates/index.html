@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,6 +52,11 @@
             border: 1px solid #ddd;
             margin: 10px 0;
             padding: 15px;
+            transition: background-color 0.2s;
+        }
+        
+        .result-item:hover {
+            background-color: #f8f9fa;
         }
         
         .pagination {
@@ -72,6 +78,17 @@
         }
         
         .search-type {
+            margin-right: 15px;
+        }
+        
+        .filing-status-filters {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .filing-status-filters .search-type {
+            display: inline-block;
             margin-right: 15px;
         }
         
@@ -99,8 +116,19 @@
                 <input type="checkbox" name="searchType" value="phonetic"> Phonetic
             </label>
             <label class="search-type">
-                <input type="checkbox" name="searchType" value="combined"> Combined
+                <input type="checkbox" name="searchType" value="attorney"> Attorney Name
             </label>
+            <div class="filing-status-filters">
+                <label class="search-type">
+                    <input type="checkbox" name="searchType" value="section_12c"> Section 12c Filed
+                </label>
+                <label class="search-type">
+                    <input type="checkbox" name="searchType" value="section_8"> Section 8 Filed
+                </label>
+                <label class="search-type">
+                    <input type="checkbox" name="searchType" value="section_15"> Section 15 Filed
+                </label>
+            </div>
         </div>
         <input type="text" id="searchInput" placeholder="Search for trademarks...">
         <div id="suggestions"></div>
@@ -133,7 +161,7 @@
         
         // Highlight matching text
         function highlightText(text, query) {
-            if (!query) return text;
+            if (!query || !text) return text || '';
             const regex = new RegExp(`(${query})`, 'gi');
             return text.replace(regex, '<span class="highlight">$1</span>');
         }
@@ -150,9 +178,26 @@
                 }
 
                 const searchParams = new URLSearchParams();
-                searchParams.append('query', query);
+                const textSearchTypes = ['wordmark', 'phonetic', 'attorney'];
+                const hasTextSearch = selectedTypes.some(type => textSearchTypes.includes(type));
+                
+                if (hasTextSearch && !query.trim()) {
+                    resultsDiv.innerHTML = '<p>Please enter a search term for text-based searches</p>';
+                    return;
+                }
+                
+                if (query.trim()) {
+                    searchParams.append('query', query);
+                }
+
                 searchParams.append('page', page);
                 selectedTypes.forEach(type => searchParams.append('type[]', type));
+                
+                console.log('Sending search request:', {
+                    url: `/api/search?${searchParams.toString()}`,
+                    types: selectedTypes,
+                    query: query
+                });
                 
                 const response = await fetch(`/api/search?${searchParams.toString()}`);
                 const data = await response.json();
@@ -162,13 +207,18 @@
                     return;
                 }
                 
+                console.log('Received search results:', {
+                    count: data.results.length,
+                    pagination: data.pagination
+                });
+                
                 currentPage = data.pagination.current_page;
                 totalPages = data.pagination.total_pages;
                 
                 // Display results
                 resultsDiv.innerHTML = data.results.map(result => `
-                    <div class="result-item">
-                        <h3>${highlightText(result.mark_identification, query)}</h3>
+                    <div class="result-item" onclick="window.location.href='/case/${result.serial_number}'" style="cursor: pointer;">
+                        <h3>${highlightText(result.mark_identification || 'No Mark Identification', query)}</h3>
                         <div class="scores">
                             ${result.similarity_score ? 
                                 `<span>Similarity Score: ${result.similarity_score.toFixed(2)}%</span>` : 
@@ -176,25 +226,32 @@
                             ${result.phonetic_score ? 
                                 `<span> | Phonetic Score: ${result.phonetic_score.toFixed(2)}%</span>` : 
                                 ''}
-                            ${result.combined_score ? 
-                                `<span> | Combined Score: ${result.combined_score.toFixed(2)}%</span>` : 
+                            ${result.match_score ? 
+                                `<span> | Match Score: ${result.match_score.toFixed(2)}%</span>` : 
                                 ''}
                             <span> | Match Quality: ${result.match_quality}</span>
                         </div>
                         <p>Serial Number: ${result.serial_number}</p>
-                        <p>Registration Number: ${result.registration_number || 'N/A'}</p>
-                        <p>Status: ${result.status_code || 'N/A'}</p>
+                        <p>Registration Number: ${result.registration_number ? result.registration_number : 'N/A'}</p>
+                        <p>Status: ${result.status_code ? result.status_code : 'N/A'}</p>
                         <p>Filing Date: ${new Date(result.filing_date).toLocaleDateString()}</p>
                         ${result.registration_date ? 
                             `<p>Registration Date: ${new Date(result.registration_date).toLocaleDateString()}</p>` : 
                             ''}
+                        ${result.attorney_name ? 
+                            `<p>Attorney: ${highlightText(result.attorney_name, query)}</p>` : 
+                            '<p>Attorney: N/A</p>'}
                     </div>
                 `).join('');
                 
                 updatePagination();
                 
             } catch (error) {
-                console.error('Search error:', error);
+                console.error('Search error:', {
+                    error: error,
+                    message: error.message,
+                    stack: error.stack
+                });
                 resultsDiv.innerHTML = '<p>An error occurred while searching.</p>';
             }
         }
@@ -220,6 +277,10 @@
         // Get autocomplete suggestions
         const getAutocomplete = debounce(async (prefix) => {
             try {
+                // Get the currently selected search types
+                const selectedTypes = Array.from(document.querySelectorAll('input[name="searchType"]:checked'))
+                    .map(cb => cb.value);
+                
                 const response = await fetch(`/api/autocomplete?prefix=${encodeURIComponent(prefix)}`);
                 const suggestions = await response.json();
                 
@@ -270,7 +331,13 @@
         // Update event listener for search type changes
         document.querySelectorAll('input[name="searchType"]').forEach(checkbox => {
             checkbox.addEventListener('change', () => {
-                if (searchInput.value.trim()) {
+                const selectedTypes = Array.from(document.querySelectorAll('input[name="searchType"]:checked'))
+                    .map(cb => cb.value);
+                const textSearchTypes = ['wordmark', 'phonetic', 'attorney'];
+                const hasOnlyFilters = selectedTypes.every(type => !textSearchTypes.includes(type));
+                
+                // If only filters are selected, or if there's a search term, perform the search
+                if (hasOnlyFilters || searchInput.value.trim()) {
                     performSearch(searchInput.value.trim());
                 }
             });

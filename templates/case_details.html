@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trademark Case Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .case-details {
+            margin: 20px 0;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .section h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .label {
+            font-weight: bold;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← Back to Search</a>
+    
+    <div class="case-details">
+        <div class="section">
+            <h2>{{ case.header.mark_identification }}</h2>
+            <p><span class="label">Serial Number:</span> {{ case.serial_number }}</p>
+            <p><span class="label">Registration Number:</span> {{ case.registration_number or 'N/A' }}</p>
+            <p><span class="label">Status:</span> {{ case.header.status_code or 'N/A' }}</p>
+            <p><span class="label">Filing Date:</span> {{ case.header.filing_date.strftime('%Y-%m-%d') if case.header.filing_date else 'N/A' }}</p>
+            <p><span class="label">Registration Date:</span> {{ case.header.registration_date.strftime('%Y-%m-%d') if case.header.registration_date else 'N/A' }}</p>
+            <p><span class="label">Attorney of Record:</span> {{ case.header.attorney_name or 'N/A' }}</p>
+            <p><span class="label">Republished 12c Date:</span> {{ case.header.republished_12c_date.strftime('%Y-%m-%d') if case.header.republished_12c_date else 'N/A' }}</p>
+            <p><span class="label">Section 8 Partial Accept:</span> {{ 'Yes' if case.header.section_8_partial_accept_in else 'No' }}</p>
+            <p><span class="label">Section 8 Accepted:</span> {{ 'Yes' if case.header.section_8_accepted_in else 'No' }}</p>
+            <p><span class="label">Section 15 Filed:</span> {{ 'Yes' if case.header.section_15_filed_in else 'No' }}</p>
+            <p><span class="label">Section 15 Acknowledged:</span> {{ 'Yes' if case.header.section_15_acknowledged_in else 'No' }}</p>
+        </div>
+
+        {% if case.owners %}
+        <div class="section">
+            <h2>Owner Information</h2>
+            {% for owner in case.owners %}
+            <div>
+                <p><span class="label">Name:</span> {{ owner.party_name }}</p>
+                <p><span class="label">Address:</span><br>
+                    {{ owner.owner_address_1 }}<br>
+                    {% if owner.owner_address_2 %}{{ owner.owner_address_2 }}<br>{% endif %}
+                    {{ owner.city }}, {{ owner.owner_state }} {{ owner.postcode }}<br>
+                    {{ owner.owner_country }}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if case.classifications %}
+        <div class="section">
+            <h2>Classifications</h2>
+            {% for classification in case.classifications %}
+            <div>
+                <p><span class="label">International Class:</span> {{ classification.international_code }}</p>
+                <p><span class="label">US Class:</span> {{ classification.us_code }}</p>
+                {% if classification.first_use_anywhere_date %}
+                <p><span class="label">First Use Anywhere:</span> {{ classification.first_use_anywhere_date.strftime('%Y-%m-%d') }}</p>
+                {% endif %}
+                {% if classification.first_use_in_commerce_date %}
+                <p><span class="label">First Use in Commerce:</span> {{ classification.first_use_in_commerce_date.strftime('%Y-%m-%d') }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if case.statements %}
+        <div class="section">
+            <h2>Statements</h2>
+            {% for statement in case.statements %}
+            <div>
+                <p><span class="label">Type:</span> {{ statement.type_code }}</p>
+                <p><span class="label">Text:</span> {{ statement.statement_text }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html> 

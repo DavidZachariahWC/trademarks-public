@@ -149,120 +149,101 @@ class PhoneticSearchStrategy(BaseSearchStrategy):
         query = query.filter(phonetic_score > 35)
         return query.order_by(phonetic_score.desc())
 
-class CombinedSearchStrategy(BaseSearchStrategy):
-    def __init__(self, query: str, page: int = 1, per_page: int = 10):
-        super().__init__(query, page, per_page)
-        self.query_soundex = create_soundex_array(self.query_str)
+# class CombinedSearchStrategy(BaseSearchStrategy):
+#     def __init__(self, query: str, page: int = 1, per_page: int = 10):
+#         super().__init__(query, page, per_page)
+#         self.query_soundex = create_soundex_array(self.query_str)
+# 
+#     def get_filters_and_scoring(self) -> Tuple[List, List]:
+#         # Get individual strategy scores
+#         word_filters, word_scoring = WordmarkSearchStrategy(self.query_str).get_filters_and_scoring()
+#         phon_filters, phon_scoring = PhoneticSearchStrategy(self.query_str).get_filters_and_scoring()
+#         
+#         # Combine filters with OR
+#         filters = [or_(*word_filters, *phon_filters)]
+#         
+#         # Calculate combined score
+#         similarity_score = word_scoring[0]
+#         phonetic_score = phon_scoring[0]
+#         
+#         combined_score = ((func.coalesce(similarity_score, 0) + 
+#                           func.coalesce(phonetic_score, 0)) / 2).label('combined_score')
+#         
+#         match_quality = case(
+#             (combined_score >= 80, 'Very High'),
+#             (combined_score >= 60, 'High'),
+#             (combined_score >= 40, 'Medium'),
+#             else_='Low'
+#         ).label('match_quality')
+#         
+#         return filters, [similarity_score, phonetic_score, combined_score, match_quality]
+# 
+#     def build_query(self, session: Session):
+#         query = super().build_query(session)
+#         _, scoring = self.get_filters_and_scoring()
+#         combined_score = scoring[2]  # Third scoring expression is combined_score
+#         return query.order_by(combined_score.desc())
 
+class Section12cSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # Get individual strategy scores
-        word_filters, word_scoring = WordmarkSearchStrategy(self.query_str).get_filters_and_scoring()
-        phon_filters, phon_scoring = PhoneticSearchStrategy(self.query_str).get_filters_and_scoring()
+        filters = [CaseFileHeader.section_12c_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class Section8SearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.section_8_filed_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class Section15SearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.section_15_filed_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class AttorneySearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # Handle potential special characters in the query
+        escaped_query = self.query_str.replace("'", "''")
         
-        # Combine filters with OR
-        filters = [or_(*word_filters, *phon_filters)]
+        filters = [
+            CaseFileHeader.attorney_name.isnot(None),  # Ensure attorney_name is not null
+            or_(
+                func.similarity(func.coalesce(CaseFileHeader.attorney_name, ''), escaped_query) > 0.3,
+                func.lower(func.coalesce(CaseFileHeader.attorney_name, '')).like(func.lower(f"%{escaped_query}%"))
+            )
+        ]
         
-        # Calculate combined score
-        similarity_score = word_scoring[0]
-        phonetic_score = phon_scoring[0]
-        
-        combined_score = ((func.coalesce(similarity_score, 0) + 
-                          func.coalesce(phonetic_score, 0)) / 2).label('combined_score')
+        # Calculate similarity score for attorney name matches
+        similarity_score = (func.similarity(func.coalesce(CaseFileHeader.attorney_name, ''), escaped_query) * 100).label('similarity_score')
         
         match_quality = case(
-            (combined_score >= 80, 'Very High'),
-            (combined_score >= 60, 'High'),
-            (combined_score >= 40, 'Medium'),
+            (func.similarity(func.coalesce(CaseFileHeader.attorney_name, ''), escaped_query) >= 0.8, 'Very High'),
+            (func.similarity(func.coalesce(CaseFileHeader.attorney_name, ''), escaped_query) >= 0.6, 'High'),
+            (func.similarity(func.coalesce(CaseFileHeader.attorney_name, ''), escaped_query) >= 0.4, 'Medium'),
             else_='Low'
         ).label('match_quality')
         
-        return filters, [similarity_score, phonetic_score, combined_score, match_quality]
+        return filters, [similarity_score, match_quality]
 
     def build_query(self, session: Session):
         query = super().build_query(session)
         _, scoring = self.get_filters_and_scoring()
-        combined_score = scoring[2]  # Third scoring expression is combined_score
-        return query.order_by(combined_score.desc())
-
-class LogicBuilder:
-    def __init__(self):
-        self.conditions: List[SearchCondition] = []
-
-    def add_condition(self, strategy: BaseSearchStrategy, operator: Optional[LogicOperator] = None) -> 'LogicBuilder':
-        self.conditions.append(SearchCondition(strategy, operator))
-        return self
-
-    def build_query(self, session: Session, page: int = 1, per_page: int = 10):
-        if not self.conditions:
-            raise ValueError("No search conditions provided")
-
-        query = base_query(session)
-        final_filters = []
-        all_scoring = []
-
-        # Build combined filters and scoring
-        for i, condition in enumerate(self.conditions):
-            filters, scoring = condition.get_filters_and_scoring()
-            
-            if i == 0:
-                # For the first condition, add filters directly
-                final_filters.extend(filters)
-            else:
-                # For subsequent conditions, combine with OR
-                op = condition.operator or LogicOperator.AND
-                if op == LogicOperator.OR:
-                    # Combine previous filters with new filters using OR
-                    if final_filters:
-                        combined_filter = or_(*final_filters, *filters)
-                        final_filters = [combined_filter]
-                    else:
-                        final_filters.extend(filters)
-                else:  # AND
-                    final_filters.extend(filters)
-            
-            all_scoring.extend(scoring)
-
-        # Apply filters and scoring
-        if final_filters:
-            query = query.filter(*final_filters)
-        
-        # Add all scoring columns
-        for score in all_scoring:
-            query = query.add_columns(score)
-
-        # Determine the appropriate ordering
-        order_by_column = None
-        for score in all_scoring:
-            if score.name == 'combined_score':
-                order_by_column = score
-                break
-            elif score.name == 'similarity_score' and not order_by_column:
-                order_by_column = score
-            elif score.name == 'phonetic_score' and not order_by_column:
-                order_by_column = score
-
-        if order_by_column:
-            query = query.order_by(order_by_column.desc())
-        
-        # Add pagination
-        offset = (page - 1) * per_page
-        return query.limit(per_page).offset(offset)
-
-    def count_query(self, session: Session):
-        if not self.conditions:
-            raise ValueError("No search conditions provided")
-
-        final_filters = []
-        for i, condition in enumerate(self.conditions):
-            filters, _ = condition.get_filters_and_scoring()
-            
-            if i == 0:
-                final_filters.extend(filters)
-            else:
-                op = condition.operator or LogicOperator.AND
-                if op == LogicOperator.OR:
-                    final_filters.append(or_(*filters))
-                else:
-                    final_filters.extend(filters)
-
-        return session.query(func.count(CaseFile.serial_number)).join(CaseFileHeader).filter(*final_filters)
+        similarity_score = scoring[0]
+        return query.order_by(similarity_score.desc())
