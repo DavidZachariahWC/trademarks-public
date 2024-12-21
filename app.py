@@ -22,31 +22,17 @@ def search():
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 10))
         
-        logging.info(f"Search request - Type: {search_types}, Query: '{query}'")
-        
         # Only allow one search type for now
         if len(search_types) > 1:
             return jsonify({"error": "Multiple search types not supported yet"}), 400
         
         search_type = search_types[0]
-        
-        # Check if we need a query (for text-based searches)
-        text_search_types = {'wordmark', 'phonetic', 'attorney'}
-        requires_query = search_type in text_search_types
-        
-        if requires_query and not query:
-            return jsonify({"error": "Search query required for text-based searches"}), 400
-
-        # Execute single search type
-        logging.info(f"Executing search with type: {search_type}, query: '{query}'")
         results = SearchEngine.search(query, search_type, page, per_page)
-        
-        logging.info(f"Search results - Count: {len(results.get('results', []))}")
         
         return jsonify(results)
         
     except Exception as e:
-        logging.exception(f"Search API error for query '{query}' with type '{search_types}':")
+        logging.exception(f"Search API error:")
         return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/api/autocomplete')
@@ -54,10 +40,11 @@ def autocomplete():
     """API endpoint for autocomplete suggestions"""
     try:
         prefix = request.args.get('prefix', '')
+        search_type = request.args.get('type', 'mark')  # default to 'mark' if not specified
         if not prefix:
             return jsonify([])
             
-        suggestions = get_autocomplete_suggestions(prefix)
+        suggestions = get_autocomplete_suggestions(prefix, search_type)
         return jsonify(suggestions)
         
     except Exception as e:

@@ -3,9 +3,10 @@ from enum import Enum
 from typing import List, Tuple, Optional, Dict, Any
 from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal
 from sqlalchemy.orm import Session
-from models import CaseFile, CaseFileHeader
+from models import CaseFile, CaseFileHeader, Classification
 from db_utils import get_db_session, create_soundex_array, base_query
 from sqlalchemy.dialects.postgresql import ARRAY, TEXT as PgText
+from coordinated_class_config import COORDINATED_CLASS_CONFIG
 
 class LogicOperator(Enum):
     AND = 'AND'
@@ -247,3 +248,167 @@ class AttorneySearchStrategy(BaseSearchStrategy):
         _, scoring = self.get_filters_and_scoring()
         similarity_score = scoring[0]
         return query.order_by(similarity_score.desc())
+
+class ForeignPriorityClaimSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [
+            or_(
+                CaseFileHeader.filing_basis_current_44d_in == True,
+                CaseFileHeader.amended_to_44d_application_in == True,
+                CaseFileHeader.filing_basis_filed_as_44d_in == True
+            )
+        ]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class ForeignRegistrationSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [
+            or_(
+                CaseFileHeader.filing_basis_filed_as_44e_in == True,
+                CaseFileHeader.amended_to_44e_application_in == True,
+                CaseFileHeader.filing_basis_current_44e_in == True
+            )
+        ]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class ExtensionProtectionSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [
+            or_(
+                CaseFileHeader.filing_basis_filed_as_66a_in == True,
+                CaseFileHeader.filing_basis_current_66a_in == True
+            )
+        ]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class NoCurrentBasisSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.filing_current_no_basis_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class NoInitialBasisSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.without_basis_currently_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class InternationalClassSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [Classification.international_code == self.query_str]
+        return filters, []  # No scoring needed for exact matches
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            Classification.international_code
+        )
+        .join(CaseFileHeader)
+        .join(Classification))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+            
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class USClassSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [Classification.us_code == self.query_str]
+        return filters, []  # No scoring needed for exact matches
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            Classification.us_code
+        )
+        .join(CaseFileHeader)
+        .join(Classification))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+            
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class CoordinatedClassSearchStrategy(BaseSearchStrategy):
+    """
+    Searches for trademarks based on predefined coordinated class combinations.
+    The query_str should be the name of the coordinated class preset (e.g., 'coord_class_1')
+    """
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        preset_name = self.query_str
+        config = COORDINATED_CLASS_CONFIG.get(preset_name)
+        
+        if not config:
+            return [False], []  # Return no results for invalid preset
+            
+        filters = [
+            and_(
+                Classification.international_code.in_(config['intl_classes']),
+                Classification.us_code.in_(config['us_classes'])
+            )
+        ]
+        
+        return filters, []  # No scoring needed for exact matches
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            Classification.international_code,
+            Classification.us_code
+        )
+        .join(CaseFileHeader)
+        .join(Classification))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+            
+        return query.order_by(CaseFileHeader.filing_date.desc())

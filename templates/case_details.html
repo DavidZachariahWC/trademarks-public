@@ -43,6 +43,82 @@
             font-weight: bold;
             color: #666;
         }
+        
+        .attorney-link {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .attorney-link:hover {
+            text-decoration: underline;
+        }
+        
+        .subsection {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .subsection h3 {
+            margin: 0 0 15px 0;
+            color: #444;
+            font-size: 1.2em;
+        }
+        
+        .basis-group {
+            margin-bottom: 20px;
+            padding-left: 15px;
+        }
+        
+        .basis-group h4 {
+            margin: 0 0 10px 0;
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .basis-group p {
+            margin: 5px 0;
+        }
+        
+        .classification-legend {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+        }
+        
+        .classification-legend p {
+            margin: 0 0 10px 0;
+        }
+        
+        .classification-legend ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .classification-legend li {
+            margin: 5px 0;
+        }
+        
+        .classification-legend code {
+            background-color: #e9ecef;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        
+        .primary-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 6px;
+            font-size: 0.8em;
+            background-color: #28a745;
+            color: white;
+            border-radius: 3px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -56,12 +132,51 @@
             <p><span class="label">Status:</span> {{ case.header.status_code or 'N/A' }}</p>
             <p><span class="label">Filing Date:</span> {{ case.header.filing_date.strftime('%Y-%m-%d') if case.header.filing_date else 'N/A' }}</p>
             <p><span class="label">Registration Date:</span> {{ case.header.registration_date.strftime('%Y-%m-%d') if case.header.registration_date else 'N/A' }}</p>
-            <p><span class="label">Attorney of Record:</span> {{ case.header.attorney_name or 'N/A' }}</p>
+            <p><span class="label">Attorney of Record:</span> 
+                {% if case.header.attorney_name %}
+                    {% for attorney in case.header.attorney_name.split(';') %}
+                        <a href="javascript:void(0)" onclick="searchByAttorney('{{ attorney.strip() }}')" class="attorney-link">{{ attorney.strip() }}</a>
+                        {%- if not loop.last %};{% endif %}
+                    {% endfor %}
+                {% else %}
+                    N/A
+                {% endif %}
+            </p>
             <p><span class="label">Republished 12c Date:</span> {{ case.header.republished_12c_date.strftime('%Y-%m-%d') if case.header.republished_12c_date else 'N/A' }}</p>
             <p><span class="label">Section 8 Partial Accept:</span> {{ 'Yes' if case.header.section_8_partial_accept_in else 'No' }}</p>
             <p><span class="label">Section 8 Accepted:</span> {{ 'Yes' if case.header.section_8_accepted_in else 'No' }}</p>
             <p><span class="label">Section 15 Filed:</span> {{ 'Yes' if case.header.section_15_filed_in else 'No' }}</p>
             <p><span class="label">Section 15 Acknowledged:</span> {{ 'Yes' if case.header.section_15_acknowledged_in else 'No' }}</p>
+            
+            <div class="subsection">
+                <h3>Filing Basis Information</h3>
+                
+                <div class="basis-group">
+                    <h4>Foreign Priority Claim (44(d))</h4>
+                    <p><span class="label">Filed as 44(d):</span> {{ 'Yes' if case.header.filing_basis_filed_as_44d_in else 'No' }}</p>
+                    <p><span class="label">Amended to 44(d):</span> {{ 'Yes' if case.header.amended_to_44d_application_in else 'No' }}</p>
+                    <p><span class="label">Currently 44(d):</span> {{ 'Yes' if case.header.filing_basis_current_44d_in else 'No' }}</p>
+                </div>
+
+                <div class="basis-group">
+                    <h4>Foreign Registration (44(e))</h4>
+                    <p><span class="label">Filed as 44(e):</span> {{ 'Yes' if case.header.filing_basis_filed_as_44e_in else 'No' }}</p>
+                    <p><span class="label">Amended to 44(e):</span> {{ 'Yes' if case.header.amended_to_44e_application_in else 'No' }}</p>
+                    <p><span class="label">Currently 44(e):</span> {{ 'Yes' if case.header.filing_basis_current_44e_in else 'No' }}</p>
+                </div>
+
+                <div class="basis-group">
+                    <h4>Extension of Protection (66(a))</h4>
+                    <p><span class="label">Filed as 66(a):</span> {{ 'Yes' if case.header.filing_basis_filed_as_66a_in else 'No' }}</p>
+                    <p><span class="label">Currently 66(a):</span> {{ 'Yes' if case.header.filing_basis_current_66a_in else 'No' }}</p>
+                </div>
+
+                <div class="basis-group">
+                    <h4>Basis Issues</h4>
+                    <p><span class="label">No Current Basis:</span> {{ 'Yes' if case.header.filing_current_no_basis_in else 'No' }}</p>
+                    <p><span class="label">No Initial Basis:</span> {{ 'Yes' if case.header.without_basis_currently_in else 'No' }}</p>
+                </div>
+            </div>
         </div>
 
         {% if case.owners %}
@@ -84,10 +199,37 @@
         {% if case.classifications %}
         <div class="section">
             <h2>Classifications</h2>
+            <div class="classification-legend">
+                <p><strong>Note:</strong> The following symbols indicate amendments to goods/services:</p>
+                <ul>
+                    <li><code>[...]</code> - Deleted goods/services</li>
+                    <li><code>((...))</code> - Goods/services not claimed in Section 15 affidavit of incontestability</li>
+                    <li><code>*...*</code> - Additional (new) wording in goods/services</li>
+                </ul>
+            </div>
             {% for classification in case.classifications %}
             <div>
-                <p><span class="label">International Class:</span> {{ classification.international_code }}</p>
-                <p><span class="label">US Class:</span> {{ classification.us_code }}</p>
+                <p>
+                    <span class="label">International Class:</span> 
+                    {{ classification.international_code }}
+                    {% if classification.primary_code == classification.international_code %}
+                        <span class="primary-badge">Primary Class</span>
+                    {% endif %}
+                </p>
+                <p>
+                    <span class="label">US Class:</span> 
+                    {{ classification.us_code }}
+                    {% if classification.primary_code == classification.us_code %}
+                        <span class="primary-badge">Primary Class</span>
+                    {% endif %}
+                </p>
+                <p>
+                    <span class="label">Classification Status:</span> 
+                    {{ classification.classification_status_code }}
+                    {% if classification.classification_status_date %}
+                        (as of {{ classification.classification_status_date.strftime('%Y-%m-%d') }})
+                    {% endif %}
+                </p>
                 {% if classification.first_use_anywhere_date %}
                 <p><span class="label">First Use Anywhere:</span> {{ classification.first_use_anywhere_date.strftime('%Y-%m-%d') }}</p>
                 {% endif %}
@@ -111,5 +253,15 @@
         </div>
         {% endif %}
     </div>
+
+    <script>
+        function searchByAttorney(attorneyName) {
+            // Encode the attorney name for the URL
+            const encodedName = encodeURIComponent(attorneyName);
+            
+            // Redirect to the search page with the attorney name pre-selected
+            window.location.href = `/?attorney=${encodedName}`;
+        }
+    </script>
 </body>
 </html> 
