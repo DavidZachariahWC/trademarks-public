@@ -1,3 +1,5 @@
+# coordinated_class_config.py
+
 COORDINATED_CLASS_CONFIG = {
     'coord_class_001': {
         'intl_classes': ['005', '017', '035', '042', '044'], 

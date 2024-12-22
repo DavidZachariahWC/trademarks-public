@@ -15,7 +15,12 @@ from search_strategies import (
     NoInitialBasisSearchStrategy,
     InternationalClassSearchStrategy,
     USClassSearchStrategy,
-    CoordinatedClassSearchStrategy
+    CoordinatedClassSearchStrategy,
+    CancellationDateSearchStrategy,
+    ChangeRegistrationSearchStrategy,
+    ConcurrentUseSearchStrategy,
+    ConcurrentUseProceedingSearchStrategy,
+    DesignSearchCodeStrategy
 )
 from db_utils import get_db_session
 
@@ -36,7 +41,12 @@ class SearchEngine:
         'no_initial_basis': NoInitialBasisSearchStrategy,
         'international_class': InternationalClassSearchStrategy,
         'us_class': USClassSearchStrategy,
-        'coordinated_class': CoordinatedClassSearchStrategy
+        'coordinated_class': CoordinatedClassSearchStrategy,
+        'cancellation_date': CancellationDateSearchStrategy,
+        'change_registration': ChangeRegistrationSearchStrategy,
+        'concurrent_use': ConcurrentUseSearchStrategy,
+        'concurrent_use_proceeding': ConcurrentUseProceedingSearchStrategy,
+        'design_code': DesignSearchCodeStrategy
     }
     
     @classmethod

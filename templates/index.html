@@ -258,6 +258,9 @@
             <label class="search-type">
                 <input type="checkbox" name="searchType" value="attorney"> Attorney Name
             </label>
+            <label class="search-type" title="Search by Design Search Code (numeric)">
+                <input type="checkbox" name="searchType" value="design_code"> Design Search Code
+            </label>
             <div class="filing-status-filters">
                 <label class="search-type">
                     <input type="checkbox" name="searchType" value="section_12c"> Section 12c Filed
@@ -267,6 +270,18 @@
                 </label>
                 <label class="search-type">
                     <input type="checkbox" name="searchType" value="section_15"> Section 15 Filed
+                </label>
+                <label class="search-type" title="Search by Cancellation Date (YYYY-MM-DD)">
+                    <input type="checkbox" name="searchType" value="cancellation_date"> Cancellation Date
+                </label>
+                <label class="search-type" title="Search for cases with changed registration">
+                    <input type="checkbox" name="searchType" value="change_registration"> Changed Registration
+                </label>
+                <label class="search-type" title="Search for cases with concurrent use">
+                    <input type="checkbox" name="searchType" value="concurrent_use"> Concurrent Use
+                </label>
+                <label class="search-type" title="Search for cases with pending concurrent use proceeding">
+                    <input type="checkbox" name="searchType" value="concurrent_use_proceeding"> Concurrent Use Proceeding Pending
                 </label>
             </div>
             <div class="filing-basis-filters">
@@ -691,6 +706,28 @@
             if (document.querySelector('input[value="coordinated_class"]').checked) {
                 searchInput.value = e.target.value;
                 performSearch(e.target.value);
+            }
+        });
+        
+        // Add validation for cancellation date format
+        document.querySelector('input[value="cancellation_date"]').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                if (!searchInput.value.match(dateRegex)) {
+                    alert('Please enter date in YYYY-MM-DD format');
+                    e.target.checked = false;
+                }
+            }
+        });
+        
+        // Add validation for design code format
+        document.querySelector('input[value="design_code"]').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                const codeRegex = /^\d+$/;
+                if (!searchInput.value.match(codeRegex)) {
+                    alert('Please enter a numeric design search code');
+                    e.target.checked = false;
+                }
             }
         });
     </script>

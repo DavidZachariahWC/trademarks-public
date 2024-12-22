@@ -119,6 +119,38 @@
             border-radius: 3px;
             font-weight: bold;
         }
+        
+        .classifications-table {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        
+        .classifications-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        
+        .classifications-table th,
+        .classifications-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        .classifications-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .classifications-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .classifications-table tr:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
@@ -132,6 +164,7 @@
             <p><span class="label">Status:</span> {{ case.header.status_code or 'N/A' }}</p>
             <p><span class="label">Filing Date:</span> {{ case.header.filing_date.strftime('%Y-%m-%d') if case.header.filing_date else 'N/A' }}</p>
             <p><span class="label">Registration Date:</span> {{ case.header.registration_date.strftime('%Y-%m-%d') if case.header.registration_date else 'N/A' }}</p>
+            <p><span class="label">Date Cancelled:</span> {{ case.header.cancellation_date.strftime('%Y-%m-%d') if case.header.cancellation_date else 'N/A' }}</p>
             <p><span class="label">Attorney of Record:</span> 
                 {% if case.header.attorney_name %}
                     {% for attorney in case.header.attorney_name.split(';') %}
@@ -147,6 +180,10 @@
             <p><span class="label">Section 8 Accepted:</span> {{ 'Yes' if case.header.section_8_accepted_in else 'No' }}</p>
             <p><span class="label">Section 15 Filed:</span> {{ 'Yes' if case.header.section_15_filed_in else 'No' }}</p>
             <p><span class="label">Section 15 Acknowledged:</span> {{ 'Yes' if case.header.section_15_acknowledged_in else 'No' }}</p>
+            <p><span class="label">Changed Registration:</span> {{ 'Yes' if case.header.change_registration_in else 'No' }}</p>
+            <p><span class="label">Concurrent Use:</span> {{ 'Yes' if case.header.concurrent_use_in else 'No' }}</p>
+            <p><span class="label">Concurrent Use Proceeding Pending:</span> {{ 'Yes' if case.header.concurrent_use_proceeding_in else 'No' }}</p>
+            <p><span class="label">Published for Concurrent Use:</span> {{ 'Yes' if case.header.published_concurrent_in else 'No' }}</p>
             
             <div class="subsection">
                 <h3>Filing Basis Information</h3>
@@ -207,37 +244,43 @@
                     <li><code>*...*</code> - Additional (new) wording in goods/services</li>
                 </ul>
             </div>
-            {% for classification in case.classifications %}
-            <div>
-                <p>
-                    <span class="label">International Class:</span> 
-                    {{ classification.international_code }}
-                    {% if classification.primary_code == classification.international_code %}
-                        <span class="primary-badge">Primary Class</span>
-                    {% endif %}
-                </p>
-                <p>
-                    <span class="label">US Class:</span> 
-                    {{ classification.us_code }}
-                    {% if classification.primary_code == classification.us_code %}
-                        <span class="primary-badge">Primary Class</span>
-                    {% endif %}
-                </p>
-                <p>
-                    <span class="label">Classification Status:</span> 
-                    {{ classification.classification_status_code }}
-                    {% if classification.classification_status_date %}
-                        (as of {{ classification.classification_status_date.strftime('%Y-%m-%d') }})
-                    {% endif %}
-                </p>
-                {% if classification.first_use_anywhere_date %}
-                <p><span class="label">First Use Anywhere:</span> {{ classification.first_use_anywhere_date.strftime('%Y-%m-%d') }}</p>
-                {% endif %}
-                {% if classification.first_use_in_commerce_date %}
-                <p><span class="label">First Use in Commerce:</span> {{ classification.first_use_in_commerce_date.strftime('%Y-%m-%d') }}</p>
-                {% endif %}
+            
+            <div class="classifications-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>International Class</th>
+                            <th>US Class</th>
+                            <th>Status</th>
+                            <th>Status Date</th>
+                            <th>First Use Anywhere</th>
+                            <th>First Use in Commerce</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for classification in case.classifications %}
+                        <tr>
+                            <td>
+                                {{ classification.international_code }}
+                                {% if classification.primary_code == classification.international_code %}
+                                    <span class="primary-badge">Primary</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ classification.us_code }}
+                                {% if classification.primary_code == classification.us_code %}
+                                    <span class="primary-badge">Primary</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ classification.classification_status_code }}</td>
+                            <td>{{ classification.classification_status_date.strftime('%Y-%m-%d') if classification.classification_status_date else 'N/A' }}</td>
+                            <td>{{ classification.first_use_anywhere_date.strftime('%Y-%m-%d') if classification.first_use_anywhere_date else 'N/A' }}</td>
+                            <td>{{ classification.first_use_in_commerce_date.strftime('%Y-%m-%d') if classification.first_use_in_commerce_date else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            {% endfor %}
         </div>
         {% endif %}
 
@@ -250,6 +293,17 @@
                 <p><span class="label">Text:</span> {{ statement.statement_text }}</p>
             </div>
             {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if case.design_searches %}
+        <div class="section">
+            <h2>Design Search Codes</h2>
+            <div class="design-codes">
+                {% for design in case.design_searches %}
+                    <p><span class="label">Design Code:</span> {{ design.design_search_code }}</p>
+                {% endfor %}
+            </div>
         </div>
         {% endif %}
     </div>
