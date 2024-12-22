@@ -20,7 +20,8 @@ from search_strategies import (
     ChangeRegistrationSearchStrategy,
     ConcurrentUseSearchStrategy,
     ConcurrentUseProceedingSearchStrategy,
-    DesignSearchCodeStrategy
+    DesignSearchCodeStrategy,
+    DisclaimerStatementsSearchStrategy
 )
 from db_utils import get_db_session
 
@@ -46,7 +47,8 @@ class SearchEngine:
         'change_registration': ChangeRegistrationSearchStrategy,
         'concurrent_use': ConcurrentUseSearchStrategy,
         'concurrent_use_proceeding': ConcurrentUseProceedingSearchStrategy,
-        'design_code': DesignSearchCodeStrategy
+        'design_code': DesignSearchCodeStrategy,
+        'disclaimer_statements': DisclaimerStatementsSearchStrategy
     }
     
     @classmethod

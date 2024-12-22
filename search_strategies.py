@@ -3,7 +3,7 @@ from enum import Enum
 from typing import List, Tuple, Optional, Dict, Any
 from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal
 from sqlalchemy.orm import Session
-from models import CaseFile, CaseFileHeader, Classification, DesignSearch
+from models import CaseFile, CaseFileHeader, Classification, DesignSearch, CaseFileStatement
 from db_utils import get_db_session, create_soundex_array, base_query
 from sqlalchemy.dialects.postgresql import ARRAY, TEXT as PgText
 from coordinated_class_config import COORDINATED_CLASS_CONFIG
@@ -520,3 +520,97 @@ class DesignSearchCodeStrategy(BaseSearchStrategy):
             query = query.filter(*filters)
             
         return query.order_by(CaseFileHeader.filing_date.desc())
+
+class DisclaimerStatementsSearchStrategy(BaseSearchStrategy):
+    """
+    Implements a 'Disclaimer Statements' filter:
+     - For rows where type_code = 'D00000', only compare the substring inside double quotes.
+     - For rows where type_code = 'D10000', compare the entire statement_text.
+     - In both cases, we do similarity(...) and a LIKE check.
+    """
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # Extract text inside double quotes for D00000
+        extracted_text = func.substring(
+            CaseFileStatement.statement_text,
+            text("'\"([^\"]+)\"'")  # Properly quoted pattern for Postgres
+        )
+
+        # D00000 condition: use extracted text
+        d00000_similarity = (func.similarity(
+            func.coalesce(extracted_text, ''),
+            self.query_str
+        ) * 100)  # Multiply by 100 to get percentage
+
+        d00000_condition = and_(
+            CaseFileStatement.type_code == 'D00000',
+            or_(
+                d00000_similarity > 30,  # Changed from 0.3 to 30 since we're using percentage now
+                func.lower(func.coalesce(extracted_text, '')).like(func.lower(f"%{self.query_str}%"))
+            )
+        )
+
+        # D10000 condition: use entire statement_text
+        d10000_similarity = (func.similarity(
+            func.coalesce(CaseFileStatement.statement_text, ''),
+            self.query_str
+        ) * 100)  # Multiply by 100 to get percentage
+
+        d10000_condition = and_(
+            CaseFileStatement.type_code == 'D10000',
+            or_(
+                d10000_similarity > 30,  # Changed from 0.3 to 30 since we're using percentage now
+                func.lower(func.coalesce(CaseFileStatement.statement_text, '')).like(func.lower(f"%{self.query_str}%"))
+            )
+        )
+
+        # Combine conditions
+        filters = [or_(d00000_condition, d10000_condition)]
+
+        # Combined similarity score for ordering
+        combined_similarity = func.greatest(d00000_similarity, d10000_similarity).label('similarity_score')
+
+        match_quality = case(
+            (combined_similarity >= 80, 'Very High'),  # Changed thresholds to match percentage scale
+            (combined_similarity >= 60, 'High'),
+            (combined_similarity >= 40, 'Medium'),
+            else_='Low'
+        ).label('match_quality')
+
+        return filters, [combined_similarity, match_quality]
+
+    def build_query(self, session: Session):
+        filters, scoring = self.get_filters_and_scoring()
+
+        query = (
+            session.query(
+                CaseFile.serial_number,
+                CaseFile.registration_number,
+                CaseFileHeader.mark_identification,
+                CaseFileHeader.status_code,
+                CaseFileHeader.filing_date,
+                CaseFileHeader.registration_date,
+                CaseFileHeader.attorney_name,
+                CaseFileStatement.type_code,
+                CaseFileStatement.statement_text
+            )
+            .join(CaseFileHeader)
+            .join(CaseFileStatement)
+        )
+
+        if filters:
+            query = query.filter(*filters)
+        
+        for score_col in scoring:
+            query = query.add_columns(score_col)
+
+        similarity_score = scoring[0]
+        return query.order_by(similarity_score.desc())
+
+    def count_query(self, session: Session):
+        filters, _ = self.get_filters_and_scoring()
+        return (
+            session.query(func.count(func.distinct(CaseFile.serial_number)))
+            .join(CaseFileHeader)
+            .join(CaseFileStatement)
+            .filter(*filters)
+        )
