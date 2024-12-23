@@ -21,7 +21,8 @@ from search_strategies import (
     ConcurrentUseSearchStrategy,
     ConcurrentUseProceedingSearchStrategy,
     DesignSearchCodeStrategy,
-    DisclaimerStatementsSearchStrategy
+    DisclaimerStatementsSearchStrategy,
+    DescriptionOfMarkSearchStrategy
 )
 from db_utils import get_db_session
 
@@ -48,7 +49,8 @@ class SearchEngine:
         'concurrent_use': ConcurrentUseSearchStrategy,
         'concurrent_use_proceeding': ConcurrentUseProceedingSearchStrategy,
         'design_code': DesignSearchCodeStrategy,
-        'disclaimer_statements': DisclaimerStatementsSearchStrategy
+        'disclaimer_statements': DisclaimerStatementsSearchStrategy,
+        'description_of_mark': DescriptionOfMarkSearchStrategy
     }
     
     @classmethod

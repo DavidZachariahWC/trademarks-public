@@ -614,3 +614,74 @@ class DisclaimerStatementsSearchStrategy(BaseSearchStrategy):
             .join(CaseFileStatement)
             .filter(*filters)
         )
+
+class DescriptionOfMarkSearchStrategy(BaseSearchStrategy):
+    """
+    Implements a 'Description of Mark' filter:
+     - Searches statements where type_code = 'DM0000'
+     - Uses similarity scoring on the entire statement_text
+    """
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # Calculate similarity score for the entire statement text
+        similarity_score = (func.similarity(
+            func.coalesce(CaseFileStatement.statement_text, ''),
+            self.query_str
+        ) * 100).label('similarity_score')  # Multiply by 100 for percentage
+
+        # Create the filter condition
+        filters = [
+            and_(
+                CaseFileStatement.type_code == 'DM0000',
+                or_(
+                    similarity_score > 30,  # 30% similarity threshold
+                    func.lower(CaseFileStatement.statement_text).like(func.lower(f"%{self.query_str}%"))
+                )
+            )
+        ]
+
+        # Define match quality based on similarity score
+        match_quality = case(
+            (similarity_score >= 80, 'Very High'),
+            (similarity_score >= 60, 'High'),
+            (similarity_score >= 40, 'Medium'),
+            else_='Low'
+        ).label('match_quality')
+
+        return filters, [similarity_score, match_quality]
+
+    def build_query(self, session: Session):
+        filters, scoring = self.get_filters_and_scoring()
+
+        query = (
+            session.query(
+                CaseFile.serial_number,
+                CaseFile.registration_number,
+                CaseFileHeader.mark_identification,
+                CaseFileHeader.status_code,
+                CaseFileHeader.filing_date,
+                CaseFileHeader.registration_date,
+                CaseFileHeader.attorney_name,
+                CaseFileStatement.type_code,
+                CaseFileStatement.statement_text
+            )
+            .join(CaseFileHeader)
+            .join(CaseFileStatement)
+        )
+
+        if filters:
+            query = query.filter(*filters)
+        
+        for score_col in scoring:
+            query = query.add_columns(score_col)
+
+        similarity_score = scoring[0]
+        return query.order_by(similarity_score.desc())
+
+    def count_query(self, session: Session):
+        filters, _ = self.get_filters_and_scoring()
+        return (
+            session.query(func.count(func.distinct(CaseFile.serial_number)))
+            .join(CaseFileHeader)
+            .join(CaseFileStatement)
+            .filter(*filters)
+        )

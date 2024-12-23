@@ -163,6 +163,16 @@
             margin-bottom: 0;
             padding-bottom: 0;
         }
+        
+        .mark-design-info h3 {
+            margin: 20px 0 10px 0;
+            font-size: 1.1em;
+            color: #444;
+        }
+        
+        .mark-descriptions, .design-codes {
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -296,6 +306,34 @@
         </div>
         {% endif %}
 
+        <div class="section">
+            <h2>Mark Design Information</h2>
+            <div class="mark-design-info">
+                <p><span class="label">Standard Character Claim:</span> {{ 'Yes' if case.header.standard_characters_claimed_in else 'No' }}</p>
+                <p><span class="label">Mark Drawing Type:</span> {{ case.header.mark_drawing_code }}</p>
+                
+                {% if case.statements %}
+                    <div class="mark-descriptions">
+                        <h3>Description of Mark</h3>
+                        {% for statement in case.statements %}
+                            {% if statement.type_code == 'DM0000' %}
+                                <p><span class="label">Text:</span> {{ statement.statement_text }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if case.design_searches %}
+                    <div class="design-codes">
+                        <h3>Design Search Codes</h3>
+                        {% for design in case.design_searches %}
+                            <p><span class="label">Design Code:</span> {{ design.design_search_code }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
         {% if case.statements %}
         <div class="section">
             <h2>Disclaimer Statements</h2>
@@ -314,17 +352,6 @@
                         <p><span class="label">Text:</span> {{ statement.statement_text }}</p>
                     </div>
                     {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
-        {% if case.design_searches %}
-        <div class="section">
-            <h2>Design Search Codes</h2>
-            <div class="design-codes">
-                {% for design in case.design_searches %}
-                    <p><span class="label">Design Code:</span> {{ design.design_search_code }}</p>
                 {% endfor %}
             </div>
         </div>
