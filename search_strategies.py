@@ -1,9 +1,9 @@
 # search_strategies.py
 from enum import Enum
 from typing import List, Tuple, Optional, Dict, Any
-from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal
+from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal, String
 from sqlalchemy.orm import Session
-from models import CaseFile, CaseFileHeader, Classification, DesignSearch, CaseFileStatement, Owner, ForeignApplication
+from models import CaseFile, CaseFileHeader, Classification, DesignSearch, CaseFileStatement, Owner, ForeignApplication, InternationalRegistration
 from db_utils import get_db_session, create_soundex_array, base_query
 from sqlalchemy.dialects.postgresql import ARRAY, TEXT as PgText
 from coordinated_class_config import COORDINATED_CLASS_CONFIG
@@ -857,6 +857,225 @@ class ForeignFilingDateSearchStrategy(BaseSearchStrategy):
         .join(CaseFileHeader)
         .join(ForeignApplication))
         
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class InternationalRegistrationNumberSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Convert to integer for exact match
+            reg_number = int(self.query_str)
+            filters = [InternationalRegistration.international_registration_number == reg_number]
+            return filters, []
+        except ValueError:
+            # Return no results if number format is invalid
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            InternationalRegistration.international_registration_number
+        )
+        .join(CaseFileHeader)
+        .join(InternationalRegistration))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class InternationalRegistrationDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Convert string date to datetime
+            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            filters = [InternationalRegistration.international_registration_date == search_date]
+            return filters, []
+        except ValueError:
+            # Return no results if date format is invalid
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            InternationalRegistration.international_registration_date
+        )
+        .join(CaseFileHeader)
+        .join(InternationalRegistration))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class InternationalPublicationDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Convert string date to datetime
+            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            filters = [InternationalRegistration.international_publication_date == search_date]
+            return filters, []
+        except ValueError:
+            # Return no results if date format is invalid
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            InternationalRegistration.international_publication_date
+        )
+        .join(CaseFileHeader)
+        .join(InternationalRegistration))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class AutoProtectionDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Convert string date to datetime
+            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            filters = [InternationalRegistration.auto_protection_date == search_date]
+            return filters, []
+        except ValueError:
+            # Return no results if date format is invalid
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            InternationalRegistration.auto_protection_date
+        )
+        .join(CaseFileHeader)
+        .join(InternationalRegistration))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class InternationalStatusCodeSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Convert to integer for exact match
+            status_code = int(self.query_str)
+            filters = [InternationalRegistration.international_status_code == status_code]
+            return filters, []
+        except ValueError:
+            # Return no results if code format is invalid
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            InternationalRegistration.international_status_code
+        )
+        .join(CaseFileHeader)
+        .join(InternationalRegistration))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class PriorityClaimedSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [InternationalRegistration.priority_claimed_in == True]
+        return filters, []
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            InternationalRegistration.priority_claimed_in
+        )
+        .join(CaseFileHeader)
+        .join(InternationalRegistration))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class FirstRefusalSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [InternationalRegistration.first_refusal_in == True]
+        return filters, []
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            InternationalRegistration.first_refusal_in
+        )
+        .join(CaseFileHeader)
+        .join(InternationalRegistration))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class DrawingCodeTypeSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            drawing_code_type = int(self.query_str)
+            if drawing_code_type not in range(7):
+                return [False], []
+                
+            filters = [
+                func.substr(cast(CaseFileHeader.mark_drawing_code, String), 1, 1) == str(drawing_code_type)
+            ]
+            return filters, []
+        except ValueError:
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = base_query(session)
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)

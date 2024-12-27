@@ -293,6 +293,65 @@
             margin: 0;
             white-space: pre-wrap;
         }
+        
+        .international-reg-info {
+            margin-top: 15px;
+        }
+        
+        .int-reg-block {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .int-reg-block:last-child {
+            margin-bottom: 0;
+        }
+        
+        .int-reg-divider {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #ddd;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        .status-yes {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .status-no {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .drawing-code-desc {
+            color: #666;
+            font-style: italic;
+            margin-left: 5px;
+        }
+        
+        .drawing-type-note {
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .filing-date-box {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 2px 8px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
@@ -496,7 +555,30 @@
             <h2>Mark Design Information</h2>
             <div class="mark-design-info">
                 <p><span class="label">Standard Character Claim:</span> {{ 'Yes' if case.header.standard_characters_claimed_in else 'No' }}</p>
-                <p><span class="label">Mark Drawing Type:</span> {{ case.header.mark_drawing_code }}</p>
+                <p>
+                    <span class="label">Mark Drawing Type:</span>
+                    {% set first_digit = case.header.mark_drawing_code[0] if case.header.mark_drawing_code else None %}
+                    {{ case.header.mark_drawing_code }}
+                    {% if first_digit %}
+                    <span class="drawing-code-desc">
+                        ({% if first_digit == '0' %}Not yet assigned
+                        {% elif first_digit == '1' %}Typeset word(s)/letter(s)/number(s)
+                        {% elif first_digit == '2' %}Design without text
+                        {% elif first_digit == '3' %}Design with text
+                        {% elif first_digit == '4' %}Standard character mark
+                        {% elif first_digit == '5' %}Stylized text with design
+                        {% elif first_digit == '6' %}No drawing (e.g., sound)
+                        {% endif %})
+                    </span>
+                    {% if first_digit == '4' %}
+                    <div class="drawing-type-note">
+                        <span class="note-text">Note: Type 4 marks represent "Block letter drawing" if filed before Nov 2, 2003, 
+                        or "Standard Character Mark" if filed after.</span>
+                        <span class="filing-date-box">This application filed: {{ case.header.filing_date.strftime('%B %d, %Y') }}</span>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </p>
                 
                 {% if case.statements %}
                     <div class="mark-descriptions">
@@ -559,6 +641,75 @@
             </div>
             {% if not loop.last %}<hr class="foreign-filing-divider">{% endif %}
             {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if case.international_registrations %}
+        <div class="section">
+            <h2>International Registration</h2>
+            <div class="international-reg-info">
+                {% for reg in case.international_registrations %}
+                <div class="int-reg-block">
+                    <p>
+                        <span class="label">Registration Number:</span>
+                        {{ reg.international_registration_number or 'N/A' }}
+                    </p>
+                    <p>
+                        <span class="label">Registration Date:</span>
+                        {{ reg.international_registration_date.strftime('%Y-%m-%d') if reg.international_registration_date else 'N/A' }}
+                    </p>
+                    <p>
+                        <span class="label">Publication Date:</span>
+                        {{ reg.international_publication_date.strftime('%Y-%m-%d') if reg.international_publication_date else 'N/A' }}
+                    </p>
+                    <p>
+                        <span class="label">Auto Protection Date:</span>
+                        {{ reg.auto_protection_date.strftime('%Y-%m-%d') if reg.auto_protection_date else 'N/A' }}
+                    </p>
+                    <p>
+                        <span class="label">Status Code:</span>
+                        {{ reg.international_status_code or 'N/A' }}
+                    </p>
+                    <p>
+                        <span class="label">Status Date:</span>
+                        {{ reg.international_status_date.strftime('%Y-%m-%d') if reg.international_status_date else 'N/A' }}
+                    </p>
+                    <p>
+                        <span class="label">Renewal Date:</span>
+                        {{ reg.international_renewal_date.strftime('%Y-%m-%d') if reg.international_renewal_date else 'N/A' }}
+                    </p>
+                    <p>
+                        <span class="label">Death Date:</span>
+                        {{ reg.international_death_date.strftime('%Y-%m-%d') if reg.international_death_date else 'N/A' }}
+                    </p>
+                    <p>
+                        <span class="label">Priority Claimed:</span>
+                        <span class="status-indicator {% if reg.priority_claimed_in %}status-yes{% else %}status-no{% endif %}">
+                            {{ 'Yes' if reg.priority_claimed_in else 'No' }}
+                        </span>
+                    </p>
+                    {% if reg.priority_claimed_in %}
+                    <p>
+                        <span class="label">Priority Claimed Date:</span>
+                        {{ reg.priority_claimed_date.strftime('%Y-%m-%d') if reg.priority_claimed_date else 'N/A' }}
+                    </p>
+                    {% endif %}
+                    <p>
+                        <span class="label">First Refusal:</span>
+                        <span class="status-indicator {% if reg.first_refusal_in %}status-yes{% else %}status-no{% endif %}">
+                            {{ 'Yes' if reg.first_refusal_in else 'No' }}
+                        </span>
+                    </p>
+                    {% if reg.first_refusal_in %}
+                    <p>
+                        <span class="label">Notification Date:</span>
+                        {{ reg.notification_date.strftime('%Y-%m-%d') if reg.notification_date else 'N/A' }}
+                    </p>
+                    {% endif %}
+                </div>
+                {% if not loop.last %}<hr class="int-reg-divider">{% endif %}
+                {% endfor %}
+            </div>
         </div>
         {% endif %}
 

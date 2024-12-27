@@ -27,7 +27,15 @@ from search_strategies import (
     DBASearchStrategy,
     NameChangeSearchStrategy,
     FilingDateSearchStrategy,
-    ForeignFilingDateSearchStrategy
+    ForeignFilingDateSearchStrategy,
+    InternationalRegistrationNumberSearchStrategy,
+    InternationalRegistrationDateSearchStrategy,
+    InternationalPublicationDateSearchStrategy,
+    AutoProtectionDateSearchStrategy,
+    InternationalStatusCodeSearchStrategy,
+    PriorityClaimedSearchStrategy,
+    FirstRefusalSearchStrategy,
+    DrawingCodeTypeSearchStrategy
 )
 from db_utils import get_db_session
 
@@ -60,7 +68,15 @@ class SearchEngine:
         'dba_name': DBASearchStrategy,
         'name_change': NameChangeSearchStrategy,
         'filing_date': FilingDateSearchStrategy,
-        'foreign_filing_date': ForeignFilingDateSearchStrategy
+        'foreign_filing_date': ForeignFilingDateSearchStrategy,
+        'int_reg_number': InternationalRegistrationNumberSearchStrategy,
+        'int_reg_date': InternationalRegistrationDateSearchStrategy,
+        'int_pub_date': InternationalPublicationDateSearchStrategy,
+        'auto_protection_date': AutoProtectionDateSearchStrategy,
+        'int_status_code': InternationalStatusCodeSearchStrategy,
+        'priority_claimed': PriorityClaimedSearchStrategy,
+        'first_refusal': FirstRefusalSearchStrategy,
+        'drawing_code_type': DrawingCodeTypeSearchStrategy
     }
     
     @classmethod

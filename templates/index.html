@@ -264,6 +264,36 @@
             margin: 0 0 10px 0;
             font-size: 1em;
         }
+        
+        .international-registration-filters {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .international-registration-filters h4 {
+            margin: 0 0 10px 0;
+            font-size: 1em;
+        }
+        
+        .visual-characteristics-filters {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .visual-characteristics-filters h4 {
+            margin: 0 0 10px 0;
+            font-size: 1em;
+        }
+        
+        .code-select {
+            margin-left: 10px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -402,6 +432,34 @@
                     </select>
                 </div>
             </div>
+            <div class="international-registration-filters">
+                <div class="section-header">
+                    <h4>International Registration</h4>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Search by International Registration Number">
+                        <input type="checkbox" name="searchType" value="int_reg_number"> Registration Number
+                    </label>
+                    <label class="search-type" title="Search by International Registration Date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="int_reg_date"> Registration Date
+                    </label>
+                    <label class="search-type" title="Search by International Publication Date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="int_pub_date"> Publication Date
+                    </label>
+                    <label class="search-type" title="Search by Auto Protection Date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="auto_protection_date"> Auto Protection Date
+                    </label>
+                    <label class="search-type" title="Search by International Status Code">
+                        <input type="checkbox" name="searchType" value="int_status_code"> Status Code
+                    </label>
+                    <label class="search-type" title="Find cases with Priority Claimed">
+                        <input type="checkbox" name="searchType" value="priority_claimed"> Priority Claimed
+                    </label>
+                    <label class="search-type" title="Find cases with First Refusal">
+                        <input type="checkbox" name="searchType" value="first_refusal"> First Refusal
+                    </label>
+                </div>
+            </div>
             <div class="filing-date-filters">
                 <div class="section-header">
                     <h4>Filing Date Search</h4>
@@ -431,6 +489,26 @@
                     </label>
                 </div>
             </div>
+            <div class="visual-characteristics-filters">
+                <div class="section-header">
+                    <h4>Visual Characteristics</h4>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Search by Mark Drawing Code">
+                        <input type="checkbox" name="searchType" value="drawing_code_type">
+                        Drawing Code:
+                        <select id="drawingCodeSelect" name="searchInput" class="code-select">
+                            <option value="0">0 - Not yet assigned</option>
+                            <option value="1">1 - Typeset word(s)/letter(s)/number(s)</option>
+                            <option value="2">2 - Design without text</option>
+                            <option value="3">3 - Design with text</option>
+                            <option value="4">4 - Standard character mark</option>
+                            <option value="5">5 - Stylized text with design</option>
+                            <option value="6">6 - No drawing (e.g., sound)</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
         </div>
         <input type="text" id="searchInput" placeholder="Search for trademarks...">
         <div id="suggestions"></div>
@@ -440,10 +518,29 @@
     <div class="pagination" id="pagination"></div>
     
     <script>
+        const drawingCodeSelect = document.getElementById('drawingCodeSelect');
+        const drawingCodeCheckbox = document.querySelector('input[value="drawing_code_type"]');
+        const searchInput = document.getElementById('searchInput');
+        
+        // When drawing code checkbox is checked/unchecked
+        drawingCodeCheckbox.addEventListener('change', () => {
+            if (drawingCodeCheckbox.checked) {
+                searchInput.value = drawingCodeSelect.value;
+                performSearch(searchInput.value);
+            }
+        });
+        
+        // When drawing code selection changes
+        drawingCodeSelect.addEventListener('change', () => {
+            if (drawingCodeCheckbox.checked) {
+                searchInput.value = drawingCodeSelect.value;
+                performSearch(searchInput.value);
+            }
+        });
+        
         let currentPage = 1;
         let totalPages = 1;
         
-        const searchInput = document.getElementById('searchInput');
         const suggestionsDiv = document.getElementById('suggestions');
         const resultsDiv = document.getElementById('results');
         const paginationDiv = document.getElementById('pagination');
