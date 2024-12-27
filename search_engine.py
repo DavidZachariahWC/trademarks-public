@@ -22,7 +22,12 @@ from search_strategies import (
     ConcurrentUseProceedingSearchStrategy,
     DesignSearchCodeStrategy,
     DisclaimerStatementsSearchStrategy,
-    DescriptionOfMarkSearchStrategy
+    DescriptionOfMarkSearchStrategy,
+    OwnerNameSearchStrategy,
+    DBASearchStrategy,
+    NameChangeSearchStrategy,
+    FilingDateSearchStrategy,
+    ForeignFilingDateSearchStrategy
 )
 from db_utils import get_db_session
 
@@ -50,7 +55,12 @@ class SearchEngine:
         'concurrent_use_proceeding': ConcurrentUseProceedingSearchStrategy,
         'design_code': DesignSearchCodeStrategy,
         'disclaimer_statements': DisclaimerStatementsSearchStrategy,
-        'description_of_mark': DescriptionOfMarkSearchStrategy
+        'description_of_mark': DescriptionOfMarkSearchStrategy,
+        'owner_name': OwnerNameSearchStrategy,
+        'dba_name': DBASearchStrategy,
+        'name_change': NameChangeSearchStrategy,
+        'filing_date': FilingDateSearchStrategy,
+        'foreign_filing_date': ForeignFilingDateSearchStrategy
     }
     
     @classmethod

@@ -242,6 +242,28 @@
             border-radius: 3px;
             border: 1px solid #ddd;
         }
+        
+        .owner-filters {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .owner-filters h4 {
+            margin: 0 0 10px 0;
+            font-size: 1em;
+        }
+        
+        .filing-date-filters {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .filing-date-filters h4 {
+            margin: 0 0 10px 0;
+            font-size: 1em;
+        }
     </style>
 </head>
 <body>
@@ -378,6 +400,35 @@
                         <option value="coord_class_044">Coordinated Class 044</option>
                         <option value="coord_class_045">Coordinated Class 045</option>
                     </select>
+                </div>
+            </div>
+            <div class="filing-date-filters">
+                <div class="section-header">
+                    <h4>Filing Date Search</h4>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Search by exact filing date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="filing_date"> Filing Date
+                    </label>
+                    <label class="search-type" title="Search by foreign filing date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="foreign_filing_date"> Foreign Filing Date
+                    </label>
+                </div>
+            </div>
+            <div class="owner-filters">
+                <div class="section-header">
+                    <h4>Owner Information</h4>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Search by trademark owner's name">
+                        <input type="checkbox" name="searchType" value="owner_name"> Owner's Name
+                    </label>
+                    <label class="search-type" title="Search by DBA/AKA (Doing Business As) name">
+                        <input type="checkbox" name="searchType" value="dba_name"> DBA/AKA Name
+                    </label>
+                    <label class="search-type" title="Find cases where the owner's name has changed">
+                        <input type="checkbox" name="searchType" value="name_change"> Name Change
+                    </label>
                 </div>
             </div>
         </div>

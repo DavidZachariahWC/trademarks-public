@@ -3,7 +3,7 @@ from enum import Enum
 from typing import List, Tuple, Optional, Dict, Any
 from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal
 from sqlalchemy.orm import Session
-from models import CaseFile, CaseFileHeader, Classification, DesignSearch, CaseFileStatement
+from models import CaseFile, CaseFileHeader, Classification, DesignSearch, CaseFileStatement, Owner, ForeignApplication
 from db_utils import get_db_session, create_soundex_array, base_query
 from sqlalchemy.dialects.postgresql import ARRAY, TEXT as PgText
 from coordinated_class_config import COORDINATED_CLASS_CONFIG
@@ -685,3 +685,179 @@ class DescriptionOfMarkSearchStrategy(BaseSearchStrategy):
             .join(CaseFileStatement)
             .filter(*filters)
         )
+
+class OwnerNameSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # Handle potential special characters in the query
+        escaped_query = self.query_str.replace("'", "''")
+        
+        filters = [
+            Owner.party_name.isnot(None),  # Ensure party_name is not null
+            or_(
+                func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) > 0.3,
+                func.lower(func.coalesce(Owner.party_name, '')).like(func.lower(f"%{escaped_query}%"))
+            )
+        ]
+        
+        # Calculate similarity score for owner name matches
+        similarity_score = (func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) * 100).label('similarity_score')
+        
+        match_quality = case(
+            (func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) >= 0.8, 'Very High'),
+            (func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) >= 0.6, 'High'),
+            (func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) >= 0.4, 'Medium'),
+            else_='Low'
+        ).label('match_quality')
+        
+        return filters, [similarity_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            Owner.party_name
+        )
+        .join(CaseFileHeader)
+        .join(Owner))
+        
+        filters, scoring = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+            
+        for score_col in scoring:
+            query = query.add_columns(score_col)
+            
+        similarity_score = scoring[0]
+        return query.order_by(similarity_score.desc())
+
+class DBASearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # Handle potential special characters in the query
+        escaped_query = self.query_str.replace("'", "''")
+        
+        filters = [
+            Owner.dba_aka_text.isnot(None),  # Ensure dba_aka_text is not null
+            or_(
+                func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) > 0.3,
+                func.lower(func.coalesce(Owner.dba_aka_text, '')).like(func.lower(f"%{escaped_query}%"))
+            )
+        ]
+        
+        # Calculate similarity score for DBA matches
+        similarity_score = (func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) * 100).label('similarity_score')
+        
+        match_quality = case(
+            (func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) >= 0.8, 'Very High'),
+            (func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) >= 0.6, 'High'),
+            (func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) >= 0.4, 'Medium'),
+            else_='Low'
+        ).label('match_quality')
+        
+        return filters, [similarity_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            Owner.party_name,
+            Owner.dba_aka_text
+        )
+        .join(CaseFileHeader)
+        .join(Owner))
+        
+        filters, scoring = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+            
+        for score_col in scoring:
+            query = query.add_columns(score_col)
+            
+        similarity_score = scoring[0]
+        return query.order_by(similarity_score.desc())
+
+class NameChangeSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [
+            Owner.name_change_explanation.isnot(None),
+            Owner.name_change_explanation != ''
+        ]
+        return filters, []
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            Owner.party_name,
+            Owner.name_change_explanation
+        )
+        .join(CaseFileHeader)
+        .join(Owner))
+        
+        filters, scoring = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+            
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class FilingDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Convert string date to datetime
+            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            filters = [CaseFileHeader.filing_date == search_date]
+            return filters, []  # No scoring needed for exact date match
+        except ValueError:
+            # Return no results if date format is invalid
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = base_query(session)
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class ForeignFilingDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Convert string date to datetime
+            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            filters = [ForeignApplication.foreign_filing_date == search_date]
+            return filters, []  # No scoring needed for exact date match
+        except ValueError:
+            # Return no results if date format is invalid
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            ForeignApplication.foreign_filing_date
+        )
+        .join(CaseFileHeader)
+        .join(ForeignApplication))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())

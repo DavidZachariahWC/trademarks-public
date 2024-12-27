@@ -173,6 +173,126 @@
         .mark-descriptions, .design-codes {
             margin-top: 15px;
         }
+        
+        .owners-list {
+            margin-top: 15px;
+        }
+        
+        .owner-item {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .owner-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .address-block {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+        
+        .address-block p {
+            margin: 3px 0;
+            line-height: 1.4;
+        }
+        
+        .owner-divider {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #ddd;
+        }
+        
+        .owner-item .label {
+            display: inline-block;
+            min-width: 100px;
+            color: #666;
+        }
+        
+        .nationality-info {
+            margin-top: 10px;
+        }
+        
+        .nationality-info .label {
+            display: inline-block;
+            min-width: 100px;
+            color: #666;
+            cursor: help;
+        }
+        
+        .nationality-info p {
+            margin: 5px 0;
+        }
+        
+        .dba-text {
+            color: #0056b3;
+            font-weight: 500;
+        }
+        
+        .owner-item .label[title] {
+            cursor: help;
+            border-bottom: 1px dotted #666;
+        }
+        
+        .composed-text,
+        .name-change-text {
+            color: #2c5282;
+            font-style: italic;
+        }
+        
+        .foreign-filing-dates {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        .foreign-filing-dates h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.1em;
+            color: #444;
+        }
+        
+        .foreign-filing-entry {
+            margin-bottom: 10px;
+        }
+        
+        .foreign-filing-divider {
+            margin: 15px 0;
+            border: 0;
+            border-top: 1px solid #ddd;
+        }
+        
+        .goods-services-statements {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        .statement-block {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .statement-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .statement-block h4 {
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .statement-block p {
+            margin: 0;
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 <body>
@@ -241,17 +361,71 @@
         {% if case.owners %}
         <div class="section">
             <h2>Owner Information</h2>
+            <div class="owners-list">
             {% for owner in case.owners %}
-            <div>
+            <div class="owner-item">
                 <p><span class="label">Name:</span> {{ owner.party_name }}</p>
-                <p><span class="label">Address:</span><br>
-                    {{ owner.owner_address_1 }}<br>
-                    {% if owner.owner_address_2 %}{{ owner.owner_address_2 }}<br>{% endif %}
-                    {{ owner.city }}, {{ owner.owner_state }} {{ owner.postcode }}<br>
-                    {{ owner.owner_country }}
+                <p><span class="label">Address:</span></p>
+                <div class="address-block">
+                    <p>{{ owner.owner_address_1 }}</p>
+                    {% if owner.owner_address_2 %}
+                        <p>{{ owner.owner_address_2 }}</p>
+                    {% endif %}
+                    <p>
+                        {% if owner.city %}{{ owner.city }}{% endif %}
+                        {% if owner.owner_state %}, {{ owner.owner_state }}{% endif %}
+                        {% if owner.postcode %} {{ owner.postcode }}{% endif %}
+                    </p>
+                    {% if owner.owner_country %}
+                        <p>{{ owner.owner_country }}</p>
+                    {% endif %}
+                </div>
+                {% if owner.dba_aka_text %}
+                    <p>
+                        <span class="label" title="Doing Business As / Also Known As">DBA/AKA:</span>
+                        <span class="dba-text">{{ owner.dba_aka_text }}</span>
+                    </p>
+                {% endif %}
+                {% if owner.entity_statement %}
+                    <p><span class="label">Entity Type:</span> {{ owner.entity_statement }}</p>
+                {% endif %}
+                {% if owner.composed_of_statement %}
+                    <p>
+                        <span class="label" title="Statement describing the composition of the entity">Composed Of:</span>
+                        <span class="composed-text">{{ owner.composed_of_statement }}</span>
+                    </p>
+                {% endif %}
+                {% if owner.name_change_explanation %}
+                    <p>
+                        <span class="label" title="Explanation of owner name change">Name Change:</span>
+                        <span class="name-change-text">{{ owner.name_change_explanation }}</span>
+                    </p>
+                {% endif %}
+                <div class="nationality-info">
+                    <p>
+                        <span class="label" title="Country and state of nationality">Nationality:</span>
+                        {% if owner.nationality_country or owner.nationality_state %}
+                            {% if owner.nationality_country %}{{ owner.nationality_country }}{% endif %}
+                            {% if owner.nationality_state %}
+                                {% if owner.nationality_country %}, {% endif %}
+                                {{ owner.nationality_state }}
+                            {% endif %}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </p>
+                    {% if owner.nationality_other %}
+                    <p>
+                        <span class="label" title="Additional nationality information">Other Nationality:</span>
+                        {{ owner.nationality_other }}
+                    </p>
+                    {% endif %}
+                </div>
                 </p>
             </div>
+            {% if not loop.last %}<hr class="owner-divider">{% endif %}
             {% endfor %}
+            </div>
         </div>
         {% endif %}
 
@@ -306,6 +480,18 @@
         </div>
         {% endif %}
 
+        <div class="goods-services-statements">
+            <h3>Goods and Services Statements</h3>
+            {% for statement in case.statements %}
+                {% if statement.type_code.startswith('GS') %}
+                    <div class="statement-block">
+                        <h4>Type Code: {{ statement.type_code }}</h4>
+                        <p>{{ statement.statement_text }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
         <div class="section">
             <h2>Mark Design Information</h2>
             <div class="mark-design-info">
@@ -356,6 +542,35 @@
             </div>
         </div>
         {% endif %}
+
+        {% if case.foreign_applications %}
+        <div class="foreign-filing-dates">
+            <h3>Foreign Filing Dates</h3>
+            {% for app in case.foreign_applications %}
+            <div class="foreign-filing-entry">
+                <p>
+                    <span class="label">Country:</span> 
+                    {{ app.foreign_country }}{% if app.foreign_other %} ({{ app.foreign_other }}){% endif %}
+                </p>
+                <p>
+                    <span class="label">Filing Date:</span> 
+                    {{ app.foreign_filing_date.strftime('%Y-%m-%d') if app.foreign_filing_date else 'N/A' }}
+                </p>
+            </div>
+            {% if not loop.last %}<hr class="foreign-filing-divider">{% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="section">
+            <h2>All Statements</h2>
+            {% for statement in case.statements %}
+                <div class="statement-block">
+                    <h4>Type Code: {{ statement.type_code }}</h4>
+                    <p>{{ statement.statement_text }}</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
     <script>
