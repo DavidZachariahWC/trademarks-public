@@ -352,6 +352,48 @@
             border: 1px solid #ddd;
             border-radius: 3px;
         }
+        
+        .prior-registrations-list {
+            margin-top: 15px;
+        }
+        
+        .prior-reg-item {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .prior-reg-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .prior-reg-divider {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #ddd;
+        }
+        
+        .foreign-applications-list {
+            margin-top: 15px;
+        }
+        
+        .foreign-app-item {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .foreign-app-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .foreign-app-divider {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #ddd;
+        }
     </style>
 </head>
 <body>
@@ -366,6 +408,7 @@
             <p><span class="label">Filing Date:</span> {{ case.header.filing_date.strftime('%Y-%m-%d') if case.header.filing_date else 'N/A' }}</p>
             <p><span class="label">Registration Date:</span> {{ case.header.registration_date.strftime('%Y-%m-%d') if case.header.registration_date else 'N/A' }}</p>
             <p><span class="label">Date Cancelled:</span> {{ case.header.cancellation_date.strftime('%Y-%m-%d') if case.header.cancellation_date else 'N/A' }}</p>
+            <p><span class="label">Published for Opposition:</span> {{ case.header.published_for_opposition_date.strftime('%Y-%m-%d') if case.header.published_for_opposition_date else 'No' }}</p>
             <p><span class="label">Attorney of Record:</span> 
                 {% if case.header.attorney_name %}
                     {% for attorney in case.header.attorney_name.split(';') %}
@@ -599,6 +642,11 @@
                         {% endfor %}
                     </div>
                 {% endif %}
+
+                <p><span class="label">Color Drawing (Current):</span> {{ 'Yes' if case.header.color_drawing_current_in else 'No' }}</p>
+                <p><span class="label">Color Drawing (Filed):</span> {{ 'Yes' if case.header.color_drawing_filed_in else 'No' }}</p>
+                <p><span class="label">3-D Drawing (Current):</span> {{ 'Yes' if case.header.drawing_3d_current_in else 'No' }}</p>
+                <p><span class="label">3-D Drawing (Filed):</span> {{ 'Yes' if case.header.drawing_3d_filed_in else 'No' }}</p>
             </div>
         </div>
 
@@ -714,6 +762,31 @@
         {% endif %}
 
         <div class="section">
+            <h2>Prior Registrations</h2>
+            {% if case.prior_registrations %}
+                <div class="prior-registrations-list">
+                    {% for reg in case.prior_registrations %}
+                    <div class="prior-reg-item">
+                        <p><span class="label">Registration/Application Number:</span> {{ reg.number }}</p>
+                        <p><span class="label">Other Related:</span> {{ 'Yes' if reg.other_related_in else 'No' }}</p>
+                        <p><span class="label">Relationship Type:</span> 
+                            {% if reg.relationship_type == '1' %}Child Case
+                            {% elif reg.relationship_type == '2' %}Parent Case
+                            {% elif reg.relationship_type == '3' %}Cross Reference
+                            {% else %}{{ reg.relationship_type }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% if not loop.last %}<hr class="prior-reg-divider">{% endif %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No prior registrations found.</p>
+            {% endif %}
+        </div>
+
+        {% if case.statements %}
+        <div class="section">
             <h2>All Statements</h2>
             {% for statement in case.statements %}
                 <div class="statement-block">
@@ -721,6 +794,32 @@
                     <p>{{ statement.statement_text }}</p>
                 </div>
             {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="section">
+            <h2>Foreign Applications</h2>
+            {% if case.foreign_applications %}
+                <div class="foreign-applications-list">
+                    {% for app in case.foreign_applications %}
+                    <div class="foreign-app-item">
+                        <p><span class="label">Country:</span> {{ app.foreign_country }}{% if app.foreign_other %} ({{ app.foreign_other }}){% endif %}</p>
+                        <p><span class="label">Application Number:</span> {{ app.application_number or 'N/A' }}</p>
+                        <p><span class="label">Registration Number:</span> {{ app.foreign_registration_number or 'N/A' }}</p>
+                        <p><span class="label">Filing Date:</span> {{ app.foreign_filing_date.strftime('%Y-%m-%d') if app.foreign_filing_date else 'N/A' }}</p>
+                        <p><span class="label">Registration Date:</span> {{ app.foreign_registration_date.strftime('%Y-%m-%d') if app.foreign_registration_date else 'N/A' }}</p>
+                        <p><span class="label">Registration Expiration:</span> {{ app.registration_expiration_date.strftime('%Y-%m-%d') if app.registration_expiration_date else 'N/A' }}</p>
+                        <p><span class="label">Renewal Date:</span> {{ app.registration_renewal_date.strftime('%Y-%m-%d') if app.registration_renewal_date else 'N/A' }}</p>
+                        <p><span class="label">Renewal Number:</span> {{ app.renewal_number or 'N/A' }}</p>
+                        <p><span class="label">Renewal Expiration:</span> {{ app.registration_renewal_expiration_date.strftime('%Y-%m-%d') if app.registration_renewal_expiration_date else 'N/A' }}</p>
+                        <p><span class="label">Priority Claim:</span> {{ 'Yes' if app.foreign_priority_claim_in else 'No' }}</p>
+                    </div>
+                    {% if not loop.last %}<hr class="foreign-app-divider">{% endif %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No foreign applications found.</p>
+            {% endif %}
         </div>
     </div>
 

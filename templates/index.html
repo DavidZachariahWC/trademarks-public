@@ -294,6 +294,28 @@
             border: 1px solid #ddd;
             font-size: 0.9em;
         }
+        
+        .prior-registration-filters {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .prior-registration-filters h4 {
+            margin: 0 0 10px 0;
+            font-size: 1em;
+        }
+        
+        .foreign-application-filters {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .foreign-application-filters h4 {
+            margin: 0 0 10px 0;
+            font-size: 1em;
+        }
     </style>
 </head>
 <body>
@@ -310,14 +332,14 @@
             <label class="search-type">
                 <input type="checkbox" name="searchType" value="attorney"> Attorney Name
             </label>
-            <label class="search-type">
-                <input type="checkbox" name="searchType" value="design_code"> Design Search Code
-            </label>
             <label class="search-type" title="Search disclaimer statements">
                 <input type="checkbox" name="searchType" value="disclaimer_statements"> Disclaimer Statements
             </label>
             <label class="search-type" title="Search mark descriptions">
                 <input type="checkbox" name="searchType" value="description_of_mark"> Description of Mark
+            </label>
+            <label class="search-type" title="Search by exact registration date (YYYY-MM-DD)">
+                <input type="checkbox" name="searchType" value="registration_date"> Registration Date
             </label>
             <div class="filing-status-filters">
                 <label class="search-type">
@@ -471,6 +493,13 @@
                     <label class="search-type" title="Search by foreign filing date (YYYY-MM-DD)">
                         <input type="checkbox" name="searchType" value="foreign_filing_date"> Foreign Filing Date
                     </label>
+                    <label class="search-type" title="Search by Published Opposition Date Range (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="published_opposition_date"> Published Opposition Date
+                    </label>
+                    <div id="oppositionDateInputs" style="display: none; margin-left: 20px; margin-top: 5px;">
+                        <input type="date" id="oppositionStartDate" placeholder="Start Date">
+                        <input type="date" id="oppositionEndDate" placeholder="End Date">
+                    </div>
                 </div>
             </div>
             <div class="owner-filters">
@@ -506,6 +535,39 @@
                             <option value="5">5 - Stylized text with design</option>
                             <option value="6">6 - No drawing (e.g., sound)</option>
                         </select>
+                    </label>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Search by Design Search Code">
+                        <input type="checkbox" name="searchType" value="design_code"> Design Code
+                    </label>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Find cases with current color drawing">
+                        <input type="checkbox" name="searchType" value="color_drawing"> Color Drawing
+                    </label>
+                    <label class="search-type" title="Find cases with current 3-D drawing">
+                        <input type="checkbox" name="searchType" value="three_d_drawing"> 3-D Drawing
+                    </label>
+                </div>
+            </div>
+            <div class="prior-registration-filters">
+                <div class="section-header">
+                    <h4>Prior Registration</h4>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Find cases with prior registrations">
+                        <input type="checkbox" name="searchType" value="prior_registration_present"> Prior Registration Present
+                    </label>
+                </div>
+            </div>
+            <div class="foreign-application-filters">
+                <div class="section-header">
+                    <h4>Foreign Application</h4>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Search by foreign registration date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="foreign_registration_date"> Registration Date
                     </label>
                 </div>
             </div>
@@ -880,6 +942,67 @@
                 const codeRegex = /^\d+$/;
                 if (!searchInput.value.match(codeRegex)) {
                     alert('Please enter a numeric design search code');
+                    e.target.checked = false;
+                }
+            }
+        });
+        
+        // Add handler for opposition date range inputs
+        document.querySelector('input[value="published_opposition_date"]').addEventListener('change', function(e) {
+            const dateInputs = document.getElementById('oppositionDateInputs');
+            dateInputs.style.display = e.target.checked ? 'block' : 'none';
+            
+            if (e.target.checked) {
+                const startDate = document.getElementById('oppositionStartDate').value;
+                const endDate = document.getElementById('oppositionEndDate').value;
+                if (startDate && endDate) {
+                    searchInput.value = `${startDate},${endDate}`;
+                    performSearch(searchInput.value);
+                } else {
+                    alert('Please select both start and end dates');
+                    e.target.checked = false;
+                }
+            }
+        });
+        
+        // Add handlers for date input changes
+        document.getElementById('oppositionStartDate').addEventListener('change', function() {
+            const endDate = document.getElementById('oppositionEndDate').value;
+            if (endDate) {
+                searchInput.value = `${this.value},${endDate}`;
+                if (document.querySelector('input[value="published_opposition_date"]').checked) {
+                    performSearch(searchInput.value);
+                }
+            }
+        });
+        
+        document.getElementById('oppositionEndDate').addEventListener('change', function() {
+            const startDate = document.getElementById('oppositionStartDate').value;
+            if (startDate) {
+                searchInput.value = `${startDate},${this.value}`;
+                if (document.querySelector('input[value="published_opposition_date"]').checked) {
+                    performSearch(searchInput.value);
+                }
+            }
+        });
+        
+        // Add validation for registration date format
+        document.querySelector('input[value="registration_date"]').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                if (!searchInput.value.match(dateRegex)) {
+                    alert('Please enter date in YYYY-MM-DD format');
+                    e.target.checked = false;
+                }
+            }
+        });
+        
+        // Add validation for foreign registration date format
+        document.querySelector('input[value="foreign_registration_date"]').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                if (!searchInput.value.match(dateRegex)) {
+                    alert('Please enter date in YYYY-MM-DD format');
                     e.target.checked = false;
                 }
             }

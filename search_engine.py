@@ -35,7 +35,13 @@ from search_strategies import (
     InternationalStatusCodeSearchStrategy,
     PriorityClaimedSearchStrategy,
     FirstRefusalSearchStrategy,
-    DrawingCodeTypeSearchStrategy
+    DrawingCodeTypeSearchStrategy,
+    ColorDrawingSearchStrategy,
+    ThreeDDrawingSearchStrategy,
+    PublishedOppositionDateSearchStrategy,
+    PriorRegistrationPresentSearchStrategy,
+    RegistrationDateSearchStrategy,
+    ForeignRegistrationDateSearchStrategy,
 )
 from db_utils import get_db_session
 
@@ -61,7 +67,6 @@ class SearchEngine:
         'change_registration': ChangeRegistrationSearchStrategy,
         'concurrent_use': ConcurrentUseSearchStrategy,
         'concurrent_use_proceeding': ConcurrentUseProceedingSearchStrategy,
-        'design_code': DesignSearchCodeStrategy,
         'disclaimer_statements': DisclaimerStatementsSearchStrategy,
         'description_of_mark': DescriptionOfMarkSearchStrategy,
         'owner_name': OwnerNameSearchStrategy,
@@ -76,7 +81,14 @@ class SearchEngine:
         'int_status_code': InternationalStatusCodeSearchStrategy,
         'priority_claimed': PriorityClaimedSearchStrategy,
         'first_refusal': FirstRefusalSearchStrategy,
-        'drawing_code_type': DrawingCodeTypeSearchStrategy
+        'drawing_code_type': DrawingCodeTypeSearchStrategy,
+        'color_drawing': ColorDrawingSearchStrategy,
+        'three_d_drawing': ThreeDDrawingSearchStrategy,
+        'design_code': DesignSearchCodeStrategy,
+        'published_opposition_date': PublishedOppositionDateSearchStrategy,
+        'prior_registration_present': PriorRegistrationPresentSearchStrategy,
+        'registration_date': RegistrationDateSearchStrategy,
+        'foreign_registration_date': ForeignRegistrationDateSearchStrategy,
     }
     
     @classmethod

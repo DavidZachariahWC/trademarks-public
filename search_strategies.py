@@ -3,7 +3,7 @@ from enum import Enum
 from typing import List, Tuple, Optional, Dict, Any
 from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal, String
 from sqlalchemy.orm import Session
-from models import CaseFile, CaseFileHeader, Classification, DesignSearch, CaseFileStatement, Owner, ForeignApplication, InternationalRegistration
+from models import CaseFile, CaseFileHeader, Classification, DesignSearch, CaseFileStatement, Owner, ForeignApplication, InternationalRegistration, PriorRegistrationApplication
 from db_utils import get_db_session, create_soundex_array, base_query
 from sqlalchemy.dialects.postgresql import ARRAY, TEXT as PgText
 from coordinated_class_config import COORDINATED_CLASS_CONFIG
@@ -1079,4 +1079,118 @@ class DrawingCodeTypeSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class ColorDrawingSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.color_drawing_current_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class ThreeDDrawingSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.drawing_3d_current_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class PublishedOppositionDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Query string should be in format "YYYY-MM-DD,YYYY-MM-DD"
+            start_date_str, end_date_str = self.query_str.split(',')
+            
+            # Convert dates from YYYY-MM-DD to datetime objects
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            
+            filters = [
+                CaseFileHeader.published_for_opposition_date.between(start_date, end_date)
+            ]
+            return filters, []  # No scoring needed for date range
+        except (ValueError, AttributeError):
+            return [False], []  # Return no results if date format is invalid
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.published_for_opposition_date.desc())
+
+class PriorRegistrationPresentSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFile.prior_registrations.any()]  # Using the relationship to check existence
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = base_query(session)  # Using the standard base query
+        
+        # Add the prior registrations via the relationship
+        query = query.join(CaseFile.prior_registrations)
+        
+        filters, scoring = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+            
+        # Add the prior registration number to the results
+        query = query.add_columns(PriorRegistrationApplication.number.label('prior_reg_number'))
+            
+        for score_col in scoring:
+            query = query.add_columns(score_col)
+            
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class RegistrationDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Convert string date to datetime
+            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            filters = [CaseFileHeader.registration_date == search_date]
+            return filters, []  # No scoring needed for exact date match
+        except ValueError:
+            # Return no results if date format is invalid
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.registration_date.desc())
+
+class ForeignRegistrationDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Convert string date to datetime
+            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            filters = [ForeignApplication.foreign_registration_date == search_date]
+            return filters, []  # No scoring needed for exact date match
+        except ValueError:
+            # Return no results if date format is invalid
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = (session.query(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name,
+            ForeignApplication.foreign_registration_date
+        )
+        .join(CaseFileHeader)
+        .join(ForeignApplication))
+        
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+            
         return query.order_by(CaseFileHeader.filing_date.desc())
