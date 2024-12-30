@@ -341,6 +341,9 @@
             <label class="search-type" title="Search by exact registration date (YYYY-MM-DD)">
                 <input type="checkbox" name="searchType" value="registration_date"> Registration Date
             </label>
+            <label class="search-type" title="Search by latest renewal date (YYYY-MM-DD)">
+                <input type="checkbox" name="searchType" value="renewal_date"> Renewal Date
+            </label>
             <div class="filing-status-filters">
                 <label class="search-type">
                     <input type="checkbox" name="searchType" value="section_12c"> Section 12c Filed
@@ -480,6 +483,9 @@
                     <label class="search-type" title="Find cases with First Refusal">
                         <input type="checkbox" name="searchType" value="first_refusal"> First Refusal
                     </label>
+                    <label class="search-type" title="Search by latest international renewal date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="international_renewal_date"> Renewal Date
+                    </label>
                 </div>
             </div>
             <div class="filing-date-filters">
@@ -568,6 +574,9 @@
                 <div class="search-type-group">
                     <label class="search-type" title="Search by foreign registration date (YYYY-MM-DD)">
                         <input type="checkbox" name="searchType" value="foreign_registration_date"> Registration Date
+                    </label>
+                    <label class="search-type" title="Search by latest foreign renewal date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="foreign_renewal_date"> Renewal Date
                     </label>
                 </div>
             </div>
@@ -999,6 +1008,39 @@
         
         // Add validation for foreign registration date format
         document.querySelector('input[value="foreign_registration_date"]').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                if (!searchInput.value.match(dateRegex)) {
+                    alert('Please enter date in YYYY-MM-DD format');
+                    e.target.checked = false;
+                }
+            }
+        });
+        
+        // Add validation for renewal date format
+        document.querySelector('input[value="renewal_date"]').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                if (!searchInput.value.match(dateRegex)) {
+                    alert('Please enter date in YYYY-MM-DD format');
+                    e.target.checked = false;
+                }
+            }
+        });
+        
+        // Add validation for international renewal date format
+        document.querySelector('input[value="international_renewal_date"]').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                if (!searchInput.value.match(dateRegex)) {
+                    alert('Please enter date in YYYY-MM-DD format');
+                    e.target.checked = false;
+                }
+            }
+        });
+        
+        // Add validation for foreign renewal date format
+        document.querySelector('input[value="foreign_renewal_date"]').addEventListener('change', function(e) {
             if (e.target.checked) {
                 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
                 if (!searchInput.value.match(dateRegex)) {

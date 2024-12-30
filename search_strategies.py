@@ -1194,3 +1194,54 @@ class ForeignRegistrationDateSearchStrategy(BaseSearchStrategy):
             query = query.filter(*filters)
             
         return query.order_by(CaseFileHeader.filing_date.desc())
+
+class RenewalDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            filters = [CaseFileHeader.renewal_date == search_date]
+            return filters, []  # No scoring needed for exact date match
+        except ValueError:
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.renewal_date.desc())
+
+class InternationalRenewalDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            filters = [CaseFile.international_registrations.any(
+                InternationalRegistration.international_renewal_date == search_date
+            )]
+            return filters, []
+        except ValueError:
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = base_query(session)
+        query = query.join(CaseFile.international_registrations)
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class ForeignRenewalDateSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            filters = [CaseFile.foreign_applications.any(
+                ForeignApplication.registration_renewal_date == search_date
+            )]
+            return filters, []
+        except ValueError:
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = base_query(session)
+        query = query.join(CaseFile.foreign_applications)
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())

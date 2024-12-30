@@ -42,6 +42,9 @@ from search_strategies import (
     PriorRegistrationPresentSearchStrategy,
     RegistrationDateSearchStrategy,
     ForeignRegistrationDateSearchStrategy,
+    RenewalDateSearchStrategy,
+    InternationalRenewalDateSearchStrategy,
+    ForeignRenewalDateSearchStrategy,
 )
 from db_utils import get_db_session
 
@@ -89,6 +92,9 @@ class SearchEngine:
         'prior_registration_present': PriorRegistrationPresentSearchStrategy,
         'registration_date': RegistrationDateSearchStrategy,
         'foreign_registration_date': ForeignRegistrationDateSearchStrategy,
+        'renewal_date': RenewalDateSearchStrategy,
+        'international_renewal_date': InternationalRenewalDateSearchStrategy,
+        'foreign_renewal_date': ForeignRenewalDateSearchStrategy,
     }
     
     @classmethod
