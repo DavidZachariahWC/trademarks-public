@@ -821,6 +821,46 @@
                 <p>No foreign applications found.</p>
             {% endif %}
         </div>
+
+        <div class="section">
+            <h2>Mark Information</h2>
+            <p><span class="label">Mark Drawing Type:</span> 
+                {% if case.header.mark_drawing_code %}
+                    {{ case.header.mark_drawing_code }}
+                    <span class="drawing-code-desc">
+                        {% if case.header.mark_drawing_code.startswith('1') %}(Typeset word(s)/letter(s)/number(s))
+                        {% elif case.header.mark_drawing_code.startswith('2') %}(Design without text)
+                        {% elif case.header.mark_drawing_code.startswith('3') %}(Design with text)
+                        {% elif case.header.mark_drawing_code.startswith('4') %}(Standard character mark)
+                        {% elif case.header.mark_drawing_code.startswith('5') %}(Stylized text with design)
+                        {% elif case.header.mark_drawing_code.startswith('6') %}(No drawing (e.g., sound))
+                        {% else %}(Not yet assigned)
+                        {% endif %}
+                    </span>
+                {% else %}
+                    N/A
+                {% endif %}
+            </p>
+            <p><span class="label">Standard Character Claim:</span> {{ 'Yes' if case.header.standard_characters_claimed_in else 'No' }}</p>
+            <p><span class="label">Acquired Distinctiveness Claim:</span>
+                {% if case.header.section_2f_in %}
+                    In whole
+                {% elif case.header.section_2f_in_part_in %}
+                    In part
+                {% else %}
+                    No
+                {% endif %}
+            </p>
+            {% if case.header.section_2f_in_part_in %}
+                <p><span class="label">Acquired Distinctiveness Statement:</span>
+                    {% for statement in case.statements %}
+                        {% if statement.type_code.startswith('TF') %}
+                            {{ statement.statement_text }}
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+        </div>
     </div>
 
     <script>

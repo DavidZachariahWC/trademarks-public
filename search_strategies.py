@@ -1256,3 +1256,25 @@ class StandardCharacterClaimSearchStrategy(BaseSearchStrategy):
     def build_query(self, session: Session):
         query = super().build_query(session)
         return query.order_by(CaseFileHeader.filing_date.desc())
+
+class AcquiredDistinctivenessWholeSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.section_2f_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class AcquiredDistinctivenessPartSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.section_2f_in_part_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())

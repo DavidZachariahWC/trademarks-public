@@ -316,6 +316,17 @@
             margin: 0 0 10px 0;
             font-size: 1em;
         }
+        
+        .acquired-distinctiveness-filters {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .acquired-distinctiveness-filters h4 {
+            margin: 0 0 10px 0;
+            font-size: 1em;
+        }
     </style>
 </head>
 <body>
@@ -582,6 +593,19 @@
                     </label>
                     <label class="search-type" title="Search by latest foreign renewal date (YYYY-MM-DD)">
                         <input type="checkbox" name="searchType" value="foreign_renewal_date"> Renewal Date
+                    </label>
+                </div>
+            </div>
+            <div class="acquired-distinctiveness-filters">
+                <div class="section-header">
+                    <h4>Acquired Distinctiveness Claim</h4>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Find cases with acquired distinctiveness claimed in whole">
+                        <input type="checkbox" name="searchType" value="acquired_distinctiveness_whole"> In Whole
+                    </label>
+                    <label class="search-type" title="Find cases with acquired distinctiveness claimed in part">
+                        <input type="checkbox" name="searchType" value="acquired_distinctiveness_part"> In Part
                     </label>
                 </div>
             </div>
