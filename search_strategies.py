@@ -1245,3 +1245,14 @@ class ForeignRenewalDateSearchStrategy(BaseSearchStrategy):
         if filters:
             query = query.filter(*filters)
         return query.order_by(CaseFileHeader.filing_date.desc())
+
+class StandardCharacterClaimSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.standard_characters_claimed_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())

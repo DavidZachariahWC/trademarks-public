@@ -45,6 +45,7 @@ from search_strategies import (
     RenewalDateSearchStrategy,
     InternationalRenewalDateSearchStrategy,
     ForeignRenewalDateSearchStrategy,
+    StandardCharacterClaimSearchStrategy,
 )
 from db_utils import get_db_session
 
@@ -95,6 +96,7 @@ class SearchEngine:
         'renewal_date': RenewalDateSearchStrategy,
         'international_renewal_date': InternationalRenewalDateSearchStrategy,
         'foreign_renewal_date': ForeignRenewalDateSearchStrategy,
+        'standard_character_claim': StandardCharacterClaimSearchStrategy,
     }
     
     @classmethod
