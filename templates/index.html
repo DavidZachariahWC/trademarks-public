@@ -334,6 +334,12 @@
     
     <div class="search-container">
         <div class="search-options">
+            <label class="search-type" title="Search by exact serial number">
+                <input type="checkbox" name="searchType" value="serial_number"> Serial Number
+            </label>
+            <label class="search-type" title="Search by exact registration number">
+                <input type="checkbox" name="searchType" value="registration_number"> Registration Number
+            </label>
             <label class="search-type">
                 <input type="checkbox" name="searchType" value="wordmark" checked> Wordmark
             </label>
@@ -376,6 +382,9 @@
                 </label>
                 <label class="search-type" title="Search for cases with pending concurrent use proceeding">
                     <input type="checkbox" name="searchType" value="concurrent_use_proceeding"> Concurrent Use Proceeding Pending
+                </label>
+                <label class="search-type" title="Find cases with recorded assignments">
+                    <input type="checkbox" name="searchType" value="assignment_recorded"> Assignment Recorded
                 </label>
             </div>
             <div class="filing-basis-filters">

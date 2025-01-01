@@ -1278,3 +1278,40 @@ class AcquiredDistinctivenessPartSearchStrategy(BaseSearchStrategy):
     def build_query(self, session: Session):
         query = super().build_query(session)
         return query.order_by(CaseFileHeader.filing_date.desc())
+
+class SerialNumberSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFile.serial_number == self.query_str]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class RegistrationNumberSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFile.registration_number == self.query_str]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class AssignmentRecordedSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFile.statements.any(CaseFileStatement.type_code == '601')]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = base_query(session)
+        query = query.join(CaseFile.statements)
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())

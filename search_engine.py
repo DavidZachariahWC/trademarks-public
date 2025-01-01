@@ -48,6 +48,9 @@ from search_strategies import (
     StandardCharacterClaimSearchStrategy,
     AcquiredDistinctivenessWholeSearchStrategy,
     AcquiredDistinctivenessPartSearchStrategy,
+    SerialNumberSearchStrategy,
+    RegistrationNumberSearchStrategy,
+    AssignmentRecordedSearchStrategy,
 )
 from db_utils import get_db_session
 
@@ -101,6 +104,9 @@ class SearchEngine:
         'standard_character_claim': StandardCharacterClaimSearchStrategy,
         'acquired_distinctiveness_whole': AcquiredDistinctivenessWholeSearchStrategy,
         'acquired_distinctiveness_part': AcquiredDistinctivenessPartSearchStrategy,
+        'serial_number': SerialNumberSearchStrategy,
+        'registration_number': RegistrationNumberSearchStrategy,
+        'assignment_recorded': AssignmentRecordedSearchStrategy,
     }
     
     @classmethod
