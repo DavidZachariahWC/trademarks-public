@@ -542,6 +542,12 @@
                     <label class="search-type" title="Find cases where the owner's name has changed">
                         <input type="checkbox" name="searchType" value="name_change"> Name Change
                     </label>
+                    <label class="search-type" title="Search by owner's legal entity type code (2 digits)">
+                        <input type="checkbox" name="searchType" value="owner_legal_entity"> Legal Entity Type
+                    </label>
+                    <label class="search-type" title="Search by owner's party type">
+                        <input type="checkbox" name="searchType" value="owner_party_type"> Party Type
+                    </label>
                 </div>
             </div>
             <div class="visual-characteristics-filters">
@@ -603,6 +609,13 @@
                     <label class="search-type" title="Search by latest foreign renewal date (YYYY-MM-DD)">
                         <input type="checkbox" name="searchType" value="foreign_renewal_date"> Renewal Date
                     </label>
+                    <label class="search-type" title="Search by priority date range (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="priority_date_range"> Priority Date Range
+                    </label>
+                    <div id="priorityDateInputs" style="display: none; margin-left: 20px; margin-top: 5px;">
+                        <input type="date" id="priorityStartDate" placeholder="Start Date">
+                        <input type="date" id="priorityEndDate" placeholder="End Date">
+                    </div>
                 </div>
             </div>
             <div class="acquired-distinctiveness-filters">
@@ -1083,6 +1096,17 @@
                 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
                 if (!searchInput.value.match(dateRegex)) {
                     alert('Please enter date in YYYY-MM-DD format');
+                    e.target.checked = false;
+                }
+            }
+        });
+        
+        // Add validation for owner legal entity code format
+        document.querySelector('input[value="owner_legal_entity"]').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                const codeRegex = /^\d{2}$/;
+                if (!searchInput.value.match(codeRegex)) {
+                    alert('Please enter a 2-digit legal entity type code');
                     e.target.checked = false;
                 }
             }

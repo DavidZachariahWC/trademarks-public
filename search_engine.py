@@ -51,6 +51,9 @@ from search_strategies import (
     SerialNumberSearchStrategy,
     RegistrationNumberSearchStrategy,
     AssignmentRecordedSearchStrategy,
+    OwnerLegalEntitySearchStrategy,
+    OwnerPartyTypeSearchStrategy,
+    PriorityDateRangeSearchStrategy,
 )
 from db_utils import get_db_session
 
@@ -107,6 +110,9 @@ class SearchEngine:
         'serial_number': SerialNumberSearchStrategy,
         'registration_number': RegistrationNumberSearchStrategy,
         'assignment_recorded': AssignmentRecordedSearchStrategy,
+        'owner_legal_entity': OwnerLegalEntitySearchStrategy,
+        'owner_party_type': OwnerPartyTypeSearchStrategy,
+        'priority_date_range': PriorityDateRangeSearchStrategy,
     }
     
     @classmethod

@@ -1315,3 +1315,62 @@ class AssignmentRecordedSearchStrategy(BaseSearchStrategy):
         if filters:
             query = query.filter(*filters)
         return query.order_by(CaseFileHeader.filing_date.desc())
+
+class OwnerLegalEntitySearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        if len(self.query_str) != 2:  # Legal entity type code is always 2 digits
+            return [False], []
+            
+        filters = [CaseFile.owners.any(Owner.legal_entity_type_code == self.query_str)]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = base_query(session)
+        query = query.join(CaseFile.owners)
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class OwnerPartyTypeSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFile.owners.any(Owner.party_type == self.query_str)]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = base_query(session)
+        query = query.join(CaseFile.owners)
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())
+
+class PriorityDateRangeSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        try:
+            # Query string should be in format "YYYY-MM-DD,YYYY-MM-DD"
+            start_date_str, end_date_str = self.query_str.split(',')
+            
+            # Convert dates from YYYY-MM-DD to datetime objects
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            
+            filters = [CaseFile.foreign_applications.any(and_(
+                ForeignApplication.foreign_priority_claim_in == True,
+                ForeignApplication.foreign_filing_date.between(start_date, end_date)
+            ))]
+            return filters, []
+        except (ValueError, AttributeError):
+            return [False], []
+
+    def build_query(self, session: Session):
+        query = base_query(session)
+        query = query.join(CaseFile.foreign_applications)
+        filters, _ = self.get_filters_and_scoring()
+        if filters:
+            query = query.filter(*filters)
+        return query.order_by(CaseFileHeader.filing_date.desc())

@@ -523,6 +523,8 @@
                     </p>
                     {% endif %}
                 </div>
+                <p><span class="label">Legal Entity Type:</span> {{ owner.legal_entity_type_code or 'N/A' }}</p>
+                <p><span class="label">Party Type:</span> {{ owner.party_type or 'N/A' }}</p>
                 </p>
             </div>
             {% if not loop.last %}<hr class="owner-divider">{% endif %}
