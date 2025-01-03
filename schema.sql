@@ -103,7 +103,7 @@ CREATE TABLE CaseFileEventStatement (
     event_type VARCHAR(1),
     description_text TEXT,
     event_date DATE,
-    event_number INT,
+    event_number TEXT,
     FOREIGN KEY (serial_number) REFERENCES CaseFile(serial_number)
 );
 
@@ -124,12 +124,12 @@ CREATE TABLE ForeignApplication (
     registration_expiration_date DATE,
     registration_renewal_date DATE,
     registration_renewal_expiration_date DATE,
-    foreign_application_entry_number INT,  
-    application_number VARCHAR(12),  
-    foreign_country VARCHAR(2), 
-    foreign_other VARCHAR(3), 
-    foreign_registration_number VARCHAR(12),  
-    renewal_number VARCHAR(12), 
+    foreign_application_entry_number TEXT,
+    application_number VARCHAR(12),
+    foreign_country VARCHAR(2),
+    foreign_other VARCHAR(3),
+    foreign_registration_number VARCHAR(12),
+    renewal_number VARCHAR(12),
     foreign_priority_claim_in BOOLEAN,
     FOREIGN KEY (serial_number) REFERENCES CaseFile(serial_number)
 );
@@ -137,8 +137,8 @@ CREATE TABLE ForeignApplication (
 CREATE TABLE Classification (
   classification_id SERIAL PRIMARY KEY,
   serial_number INT,
-  international_code_total_no INT,
-  us_code_total_no INT,
+  international_code_total_no TEXT,
+  us_code_total_no TEXT,
   international_code VARCHAR(3),
   us_code VARCHAR(3),
   classification_status_code VARCHAR(1),
@@ -163,20 +163,20 @@ CREATE TABLE Correspondent (
 CREATE TABLE Owner (
     owner_id SERIAL PRIMARY KEY,
     serial_number INT,
-    owner_entry_number INT,
-    party_type INT,
-    nationality_country VARCHAR(3), -- Store the country code for nationality
-    nationality_state VARCHAR(2),   -- Store the state code if applicable
-    nationality_other VARCHAR(3),  -- Store other nationality if neither country nor state
-    legal_entity_type_code INT,
-    entity_statement TEXT, 
+    owner_entry_number TEXT,
+    party_type TEXT,
+    nationality_country VARCHAR(3),
+    nationality_state VARCHAR(2),
+    nationality_other VARCHAR(3),
+    legal_entity_type_code TEXT,
+    entity_statement TEXT,
     party_name TEXT,
     owner_address_1 TEXT,
     owner_address_2 TEXT,
     city VARCHAR(40),
-    owner_state VARCHAR(2),   -- 2-letter state code
-    owner_country VARCHAR(3), -- Country code
-    owner_other VARCHAR(3),  -- 3-digit 'other' code
+    owner_state VARCHAR(2),
+    owner_country VARCHAR(3),
+    owner_other VARCHAR(3),
     postcode VARCHAR(15),
     dba_aka_text TEXT,
     composed_of_statement TEXT,
@@ -188,37 +188,37 @@ CREATE TABLE Owner (
 CREATE TABLE DesignSearch (
     design_search_id SERIAL PRIMARY KEY,
     serial_number INT,
-    design_search_code INT,
+    design_search_code TEXT,
     FOREIGN KEY (serial_number) REFERENCES CaseFile(serial_number)
 );
 
 CREATE TABLE InternationalRegistration (
     international_registration_id SERIAL PRIMARY KEY,
     serial_number INT,
-    international_registration_number INT,
+    international_registration_number TEXT,
     international_registration_date DATE,
     international_publication_date DATE,
     international_renewal_date DATE,
     auto_protection_date DATE,
     international_death_date DATE,
-    international_status_code INT, 
+    international_status_code TEXT,
     international_status_date DATE,
     priority_claimed_in BOOLEAN,
     priority_claimed_date DATE,
     first_refusal_in BOOLEAN,
-    notification_date DATE, 
+    notification_date DATE,
     FOREIGN KEY (serial_number) REFERENCES CaseFile(serial_number)
 );
 
 CREATE TABLE MadridInternationalFilingRequest (
     madrid_international_filing_id SERIAL PRIMARY KEY,
     serial_number INT,
-    madrid_filing_entry_number INT,
-    reference_number INT,
+    madrid_filing_entry_number TEXT,
+    reference_number TEXT,
     original_filing_date_uspto DATE,
     madrid_international_registration_number VARCHAR(10),
     madrid_international_registration_date DATE,
-    madrid_international_filing_status_code INT,
+    madrid_international_filing_status_code TEXT,
     madrid_international_filing_status_date DATE,
     irregularity_reply_by_date DATE,
     madrid_international_filing_renewal_date DATE,
@@ -232,7 +232,7 @@ CREATE TABLE MadridHistoryEvent (
   madrid_history_event_code TEXT,
   madrid_history_event_date DATE,
   event_description_text TEXT,
-  madrid_history_entry_number INT,
+  madrid_history_entry_number TEXT,
  FOREIGN KEY (madrid_international_filing_id) REFERENCES MadridInternationalFilingRequest(madrid_international_filing_id)
 );
 

@@ -102,6 +102,19 @@ class TrademarkHandler(xml.sax.ContentHandler):
         self.current_madrid_international_filing_id = None
         self.case_file_inserted = False
 
+        # Add these new attributes for classification handling
+        self.classification_base = {}
+        self.international_codes = []
+        self.us_codes = []
+
+        # Add nationality flag
+        self.in_nationality = False
+
+        # Add new flags for prior registration applications structure
+        self.in_prior_registration_applications = False
+        self.in_other_related_in = False
+        self.other_related_in_value = None
+
     def startElement(self, name, attrs):
         self.element_stack.append(name)
         self.current_data = ''
@@ -126,10 +139,16 @@ class TrademarkHandler(xml.sax.ContentHandler):
             self.foreign_application = {}
         elif name == 'classification':
             self.in_classification = True
-            self.classification = {}
-        elif name == 'owner':
+            self.classification_base = {}
+            self.international_codes = []
+            self.us_codes = []
+        elif name == 'case-file-owner':
             self.in_owner = True
             self.owner = {}
+            self.in_nationality = False
+        elif name == 'nationality' and self.in_owner:
+            # We're inside <case-file-owner> -> <nationality>
+            self.in_nationality = True
         elif name == 'design-search':
             self.in_design_search = True
             self.design_search = {}
@@ -146,6 +165,18 @@ class TrademarkHandler(xml.sax.ContentHandler):
         elif name == 'correspondent':
             self.in_correspondent = True
             self.correspondent = {}
+        elif name == 'prior-registration-applications':
+            self.in_prior_registration_applications = True
+            # Use a temporary variable to hold the other-related-in value
+            self.other_related_in_value = None
+        
+        elif name == 'other-related-in' and self.in_prior_registration_applications:
+            # We're specifically reading the <other-related-in> inside <prior-registration-applications>
+            self.in_other_related_in = True
+
+        elif name == 'prior-registration-application':
+            self.in_prior_registration_application = True
+            self.prior_registration_application = {}
 
     def endElement(self, name):
         try:
@@ -287,15 +318,15 @@ class TrademarkHandler(xml.sax.ContentHandler):
                         self.case_file_statement_batch.clear()
 
             elif self.in_case_file_event_statement:
-                if name == 'event-code':
+                if name == 'code':
                     self.case_file_event_statement['event_code'] = self.current_data.strip()
-                elif name == 'event-type':
+                elif name == 'type':
                     self.case_file_event_statement['event_type'] = self.current_data.strip()
                 elif name == 'description-text':
                     self.case_file_event_statement['description_text'] = self.current_data.strip()
-                elif name == 'event-date':
+                elif name == 'date':
                     self.case_file_event_statement['event_date'] = parse_date(self.current_data)
-                elif name == 'event-number':
+                elif name == 'number':
                     self.case_file_event_statement['event_number'] = int(self.current_data.strip())
                 elif name == 'case-file-event-statement':
                     self.in_case_file_event_statement = False
@@ -305,20 +336,30 @@ class TrademarkHandler(xml.sax.ContentHandler):
                         self.insert_case_file_event_statement_batch()
                         self.case_file_event_statement_batch.clear()
 
-            elif self.in_prior_registration_application:
+            elif self.in_prior_registration_applications:
                 if name == 'other-related-in':
-                    self.prior_registration_application['other_related_in'] = parse_boolean(self.current_data)
-                elif name == 'relationship-type':
-                    self.prior_registration_application['relationship_type'] = self.current_data.strip()
-                elif name == 'number':
-                    self.prior_registration_application['number'] = self.current_data.strip()
-                elif name == 'prior-registration-application':
-                    self.in_prior_registration_application = False
-                    self.prior_registration_application['serial_number'] = self.serial_number
-                    self.prior_registration_application_batch.append(self.prior_registration_application)
-                    if len(self.prior_registration_application_batch) >= self.batch_size:
-                        self.insert_prior_registration_application_batch()
-                        self.prior_registration_application_batch.clear()
+                    # Finished reading <other-related-in>
+                    self.in_other_related_in = False
+                    self.other_related_in_value = parse_boolean(self.current_data)
+
+                elif self.in_prior_registration_application:
+                    if name == 'relationship-type':
+                        self.prior_registration_application['relationship_type'] = self.current_data.strip()
+                    elif name == 'number':
+                        self.prior_registration_application['number'] = self.current_data.strip()
+                    elif name == 'prior-registration-application':
+                        self.in_prior_registration_application = False
+                        # Attach the single other_related_in_value to this registration
+                        self.prior_registration_application['other_related_in'] = self.other_related_in_value
+                        # Set serial_number just before adding to batch (consistent with rest of script)
+                        self.prior_registration_application['serial_number'] = self.serial_number
+                        self.prior_registration_application_batch.append(self.prior_registration_application)
+                        if len(self.prior_registration_application_batch) >= self.batch_size:
+                            self.insert_prior_registration_application_batch()
+                            self.prior_registration_application_batch.clear()
+
+                elif name == 'prior-registration-applications':
+                    self.in_prior_registration_applications = False
 
             elif self.in_foreign_application:
                 foreign_field_mappings = {
@@ -327,7 +368,7 @@ class TrademarkHandler(xml.sax.ContentHandler):
                     'registration-expiration-date': 'registration_expiration_date',
                     'registration-renewal-date': 'registration_renewal_date',
                     'registration-renewal-expiration-date': 'registration_renewal_expiration_date',
-                    'foreign-application-entry-number': 'foreign_application_entry_number',
+                    'entry-number': 'foreign_application_entry_number',
                     'application-number': 'application_number',
                     'country': 'foreign_country',
                     'other': 'foreign_other',
@@ -339,11 +380,13 @@ class TrademarkHandler(xml.sax.ContentHandler):
                     column_name = foreign_field_mappings[name]
                     if 'date' in column_name:
                         self.foreign_application[column_name] = parse_date(self.current_data)
-                    elif 'number' in column_name and column_name != 'application_number' and column_name != 'renewal_number':
+                    elif (column_name.endswith('_number') and 
+                          column_name not in ['application_number', 'renewal_number', 'foreign_registration_number']):
                         self.foreign_application[column_name] = int(self.current_data.strip())
                     elif column_name.endswith('_in'):
                         self.foreign_application[column_name] = parse_boolean(self.current_data)
                     else:
+                        # Store as string to preserve leading zeros
                         self.foreign_application[column_name] = self.current_data.strip()
                 elif name == 'foreign-application':
                     self.in_foreign_application = False
@@ -357,68 +400,110 @@ class TrademarkHandler(xml.sax.ContentHandler):
                 classification_field_mappings = {
                     'international-code-total-no': 'international_code_total_no',
                     'us-code-total-no': 'us_code_total_no',
-                    'international-code': 'international_code',
-                    'us-code': 'us_code',
                     'status-code': 'classification_status_code',
                     'status-date': 'classification_status_date',
                     'first-use-anywhere-date': 'first_use_anywhere_date',
                     'first-use-in-commerce-date': 'first_use_in_commerce_date',
                     'primary-code': 'primary_code',
                 }
+
                 if name in classification_field_mappings:
                     column_name = classification_field_mappings[name]
                     if 'date' in column_name:
-                        self.classification[column_name] = parse_date(self.current_data)
+                        self.classification_base[column_name] = parse_date(self.current_data)
                     elif 'total_no' in column_name:
-                        self.classification[column_name] = int(self.current_data.strip())
+                        self.classification_base[column_name] = int(self.current_data.strip())
                     else:
-                        self.classification[column_name] = self.current_data.strip()
+                        self.classification_base[column_name] = self.current_data.strip()
+                elif name == 'international-code':
+                    self.international_codes.append(self.current_data.strip())
+                elif name == 'us-code':
+                    self.us_codes.append(self.current_data.strip())
                 elif name == 'classification':
                     self.in_classification = False
-                    self.classification['serial_number'] = self.serial_number
-                    self.classification_batch.append(self.classification)
+                    
+                    # If no codes were encountered, create one "generic" classification record
+                    if not self.international_codes and not self.us_codes:
+                        classification_record = self.classification_base.copy()
+                        classification_record['serial_number'] = self.serial_number
+                        self.classification_batch.append(classification_record)
+                    else:
+                        # Create a record for each international code
+                        for intl_code in self.international_codes:
+                            classification_record = self.classification_base.copy()
+                            classification_record['serial_number'] = self.serial_number
+                            classification_record['international_code'] = intl_code
+                            classification_record['us_code'] = None
+                            self.classification_batch.append(classification_record)
+
+                        # Create a record for each US code
+                        for us_code in self.us_codes:
+                            classification_record = self.classification_base.copy()
+                            classification_record['serial_number'] = self.serial_number
+                            classification_record['international_code'] = None
+                            classification_record['us_code'] = us_code
+                            self.classification_batch.append(classification_record)
+
+                    # Check if we need to flush the batch
                     if len(self.classification_batch) >= self.batch_size:
                         self.insert_classification_batch()
                         self.classification_batch.clear()
 
             elif self.in_owner:
-                owner_field_mappings = {
-                    'entry-number': 'owner_entry_number',
-                    'party-type': 'party_type',
-                    'nationality-country': 'nationality_country',
-                    'nationality-state': 'nationality_state',
-                    'nationality-other': 'nationality_other',
-                    'legal-entity-type-code': 'legal_entity_type_code',
-                    'entity-statement': 'entity_statement',
-                    'party-name': 'party_name',
-                    'address-1': 'owner_address_1',
-                    'address-2': 'owner_address_2',
-                    'city': 'city',
-                    'state': 'owner_state',
-                    'country': 'owner_country',
-                    'other': 'owner_other',
-                    'postcode': 'postcode',
-                    'dba-aka-text': 'dba_aka_text',
-                    'composed-of-statement': 'composed_of_statement',
-                    'name-change-explanation': 'name_change_explanation',
-                }
-                if name in owner_field_mappings:
-                    column_name = owner_field_mappings[name]
-                    if column_name == 'owner_entry_number' or column_name == 'party_type' or column_name == 'legal_entity_type_code':
-                        self.owner[column_name] = int(self.current_data.strip())
-                    else:
-                        self.owner[column_name] = self.current_data.strip()
-                elif name == 'owner':
-                    self.in_owner = False
-                    self.owner['serial_number'] = self.serial_number
-                    self.owner_batch.append(self.owner)
-                    if len(self.owner_batch) >= self.batch_size:
-                        self.insert_owner_batch()
-                        self.owner_batch.clear()
+                if self.in_nationality:
+                    # Handle elements nested under <nationality>
+                    if name == 'state':
+                        self.owner['nationality_state'] = self.current_data.strip()
+                    elif name == 'country':
+                        self.owner['nationality_country'] = self.current_data.strip()
+                    elif name == 'other':
+                        self.owner['nationality_other'] = self.current_data.strip()
+                    elif name == 'nationality':
+                        self.in_nationality = False
+                else:
+                    # Handle top-level fields within <case-file-owner>
+                    if name == 'entry-number':
+                        self.owner['owner_entry_number'] = int(self.current_data.strip())
+                    elif name == 'party-type':
+                        self.owner['party_type'] = int(self.current_data.strip())
+                    elif name == 'legal-entity-type-code':
+                        self.owner['legal_entity_type_code'] = int(self.current_data.strip())
+                    elif name == 'entity-statement':
+                        self.owner['entity_statement'] = self.current_data.strip()
+                    elif name == 'party-name':
+                        self.owner['party_name'] = self.current_data.strip()
+                    elif name == 'address-1':
+                        self.owner['owner_address_1'] = self.current_data.strip()
+                    elif name == 'address-2':
+                        self.owner['owner_address_2'] = self.current_data.strip()
+                    elif name == 'city':
+                        self.owner['city'] = self.current_data.strip()
+                    elif name == 'state':
+                        self.owner['owner_state'] = self.current_data.strip()
+                    elif name == 'country':
+                        self.owner['owner_country'] = self.current_data.strip()
+                    elif name == 'other':
+                        self.owner['owner_other'] = self.current_data.strip()
+                    elif name == 'postcode':
+                        self.owner['postcode'] = self.current_data.strip()
+                    elif name == 'dba-aka-text':
+                        self.owner['dba_aka_text'] = self.current_data.strip()
+                    elif name == 'composed-of-statement':
+                        self.owner['composed_of_statement'] = self.current_data.strip()
+                    elif name == 'name-change-explanation':
+                        self.owner['name_change_explanation'] = self.current_data.strip()
+                    elif name == 'case-file-owner':
+                        self.in_owner = False
+                        self.owner['serial_number'] = self.serial_number
+                        self.owner_batch.append(self.owner)
+                        if len(self.owner_batch) >= self.batch_size:
+                            self.insert_owner_batch()
+                            self.owner_batch.clear()
 
             elif self.in_design_search:
                 if name == 'code':
-                    self.design_search['design_search_code'] = int(self.current_data.strip())
+                    # Store the code as a string to preserve leading zeros
+                    self.design_search['design_search_code'] = self.current_data.strip()
                 elif name == 'design-search':
                     self.in_design_search = False
                     self.design_search['serial_number'] = self.serial_number
@@ -442,16 +527,21 @@ class TrademarkHandler(xml.sax.ContentHandler):
                     'first-refusal-in': 'first_refusal_in',
                     'notification-date': 'notification_date',
                 }
+
                 if name in intl_reg_field_mappings:
                     column_name = intl_reg_field_mappings[name]
                     if 'date' in column_name:
                         self.international_registration[column_name] = parse_date(self.current_data)
                     elif column_name.endswith('_in'):
+                        # Booleans
                         self.international_registration[column_name] = parse_boolean(self.current_data)
-                    elif column_name == 'international_registration_number' or column_name == 'international_status_code':
+                    elif column_name in ('international_registration_number', 'international_status_code'):
+                        # Convert numeric fields to int
                         self.international_registration[column_name] = int(self.current_data.strip())
                     else:
+                        # Everything else is text
                         self.international_registration[column_name] = self.current_data.strip()
+
                 elif name == 'international-registration':
                     self.in_international_registration = False
                     self.international_registration['serial_number'] = self.serial_number
@@ -856,7 +946,7 @@ class TrademarkHandler(xml.sax.ContentHandler):
             'madrid_international_filing_status_code',
             'madrid_international_filing_status_date',
             'irregularity_reply_by_date',
-            'madrid_international_filing_renewal_date',
+            'madrid_international_filing_renewal_date'
         ]
         for record in self.madrid_international_filing_request_batch:
             logging.info(f"Inserting MadridInternationalFilingRequest record for serial_number: {record.get('serial_number')}")
