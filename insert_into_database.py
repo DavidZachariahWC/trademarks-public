@@ -224,7 +224,7 @@ class TrademarkHandler(xml.sax.ContentHandler):
                     self.insert_case_file_record()
                     self.case_file_inserted = True
 
-            elif name == 'registration-number' and self.in_case_file and not self.in_case_file_header:
+            elif name == 'registration-number' and self.in_case_file and not self.in_case_file_header and not self.in_foreign_application:
                 self.case_file['registration_number'] = self.current_data.strip()
                 if not self.case_file_inserted and 'serial_number' in self.case_file and 'transaction_date' in self.case_file:
                     self.insert_case_file_record()
@@ -567,8 +567,7 @@ class TrademarkHandler(xml.sax.ContentHandler):
                         # Booleans
                         self.international_registration[column_name] = parse_boolean(self.current_data)
                     elif column_name in ('international_registration_number', 'international_status_code'):
-                        # Convert numeric fields to int
-                        self.international_registration[column_name] = int(self.current_data.strip())
+                        self.international_registration[column_name] = self.current_data.strip()
                     else:
                         # Everything else is text
                         self.international_registration[column_name] = self.current_data.strip()
