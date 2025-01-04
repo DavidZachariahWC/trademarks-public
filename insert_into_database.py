@@ -28,10 +28,37 @@ DB_PARAMS = {
 
 # Utility functions
 def parse_date(date_str):
-    if date_str is None or date_str.strip() == '':
+    """
+    Parse a date in 'YYYYMMDD', 'YYYYMM', or 'YYYY' format. 
+    If the day is '00', fallback to '01'.
+    If only 'YYYYMM', fallback day to '01'.
+    If only 'YYYY', fallback month and day to '01'.
+    Return a datetime.date or None if parsing fails.
+    """
+    if date_str is None or not date_str.strip():
         return None
+
+    date_str = date_str.strip()
+
+    # Handle just the year (e.g. '1876')
+    if len(date_str) == 4:
+        date_str += '0101'  # Becomes '18760101'
+    elif len(date_str) == 6:
+        # e.g. '187601' => '18760101'
+        date_str += '01'
+    elif len(date_str) != 8:
+        # If not 4, 6, or 8 characters, fail gracefully
+        return None
+
+    # If day=00, change it to 01
+    # date_str[6:8] corresponds to DD
+    if date_str[6:8] == '00':
+        # Replace '00' with '01'
+        date_str = date_str[:6] + '01'
+
+    # Now date_str should be strictly 8 digits in YYYYMMDD format
     try:
-        return datetime.strptime(date_str.strip(), '%Y%m%d').date()
+        return datetime.strptime(date_str, '%Y%m%d').date()
     except ValueError:
         return None
 
