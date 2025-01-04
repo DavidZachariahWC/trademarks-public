@@ -1,6 +1,5 @@
 import xml.sax
 import xml.sax.saxutils
-from tqdm import tqdm
 import os
 
 class CaseFileHandler(xml.sax.ContentHandler):
@@ -20,14 +19,9 @@ class CaseFileHandler(xml.sax.ContentHandler):
         self.element_stack = []
 
     def startDocument(self):
-        # Get file size for progress bar
-        self.file_size = os.path.getsize(self.parser._source.getSystemId())
-        self.pbar = tqdm(total=self.file_size, unit='B', unit_scale=True, desc="Processing XML")
-        self.last_pos = 0
         self.output_file.write('<?xml version="1.0" encoding="utf-8"?>\n')
 
     def endDocument(self):
-        self.pbar.close()
         self.output_file.close()
 
     def startElement(self, name, attrs):
@@ -73,11 +67,6 @@ class CaseFileHandler(xml.sax.ContentHandler):
         self.current_element = self.element_stack[-1] if self.element_stack else ''
 
     def characters(self, content):
-        # Update progress bar based on file position
-        current_pos = self.parser._parser.getSystemId().tell()
-        self.pbar.update(current_pos - self.last_pos)
-        self.last_pos = current_pos
-
         if self.in_case_file:
             # Process content for status codes before escaping
             if self.current_element == 'status-code':
@@ -99,7 +88,6 @@ class CaseFileHandler(xml.sax.ContentHandler):
 def remove_case_files(input_file, output_file):
     parser = xml.sax.make_parser()
     handler = CaseFileHandler(output_file)
-    handler.parser = parser  # Store parser reference for file position tracking
     parser.setContentHandler(handler)
     parser.parse(input_file)
 
