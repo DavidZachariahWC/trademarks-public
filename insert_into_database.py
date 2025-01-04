@@ -30,33 +30,37 @@ DB_PARAMS = {
 def parse_date(date_str):
     """
     Parse a date in 'YYYYMMDD', 'YYYYMM', or 'YYYY' format. 
-    If the day is '00', fallback to '01'.
+    If the month is '00', fallback to '01' (January).
+    If the day is '00', fallback to '01' (1st day of the month).
     If only 'YYYYMM', fallback day to '01'.
-    If only 'YYYY', fallback month and day to '01'.
+    If only 'YYYY', fallback to '0101'.
     Return a datetime.date or None if parsing fails.
     """
-    if date_str is None or not date_str.strip():
+    if not date_str or not date_str.strip():
         return None
 
     date_str = date_str.strip()
 
-    # Handle just the year (e.g. '1876')
+    # Handle just the year (YYYY)
     if len(date_str) == 4:
-        date_str += '0101'  # Becomes '18760101'
+        date_str += '0101'  # e.g. 1855 -> 18550101
+    # Handle year+month (YYYYMM)
     elif len(date_str) == 6:
-        # e.g. '187601' => '18760101'
-        date_str += '01'
+        date_str += '01'    # e.g. 185501 -> 18550101
+    # If not 4, 6, or 8 digits, give up
     elif len(date_str) != 8:
-        # If not 4, 6, or 8 characters, fail gracefully
         return None
 
-    # If day=00, change it to 01
-    # date_str[6:8] corresponds to DD
+    # Now we have YYYYMMDD. Fix invalid '00' parts:
+    # Month=00 -> fallback to 01
+    if date_str[4:6] == '00':
+        date_str = date_str[:4] + '01' + date_str[6:]
+
+    # Day=00 -> fallback to 01
     if date_str[6:8] == '00':
-        # Replace '00' with '01'
         date_str = date_str[:6] + '01'
 
-    # Now date_str should be strictly 8 digits in YYYYMMDD format
+    # Attempt to parse
     try:
         return datetime.strptime(date_str, '%Y%m%d').date()
     except ValueError:
