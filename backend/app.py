@@ -1,18 +1,16 @@
 # app.py
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from search_engine import SearchEngine
 from db_utils import get_autocomplete_suggestions, get_db_session
 from models import CaseFile, CaseFileHeader
 import logging
 import json
+from flask_cors import CORS  # Add CORS support
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
-@app.route('/')
-def home():
-    """Render the search interface"""
-    return render_template('index.html')
-
+# Remove the home route since it will be handled by Next.js frontend
 @app.route('/api/search')
 def search():
     """API endpoint for trademark search"""
@@ -51,9 +49,9 @@ def autocomplete():
         logging.error(f"Autocomplete API error: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
 
-@app.route('/case/<int:serial_number>')
+@app.route('/api/case/<int:serial_number>')
 def case_details(serial_number):
-    """Display detailed information for a specific trademark case"""
+    """API endpoint for case details"""
     try:
         session = get_db_session()
         case = (session.query(CaseFile)
@@ -62,15 +60,24 @@ def case_details(serial_number):
                .first())
                
         if not case:
-            return "Case not found", 404
+            return jsonify({"error": "Case not found"}), 404
             
-        return render_template('case_details.html', case=case)
+        return jsonify({
+            "serial_number": case.serial_number,
+            "mark_identification": case.mark_identification,
+            "registration_number": case.registration_number,
+            "status_code": case.status_code,
+            "filing_date": case.filing_date.isoformat() if case.filing_date else None,
+            "registration_date": case.registration_date.isoformat() if case.registration_date else None,
+            "attorney_name": case.attorney_name,
+            # Add other case details as needed
+        })
         
     except Exception as e:
         logging.error(f"Case details error: {str(e)}")
-        return "Error loading case details", 500
+        return jsonify({"error": "Internal server error"}), 500
     finally:
         session.close()
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=True, port=5000)  # Specify port 5000 explicitly 
