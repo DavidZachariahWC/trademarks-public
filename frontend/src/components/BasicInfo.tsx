@@ -1,3 +1,4 @@
+// BasicInfo.tsx
 import React from 'react'
 
 interface BasicInfoProps {
