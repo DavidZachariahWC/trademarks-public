@@ -1,4 +1,6 @@
+// CaseDetails.tsx
 import React from 'react'
+import { Case } from '../types/case'
 import BasicInfo from './BasicInfo'
 import OwnerInfo from './OwnerInfo'
 import Classifications from './Classifications'
@@ -11,39 +13,67 @@ import PriorRegistrations from './PriorRegistrations'
 import AllStatements from './AllStatements'
 import ForeignApplications from './ForeignApplications'
 import MarkInformation from './MarkInformation'
+import CorrespondentInfo from './CorrespondentInfo'
+import EventStatements from './EventStatements'
 
 interface CaseDetailsProps {
-  case: any // Replace 'any' with a proper type definition for your case object
+  case: Case
 }
 
 export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
   return (
-    <div className="case-details max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-8">
       <a href="/" className="inline-block mb-6 text-blue-600 hover:underline">← Back to Search</a>
       
-      <BasicInfo caseData={caseData} />
-      
-      {caseData.owners && <OwnerInfo owners={caseData.owners} />}
-      
-      {caseData.classifications && <Classifications classifications={caseData.classifications} />}
-      
-      <GoodsServicesStatements statements={caseData.statements} />
-      
-      <MarkDesignInfo caseData={caseData} />
-      
-      {caseData.statements && <DisclaimerStatements statements={caseData.statements} />}
-      
-      {caseData.foreign_applications && <ForeignFilingDates foreignApplications={caseData.foreign_applications} />}
-      
-      {caseData.international_registrations && <InternationalRegistration registrations={caseData.international_registrations} />}
-      
-      <PriorRegistrations priorRegistrations={caseData.prior_registrations} />
-      
-      {caseData.statements && <AllStatements statements={caseData.statements} />}
-      
-      <ForeignApplications foreignApplications={caseData.foreign_applications} />
-      
-      <MarkInformation caseData={caseData} />
+      <div className="space-y-6">
+        <BasicInfo caseData={caseData} />
+        
+        {caseData.owners && caseData.owners.length > 0 && (
+          <OwnerInfo owners={caseData.owners} />
+        )}
+        
+        {caseData.correspondents && caseData.correspondents.length > 0 && (
+          <CorrespondentInfo correspondents={caseData.correspondents} />
+        )}
+        
+        {caseData.classifications && caseData.classifications.length > 0 && (
+          <Classifications classifications={caseData.classifications} />
+        )}
+        
+        {caseData.statements && (
+          <GoodsServicesStatements statements={caseData.statements} />
+        )}
+        
+        <MarkDesignInfo caseData={caseData} />
+        
+        {caseData.statements && (
+          <DisclaimerStatements statements={caseData.statements} />
+        )}
+        
+        {caseData.foreign_applications && caseData.foreign_applications.length > 0 && (
+          <ForeignFilingDates foreignApplications={caseData.foreign_applications} />
+        )}
+        
+        {caseData.international_registrations && caseData.international_registrations.length > 0 && (
+          <InternationalRegistration registrations={caseData.international_registrations} />
+        )}
+        
+        <PriorRegistrations priorRegistrations={caseData.prior_registrations} />
+        
+        {caseData.statements && caseData.statements.length > 0 && (
+          <AllStatements statements={caseData.statements} />
+        )}
+        
+        {caseData.foreign_applications && caseData.foreign_applications.length > 0 && (
+          <ForeignApplications foreignApplications={caseData.foreign_applications} />
+        )}
+        
+        <MarkInformation caseData={caseData} />
+        
+        {caseData.event_statements && caseData.event_statements.length > 0 && (
+          <EventStatements eventStatements={caseData.event_statements} />
+        )}
+      </div>
     </div>
   )
 }

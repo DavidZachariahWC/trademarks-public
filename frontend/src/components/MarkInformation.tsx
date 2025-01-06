@@ -1,44 +1,16 @@
 import React from 'react'
+import { Case } from '../types/case'
+import InfoItem from './shared/InfoItem'
+import { getDrawingCodeDescription, getAcquiredDistinctiveness } from '../utils/format'
 
 interface MarkInformationProps {
-  caseData: {
-    header: {
-      mark_drawing_code: string
-      standard_characters_claimed_in: boolean
-      section_2f_in: boolean
-      section_2f_in_part_in: boolean
-      filing_date: string
-    }
-    statements: Array<{
-      type_code: string
-      statement_text: string
-    }>
-  }
+  caseData: Case
 }
 
 export default function MarkInformation({ caseData }: MarkInformationProps) {
   const { header, statements } = caseData
 
-  const getDrawingCodeDescription = (code: string) => {
-    const firstDigit = code[0]
-    switch (firstDigit) {
-      case '1': return 'Typeset word(s)/letter(s)/number(s)'
-      case '2': return 'Design without text'
-      case '3': return 'Design with text'
-      case '4': return 'Standard character mark'
-      case '5': return 'Stylized text with design'
-      case '6': return 'No drawing (e.g., sound)'
-      default: return 'Not yet assigned'
-    }
-  }
-
-  const getAcquiredDistinctiveness = () => {
-    if (header.section_2f_in) return 'In whole'
-    if (header.section_2f_in_part_in) return 'In part'
-    return 'No'
-  }
-
-  const acquiredDistinctivenessStatements = statements.filter(statement => statement.type_code.startsWith('TF'))
+  const acquiredDistinctivenessStatements = statements?.filter(statement => statement.type_code.startsWith('TF')) ?? []
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
@@ -51,14 +23,17 @@ export default function MarkInformation({ caseData }: MarkInformationProps) {
             ({getDrawingCodeDescription(header.mark_drawing_code)})
           </span>
         </div>
-        <p>
-          <span className="font-semibold">Standard Character Claim:</span>{' '}
-          {header.standard_characters_claimed_in ? 'Yes' : 'No'}
-        </p>
-        <p>
-          <span className="font-semibold">Acquired Distinctiveness Claim:</span>{' '}
-          {getAcquiredDistinctiveness()}
-        </p>
+        
+        <InfoItem
+          label="Standard Character Claim"
+          value={header.standard_characters_claimed_in ? 'Yes' : 'No'}
+        />
+        
+        <InfoItem
+          label="Acquired Distinctiveness Claim"
+          value={getAcquiredDistinctiveness(header.section_2f_in, header.section_2f_in_part_in)}
+        />
+        
         {header.section_2f_in_part_in && acquiredDistinctivenessStatements.length > 0 && (
           <div>
             <p className="font-semibold">Acquired Distinctiveness Statement:</p>

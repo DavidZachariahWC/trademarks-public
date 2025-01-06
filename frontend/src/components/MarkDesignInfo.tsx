@@ -1,44 +1,16 @@
 import React from 'react'
+import { Case } from '../types/case'
+import InfoItem from './shared/InfoItem'
+import { formatDate, getDrawingCodeDescription } from '../utils/format'
 
 interface MarkDesignInfoProps {
-  caseData: {
-    header: {
-      standard_characters_claimed_in: boolean
-      mark_drawing_code: string
-      color_drawing_current_in: boolean
-      color_drawing_filed_in: boolean
-      drawing_3d_current_in: boolean
-      drawing_3d_filed_in: boolean
-      filing_date: string
-    }
-    statements: Array<{
-      type_code: string
-      statement_text: string
-    }>
-    design_searches?: Array<{
-      design_search_code: string
-    }>
-  }
+  caseData: Case
 }
 
 export default function MarkDesignInfo({ caseData }: MarkDesignInfoProps) {
   const { header, statements, design_searches } = caseData
 
-  const getDrawingCodeDescription = (code: string) => {
-    const firstDigit = code[0]
-    switch (firstDigit) {
-      case '0': return 'Not yet assigned'
-      case '1': return 'Typeset word(s)/letter(s)/number(s)'
-      case '2': return 'Design without text'
-      case '3': return 'Design with text'
-      case '4': return 'Standard character mark'
-      case '5': return 'Stylized text with design'
-      case '6': return 'No drawing (e.g., sound)'
-      default: return 'Unknown'
-    }
-  }
-
-  const markDescriptions = statements.filter(statement => statement.type_code === 'DM0000')
+  const markDescriptions = statements?.filter(statement => statement.type_code === 'DM0000') ?? []
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
@@ -59,12 +31,12 @@ export default function MarkDesignInfo({ caseData }: MarkDesignInfoProps) {
               <span className="font-semibold">Note:</span> Type 4 marks represent "Block letter drawing" if filed before Nov 2, 2003, 
               or "Standard Character Mark" if filed after.
               <div className="mt-1">
-                This application filed: {new Date(header.filing_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                This application filed: {header.filing_date ? formatDate(header.filing_date, { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A'}
               </div>
             </div>
           )}
         </div>
-        
+
         {markDescriptions.length > 0 && (
           <div>
             <h3 className="text-xl font-semibold mb-2">Description of Mark</h3>
@@ -105,14 +77,6 @@ export default function MarkDesignInfo({ caseData }: MarkDesignInfoProps) {
         />
       </div>
     </div>
-  )
-}
-
-function InfoItem({ label, value }: { label: string; value: string }) {
-  return (
-    <p>
-      <span className="font-semibold">{label}:</span> {value}
-    </p>
   )
 }
 
