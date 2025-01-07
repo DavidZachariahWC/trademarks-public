@@ -7,7 +7,6 @@ import SearchInput from './SearchInput'
 import SearchResults from './SearchResults'
 import Pagination from './Pagination'
 import ErrorMessage from './ErrorMessage'
-import { API_ENDPOINTS } from '@/lib/api-config'
 
 export default function TrademarkSearch() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -15,6 +14,7 @@ export default function TrademarkSearch() {
   const [totalPages, setTotalPages] = useState(1)
   const [results, setResults] = useState([])
   const [selectedOptions, setSelectedOptions] = useState(new Set(['wordmark']))
+  const [selectedBooleanOptions, setSelectedBooleanOptions] = useState(new Set<string>())
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -28,9 +28,10 @@ export default function TrademarkSearch() {
     searchParams.append('query', query)
     searchParams.append('page', page.toString())
     selectedOptions.forEach(option => searchParams.append('type[]', option))
+    selectedBooleanOptions.forEach(option => searchParams.append('boolean[]', option))
 
     try {
-      const response = await fetch(`${API_ENDPOINTS.search}?${searchParams.toString()}`)
+      const response = await fetch(`/api/search?${searchParams.toString()}`)
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -62,12 +63,33 @@ export default function TrademarkSearch() {
     })
   }
 
+  const handleBooleanOptionChange = (option: string) => {
+    setSelectedBooleanOptions(prevOptions => {
+      const newOptions = new Set(prevOptions)
+      if (newOptions.has(option)) {
+        newOptions.delete(option)
+      } else {
+        newOptions.add(option)
+      }
+      return newOptions
+    })
+  }
+
   return (
     <div className="space-y-8">
-      <SearchOptions selectedOptions={selectedOptions} onOptionChange={handleOptionChange} />
+      <SearchOptions
+        selectedOptions={selectedOptions}
+        selectedBooleanOptions={selectedBooleanOptions}
+        onOptionChange={handleOptionChange}
+        onBooleanOptionChange={handleBooleanOptionChange}
+      />
       <SearchInput onSearch={handleSearch} isLoading={isLoading} />
       {error && <ErrorMessage message={error} />}
-      <SearchResults results={results} isLoading={isLoading} />
+      <SearchResults
+        results={results}
+        isLoading={isLoading}
+        selectedBooleanOptions={selectedBooleanOptions}
+      />
       {!error && results.length > 0 && (
         <Pagination
           currentPage={currentPage}

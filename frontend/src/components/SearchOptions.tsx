@@ -1,5 +1,5 @@
 'use client'
-
+// SearchOptions.tsx
 import { useState } from 'react'
 import CoordinatedClassSelector from './CoordinatedClassSelector'
 import HelpText from './HelpText'
@@ -32,7 +32,9 @@ interface FilterComponentProps {
 
 interface SearchOptionsProps {
   selectedOptions: Set<string>
+  selectedBooleanOptions: Set<string>
   onOptionChange: (option: string, checked: boolean) => void
+  onBooleanOptionChange: (option: string) => void
 }
 
 interface SearchOptionProps {
@@ -43,13 +45,21 @@ interface SearchOptionProps {
   helpText?: string
 }
 
-export default function SearchOptions({ selectedOptions, onOptionChange }: SearchOptionsProps) {
+export default function SearchOptions({ selectedOptions, selectedBooleanOptions, onOptionChange, onBooleanOptionChange }: SearchOptionsProps) {
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [selectedCoordinatedClasses, setSelectedCoordinatedClasses] = useState<string[]>([])
 
   const handleCoordinatedClassChange = (classes: string[]) => {
     setSelectedCoordinatedClasses(classes)
     // You may want to update the parent component or perform other actions here
+  }
+
+  const handleOptionChange = (option: string, checked: boolean) => {
+    if (BOOLEAN_STRATEGIES.has(option)) {
+      onBooleanOptionChange(option)
+    } else {
+      onOptionChange(option, checked)
+    }
   }
 
   return (
@@ -67,54 +77,54 @@ export default function SearchOptions({ selectedOptions, onOptionChange }: Searc
         <SearchOption
           label="Serial Number"
           value="serial_number"
-          onChange={onOptionChange}
+          onChange={handleOptionChange}
           helpText="The unique identification number assigned by the USPTO to a trademark application"
         />
         <SearchOption
           label="Registration Number"
           value="registration_number"
-          onChange={onOptionChange}
+          onChange={handleOptionChange}
           helpText="The unique number assigned by the USPTO to a trademark registration"
         />
         <SearchOption
           label="Wordmark"
           value="wordmark"
           defaultChecked
-          onChange={onOptionChange}
+          onChange={handleOptionChange}
           helpText="Search for trademarks that consist of text"
         />
         <SearchOption
           label="Phonetic"
           value="phonetic"
-          onChange={onOptionChange}
+          onChange={handleOptionChange}
         />
         <SearchOption
           label="Attorney Name"
           value="attorney"
-          onChange={onOptionChange}
+          onChange={handleOptionChange}
           helpText="The name of the attorney who filed the trademark application"
         />
         <SearchOption
           label="Disclaimer Statements"
           value="disclaimer_statements"
-          onChange={onOptionChange}
+          onChange={handleOptionChange}
         />
         <SearchOption
           label="Description of Mark"
           value="description_of_mark"
-          onChange={onOptionChange}
+          onChange={handleOptionChange}
           helpText="The literal description of the mark as it appears in the drawing"
         />
         <SearchOption
           label="Registration Date"
           value="registration_date"
-          onChange={onOptionChange}
+          onChange={handleOptionChange}
           helpText="The date the trademark was registered with the USPTO"
         />
         <SearchOption
           label="Renewal Date"
           value="renewal_date"
-          onChange={onOptionChange}
+          onChange={handleOptionChange}
           helpText="The date the trademark registration was renewed"
         />
       </div>
@@ -122,17 +132,17 @@ export default function SearchOptions({ selectedOptions, onOptionChange }: Searc
         <div className="mt-6 border-t pt-4">
           <h3 className="text-lg font-semibold mb-2">Advanced Options</h3>
           <div className="space-y-4">
-            <FilingStatusFilters onOptionChange={onOptionChange} />
-            <FilingBasisFilters onOptionChange={onOptionChange} />
-            <ClassificationFilters onOptionChange={onOptionChange} />
+            <FilingStatusFilters onOptionChange={handleOptionChange} />
+            <FilingBasisFilters onOptionChange={handleOptionChange} />
+            <ClassificationFilters onOptionChange={handleOptionChange} />
             <CoordinatedClassSelector onSelectionChange={handleCoordinatedClassChange} />
-            <InternationalRegistrationFilters onOptionChange={onOptionChange} />
-            <FilingDateFilters onOptionChange={onOptionChange} />
-            <OwnerFilters onOptionChange={onOptionChange} />
-            <VisualCharacteristicsFilters onOptionChange={onOptionChange} />
-            <PriorRegistrationFilters onOptionChange={onOptionChange} />
-            <ForeignApplicationFilters onOptionChange={onOptionChange} />
-            <AcquiredDistinctivenessFilters onOptionChange={onOptionChange} />
+            <InternationalRegistrationFilters onOptionChange={handleOptionChange} />
+            <FilingDateFilters onOptionChange={handleOptionChange} />
+            <OwnerFilters onOptionChange={handleOptionChange} />
+            <VisualCharacteristicsFilters onOptionChange={handleOptionChange} />
+            <PriorRegistrationFilters onOptionChange={handleOptionChange} />
+            <ForeignApplicationFilters onOptionChange={handleOptionChange} />
+            <AcquiredDistinctivenessFilters onOptionChange={handleOptionChange} />
           </div>
         </div>
       )}
@@ -141,6 +151,20 @@ export default function SearchOptions({ selectedOptions, onOptionChange }: Searc
 }
 
 function SearchOption({ label, value, defaultChecked = false, onChange, helpText }: SearchOptionProps) {
+  if (BOOLEAN_STRATEGIES.has(value)) {
+    return (
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={() => onChange(value, true)}
+          className="px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          {label}
+        </button>
+        {helpText && <HelpText text={helpText} />}
+      </div>
+    )
+  }
+
   return (
     <label className="flex items-center space-x-2">
       <input
@@ -151,7 +175,7 @@ function SearchOption({ label, value, defaultChecked = false, onChange, helpText
         onChange={(e) => onChange(value, e.target.checked)}
         className="form-checkbox"
       />
-      <span>{label}{BOOLEAN_STRATEGIES.has(value) ? ' (True)' : ''}</span>
+      <span>{label}</span>
       {helpText && <HelpText text={helpText} />}
     </label>
   )
