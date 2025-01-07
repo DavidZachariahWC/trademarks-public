@@ -4,7 +4,46 @@ import { useState } from 'react'
 import CoordinatedClassSelector from './CoordinatedClassSelector'
 import HelpText from './HelpText'
 
-export default function SearchOptions({ selectedOptions, onOptionChange }) {
+// Strategies that are boolean filters (no user input required)
+const BOOLEAN_STRATEGIES = new Set([
+  'section_12c',
+  'section_8',
+  'section_15',
+  'no_current_basis',
+  'no_initial_basis',
+  'change_registration',
+  'concurrent_use',
+  'concurrent_use_proceeding',
+  'name_change',
+  'color_drawing',
+  'three_d_drawing',
+  'prior_registration_present',
+  'standard_character_claim',
+  'acquired_distinctiveness_whole',
+  'acquired_distinctiveness_part',
+  'assignment_recorded',
+  'priority_claimed',
+  'first_refusal'
+])
+
+interface FilterComponentProps {
+  onOptionChange: (option: string, checked: boolean) => void
+}
+
+interface SearchOptionsProps {
+  selectedOptions: Set<string>
+  onOptionChange: (option: string, checked: boolean) => void
+}
+
+interface SearchOptionProps {
+  label: string
+  value: string
+  defaultChecked?: boolean
+  onChange: (option: string, checked: boolean) => void
+  helpText?: string
+}
+
+export default function SearchOptions({ selectedOptions, onOptionChange }: SearchOptionsProps) {
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [selectedCoordinatedClasses, setSelectedCoordinatedClasses] = useState<string[]>([])
 
@@ -101,7 +140,7 @@ export default function SearchOptions({ selectedOptions, onOptionChange }) {
   )
 }
 
-function SearchOption({ label, value, defaultChecked = false, onChange, helpText }) {
+function SearchOption({ label, value, defaultChecked = false, onChange, helpText }: SearchOptionProps) {
   return (
     <label className="flex items-center space-x-2">
       <input
@@ -112,13 +151,13 @@ function SearchOption({ label, value, defaultChecked = false, onChange, helpText
         onChange={(e) => onChange(value, e.target.checked)}
         className="form-checkbox"
       />
-      <span>{label}</span>
+      <span>{label}{BOOLEAN_STRATEGIES.has(value) ? ' (True)' : ''}</span>
       {helpText && <HelpText text={helpText} />}
     </label>
   )
 }
 
-function FilingStatusFilters({ onOptionChange }) {
+function FilingStatusFilters({ onOptionChange }: FilterComponentProps) {
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">Filing Status</h4>
@@ -168,7 +207,7 @@ function FilingStatusFilters({ onOptionChange }) {
   )
 }
 
-function FilingBasisFilters({ onOptionChange }) {
+function FilingBasisFilters({ onOptionChange }: FilterComponentProps) {
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">Filing Basis</h4>
@@ -206,7 +245,7 @@ function FilingBasisFilters({ onOptionChange }) {
   )
 }
 
-function ClassificationFilters({ onOptionChange }) {
+function ClassificationFilters({ onOptionChange }: FilterComponentProps) {
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">Classification</h4>
@@ -228,7 +267,7 @@ function ClassificationFilters({ onOptionChange }) {
   )
 }
 
-function InternationalRegistrationFilters({ onOptionChange }) {
+function InternationalRegistrationFilters({ onOptionChange }: FilterComponentProps) {
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">International Registration</h4>
@@ -280,7 +319,7 @@ function InternationalRegistrationFilters({ onOptionChange }) {
   )
 }
 
-function FilingDateFilters({ onOptionChange }) {
+function FilingDateFilters({ onOptionChange }: FilterComponentProps) {
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">Filing Date</h4>
@@ -310,7 +349,7 @@ function FilingDateFilters({ onOptionChange }) {
   )
 }
 
-function OwnerFilters({ onOptionChange }) {
+function OwnerFilters({ onOptionChange }: FilterComponentProps) {
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">Owner Information</h4>
@@ -347,7 +386,7 @@ function OwnerFilters({ onOptionChange }) {
   )
 }
 
-function VisualCharacteristicsFilters({ onOptionChange }) {
+function VisualCharacteristicsFilters({ onOptionChange }: FilterComponentProps) {
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">Visual Characteristics</h4>
@@ -396,7 +435,7 @@ function VisualCharacteristicsFilters({ onOptionChange }) {
   )
 }
 
-function PriorRegistrationFilters({ onOptionChange }) {
+function PriorRegistrationFilters({ onOptionChange }: FilterComponentProps) {
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">Prior Registration</h4>
@@ -409,7 +448,7 @@ function PriorRegistrationFilters({ onOptionChange }) {
   )
 }
 
-function ForeignApplicationFilters({ onOptionChange }) {
+function ForeignApplicationFilters({ onOptionChange }: FilterComponentProps) {
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">Foreign Application</h4>
@@ -438,7 +477,7 @@ function ForeignApplicationFilters({ onOptionChange }) {
   )
 }
 
-function AcquiredDistinctivenessFilters({ onOptionChange }) {
+function AcquiredDistinctivenessFilters({ onOptionChange }: FilterComponentProps ) {
   return (
     <div className="space-y-2">
       <h4 className="font-semibold">Acquired Distinctiveness Claim</h4>
