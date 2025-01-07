@@ -1,82 +1,105 @@
 // SearchResults.tsx
-import { Loader2 } from 'lucide-react'
+import React from 'react'
 import Link from 'next/link'
-import { formatDate } from '../utils/format'
-
-interface SearchResult {
-  serial_number: string
-  mark_identification: string
-  registration_number: string | null
-  status_code: string | null
-  filing_date: string | null
-  registration_date: string | null
-  attorney_name: string | null
-  similarity_score?: number
-  phonetic_score?: number
-  match_quality?: string
-}
+import { SearchResult, Pagination } from '@/types/case'
+import { formatDate } from '@/utils/format'
+import { Spinner } from './ui'
 
 interface SearchResultsProps {
   results: SearchResult[]
   isLoading: boolean
+  pagination?: Pagination
+  onPageChange?: (page: number) => void
 }
 
-export default function SearchResults({ results, isLoading }: SearchResultsProps) {
+const SearchResults: React.FC<SearchResultsProps> = ({ 
+  results, 
+  isLoading,
+  pagination,
+  onPageChange 
+}) => {
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      <div className="flex justify-center items-center p-8">
+        <Spinner />
       </div>
     )
   }
 
-  if (results.length === 0) {
+  if (!results.length) {
     return (
-      <div className="text-center text-gray-500 py-8">
-        No results found. Please try a different search query.
+      <div className="text-center p-8 text-gray-500">
+        No results found
       </div>
     )
   }
 
   return (
-    <div className="space-y-4">
-      {results.map((result) => (
-        <Link
-          key={result.serial_number}
-          href={`/case/${result.serial_number}`}
-          className="block"
-        >
-          <div className="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow duration-200">
-            <h3 className="text-xl font-semibold mb-2 text-blue-600 hover:text-blue-800">
-              {result.mark_identification}
-            </h3>
-            {(result.similarity_score || result.phonetic_score || result.match_quality) && (
-              <div className="text-sm text-gray-600 mb-2">
-                {result.similarity_score && (
-                  <span>Similarity Score: {result.similarity_score.toFixed(2)}% | </span>
-                )}
-                {result.phonetic_score && (
-                  <span>Phonetic Score: {result.phonetic_score.toFixed(2)}% | </span>
-                )}
-                {result.match_quality && (
-                  <span>Match Quality: {result.match_quality}</span>
-                )}
+    <div>
+      <div className="space-y-4">
+        {results.map((result) => (
+          <Link
+            key={result.serial_number}
+            href={`/case/${result.serial_number}`}
+            className="block p-4 border rounded hover:bg-gray-50 transition-colors"
+          >
+            <h3 className="text-lg font-semibold">{result.mark_identification}</h3>
+            <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+              <div>
+                <span className="font-medium">Serial Number:</span> {result.serial_number}
               </div>
-            )}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              <p><span className="font-semibold">Serial Number:</span> {result.serial_number}</p>
-              <p><span className="font-semibold">Registration Number:</span> {result.registration_number || 'N/A'}</p>
-              <p><span className="font-semibold">Status:</span> {result.status_code || 'N/A'}</p>
-              <p><span className="font-semibold">Filing Date:</span> {formatDate(result.filing_date)}</p>
-              {result.registration_date && (
-                <p><span className="font-semibold">Registration Date:</span> {formatDate(result.registration_date)}</p>
+              <div>
+                <span className="font-medium">Registration Number:</span>{' '}
+                {result.registration_number || 'N/A'}
+              </div>
+              <div>
+                <span className="font-medium">Status:</span> {result.status_code}
+              </div>
+              <div>
+                <span className="font-medium">Filing Date:</span>{' '}
+                {formatDate(result.filing_date)}
+              </div>
+              {result.similarity_score && (
+                <div>
+                  <span className="font-medium">Match Score:</span>{' '}
+                  {Math.round(result.similarity_score)}%
+                </div>
               )}
-              <p><span className="font-semibold">Attorney:</span> {result.attorney_name || 'N/A'}</p>
+              {result.match_quality && (
+                <div>
+                  <span className="font-medium">Match Quality:</span>{' '}
+                  {result.match_quality}
+                </div>
+              )}
             </div>
-          </div>
-        </Link>
-      ))}
+          </Link>
+        ))}
+      </div>
+
+      {pagination && pagination.total_pages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-4">
+          <button
+            onClick={() => onPageChange?.(pagination.current_page - 1)}
+            disabled={pagination.current_page <= 1}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="text-sm">
+            Page {pagination.current_page} of {pagination.total_pages}
+          </span>
+          <button
+            onClick={() => onPageChange?.(pagination.current_page + 1)}
+            disabled={pagination.current_page >= pagination.total_pages}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   )
 }
+
+export default SearchResults
 

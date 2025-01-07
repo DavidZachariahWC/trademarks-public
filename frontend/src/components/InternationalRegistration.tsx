@@ -1,26 +1,13 @@
 import React from 'react'
-
-interface InternationalReg {
-  international_registration_number: string | null
-  international_registration_date: string | null
-  international_publication_date: string | null
-  auto_protection_date: string | null
-  international_status_code: string | null
-  international_status_date: string | null
-  international_renewal_date: string | null
-  international_death_date: string | null
-  priority_claimed_in: boolean
-  priority_claimed_date: string | null
-  first_refusal_in: boolean
-  notification_date: string | null
-}
+import { formatDate } from '@/utils/format'
+import type { InternationalRegistration as IntlReg } from '@/types/case'
 
 interface InternationalRegistrationProps {
-  registrations: InternationalReg[]
+  registrations: IntlReg[]
 }
 
 export default function InternationalRegistration({ registrations }: InternationalRegistrationProps) {
-  if (registrations.length === 0) {
+  if (!registrations || registrations.length === 0) {
     return null
   }
 
@@ -70,10 +57,5 @@ function InfoItem({ label, value }: { label: string; value: string | null }) {
       <span className="font-semibold">{label}:</span> {value || 'N/A'}
     </p>
   )
-}
-
-function formatDate(date: string | null): string {
-  if (!date) return 'N/A'
-  return new Date(date).toLocaleDateString()
 }
 

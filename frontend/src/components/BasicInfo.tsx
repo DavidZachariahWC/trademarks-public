@@ -1,5 +1,6 @@
 // BasicInfo.tsx
 import React from 'react'
+import { formatDate, formatAttorneys } from '@/utils/format'
 
 interface BasicInfoProps {
   caseData: any // Replace 'any' with a proper type definition
@@ -29,46 +30,46 @@ export default function BasicInfo({ caseData }: BasicInfoProps) {
         <InfoItem label="Section 8 Accepted" value={header.section_8_accepted_in ? 'Yes' : 'No'} />
         <InfoItem label="Section 15 Filed" value={header.section_15_filed_in ? 'Yes' : 'No'} />
         <InfoItem label="Section 15 Acknowledged" value={header.section_15_acknowledged_in ? 'Yes' : 'No'} />
-        <InfoItem label="Changed Registration" value={header.change_registration_in ? 'Yes' : 'No'} />
+        <InfoItem label="Change Registration" value={header.change_registration_in ? 'Yes' : 'No'} />
         <InfoItem label="Concurrent Use" value={header.concurrent_use_in ? 'Yes' : 'No'} />
-        <InfoItem label="Concurrent Use Proceeding Pending" value={header.concurrent_use_proceeding_in ? 'Yes' : 'No'} />
-        <InfoItem label="Published for Concurrent Use" value={header.published_concurrent_in ? 'Yes' : 'No'} />
+        <InfoItem label="Concurrent Use Proceeding" value={header.concurrent_use_proceeding_in ? 'Yes' : 'No'} />
+        <InfoItem label="Published Concurrent" value={header.published_concurrent_in ? 'Yes' : 'No'} />
       </div>
-      
-      <div className="mt-6">
-        <h3 className="text-xl font-semibold mb-3">Filing Basis Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <BasisGroup
-            title="Foreign Priority Claim (44(d))"
-            items={[
-              { label: "Filed as 44(d)", value: header.filing_basis_filed_as_44d_in },
-              { label: "Amended to 44(d)", value: header.amended_to_44d_application_in },
-              { label: "Currently 44(d)", value: header.filing_basis_current_44d_in },
-            ]}
-          />
-          <BasisGroup
-            title="Foreign Registration (44(e))"
-            items={[
-              { label: "Filed as 44(e)", value: header.filing_basis_filed_as_44e_in },
-              { label: "Amended to 44(e)", value: header.amended_to_44e_application_in },
-              { label: "Currently 44(e)", value: header.filing_basis_current_44e_in },
-            ]}
-          />
-          <BasisGroup
-            title="Extension of Protection (66(a))"
-            items={[
-              { label: "Filed as 66(a)", value: header.filing_basis_filed_as_66a_in },
-              { label: "Currently 66(a)", value: header.filing_basis_current_66a_in },
-            ]}
-          />
-          <BasisGroup
-            title="Basis Issues"
-            items={[
-              { label: "No Current Basis", value: header.filing_current_no_basis_in },
-              { label: "No Initial Basis", value: header.without_basis_currently_in },
-            ]}
-          />
-        </div>
+
+      <div className="mt-6 space-y-4">
+        <BasisGroup
+          title="Filing Basis (44d)"
+          items={[
+            { label: 'Filed As', value: header.filing_basis_filed_as_44d_in },
+            { label: 'Amended To', value: header.amended_to_44d_application_in },
+            { label: 'Current', value: header.filing_basis_current_44d_in }
+          ]}
+        />
+
+        <BasisGroup
+          title="Filing Basis (44e)"
+          items={[
+            { label: 'Filed As', value: header.filing_basis_filed_as_44e_in },
+            { label: 'Amended To', value: header.amended_to_44e_application_in },
+            { label: 'Current', value: header.filing_basis_current_44e_in }
+          ]}
+        />
+
+        <BasisGroup
+          title="Filing Basis (66a)"
+          items={[
+            { label: 'Filed As', value: header.filing_basis_filed_as_66a_in },
+            { label: 'Current', value: header.filing_basis_current_66a_in }
+          ]}
+        />
+
+        <BasisGroup
+          title="No Basis Status"
+          items={[
+            { label: 'Current No Basis', value: header.filing_current_no_basis_in },
+            { label: 'Without Basis Currently', value: header.without_basis_currently_in }
+          ]}
+        />
       </div>
     </div>
   )
@@ -93,25 +94,5 @@ function BasisGroup({ title, items }: { title: string; items: { label: string; v
       ))}
     </div>
   )
-}
-
-function formatDate(date: string | null): string {
-  if (!date) return 'N/A'
-  return new Date(date).toLocaleDateString()
-}
-
-function formatAttorneys(attorneys: string | null): React.ReactNode {
-  if (!attorneys) return 'N/A'
-  return attorneys.split(';').map((attorney, index) => (
-    <React.Fragment key={index}>
-      {index > 0 && '; '}
-      <a
-        href={`/?attorney=${encodeURIComponent(attorney.trim())}`}
-        className="text-blue-600 hover:underline"
-      >
-        {attorney.trim()}
-      </a>
-    </React.Fragment>
-  ))
 }
 
