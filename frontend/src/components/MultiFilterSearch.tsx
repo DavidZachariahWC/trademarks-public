@@ -21,6 +21,28 @@ const DATE_STRATEGIES = new Set([
   'foreign_renewal_date'
 ])
 
+// Strategies that are boolean filters (no user input required)
+const BOOLEAN_STRATEGIES = new Set([
+  'section_12c',
+  'section_8',
+  'section_15',
+  'no_current_basis',
+  'no_initial_basis',
+  'change_registration',
+  'concurrent_use',
+  'concurrent_use_proceeding',
+  'name_change',
+  'color_drawing',
+  'three_d_drawing',
+  'prior_registration_present',
+  'standard_character_claim',
+  'acquired_distinctiveness_whole',
+  'acquired_distinctiveness_part',
+  'assignment_recorded',
+  'priority_claimed',
+  'first_refusal'
+])
+
 // Map of available search strategies
 const SEARCH_STRATEGIES = {
   wordmark: 'Word Mark',
@@ -75,7 +97,7 @@ const SEARCH_STRATEGIES = {
   owner_legal_entity: 'Owner Legal Entity',
   owner_party_type: 'Owner Party Type',
   priority_date_range: 'Priority Date Range'
-}
+} as const
 
 interface SearchFilter {
   strategy: string
@@ -143,14 +165,21 @@ const MultiFilterSearch: React.FC = () => {
       }
     }
 
+    // If changing to a boolean strategy, set query to 'true'
+    if (field === 'strategy' && BOOLEAN_STRATEGIES.has(value)) {
+      newFilters[index].query = 'true'
+    }
+
     setFilters(newFilters)
   }
 
   const handleSearch = async (page: number = 1) => {
     // Validate filters
-    const validFilters = filters.filter(f => f.query.trim() !== '')
+    const validFilters = filters.filter(f => 
+      BOOLEAN_STRATEGIES.has(f.strategy) || f.query.trim() !== ''
+    )
     if (validFilters.length === 0) {
-      setError('At least one filter with a query is required')
+      setError('At least one filter is required')
       return
     }
 
@@ -231,26 +260,28 @@ const MultiFilterSearch: React.FC = () => {
             >
               {Object.entries(SEARCH_STRATEGIES).map(([value, label]) => (
                 <option key={value} value={value}>
-                  {label}
+                  {label}{BOOLEAN_STRATEGIES.has(value) ? ' (True)' : ''}
                 </option>
               ))}
             </Select>
-            {DATE_STRATEGIES.has(filter.strategy) ? (
-              <Input
-                type="date"
-                value={filter.query}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => updateFilter(index, 'query', e.target.value)}
-                placeholder="YYYY-MM-DD"
-                className="flex-1"
-              />
-            ) : (
-              <Input
-                type="text"
-                value={filter.query}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => updateFilter(index, 'query', e.target.value)}
-                placeholder="Enter search query..."
-                className="flex-1"
-              />
+            {!BOOLEAN_STRATEGIES.has(filter.strategy) && (
+              DATE_STRATEGIES.has(filter.strategy) ? (
+                <Input
+                  type="date"
+                  value={filter.query}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => updateFilter(index, 'query', e.target.value)}
+                  placeholder="YYYY-MM-DD"
+                  className="flex-1"
+                />
+              ) : (
+                <Input
+                  type="text"
+                  value={filter.query}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => updateFilter(index, 'query', e.target.value)}
+                  placeholder="Enter search query..."
+                  className="flex-1"
+                />
+              )
             )}
             {filters.length > 1 && (
               <Button 
