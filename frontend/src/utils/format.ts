@@ -2,20 +2,34 @@
 export function formatDate(date: string | null, options?: Intl.DateTimeFormatOptions): string {
   if (!date) return 'N/A'
   
-  // Split the date string and parse as numbers
-  const [year, month, day] = date.split('-').map(Number)
-  
-  // Create date using UTC to avoid timezone shifts
-  const dateObj = new Date(Date.UTC(year, month - 1, day))
-  
-  // Use Intl.DateTimeFormat with UTC timezone to ensure consistent display
-  return new Intl.DateTimeFormat('en-US', {
-    timeZone: 'UTC',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    ...options
-  }).format(dateObj)
+  try {
+    // Split the date string and parse as numbers
+    const [year, month, day] = date.split('-').map(Number)
+    
+    // Validate date components
+    if (isNaN(year) || isNaN(month) || isNaN(day)) {
+      return 'Invalid Date'
+    }
+    
+    // Create date using UTC to avoid timezone shifts
+    const dateObj = new Date(Date.UTC(year, month - 1, day))
+    
+    // Validate the resulting date
+    if (isNaN(dateObj.getTime())) {
+      return 'Invalid Date'
+    }
+    
+    // Use Intl.DateTimeFormat with UTC timezone to ensure consistent display
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      ...options
+    }).format(dateObj)
+  } catch (error) {
+    return 'Invalid Date'
+  }
 }
 
 export function formatBoolean(value: boolean | null | undefined): string {

@@ -137,4 +137,23 @@ export interface Case {
   foreign_applications?: ForeignApplication[]
   international_registrations?: InternationalRegistration[]
   prior_registrations?: PriorRegistration[]
+}
+
+export interface SearchResult {
+  serial_number: number
+  registration_number: string | null
+  mark_identification: string
+  status_code: string
+  filing_date: string | null
+  registration_date: string | null
+  attorney_name: string | null
+  similarity_score?: number
+  match_quality?: string
+}
+
+export interface Pagination {
+  current_page: number
+  total_pages: number
+  total_results: number
+  per_page: number
 } 

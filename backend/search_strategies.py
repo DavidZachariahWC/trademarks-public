@@ -1,6 +1,6 @@
 # search_strategies.py
 from enum import Enum
-from typing import List, Tuple, Optional, Dict, Any
+from typing import List, Tuple, Optional, Dict, Any, Type
 from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal, String
 from sqlalchemy.orm import Session
 from models import CaseFile, CaseFileHeader, Classification, DesignSearch, CaseFileStatement, Owner, ForeignApplication, InternationalRegistration, PriorRegistrationApplication

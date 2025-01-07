@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatDate } from '@/utils/format'
 
 interface ForeignApplication {
   foreign_country: string
@@ -28,7 +29,7 @@ export default function ForeignFilingDates({ foreignApplications }: ForeignFilin
             </p>
             <p>
               <span className="font-semibold">Filing Date:</span>{' '}
-              {app.foreign_filing_date ? new Date(app.foreign_filing_date).toLocaleDateString() : 'N/A'}
+              {formatDate(app.foreign_filing_date)}
             </p>
             {index < foreignApplications.length - 1 && <hr className="my-4 border-gray-300" />}
           </div>

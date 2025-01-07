@@ -3,14 +3,11 @@ from flask import Flask, request, jsonify
 from search_engine import SearchEngine
 from db_utils import get_autocomplete_suggestions, get_db_session
 from models import CaseFile, CaseFileHeader
-import logging
-import json
 from flask_cors import CORS  # Add CORS support
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Remove the home route since it will be handled by Next.js frontend
 @app.route('/api/search')
 def search():
     """API endpoint for trademark search"""
@@ -26,11 +23,9 @@ def search():
         
         search_type = search_types[0]
         results = SearchEngine.search(query, search_type, page, per_page)
-        
         return jsonify(results)
         
     except Exception as e:
-        logging.exception(f"Search API error:")
         return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/api/autocomplete')
@@ -46,7 +41,6 @@ def autocomplete():
         return jsonify(suggestions)
         
     except Exception as e:
-        logging.error(f"Autocomplete API error: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/api/case/<int:serial_number>')
@@ -66,7 +60,7 @@ def case_details(serial_number):
             """Format date as YYYY-MM-DD without timezone conversion"""
             return date.strftime('%Y-%m-%d') if date else None
             
-        return jsonify({
+        response = {
             "serial_number": case.serial_number,
             "registration_number": case.registration_number,
             "header": {
@@ -185,13 +179,50 @@ def case_details(serial_number):
                 "first_use_anywhere_date": format_date(cls.first_use_anywhere_date),
                 "first_use_in_commerce_date": format_date(cls.first_use_in_commerce_date)
             } for cls in case.classifications] if case.classifications else None
-        })
+        }
+        
+        return jsonify(response)
         
     except Exception as e:
-        logging.error(f"Case details error: {str(e)}")
         return jsonify({"error": "Internal server error"}), 500
     finally:
         session.close()
+
+@app.route('/api/combined_search', methods=['POST'])
+def combined_search():
+    """API endpoint for multi-filter trademark search"""
+    try:
+        data = request.get_json(force=True)
+        
+        # Validate required fields
+        conditions = data.get('conditions', [])
+        if not conditions:
+            return jsonify({"error": "No search conditions provided"}), 400
+            
+        # Get optional parameters
+        page = int(data.get('page', 1))
+        per_page = int(data.get('per_page', 10))
+        logic_operator = data.get('logic_operator', 'OR').upper()
+        
+        # Validate logic operator
+        if logic_operator not in ['AND', 'OR']:
+            return jsonify({"error": "Invalid logic operator. Must be 'AND' or 'OR'"}), 400
+            
+        # Execute multi-filter search
+        from multi_filter_search import multi_filter_search
+        results = multi_filter_search(
+            conditions=conditions,
+            page=page,
+            per_page=per_page,
+            logic_operator=logic_operator
+        )
+        
+        return jsonify(results)
+        
+    except ValueError as e:
+        return jsonify({"error": f"Invalid parameter: {str(e)}"}), 400
+    except Exception as e:
+        return jsonify({"error": "Internal server error"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)  # Specify port 5000 explicitly 
