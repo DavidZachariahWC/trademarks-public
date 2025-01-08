@@ -168,7 +168,6 @@ export default function SearchPage() {
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Search Filters</h2>
             <div className="flex items-center gap-4">
               <Select
                 value={logicOperator}
