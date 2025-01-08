@@ -1,5 +1,6 @@
-'use client'
 // SearchOptions.tsx
+'use client'
+
 import { useState } from 'react'
 import CoordinatedClassSelector from './CoordinatedClassSelector'
 import HelpText from './HelpText'

@@ -85,4 +85,8 @@ export const Alert: React.FC<AlertProps> = ({
 
 export const Spinner: React.FC = () => {
   return <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-} 
+}
+
+export { Badge } from './badge' 
+
+export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './accordion'
