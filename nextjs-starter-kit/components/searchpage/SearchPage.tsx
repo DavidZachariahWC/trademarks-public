@@ -55,8 +55,14 @@ interface SearchFilter {
   query: string
 }
 
+interface QueryPart {
+  filter: SearchFilter
+  operator: 'AND' | 'OR'
+}
+
 export default function SearchPage() {
-  const [filters, setFilters] = useState<SearchFilter[]>([{ strategy: 'wordmark', query: '' }])
+  const [currentFilter, setCurrentFilter] = useState<SearchFilter>({ strategy: 'wordmark', query: '' })
+  const [queryParts, setQueryParts] = useState<QueryPart[]>([])
   const [logicOperator, setLogicOperator] = useState<'AND' | 'OR'>('OR')
   const [results, setResults] = useState<SearchResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -68,24 +74,29 @@ export default function SearchPage() {
     per_page: 10
   })
 
-  const addFilter = () => {
-    if (filters.length >= 20) {
-      setError('Maximum of 20 filters allowed')
+  const addToQuery = () => {
+    if (!currentFilter.strategy || (!BOOLEAN_STRATEGIES.has(currentFilter.strategy) && !currentFilter.query)) {
+      setError('Please select a search option and enter a query')
       return
     }
-    setFilters([...filters, { strategy: 'wordmark', query: '' }])
+
+    setQueryParts([
+      ...queryParts,
+      { filter: currentFilter, operator: logicOperator }
+    ])
+
+    // Reset current filter
+    setCurrentFilter({ strategy: 'wordmark', query: '' })
   }
 
-  const removeFilter = (index: number) => {
-    setFilters(filters.filter((_, i) => i !== index))
+  const removeQueryPart = (index: number) => {
+    setQueryParts(queryParts.filter((_, i) => i !== index))
   }
 
   const validateDateFormat = (date: string): boolean => {
-    // Check if the date matches YYYY-MM-DD format
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/
     if (!dateRegex.test(date)) return false
 
-    // Validate the date is actually valid
     const [year, month, day] = date.split('-').map(Number)
     const dateObj = new Date(year, month - 1, day)
     return dateObj.getFullYear() === year && 
@@ -93,39 +104,19 @@ export default function SearchPage() {
            dateObj.getDate() === day
   }
 
-  const updateFilter = (index: number, field: keyof SearchFilter, value: string) => {
-    setFilters(prev => {
-      const next = [...prev]
-      next[index] = { ...next[index], [field]: value }
-
-      // If switching to a boolean strategy, set query to "true"
-      if (field === 'strategy' && BOOLEAN_STRATEGIES.has(value)) {
-        next[index].query = 'true'
-      }
-
-      // If switching to a date strategy, validate date format
-      if (field === 'strategy' && DATE_STRATEGIES.has(value)) {
-        if (next[index].query && !validateDateFormat(next[index].query)) {
-          next[index].query = ''
-        }
-      }
-
-      return next
-    })
-  }
-
   const handleSearch = async (page: number = 1) => {
-    // Validate filters
-    const validFilters = filters.filter(f => 
-      BOOLEAN_STRATEGIES.has(f.strategy) || f.query.trim() !== ''
-    )
-    if (validFilters.length === 0) {
-      setError('At least one filter is required')
+    if (queryParts.length === 0 && !currentFilter.query) {
+      setError('Please add at least one search filter')
       return
     }
 
+    // Include current filter if it has a query
+    const allFilters = currentFilter.query ? 
+      [...queryParts.map(p => p.filter), currentFilter] :
+      queryParts.map(p => p.filter)
+
     // Validate all date filters
-    for (const filter of validFilters) {
+    for (const filter of allFilters) {
       if (DATE_STRATEGIES.has(filter.strategy)) {
         if (!validateDateFormat(filter.query)) {
           setError(`Invalid date format for ${filter.strategy}. Please use YYYY-MM-DD format.`)
@@ -144,7 +135,7 @@ export default function SearchPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          conditions: validFilters,
+          conditions: allFilters,
           logic_operator: logicOperator,
           page,
           per_page: pagination.per_page
@@ -181,11 +172,8 @@ export default function SearchPage() {
                   <SelectItem value="AND">AND</SelectItem>
                 </SelectContent>
               </Select>
-              <Button 
-                onClick={addFilter}
-                disabled={filters.length >= 20}
-              >
-                Add Filter
+              <Button onClick={addToQuery}>
+                Add to Query
               </Button>
             </div>
           </div>
@@ -196,49 +184,65 @@ export default function SearchPage() {
             </Alert>
           )}
 
-          {filters.map((filter, index) => (
-            <div key={index} className="flex items-center gap-4">
-              <SearchOptions
-                selectedOptions={new Set([filter.strategy])}
-                selectedBooleanOptions={new Set()}
-                onOptionChange={(option, checked) => {
-                  if (checked) {
-                    updateFilter(index, 'strategy', option)
-                  }
-                }}
-                onBooleanOptionChange={(option) => {
-                  updateFilter(index, 'strategy', option)
-                }}
-              />
-              {!BOOLEAN_STRATEGIES.has(filter.strategy) && (
-                DATE_STRATEGIES.has(filter.strategy) ? (
-                  <Input
-                    type="date"
-                    value={filter.query}
-                    onChange={(e) => updateFilter(index, 'query', e.target.value)}
-                    placeholder="YYYY-MM-DD"
-                    className="flex-1"
-                  />
-                ) : (
-                  <Input
-                    type="text"
-                    value={filter.query}
-                    onChange={(e) => updateFilter(index, 'query', e.target.value)}
-                    placeholder="Enter search query..."
-                    className="flex-1"
-                  />
-                )
-              )}
-              {filters.length > 1 && (
-                <Button 
-                  variant="destructive"
-                  onClick={() => removeFilter(index)}
-                >
-                  Remove
-                </Button>
-              )}
+          {/* Display constructed query parts */}
+          {queryParts.length > 0 && (
+            <div className="space-y-2">
+              <h3 className="font-semibold">Constructed Query:</h3>
+              <div className="space-y-2">
+                {queryParts.map((part, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    {index > 0 && <span className="font-semibold">{part.operator}</span>}
+                    <div className="bg-gray-100 px-3 py-1 rounded-lg flex items-center gap-2">
+                      <span>{part.filter.strategy}: {part.filter.query || 'true'}</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeQueryPart(index)}
+                        className="h-6 w-6 p-0"
+                      >
+                        ×
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
+          )}
+
+          {/* Current filter selection */}
+          <div className="flex items-center gap-4">
+            <SearchOptions
+              selectedOptions={new Set([currentFilter.strategy])}
+              selectedBooleanOptions={new Set()}
+              onOptionChange={(option, checked) => {
+                if (checked) {
+                  setCurrentFilter({ ...currentFilter, strategy: option })
+                }
+              }}
+              onBooleanOptionChange={(option) => {
+                setCurrentFilter({ strategy: option, query: 'true' })
+              }}
+            />
+            {!BOOLEAN_STRATEGIES.has(currentFilter.strategy) && (
+              DATE_STRATEGIES.has(currentFilter.strategy) ? (
+                <Input
+                  type="date"
+                  value={currentFilter.query}
+                  onChange={(e) => setCurrentFilter({ ...currentFilter, query: e.target.value })}
+                  placeholder="YYYY-MM-DD"
+                  className="flex-1"
+                />
+              ) : (
+                <Input
+                  type="text"
+                  value={currentFilter.query}
+                  onChange={(e) => setCurrentFilter({ ...currentFilter, query: e.target.value })}
+                  placeholder="Enter search query..."
+                  className="flex-1"
+                />
+              )
+            )}
+          </div>
 
           <Button 
             onClick={() => handleSearch(1)}
