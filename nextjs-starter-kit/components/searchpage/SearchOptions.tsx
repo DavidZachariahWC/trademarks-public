@@ -178,10 +178,13 @@ function SearchOption({ label, value, defaultChecked = false, onChange, helpText
 
   return (
     <div className="flex items-center space-x-2">
-      <Checkbox
+      <input
+        type="radio"
         id={value}
+        name="search-option"
         defaultChecked={defaultChecked}
-        onCheckedChange={(checked) => onChange(value, checked === true)}
+        onChange={(e) => onChange(value, e.target.checked)}
+        className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
       />
       <Label htmlFor={value} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
         {label}
