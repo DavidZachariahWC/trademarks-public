@@ -1,0 +1,104 @@
+2025-01-09 19:39:39,264 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-09 19:39:39,264 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 19:39:39,266 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 19:39:41,176 - multi_filter_search - INFO - Found 3 total results in 1.89s
+2025-01-09 19:39:41,409 - multi_filter_search - INFO - Query executed in 0.23s, total processing time: 2.15s
+2025-01-09 19:39:41,504 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 19:39:41] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-09 19:43:30,486 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 19:43:30] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-01-09 19:44:43,593 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 19:44:43] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 19:44:43,597 - multi_filter_search - INFO - Starting search with 3 conditions, page=1, per_page=10
+2025-01-09 19:44:43,597 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 19:44:43,602 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 19:44:43,603 - multi_filter_search - INFO - Processing condition 3: strategy=filing_date, query=1979-01-05
+2025-01-09 19:44:43,948 - multi_filter_search - INFO - Found 1 total results in 0.34s
+2025-01-09 19:44:43,949 - multi_filter_search - ERROR - Error in multi_filter_search: serial_number
+Traceback (most recent call last):
+  File "/Users/davidzachariahvm/trademarks/venv/lib/python3.13/site-packages/sqlalchemy/sql/base.py", line 1617, in __getattr__
+    return self._index[key][1]
+           ~~~~~~~~~~~^^^^^
+KeyError: 'serial_number'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py", line 117, in multi_filter_search
+    .join(combined_cte, combined_cte.c.serial_number == CaseFile.serial_number)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariahvm/trademarks/venv/lib/python3.13/site-packages/sqlalchemy/sql/base.py", line 1619, in __getattr__
+    raise AttributeError(key) from err
+AttributeError: serial_number
+2025-01-09 19:44:44,031 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 19:44:44] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-09 19:59:21,319 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 19:59:21] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 19:59:21,322 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-09 19:59:21,323 - multi_filter_search - INFO - Processing condition 1: strategy=filing_date, query=1979-01-05
+2025-01-09 19:59:21,511 - multi_filter_search - INFO - Found 11 total results in 0.18s
+2025-01-09 19:59:21,604 - multi_filter_search - INFO - Query executed in 0.09s, total processing time: 0.28s
+2025-01-09 19:59:21,679 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 19:59:21] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:05:48,847 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:05:48] "GET /api/case/73199017 HTTP/1.1" 200 -
+2025-01-09 20:06:26,675 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:06:26] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:06:26,678 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-09 20:06:26,679 - multi_filter_search - INFO - Processing condition 1: strategy=filing_date, query=1979-01-05
+2025-01-09 20:06:26,679 - multi_filter_search - INFO - Processing condition 2: strategy=int_reg_date, query=1983-03-08
+2025-01-09 20:06:26,848 - multi_filter_search - INFO - Found 11 total results in 0.17s
+2025-01-09 20:06:26,961 - multi_filter_search - INFO - Query executed in 0.11s, total processing time: 0.28s
+2025-01-09 20:06:27,037 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:06:27] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:06:32,872 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:06:32] "GET /api/case/73199029 HTTP/1.1" 200 -
+2025-01-09 20:07:48,982 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:07:48] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:07:48,986 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-09 20:07:48,986 - multi_filter_search - INFO - Processing condition 1: strategy=filing_date, query=1979-01-05
+2025-01-09 20:07:48,991 - multi_filter_search - INFO - Processing condition 2: strategy=registration_date, query=1983-03-08
+2025-01-09 20:07:49,268 - multi_filter_search - INFO - Found 1 total results in 0.27s
+2025-01-09 20:07:49,372 - multi_filter_search - INFO - Query executed in 0.10s, total processing time: 0.39s
+2025-01-09 20:07:49,456 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:07:49] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:13:54,651 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:13:54] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:13:54,659 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-09 20:13:54,660 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:13:54,971 - multi_filter_search - INFO - Found 16 total results in 0.30s
+2025-01-09 20:13:55,207 - multi_filter_search - INFO - Query executed in 0.24s, total processing time: 0.55s
+2025-01-09 20:13:55,283 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:13:55] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:14:04,971 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:14:04] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-09 20:14:21,616 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:14:21] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:14:21,619 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-09 20:14:21,619 - multi_filter_search - INFO - Processing condition 1: strategy=attorney, query=Howard F. Feinman
+2025-01-09 20:14:22,013 - multi_filter_search - INFO - Found 25 total results in 0.39s
+2025-01-09 20:14:22,384 - multi_filter_search - INFO - Query executed in 0.37s, total processing time: 0.76s
+2025-01-09 20:14:22,459 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:14:22] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:14:25,819 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:14:25] "GET /api/case/73236313 HTTP/1.1" 200 -
+2025-01-09 20:14:26,515 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:14:26] "GET /api/case/73236313 HTTP/1.1" 200 -
+2025-01-09 20:15:54,861 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:15:54] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:15:54,865 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-09 20:15:54,865 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:15:55,152 - multi_filter_search - INFO - Found 16 total results in 0.28s
+2025-01-09 20:15:55,330 - multi_filter_search - INFO - Query executed in 0.18s, total processing time: 0.46s
+2025-01-09 20:15:55,405 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:15:55] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:15:57,704 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:15:57] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-09 20:15:57,752 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:15:57] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-09 20:16:17,298 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:16:17] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:16:17,302 - multi_filter_search - INFO - Starting search with 3 conditions, page=1, per_page=10
+2025-01-09 20:16:17,303 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:16:17,312 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 20:16:17,313 - multi_filter_search - INFO - Processing condition 3: strategy=drawing_code_type, query=3000
+2025-01-09 20:16:17,618 - multi_filter_search - INFO - Found 0 total results in 0.30s
+2025-01-09 20:16:17,619 - multi_filter_search - ERROR - Error in multi_filter_search: serial_number
+Traceback (most recent call last):
+  File "/Users/davidzachariahvm/trademarks/venv/lib/python3.13/site-packages/sqlalchemy/sql/base.py", line 1617, in __getattr__
+    return self._index[key][1]
+           ~~~~~~~~~~~^^^^^
+KeyError: 'serial_number'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py", line 117, in multi_filter_search
+    .join(combined_cte, combined_cte.c.serial_number == CaseFile.serial_number)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariahvm/trademarks/venv/lib/python3.13/site-packages/sqlalchemy/sql/base.py", line 1619, in __getattr__
+    raise AttributeError(key) from err
+AttributeError: serial_number
+2025-01-09 20:16:17,696 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:16:17] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-09 20:28:38,386 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:28:38] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:28:38,390 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-09 20:28:38,391 - multi_filter_search - INFO - Processing condition 1: strategy=filing_date, query=1979-01-05
+2025-01-09 20:28:38,575 - multi_filter_search - INFO - Found 11 total results in 0.18s
+2025-01-09 20:28:38,667 - multi_filter_search - INFO - Query executed in 0.09s, total processing time: 0.28s
+2025-01-09 20:28:38,746 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:28:38] "POST /api/combined_search HTTP/1.1" 200 -
