@@ -9,6 +9,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Alert } from '@/components/ui/alert'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Badge } from '@/components/ui/badge'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Plus, X, ChevronRight, Search } from 'lucide-react'
 import { API_ENDPOINTS } from '@/lib/api-config'
 import type { SearchResult } from '@/utils/types/case'
 
@@ -53,6 +56,7 @@ const BOOLEAN_STRATEGIES = new Set([
 interface SearchFilter {
   strategy: string
   query: string
+  operator?: 'AND' | 'OR'
 }
 
 interface QueryPart {
@@ -67,6 +71,7 @@ export default function SearchPage() {
   const [results, setResults] = useState<SearchResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [pagination, setPagination] = useState({
     current_page: 1,
     total_pages: 0,
@@ -110,10 +115,20 @@ export default function SearchPage() {
       return
     }
 
-    // Include current filter if it has a query
-    const allFilters = currentFilter.query ? 
-      [...queryParts.map(p => p.filter), currentFilter] :
-      queryParts.map(p => p.filter)
+    // Include current filter if it has a query, and map conditions to include operators
+    const allFilters = queryParts.map(p => ({
+      strategy: p.filter.strategy,
+      query: p.filter.query,
+      operator: p.operator
+    }))
+
+    if (currentFilter.query) {
+      allFilters.push({
+        strategy: currentFilter.strategy,
+        query: currentFilter.query,
+        operator: logicOperator
+      })
+    }
 
     // Validate all date filters
     for (const filter of allFilters) {
@@ -136,7 +151,6 @@ export default function SearchPage() {
         },
         body: JSON.stringify({
           conditions: allFilters,
-          logic_operator: logicOperator,
           page,
           per_page: pagination.per_page
         }),
@@ -157,99 +171,136 @@ export default function SearchPage() {
     }
   }
 
+  const renderQueryPart = (part: QueryPart, index: number) => (
+    <div key={index} className="flex items-center gap-3 flex-wrap bg-white p-3 rounded-md border border-gray-200">
+      {index > 0 && (
+        <Badge 
+          variant="secondary" 
+          className={`text-base font-bold px-3 py-1 ${
+            part.operator === 'AND' ? 'bg-blue-100' : 'bg-green-100'
+          }`}
+        >
+          {part.operator}
+        </Badge>
+      )}
+      <Badge variant="outline" className="text-base font-medium px-3 py-1">
+        {part.filter.strategy}
+      </Badge>
+      {BOOLEAN_STRATEGIES.has(part.filter.strategy) ? (
+        <Badge variant="secondary" className="text-base font-medium px-3 py-1 bg-yellow-100">
+          IS TRUE
+        </Badge>
+      ) : (
+        <>
+          <span className="px-2">=</span>
+          <span className="italic bg-gray-100 px-3 py-1 rounded-md text-base">
+            {part.filter.query}
+          </span>
+        </>
+      )}
+      <Button variant="ghost" size="icon" onClick={() => removeQueryPart(index)} className="ml-auto">
+        <X className="h-5 w-5" />
+        <span className="sr-only">Remove</span>
+      </Button>
+    </div>
+  )
+
   return (
-    <div className="space-y-8">
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Select value={logicOperator} onValueChange={(value: 'AND' | 'OR') => setLogicOperator(value)}>
-                <SelectTrigger className="w-24">
-                  <SelectValue placeholder="Select operator" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="OR">OR</SelectItem>
-                  <SelectItem value="AND">AND</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button onClick={addToQuery}>
-                Add to Query
-              </Button>
-            </div>
-          </div>
-
-          {error && (
-            <Alert variant="destructive">
-              {error}
-            </Alert>
-          )}
-
-          {/* Display constructed query parts */}
+    <div className="min-h-screen bg-white p-6 md:p-10 flex flex-col items-center space-y-10">
+      <div className="w-full max-w-4xl space-y-8">
+        <h2 className="text-3xl font-bold text-center text-gray-800">
+          Federal Trademark Database Search
+        </h2>
+        <div className="flex flex-wrap gap-4 items-center justify-center">
           {queryParts.length > 0 && (
-            <div className="space-y-2">
-              <h3 className="font-semibold">Constructed Query:</h3>
-              <div className="space-y-2">
-                {queryParts.map((part, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    {index > 0 && <span className="font-semibold">{part.operator}</span>}
-                    <div className="bg-gray-100 px-3 py-1 rounded-lg flex items-center gap-2">
-                      <span>{part.filter.strategy}: {part.filter.query || 'true'}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeQueryPart(index)}
-                        className="h-6 w-6 p-0"
-                      >
-                        ×
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <Button
+              variant="outline"
+              className={`w-28 h-12 text-lg font-semibold ${
+                logicOperator === 'AND' ? 'bg-blue-100 hover:bg-blue-200' : 'bg-green-100 hover:bg-green-200'
+              }`}
+              onClick={() => setLogicOperator(prev => prev === 'AND' ? 'OR' : 'AND')}
+            >
+              {logicOperator}
+            </Button>
           )}
 
-          {/* Current filter selection */}
-          <div className="flex items-center gap-4">
-            <SearchOptions
-              selectedOptions={new Set([currentFilter.strategy])}
-              selectedBooleanOptions={new Set()}
-              onOptionChange={(option, checked) => {
-                if (checked) {
-                  setCurrentFilter({ ...currentFilter, strategy: option })
-                }
-              }}
-              onBooleanOptionChange={(option) => {
-                setCurrentFilter({ strategy: option, query: 'true' })
-              }}
-            />
-            {!BOOLEAN_STRATEGIES.has(currentFilter.strategy) && (
-              DATE_STRATEGIES.has(currentFilter.strategy) ? (
-                <Input
-                  type="date"
-                  value={currentFilter.query}
-                  onChange={(e) => setCurrentFilter({ ...currentFilter, query: e.target.value })}
-                  placeholder="YYYY-MM-DD"
-                  className="flex-1"
+          <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" className="w-64 h-12 text-lg font-semibold justify-between">
+                {currentFilter.strategy}
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[500px] sm:w-[675px]">
+              <div className="h-[calc(100vh-4rem)] overflow-y-auto pr-4">
+                <SearchOptions
+                  selectedOptions={new Set([currentFilter.strategy])}
+                  selectedBooleanOptions={new Set()}
+                  onOptionChange={(option, checked) => {
+                    if (checked) {
+                      setCurrentFilter({ ...currentFilter, strategy: option })
+                      setIsSidebarOpen(false)
+                    }
+                  }}
+                  onBooleanOptionChange={(option) => {
+                    setCurrentFilter({ strategy: option, query: 'true' })
+                    setIsSidebarOpen(false)
+                  }}
                 />
-              ) : (
-                <Input
-                  type="text"
-                  value={currentFilter.query}
-                  onChange={(e) => setCurrentFilter({ ...currentFilter, query: e.target.value })}
-                  placeholder="Enter search query..."
-                  className="flex-1"
-                />
-              )
-            )}
-          </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          {!BOOLEAN_STRATEGIES.has(currentFilter.strategy) && (
+            DATE_STRATEGIES.has(currentFilter.strategy) ? (
+              <Input
+                type="date"
+                value={currentFilter.query}
+                onChange={(e) => setCurrentFilter({ ...currentFilter, query: e.target.value })}
+                placeholder="YYYY-MM-DD"
+                className="flex-1 h-12 text-lg"
+              />
+            ) : (
+              <Input
+                type="text"
+                value={currentFilter.query}
+                onChange={(e) => setCurrentFilter({ ...currentFilter, query: e.target.value })}
+                placeholder="Enter search query..."
+                className="flex-1 h-12 text-lg"
+              />
+            )
+          )}
 
           <Button 
-            onClick={() => handleSearch(1)}
-            disabled={isLoading}
-            className="mt-4"
+            onClick={addToQuery}
+            className="h-12 px-6 text-lg flex items-center gap-2"
+            disabled={!currentFilter.strategy || (!BOOLEAN_STRATEGIES.has(currentFilter.strategy) && !currentFilter.query)}
           >
-            {isLoading ? 'Searching...' : 'Search'}
+            <Plus className="h-5 w-5" />
+            Add to Query
+          </Button>
+        </div>
+      </div>
+
+      <div id="current-query" className="w-full max-w-4xl space-y-4">
+        <h2 className="text-2xl font-semibold text-center text-gray-800">Current Query</h2>
+        <div className="bg-gray-100 p-6 rounded-lg min-h-[100px] flex items-center justify-center border border-gray-300 shadow-sm">
+          {queryParts.length === 0 ? (
+            <p className="text-gray-500 text-lg">No conditions added yet.</p>
+          ) : (
+            <div className="space-y-4 w-full">
+              {queryParts.map((part, index) => renderQueryPart(part, index))}
+            </div>
+          )}
+        </div>
+        <div className="flex justify-center">
+          <Button 
+            onClick={() => handleSearch(1)}
+            className="h-12 px-6 text-lg flex items-center gap-2"
+            disabled={queryParts.length === 0 && !currentFilter.query}
+          >
+            <Search className="h-5 w-5" />
+            Search
           </Button>
         </div>
       </div>
@@ -260,6 +311,12 @@ export default function SearchPage() {
         pagination={pagination}
         onPageChange={handleSearch}
       />
+
+      {isLoading && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        </div>
+      )}
     </div>
   )
 } 

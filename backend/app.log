@@ -202,3 +202,16 @@ AttributeError: 'Subquery' object has no attribute 'cte'
 2025-01-10 00:02:46,706 - multi_filter_search - INFO - Found 15 total results in 0.35s
 2025-01-10 00:02:46,931 - multi_filter_search - INFO - Query executed in 0.22s, total processing time: 0.59s
 2025-01-10 00:02:47,014 - werkzeug - INFO - 127.0.0.1 - - [10/Jan/2025 00:02:47] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-10 01:00:45,869 - werkzeug - INFO - 127.0.0.1 - - [10/Jan/2025 01:00:45] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-10 01:00:45,876 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-10 01:00:45,879 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-10 01:00:46,296 - multi_filter_search - INFO - Found 16 total results in 0.41s
+2025-01-10 01:00:46,533 - multi_filter_search - INFO - Query executed in 0.24s, total processing time: 0.66s
+2025-01-10 01:00:46,648 - werkzeug - INFO - 127.0.0.1 - - [10/Jan/2025 01:00:46] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-10 01:04:50,057 - werkzeug - INFO - 127.0.0.1 - - [10/Jan/2025 01:04:50] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-10 01:04:50,063 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-10 01:04:50,065 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-10 01:04:50,076 - multi_filter_search - INFO - Processing condition 2: strategy=standard_character_claim, query=true
+2025-01-10 01:04:50,371 - multi_filter_search - INFO - Found 479 total results in 0.29s
+2025-01-10 01:04:50,637 - multi_filter_search - INFO - Query executed in 0.27s, total processing time: 0.57s
+2025-01-10 01:04:50,755 - werkzeug - INFO - 127.0.0.1 - - [10/Jan/2025 01:04:50] "POST /api/combined_search HTTP/1.1" 200 -
