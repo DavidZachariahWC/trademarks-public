@@ -102,3 +102,103 @@ AttributeError: serial_number
 2025-01-09 20:28:38,575 - multi_filter_search - INFO - Found 11 total results in 0.18s
 2025-01-09 20:28:38,667 - multi_filter_search - INFO - Query executed in 0.09s, total processing time: 0.28s
 2025-01-09 20:28:38,746 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:28:38] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:37:14,823 - werkzeug - INFO -  * Detected change in '/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py', reloading
+2025-01-09 20:37:52,006 - multi_filter_search - INFO - Starting search with 3 conditions, page=1, per_page=10
+2025-01-09 20:37:52,009 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:37:52,014 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 20:37:52,015 - multi_filter_search - INFO - Processing condition 3: strategy=drawing_code_type, query=3000
+2025-01-09 20:37:52,015 - multi_filter_search - ERROR - Error in multi_filter_search: 'Query' object has no attribute 'c'
+Traceback (most recent call last):
+  File "/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py", line 85, in multi_filter_search
+    subq_serial_col = subq.c.serial_number
+                      ^^^^^^
+AttributeError: 'Query' object has no attribute 'c'
+2025-01-09 20:37:52,017 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:37:52] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-09 20:37:54,412 - multi_filter_search - INFO - Starting search with 3 conditions, page=1, per_page=10
+2025-01-09 20:37:54,413 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:37:54,414 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 20:37:54,414 - multi_filter_search - INFO - Processing condition 3: strategy=drawing_code_type, query=3000
+2025-01-09 20:37:54,414 - multi_filter_search - ERROR - Error in multi_filter_search: 'Query' object has no attribute 'c'
+Traceback (most recent call last):
+  File "/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py", line 85, in multi_filter_search
+    subq_serial_col = subq.c.serial_number
+                      ^^^^^^
+AttributeError: 'Query' object has no attribute 'c'
+2025-01-09 20:37:54,415 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:37:54] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-09 20:37:55,388 - multi_filter_search - INFO - Starting search with 3 conditions, page=1, per_page=10
+2025-01-09 20:37:55,388 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:37:55,389 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 20:37:55,389 - multi_filter_search - INFO - Processing condition 3: strategy=drawing_code_type, query=3000
+2025-01-09 20:37:55,389 - multi_filter_search - ERROR - Error in multi_filter_search: 'Query' object has no attribute 'c'
+Traceback (most recent call last):
+  File "/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py", line 85, in multi_filter_search
+    subq_serial_col = subq.c.serial_number
+                      ^^^^^^
+AttributeError: 'Query' object has no attribute 'c'
+2025-01-09 20:37:55,390 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:37:55] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-09 20:38:25,243 - multi_filter_search - INFO - Starting search with 3 conditions, page=1, per_page=10
+2025-01-09 20:38:25,244 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:38:25,246 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 20:38:25,247 - multi_filter_search - INFO - Processing condition 3: strategy=drawing_code_type, query=3000
+2025-01-09 20:38:25,247 - multi_filter_search - ERROR - Error in multi_filter_search: 'Query' object has no attribute 'c'
+Traceback (most recent call last):
+  File "/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py", line 85, in multi_filter_search
+    subq_serial_col = subq.c.serial_number
+                      ^^^^^^
+AttributeError: 'Query' object has no attribute 'c'
+2025-01-09 20:38:25,251 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:38:25] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-09 20:42:11,132 - werkzeug - INFO -  * Detected change in '/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py', reloading
+2025-01-09 20:43:04,189 - multi_filter_search - INFO - Starting search with 3 conditions, page=1, per_page=10
+2025-01-09 20:43:04,190 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:43:04,200 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 20:43:04,200 - multi_filter_search - INFO - Processing condition 3: strategy=drawing_code_type, query=3000
+2025-01-09 20:43:04,200 - multi_filter_search - ERROR - Error in multi_filter_search: 'Subquery' object has no attribute 'intersect'
+Traceback (most recent call last):
+  File "/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py", line 91, in multi_filter_search
+    combined_query = combined_query.intersect(subq)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Subquery' object has no attribute 'intersect'
+2025-01-09 20:43:04,202 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:43:04] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-09 20:47:56,676 - werkzeug - INFO -  * Detected change in '/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py', reloading
+2025-01-09 20:48:10,350 - multi_filter_search - INFO - Starting search with 3 conditions, page=1, per_page=10
+2025-01-09 20:48:10,352 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:48:10,355 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 20:48:10,355 - multi_filter_search - INFO - Processing condition 3: strategy=drawing_code_type, query=3000
+2025-01-09 20:48:10,356 - multi_filter_search - ERROR - Error in multi_filter_search: 'Subquery' object has no attribute 'cte'
+Traceback (most recent call last):
+  File "/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py", line 97, in multi_filter_search
+    combined_cte = combined_query.cte('combined_serials')
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Subquery' object has no attribute 'cte'
+2025-01-09 20:48:10,357 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:48:10] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-09 20:50:26,560 - werkzeug - INFO -  * Detected change in '/Users/davidzachariahvm/trademarks/backend/multi_filter_search.py', reloading
+2025-01-09 20:51:20,930 - multi_filter_search - INFO - Starting search with 3 conditions, page=1, per_page=10
+2025-01-09 20:51:20,931 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:51:20,935 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 20:51:20,935 - multi_filter_search - INFO - Processing condition 3: strategy=drawing_code_type, query=3000
+2025-01-09 20:51:22,843 - multi_filter_search - INFO - Found 0 total results in 1.91s
+2025-01-09 20:51:23,095 - multi_filter_search - INFO - Query executed in 0.25s, total processing time: 2.16s
+2025-01-09 20:51:23,173 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:51:23] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:51:42,864 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:51:42] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:51:42,874 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-09 20:51:42,874 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:51:42,876 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 20:51:43,168 - multi_filter_search - INFO - Found 3 total results in 0.29s
+2025-01-09 20:51:43,374 - multi_filter_search - INFO - Query executed in 0.21s, total processing time: 0.50s
+2025-01-09 20:51:43,449 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:51:43] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:52:08,022 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:52:08] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-09 20:52:08,027 - multi_filter_search - INFO - Starting search with 3 conditions, page=1, per_page=10
+2025-01-09 20:52:08,027 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-09 20:52:08,029 - multi_filter_search - INFO - Processing condition 2: strategy=international_class, query=017
+2025-01-09 20:52:08,030 - multi_filter_search - INFO - Processing condition 3: strategy=filing_date, query=1979-01-05
+2025-01-09 20:52:08,330 - multi_filter_search - INFO - Found 1 total results in 0.29s
+2025-01-09 20:52:08,546 - multi_filter_search - INFO - Query executed in 0.22s, total processing time: 0.52s
+2025-01-09 20:52:08,624 - werkzeug - INFO - 127.0.0.1 - - [09/Jan/2025 20:52:08] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-10 00:01:56,506 - werkzeug - INFO - 127.0.0.1 - - [10/Jan/2025 00:01:56] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-01-10 00:01:56,977 - werkzeug - INFO - 127.0.0.1 - - [10/Jan/2025 00:01:56] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-01-10 00:02:46,340 - werkzeug - INFO - 127.0.0.1 - - [10/Jan/2025 00:02:46] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-10 00:02:46,344 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-10 00:02:46,345 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=accurate finish
+2025-01-10 00:02:46,706 - multi_filter_search - INFO - Found 15 total results in 0.35s
+2025-01-10 00:02:46,931 - multi_filter_search - INFO - Query executed in 0.22s, total processing time: 0.59s
+2025-01-10 00:02:47,014 - werkzeug - INFO - 127.0.0.1 - - [10/Jan/2025 00:02:47] "POST /api/combined_search HTTP/1.1" 200 -
