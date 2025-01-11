@@ -197,7 +197,7 @@ class Section12cSearchStrategy(BaseSearchStrategy):
         query = super().build_query(session)
         return query
 
-class Section8SearchStrategy(BaseSearchStrategy):
+class Section8FiledSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.section_8_filed_in == True]
         match_score = literal(100).label('match_score')
@@ -208,9 +208,42 @@ class Section8SearchStrategy(BaseSearchStrategy):
         query = super().build_query(session)
         return query
 
-class Section15SearchStrategy(BaseSearchStrategy):
+class Section8PartialAcceptSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.section_8_partial_accept_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query
+
+class Section8AcceptedSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.section_8_accepted_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query
+
+class Section15FiledSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.section_15_filed_in == True]
+        match_score = literal(100).label('match_score')
+        match_quality = literal('High').label('match_quality')
+        return filters, [match_score, match_quality]
+
+    def build_query(self, session: Session):
+        query = super().build_query(session)
+        return query
+
+class Section15AcknowledgedSearchStrategy(BaseSearchStrategy):
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        filters = [CaseFileHeader.section_15_acknowledged_in == True]
         match_score = literal(100).label('match_score')
         match_quality = literal('High').label('match_quality')
         return filters, [match_score, match_quality]

@@ -1,11 +1,12 @@
 // BasicInfo.tsx
 import React from 'react'
 import { formatDate, formatAttorneys } from '@/lib/utils'
+import InfoItem from '../shared/InfoItem'
 
 interface BasicInfoProps {
   caseData: any // Replace 'any' with a proper type definition
 }
-//
+
 export default function BasicInfo({ caseData }: BasicInfoProps) {
   const {
     header,
@@ -25,7 +26,11 @@ export default function BasicInfo({ caseData }: BasicInfoProps) {
         <InfoItem label="Date Cancelled" value={formatDate(header.cancellation_date)} />
         <InfoItem label="Published for Opposition" value={formatDate(header.published_for_opposition_date) || 'No'} />
         <InfoItem label="Attorney of Record" value={formatAttorneys(header.attorney_name)} />
-        <InfoItem label="Republished 12c Date" value={formatDate(header.republished_12c_date)} />
+        <InfoItem 
+          label="Republished 12c Date" 
+          value={formatDate(header.republished_12c_date)}
+          tooltip="This indicates the date the mark was republished under section 12(c)."
+        />
         <InfoItem label="Section 8 Partial Accept" value={header.section_8_partial_accept_in ? 'Yes' : 'No'} />
         <InfoItem label="Section 8 Accepted" value={header.section_8_accepted_in ? 'Yes' : 'No'} />
         <InfoItem label="Section 15 Filed" value={header.section_15_filed_in ? 'Yes' : 'No'} />
@@ -72,14 +77,6 @@ export default function BasicInfo({ caseData }: BasicInfoProps) {
         />
       </div>
     </div>
-  )
-}
-
-function InfoItem({ label, value }: { label: string; value: string }) {
-  return (
-    <p className="mb-2">
-      <span className="font-semibold text-gray-700">{label}:</span> {value}
-    </p>
   )
 }
 
