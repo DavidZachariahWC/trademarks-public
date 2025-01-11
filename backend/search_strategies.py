@@ -106,7 +106,7 @@ class WordmarkSearchStrategy(BaseSearchStrategy):
         query = super().build_query(session)
         _, scoring = self.get_filters_and_scoring()
         similarity_score = scoring[0]  # First scoring expression is similarity_score
-        return query.order_by(similarity_score.desc())
+        return query
 
 class PhoneticSearchStrategy(BaseSearchStrategy):
     def __init__(self, query: str, page: int = 1, per_page: int = 10):
@@ -149,7 +149,7 @@ class PhoneticSearchStrategy(BaseSearchStrategy):
         
         # Filter results with score > 35%
         query = query.filter(phonetic_score > 35)
-        return query.order_by(phonetic_score.desc())
+        return query
 
 # class CombinedSearchStrategy(BaseSearchStrategy):
 #     def __init__(self, query: str, page: int = 1, per_page: int = 10):
@@ -195,7 +195,7 @@ class Section12cSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class Section8SearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -206,7 +206,7 @@ class Section8SearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class Section15SearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -217,7 +217,7 @@ class Section15SearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class AttorneySearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -247,8 +247,9 @@ class AttorneySearchStrategy(BaseSearchStrategy):
     def build_query(self, session: Session):
         query = super().build_query(session)
         _, scoring = self.get_filters_and_scoring()
-        similarity_score = scoring[0]
-        return query.order_by(similarity_score.desc())
+        for score_col in scoring:
+            query = query.add_columns(score_col)
+        return query
 
 class ForeignPriorityClaimSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -265,7 +266,7 @@ class ForeignPriorityClaimSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class ForeignRegistrationSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -282,7 +283,7 @@ class ForeignRegistrationSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class ExtensionProtectionSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -298,7 +299,7 @@ class ExtensionProtectionSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class NoCurrentBasisSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -309,7 +310,7 @@ class NoCurrentBasisSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class NoInitialBasisSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -320,7 +321,7 @@ class NoInitialBasisSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class InternationalClassSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -345,7 +346,7 @@ class InternationalClassSearchStrategy(BaseSearchStrategy):
         if filters:
             query = query.filter(*filters)
             
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class USClassSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -370,7 +371,7 @@ class USClassSearchStrategy(BaseSearchStrategy):
         if filters:
             query = query.filter(*filters)
             
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class CoordinatedClassSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -425,7 +426,6 @@ class CoordinatedClassSearchStrategy(BaseSearchStrategy):
             .join(CaseFileHeader)
             .join(Classification)
             .filter(CaseFile.serial_number.in_(intersect_subq))
-            .order_by(CaseFileHeader.filing_date.desc())
         )
         return query
 
@@ -463,7 +463,7 @@ class CancellationDateSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class ChangeRegistrationSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -472,7 +472,7 @@ class ChangeRegistrationSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class ConcurrentUseSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -481,7 +481,7 @@ class ConcurrentUseSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class ConcurrentUseProceedingSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -490,7 +490,7 @@ class ConcurrentUseProceedingSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class DesignSearchCodeStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -519,7 +519,7 @@ class DesignSearchCodeStrategy(BaseSearchStrategy):
         if filters:
             query = query.filter(*filters)
             
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class DisclaimerStatementsSearchStrategy(BaseSearchStrategy):
     """
@@ -604,7 +604,7 @@ class DisclaimerStatementsSearchStrategy(BaseSearchStrategy):
             query = query.add_columns(score_col)
 
         similarity_score = scoring[0]
-        return query.order_by(similarity_score.desc())
+        return query
 
     def count_query(self, session: Session):
         filters, _ = self.get_filters_and_scoring()
@@ -675,7 +675,7 @@ class DescriptionOfMarkSearchStrategy(BaseSearchStrategy):
             query = query.add_columns(score_col)
 
         similarity_score = scoring[0]
-        return query.order_by(similarity_score.desc())
+        return query
 
     def count_query(self, session: Session):
         filters, _ = self.get_filters_and_scoring()
@@ -732,8 +732,7 @@ class OwnerNameSearchStrategy(BaseSearchStrategy):
         for score_col in scoring:
             query = query.add_columns(score_col)
             
-        similarity_score = scoring[0]
-        return query.order_by(similarity_score.desc())
+        return query
 
 class DBASearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -782,8 +781,7 @@ class DBASearchStrategy(BaseSearchStrategy):
         for score_col in scoring:
             query = query.add_columns(score_col)
             
-        similarity_score = scoring[0]
-        return query.order_by(similarity_score.desc())
+        return query
 
 class NameChangeSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -812,7 +810,7 @@ class NameChangeSearchStrategy(BaseSearchStrategy):
         if filters:
             query = query.filter(*filters)
             
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class FilingDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -830,7 +828,7 @@ class FilingDateSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class ForeignFilingDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -860,7 +858,7 @@ class ForeignFilingDateSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class InternationalRegistrationNumberSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -890,7 +888,7 @@ class InternationalRegistrationNumberSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class InternationalRegistrationDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -920,7 +918,7 @@ class InternationalRegistrationDateSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class InternationalPublicationDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -950,7 +948,7 @@ class InternationalPublicationDateSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class AutoProtectionDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -980,7 +978,7 @@ class AutoProtectionDateSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class InternationalStatusCodeSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1010,7 +1008,7 @@ class InternationalStatusCodeSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class PriorityClaimedSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1034,7 +1032,7 @@ class PriorityClaimedSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class FirstRefusalSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1058,7 +1056,7 @@ class FirstRefusalSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class DrawingCodeTypeSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1079,7 +1077,7 @@ class DrawingCodeTypeSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class ColorDrawingSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1090,7 +1088,7 @@ class ColorDrawingSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class ThreeDDrawingSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1101,7 +1099,7 @@ class ThreeDDrawingSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class PublishedOppositionDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1122,7 +1120,7 @@ class PublishedOppositionDateSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.published_for_opposition_date.desc())
+        return query
 
 class PriorRegistrationPresentSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1147,7 +1145,7 @@ class PriorRegistrationPresentSearchStrategy(BaseSearchStrategy):
         for score_col in scoring:
             query = query.add_columns(score_col)
             
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class RegistrationDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1162,7 +1160,7 @@ class RegistrationDateSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.registration_date.desc())
+        return query
 
 class ForeignRegistrationDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1193,7 +1191,7 @@ class ForeignRegistrationDateSearchStrategy(BaseSearchStrategy):
         if filters:
             query = query.filter(*filters)
             
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class RenewalDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1206,7 +1204,7 @@ class RenewalDateSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.renewal_date.desc())
+        return query
 
 class InternationalRenewalDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1225,7 +1223,7 @@ class InternationalRenewalDateSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class ForeignRenewalDateSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1244,7 +1242,7 @@ class ForeignRenewalDateSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class StandardCharacterClaimSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1255,7 +1253,7 @@ class StandardCharacterClaimSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class AcquiredDistinctivenessWholeSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1266,7 +1264,7 @@ class AcquiredDistinctivenessWholeSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class AcquiredDistinctivenessPartSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1277,7 +1275,7 @@ class AcquiredDistinctivenessPartSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class SerialNumberSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1288,7 +1286,7 @@ class SerialNumberSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class RegistrationNumberSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1299,7 +1297,7 @@ class RegistrationNumberSearchStrategy(BaseSearchStrategy):
 
     def build_query(self, session: Session):
         query = super().build_query(session)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class AssignmentRecordedSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1314,7 +1312,7 @@ class AssignmentRecordedSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class OwnerLegalEntitySearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1332,7 +1330,7 @@ class OwnerLegalEntitySearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class OwnerPartyTypeSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1347,7 +1345,7 @@ class OwnerPartyTypeSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query
 
 class PriorityDateRangeSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
@@ -1373,4 +1371,4 @@ class PriorityDateRangeSearchStrategy(BaseSearchStrategy):
         filters, _ = self.get_filters_and_scoring()
         if filters:
             query = query.filter(*filters)
-        return query.order_by(CaseFileHeader.filing_date.desc())
+        return query

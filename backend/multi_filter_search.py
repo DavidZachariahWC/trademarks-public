@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 import logging
 import time
-from sqlalchemy import union, intersect, text, select
+from sqlalchemy import union_all, intersect, text, select, distinct
 from sqlalchemy.orm import Session, Query
 from models import CaseFile, CaseFileHeader
 from search_engine import SearchEngine
@@ -69,6 +69,8 @@ def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_pag
                 subq_serials = select(subq.c.serial_number).subquery()
 
             subqueries.append(subq_serials)
+            # Print the SQL for each subquery
+            logger.info(f"Subquery {i+1} SQL: {str(subq_serials.compile(compile_kwargs={'literal_binds': True}))}")
             logger.debug(f"Built subquery for condition {i+1}")
 
         if not subqueries:
@@ -90,7 +92,7 @@ def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_pag
             if logic_operator.upper() == 'AND':
                 combined_query = select(combined_query.c.serial_number).intersect(select(subq.c.serial_number)).subquery()
             else:  # OR
-                combined_query = select(combined_query.c.serial_number).union(select(subq.c.serial_number)).subquery()
+                combined_query = select(combined_query.c.serial_number).union_all(select(subq.c.serial_number)).subquery()
             logger.debug(f"Combined query {i+1} with operator {logic_operator}")
 
         # Create CTE from the combined subquery
@@ -98,7 +100,7 @@ def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_pag
 
         # Get total count for pagination
         count_start = time.time()
-        count_query = session.query(text('COUNT(*)')).select_from(combined_cte)
+        count_query = session.query(text('COUNT(DISTINCT serial_number)')).select_from(combined_cte)
         total_count = count_query.scalar() or 0
         logger.info(f"Found {total_count} total results in {time.time() - count_start:.2f}s")
 
@@ -108,6 +110,10 @@ def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_pag
 
         # Build final query joining back to get full case details
         query_start = time.time()
+
+        # Subquery to get distinct serial_numbers with explicit label
+        distinct_serial_numbers = select(distinct(combined_cte.c.serial_number).label('serial_number')).subquery()
+
         final_query = (
             session.query(
                 CaseFile.serial_number,
@@ -119,9 +125,12 @@ def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_pag
                 CaseFileHeader.attorney_name
             )
             .join(CaseFileHeader)
-            .join(combined_cte, combined_cte.c.serial_number == CaseFile.serial_number)
+            .join(distinct_serial_numbers, distinct_serial_numbers.c.serial_number == CaseFile.serial_number)
             .order_by(CaseFileHeader.filing_date.desc())
         )
+
+        # Print the final query SQL before pagination
+        logger.info(f"Final query SQL: {str(final_query.statement.compile(compile_kwargs={'literal_binds': True}))}")
 
         # Apply pagination to final query
         final_query = final_query.limit(per_page).offset(offset)
