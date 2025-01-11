@@ -21,7 +21,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center p-8">
+      <div className="flex justify-center items-center p-8 w-full max-w-6xl mx-auto">
         <Loader2 className="h-6 w-6 animate-spin" />
       </div>
     )
@@ -29,23 +29,23 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 
   if (!results.length) {
     return (
-      <div className="text-center p-8 text-gray-500">
+      <div className="text-center p-8 text-gray-500 w-full max-w-6xl mx-auto">
         No results found
       </div>
     )
   }
 
   return (
-    <div>
-      <div className="space-y-4">
+    <div className="w-full max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {results.map((result) => (
           <Link
             key={result.serial_number}
             href={`/case/${result.serial_number}`}
-            className="block p-4 border rounded hover:bg-gray-50 transition-colors"
+            className="block p-6 border rounded-lg hover:bg-gray-50 transition-colors h-full"
           >
-            <h3 className="text-lg font-semibold">{result.mark_identification}</h3>
-            <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+            <h3 className="text-lg font-semibold line-clamp-2 mb-3">{result.mark_identification}</h3>
+            <div className="space-y-2 text-sm">
               <div>
                 <span className="font-medium">Serial Number:</span> {result.serial_number}
               </div>
@@ -78,7 +78,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
       </div>
 
       {pagination && pagination.total_pages > 1 && (
-        <div className="flex justify-center items-center gap-2 mt-4">
+        <div className="flex justify-center items-center gap-2 mt-8">
           <Button
             onClick={() => onPageChange?.(pagination.current_page - 1)}
             disabled={pagination.current_page <= 1}
