@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Alert } from '@/components/ui/alert'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { Plus, X, ChevronRight, Search } from 'lucide-react'
 import { API_ENDPOINTS } from '@/lib/api-config'
 import type { SearchResult } from '@/utils/types/case'
@@ -72,6 +72,7 @@ export default function SearchPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [editingIndex, setEditingIndex] = useState<number | null>(null)
   const [pagination, setPagination] = useState({
     current_page: 1,
     total_pages: 0,
@@ -85,16 +86,36 @@ export default function SearchPage() {
       return
     }
 
-    setQueryParts([
-      ...queryParts,
-      { filter: currentFilter, operator: logicOperator }
-    ])
+    if (editingIndex !== null) {
+      // Update existing query part
+      const newQueryParts = [...queryParts]
+      newQueryParts[editingIndex] = { filter: currentFilter, operator: logicOperator }
+      setQueryParts(newQueryParts)
+      setEditingIndex(null)
+    } else {
+      // Add new query part
+      setQueryParts([
+        ...queryParts,
+        { filter: currentFilter, operator: logicOperator }
+      ])
+    }
 
     // Reset current filter
     setCurrentFilter({ strategy: 'wordmark', query: '' })
   }
 
+  const startEditing = (index: number) => {
+    const part = queryParts[index]
+    setCurrentFilter(part.filter)
+    setLogicOperator(part.operator)
+    setEditingIndex(index)
+  }
+
   const removeQueryPart = (index: number) => {
+    if (editingIndex === index) {
+      setEditingIndex(null)
+      setCurrentFilter({ strategy: 'wordmark', query: '' })
+    }
     setQueryParts(queryParts.filter((_, i) => i !== index))
   }
 
@@ -115,6 +136,24 @@ export default function SearchPage() {
       return
     }
 
+    // If there's a valid current filter and we're not editing, add it to queryParts first
+    if (shouldShowPreview()) {
+      setQueryParts([
+        ...queryParts,
+        { filter: currentFilter, operator: logicOperator }
+      ])
+      setCurrentFilter({ strategy: 'wordmark', query: '' })
+    }
+
+    // If we're editing, make sure to update the current part before searching
+    if (editingIndex !== null) {
+      const newQueryParts = [...queryParts]
+      newQueryParts[editingIndex] = { filter: currentFilter, operator: logicOperator }
+      setQueryParts(newQueryParts)
+      setEditingIndex(null)
+      setCurrentFilter({ strategy: 'wordmark', query: '' })
+    }
+
     // Include current filter if it has a query, and map conditions to include operators
     const allFilters = queryParts.map(p => ({
       strategy: p.filter.strategy,
@@ -122,7 +161,7 @@ export default function SearchPage() {
       operator: p.operator
     }))
 
-    if (currentFilter.query) {
+    if (currentFilter.query && editingIndex === null) {
       allFilters.push({
         strategy: currentFilter.strategy,
         query: currentFilter.query,
@@ -171,43 +210,88 @@ export default function SearchPage() {
     }
   }
 
-  const renderQueryPart = (part: QueryPart, index: number) => (
-    <div key={index} className="flex items-center gap-3 flex-wrap bg-white p-3 rounded-md border border-gray-200">
-      {index > 0 && (
-        <Badge 
-          variant="secondary" 
-          className={`text-base font-bold px-3 py-1 ${
-            part.operator === 'AND' ? 'bg-blue-100' : 'bg-green-100'
-          }`}
-        >
-          {part.operator}
+  const renderQueryPart = (part: QueryPart, index: number, isPreview: boolean = false) => {
+    const isEditing = editingIndex === index
+    return (
+      <div 
+        key={index} 
+        className={`flex items-center gap-3 flex-wrap bg-white p-3 rounded-md border 
+          ${isPreview ? 'border-blue-300 border-dashed' : isEditing ? 'border-yellow-300 border-2' : 'border-gray-200'}
+          ${!isPreview ? 'cursor-pointer hover:border-gray-400' : ''}`}
+        onClick={() => !isPreview && startEditing(index)}
+      >
+        {index > 0 && (
+          <Badge 
+            variant="secondary" 
+            className={`text-base font-bold px-3 py-1 ${
+              part.operator === 'AND' ? 'bg-blue-100' : 'bg-green-100'
+            }`}
+          >
+            {part.operator}
+          </Badge>
+        )}
+        <Badge variant="outline" className="text-base font-medium px-3 py-1">
+          {part.filter.strategy}
         </Badge>
-      )}
-      <Badge variant="outline" className="text-base font-medium px-3 py-1">
-        {part.filter.strategy}
-      </Badge>
-      {BOOLEAN_STRATEGIES.has(part.filter.strategy) ? (
-        <Badge variant="secondary" className="text-base font-medium px-3 py-1 bg-yellow-100">
-          IS TRUE
-        </Badge>
-      ) : (
+        {BOOLEAN_STRATEGIES.has(part.filter.strategy) ? (
+          <Badge variant="secondary" className="text-base font-medium px-3 py-1 bg-yellow-100">
+            IS TRUE
+          </Badge>
+        ) : (
+          <>
+            <span className="px-2">=</span>
+            <span className="italic bg-gray-100 px-3 py-1 rounded-md text-base">
+              {part.filter.query}
+            </span>
+          </>
+        )}
+        {!isPreview && (
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={(e) => {
+              e.stopPropagation()
+              removeQueryPart(index)
+            }} 
+            className="ml-auto"
+          >
+            <X className="h-5 w-5" />
+            <span className="sr-only">Remove</span>
+          </Button>
+        )}
+      </div>
+    )
+  }
+
+  // Function to check if current filter is valid for preview
+  const shouldShowPreview = () => {
+    return currentFilter.strategy && (
+      BOOLEAN_STRATEGIES.has(currentFilter.strategy) || 
+      currentFilter.query
+    ) && editingIndex === null  // Don't show preview while editing
+  }
+
+  // Update the Button text based on whether we're editing or adding
+  const getActionButtonText = () => {
+    if (editingIndex !== null) {
+      return (
         <>
-          <span className="px-2">=</span>
-          <span className="italic bg-gray-100 px-3 py-1 rounded-md text-base">
-            {part.filter.query}
-          </span>
+          <Plus className="h-5 w-5" />
+          Update Query
         </>
-      )}
-      <Button variant="ghost" size="icon" onClick={() => removeQueryPart(index)} className="ml-auto">
-        <X className="h-5 w-5" />
-        <span className="sr-only">Remove</span>
-      </Button>
-    </div>
-  )
+      )
+    }
+    return (
+      <>
+        <Plus className="h-5 w-5" />
+        Add to Query
+      </>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-white p-6 md:p-10 flex flex-col items-center space-y-10">
-      <div className="w-full max-w-4xl space-y-8">
+      <div className="w-full max-w-6xl space-y-8">
         <h2 className="text-3xl font-bold text-center text-gray-800">
           Federal Trademark Database Search
         </h2>
@@ -231,7 +315,10 @@ export default function SearchPage() {
                 <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[500px] sm:w-[675px]">
+            <SheetContent side="left" className="w-[600px] sm:w-[800px]">
+              <SheetTitle className="text-xl font-semibold mb-4">
+                Search Options
+              </SheetTitle>
               <div className="h-[calc(100vh-4rem)] overflow-y-auto pr-4">
                 <SearchOptions
                   selectedOptions={new Set([currentFilter.strategy])}
@@ -258,7 +345,7 @@ export default function SearchPage() {
                 value={currentFilter.query}
                 onChange={(e) => setCurrentFilter({ ...currentFilter, query: e.target.value })}
                 placeholder="YYYY-MM-DD"
-                className="flex-1 h-12 text-lg"
+                className="flex-1 h-12 text-lg max-w-xl"
               />
             ) : (
               <Input
@@ -266,7 +353,7 @@ export default function SearchPage() {
                 value={currentFilter.query}
                 onChange={(e) => setCurrentFilter({ ...currentFilter, query: e.target.value })}
                 placeholder="Enter search query..."
-                className="flex-1 h-12 text-lg"
+                className="flex-1 h-12 text-lg max-w-xl"
               />
             )
           )}
@@ -276,20 +363,27 @@ export default function SearchPage() {
             className="h-12 px-6 text-lg flex items-center gap-2"
             disabled={!currentFilter.strategy || (!BOOLEAN_STRATEGIES.has(currentFilter.strategy) && !currentFilter.query)}
           >
-            <Plus className="h-5 w-5" />
-            Add to Query
+            {getActionButtonText()}
           </Button>
         </div>
       </div>
 
-      <div id="current-query" className="w-full max-w-4xl space-y-4">
+      <div id="current-query" className="w-full max-w-6xl space-y-4">
         <h2 className="text-2xl font-semibold text-center text-gray-800">Current Query</h2>
         <div className="bg-gray-100 p-6 rounded-lg min-h-[100px] flex items-center justify-center border border-gray-300 shadow-sm">
-          {queryParts.length === 0 ? (
+          {queryParts.length === 0 && !shouldShowPreview() ? (
             <p className="text-gray-500 text-lg">No conditions added yet.</p>
           ) : (
             <div className="space-y-4 w-full">
               {queryParts.map((part, index) => renderQueryPart(part, index))}
+              {shouldShowPreview() && renderQueryPart(
+                { 
+                  filter: currentFilter, 
+                  operator: logicOperator 
+                }, 
+                queryParts.length,
+                true
+              )}
             </div>
           )}
         </div>
