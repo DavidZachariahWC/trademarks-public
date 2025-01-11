@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 import logging
 import time
-from sqlalchemy import union_all, intersect, text, select, distinct
+from sqlalchemy import union_all, intersect, text, select, distinct, func, or_
 from sqlalchemy.orm import Session, Query
 from models import CaseFile, CaseFileHeader
 from search_engine import SearchEngine
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_page: int = 10, logic_operator: str = 'OR') -> Dict[str, Any]:
     """
-    Combine multiple search conditions using CTEs.
+    Combine multiple search conditions using JOINs.
 
     Args:
         conditions: List of dicts, each containing:
@@ -41,8 +41,8 @@ def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_pag
 
     session = get_db_session()
     try:
-        # Build subqueries for each condition
-        subqueries = []
+        # Build queries for each condition
+        queries = []
         for i, condition in enumerate(conditions):
             strategy_name = condition.get('strategy')
             query_str = condition.get('query', '')
@@ -58,23 +58,16 @@ def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_pag
             strategy = StrategyClass(query_str, page=1, per_page=999999999)
 
             # Build the base query
-            subq = strategy.build_query(session)
+            query = strategy.build_query(session)
 
-            # Handle both Query and subquery/CTE cases
-            if isinstance(subq, Query):
-                # If it's a Query, convert it to a subquery selecting only serial_number
-                subq_serials = subq.with_entities(CaseFile.serial_number).subquery()
-            else:
-                # If it's already a subquery/CTE, select serial_number
-                subq_serials = select(subq.c.serial_number).subquery()
+            # Ensure only necessary columns are selected
+            query = query.with_entities(CaseFile.serial_number)
+            
+            queries.append(query)
+            logger.debug(f"Built query for condition {i+1}")
 
-            subqueries.append(subq_serials)
-            # Print the SQL for each subquery
-            logger.info(f"Subquery {i+1} SQL: {str(subq_serials.compile(compile_kwargs={'literal_binds': True}))}")
-            logger.debug(f"Built subquery for condition {i+1}")
-
-        if not subqueries:
-            logger.warning("No valid subqueries generated")
+        if not queries:
+            logger.warning("No valid queries generated")
             return {
                 'results': [],
                 'pagination': {
@@ -85,55 +78,50 @@ def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_pag
                 }
             }
 
-        # Combine subqueries using the specified logic operator
-        logger.debug("Starting query combination")
-        combined_query = subqueries[0]
-        for i, subq in enumerate(subqueries[1:], 1):
-            if logic_operator.upper() == 'AND':
-                combined_query = select(combined_query.c.serial_number).intersect(select(subq.c.serial_number)).subquery()
-            else:  # OR
-                combined_query = select(combined_query.c.serial_number).union_all(select(subq.c.serial_number)).subquery()
-            logger.debug(f"Combined query {i+1} with operator {logic_operator}")
+        # Build final query joining back to get full case details
+        query_start = time.time()
 
-        # Create CTE from the combined subquery
-        combined_cte = select(combined_query).cte('combined_serials')
+        final_query = session.query(CaseFile).join(CaseFileHeader)
 
-        # Get total count for pagination
-        count_start = time.time()
-        count_query = session.query(text('COUNT(DISTINCT serial_number)')).select_from(combined_cte)
+        for i, query in enumerate(queries):
+            alias = f"subquery_{i}"
+            final_query = final_query.join(query.subquery(alias), text(f"{alias}.serial_number") == CaseFile.serial_number)
+
+        # Apply the logic operator to filter the results
+        if logic_operator.upper() == 'AND':
+            # For 'AND', all conditions must match, so no further action needed
+            pass
+        else:
+            # For 'OR', any condition can match
+            # We need to apply distinct since multiple joins can cause duplicate rows
+            final_query = final_query.distinct()
+
+        # Get total count for pagination - Use a subquery to count distinct serial numbers
+        count_query = session.query(func.count(distinct(CaseFile.serial_number))).select_from(final_query.subquery())
         total_count = count_query.scalar() or 0
-        logger.info(f"Found {total_count} total results in {time.time() - count_start:.2f}s")
+
+        logger.info(f"Found {total_count} total results in {time.time() - query_start:.2f}s")
 
         total_pages = (total_count + per_page - 1) // per_page
         offset = (page - 1) * per_page
         logger.debug(f"Pagination: page {page}/{total_pages}, offset={offset}, limit={per_page}")
 
-        # Build final query joining back to get full case details
-        query_start = time.time()
-
-        # Subquery to get distinct serial_numbers with explicit label
-        distinct_serial_numbers = select(distinct(combined_cte.c.serial_number).label('serial_number')).subquery()
-
-        final_query = (
-            session.query(
-                CaseFile.serial_number,
-                CaseFile.registration_number,
-                CaseFileHeader.mark_identification,
-                CaseFileHeader.status_code,
-                CaseFileHeader.filing_date,
-                CaseFileHeader.registration_date,
-                CaseFileHeader.attorney_name
-            )
-            .join(CaseFileHeader)
-            .join(distinct_serial_numbers, distinct_serial_numbers.c.serial_number == CaseFile.serial_number)
-            .order_by(CaseFileHeader.filing_date.desc())
+        # Add the columns you want to select from CaseFile and CaseFileHeader
+        final_query = final_query.add_columns(
+            CaseFile.serial_number,
+            CaseFile.registration_number,
+            CaseFileHeader.mark_identification,
+            CaseFileHeader.status_code,
+            CaseFileHeader.filing_date,
+            CaseFileHeader.registration_date,
+            CaseFileHeader.attorney_name
         )
 
-        # Print the final query SQL before pagination
-        logger.info(f"Final query SQL: {str(final_query.statement.compile(compile_kwargs={'literal_binds': True}))}")
+        # Order by and apply pagination to final query
+        final_query = final_query.order_by(CaseFileHeader.filing_date.desc()).limit(per_page).offset(offset)
 
-        # Apply pagination to final query
-        final_query = final_query.limit(per_page).offset(offset)
+        # Print the final query SQL before execution
+        logger.info(f"Final query SQL: {str(final_query.statement.compile(compile_kwargs={'literal_binds': True}))}")
 
         # Execute and format results
         results = []
