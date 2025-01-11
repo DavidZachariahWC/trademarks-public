@@ -9,7 +9,7 @@ interface SearchOptionsProps {
   selectedOptions: Set<string>
   selectedBooleanOptions: Set<string>
   onOptionChange: (option: string, checked: boolean) => void
-  onBooleanOptionChange: (option: string) => void
+  onBooleanOptionChange: (option: string, checked: boolean) => void
 }
 
 const GENERAL_OPTIONS = [
@@ -38,17 +38,22 @@ const DATE_OPTIONS = [
   { id: 'foreign_renewal_date', label: 'Foreign Renewal Date' },
 ]
 
-const FILING_STATUS_OPTIONS = [
-  { id: 'section_12c', label: 'Section 12(c) Filed' },
-  { id: 'section_8', label: 'Section 8 Filed' },
-  { id: 'section_15', label: 'Section 15 Filed' },
-  { id: 'no_current_basis', label: 'No Current Basis' },
-  { id: 'no_initial_basis', label: 'No Initial Basis' },
-  { id: 'change_registration', label: 'Change Registration' },
-  { id: 'concurrent_use', label: 'Concurrent Use' },
-  { id: 'concurrent_use_proceeding', label: 'Concurrent Use Proceeding' },
-  { id: 'name_change', label: 'Name Change' },
+const SECTION_8_OPTIONS = [
+  { id: 'section_8_filed', label: 'Filed' },
+  { id: 'section_8_partial_accept', label: 'Partially Accepted' },
+  { id: 'section_8_accepted', label: 'Accepted' },
 ]
+
+const SECTION_15_OPTIONS = [
+  { id: 'section_15_filed', label: 'Filed' },
+  { id: 'section_15_acknowledged', label: 'Acknowledged' },
+]
+
+const SECTION_12C_OPTIONS = [
+  { id: 'section_12c', label: 'Filed' },
+]
+
+const FILING_STATUS_BOOLEAN_OPTIONS: { id: string, label: string }[] = []
 
 const FILING_BASIS_OPTIONS = [
   { id: 'foreign_priority', label: 'Foreign Priority Claim (44(d))' },
@@ -114,33 +119,112 @@ export default function SearchOptions({
       <div className="space-y-3">
         {options.map(({ id, label }) => (
           <div key={id} className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
-               onClick={() => isBoolean ? onBooleanOptionChange(id) : onOptionChange(id, !selectedOptions.has(id))}>
+               onClick={() => isBoolean ? onBooleanOptionChange(id, !selectedBooleanOptions.has(id)) : onOptionChange(id, !selectedOptions.has(id))}>
             <Checkbox
               id={id}
               checked={isBoolean ? selectedBooleanOptions.has(id) : selectedOptions.has(id)}
-              onCheckedChange={(checked) => isBoolean ? onBooleanOptionChange(id) : onOptionChange(id, checked as boolean)}
+              onCheckedChange={(checked) => 
+                isBoolean 
+                  ? onBooleanOptionChange(id, checked === true)
+                  : onOptionChange(id, checked === true)
+              }
               className="h-5 w-5"
             />
             <Label htmlFor={id} className="text-base cursor-pointer flex-1">
               {label}
             </Label>
-            {id === 'drawing_code_type' && (
-              <Select>
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="Select drawing code" />
-                </SelectTrigger>
-                <SelectContent>
-                  {DRAWING_CODE_OPTIONS.map(option => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
           </div>
         ))}
       </div>
+    </div>
+  )
+
+  const renderFilingStatusSection = () => (
+    <div className="mb-8">
+      <h3 className="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">Filing Status</h3>
+      
+      {/* Section 8 Group */}
+      <div className="mb-4">
+        <h4 className="text-sm font-medium text-gray-700 mb-2">Section 8</h4>
+        <div className="space-y-3 pl-2">
+          {SECTION_8_OPTIONS.map(({ id, label }) => (
+            <div key={id} className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
+                 onClick={() => onBooleanOptionChange(id, !selectedBooleanOptions.has(id))}>
+              <Checkbox
+                id={id}
+                checked={selectedBooleanOptions.has(id)}
+                onCheckedChange={(checked) => onBooleanOptionChange(id, checked === true)}
+                className="h-5 w-5"
+              />
+              <Label htmlFor={id} className="text-base cursor-pointer flex-1">
+                {label}
+              </Label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Section 15 Group */}
+      <div className="mb-4">
+        <h4 className="text-sm font-medium text-gray-700 mb-2">Section 15</h4>
+        <div className="space-y-3 pl-2">
+          {SECTION_15_OPTIONS.map(({ id, label }) => (
+            <div key={id} className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
+                 onClick={() => onBooleanOptionChange(id, !selectedBooleanOptions.has(id))}>
+              <Checkbox
+                id={id}
+                checked={selectedBooleanOptions.has(id)}
+                onCheckedChange={(checked) => onBooleanOptionChange(id, checked === true)}
+                className="h-5 w-5"
+              />
+              <Label htmlFor={id} className="text-base cursor-pointer flex-1">
+                {label}
+              </Label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Section 12(c) Group */}
+      <div className="mb-4">
+        <h4 className="text-sm font-medium text-gray-700 mb-2">Section 12(c)</h4>
+        <div className="space-y-3 pl-2">
+          {SECTION_12C_OPTIONS.map(({ id, label }) => (
+            <div key={id} className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
+                 onClick={() => onBooleanOptionChange(id, !selectedBooleanOptions.has(id))}>
+              <Checkbox
+                id={id}
+                checked={selectedBooleanOptions.has(id)}
+                onCheckedChange={(checked) => onBooleanOptionChange(id, checked === true)}
+                className="h-5 w-5"
+              />
+              <Label htmlFor={id} className="text-base cursor-pointer flex-1">
+                {label}
+              </Label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Other Filing Status Options */}
+      {FILING_STATUS_BOOLEAN_OPTIONS.length > 0 && (
+        <div className="space-y-3">
+          {FILING_STATUS_BOOLEAN_OPTIONS.map(({ id, label }) => (
+            <div key={id} className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
+                 onClick={() => onBooleanOptionChange(id, !selectedBooleanOptions.has(id))}>
+              <Checkbox
+                id={id}
+                checked={selectedBooleanOptions.has(id)}
+                onCheckedChange={(checked) => onBooleanOptionChange(id, checked === true)}
+                className="h-5 w-5"
+              />
+              <Label htmlFor={id} className="text-base cursor-pointer flex-1">
+                {label}
+              </Label>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 
@@ -148,7 +232,7 @@ export default function SearchOptions({
     <div className="py-6 px-2">
       {renderSection('General Search', GENERAL_OPTIONS)}
       {renderSection('Date Filters', DATE_OPTIONS)}
-      {renderSection('Filing Status', FILING_STATUS_OPTIONS, true)}
+      {renderFilingStatusSection()}
       {renderSection('Filing Basis', FILING_BASIS_OPTIONS)}
       {renderSection('Classification', CLASSIFICATION_OPTIONS)}
       {renderSection('International Registration', INTERNATIONAL_REGISTRATION_OPTIONS)}
