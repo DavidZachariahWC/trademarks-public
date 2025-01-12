@@ -2072,3 +2072,47 @@ WHERE classification.international_code IN ('001', '002', '006', '019', '035', '
 2025-01-11 18:20:54,816 - multi_filter_search - INFO - Query executed in 21.27s, total processing time: 21.27s
 2025-01-11 18:20:54,850 - werkzeug - INFO - 127.0.0.1 - - [11/Jan/2025 18:20:54] "POST /api/combined_search HTTP/1.1" 200 -
 2025-01-11 18:21:07,380 - werkzeug - INFO - 127.0.0.1 - - [11/Jan/2025 18:21:07] "GET /api/case/73246775 HTTP/1.1" 200 -
+2025-01-11 18:39:50,444 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-11 18:39:50,445 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-11 18:39:51,619 - multi_filter_search - INFO - Found 36945 total results in 1.17s
+2025-01-11 18:39:51,621 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-11 18:39:51,870 - multi_filter_search - INFO - Query executed in 1.42s, total processing time: 1.43s
+2025-01-11 18:39:51,905 - werkzeug - INFO - 127.0.0.1 - - [11/Jan/2025 18:39:51] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-12 13:37:11,819 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-12 13:37:11,819 - multi_filter_search - INFO - Processing condition 1: strategy=serial_number, query=74160632
+2025-01-12 13:37:12,700 - multi_filter_search - INFO - Found 0 total results in 0.88s
+2025-01-12 13:37:12,701 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '74160632') AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-12 13:37:12,745 - multi_filter_search - INFO - Query executed in 0.92s, total processing time: 0.93s
+2025-01-12 13:37:12,779 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 13:37:12] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-12 13:37:18,992 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 13:37:18] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-12 13:37:18,995 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-12 13:37:18,995 - multi_filter_search - INFO - Processing condition 1: strategy=serial_number, query=74160632
+2025-01-12 13:37:19,070 - multi_filter_search - INFO - Found 0 total results in 0.07s
+2025-01-12 13:37:19,072 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '74160632') AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-12 13:37:19,115 - multi_filter_search - INFO - Query executed in 0.12s, total processing time: 0.12s
+2025-01-12 13:37:19,149 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 13:37:19] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-12 13:38:15,832 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 13:38:15] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-12 13:38:15,836 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-12 13:38:15,837 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-12 13:38:16,228 - multi_filter_search - INFO - Found 36945 total results in 0.39s
+2025-01-12 13:38:16,229 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-12 13:38:16,507 - multi_filter_search - INFO - Query executed in 0.67s, total processing time: 0.67s
+2025-01-12 13:38:16,545 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 13:38:16] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-12 13:38:27,763 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 13:38:27] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-12 13:38:27,952 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 13:38:27] "GET /api/case/73220202 HTTP/1.1" 200 -

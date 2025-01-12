@@ -15,6 +15,8 @@ import { Plus, X, ChevronRight, Search } from 'lucide-react'
 import { API_ENDPOINTS } from '@/lib/api-config'
 import type { SearchResult } from '@/utils/types/case'
 import CoordinatedClassSelector from './CoordinatedClassSelector'
+import { toast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster"
 
 // Strategies that require date input in YYYY-MM-DD format
 const DATE_STRATEGIES = new Set([
@@ -82,27 +84,39 @@ export default function SearchPage() {
   })
 
   const addToQuery = () => {
-    if (!currentFilter.strategy || (!BOOLEAN_STRATEGIES.has(currentFilter.strategy) && !currentFilter.query)) {
-      setError('Please select a search option and enter a query')
-      return
+    // Check if this strategy is already used in queryParts
+    const isDuplicate = queryParts.some(part => part.filter.strategy === currentFilter.strategy);
+    
+    if (isDuplicate) {
+      toast({
+        title: "Filter already in use",
+        description: "This filter type is already part of your query. Please use a different filter.",
+        variant: "destructive"
+      });
+      return;
     }
 
     if (editingIndex !== null) {
-      // Update existing query part
-      const newQueryParts = [...queryParts]
-      newQueryParts[editingIndex] = { filter: currentFilter, operator: logicOperator }
-      setQueryParts(newQueryParts)
-      setEditingIndex(null)
+      const newQueryParts = [...queryParts];
+      newQueryParts[editingIndex] = { 
+        filter: currentFilter,
+        operator: logicOperator 
+      };
+      setQueryParts(newQueryParts);
+      setEditingIndex(null);
     } else {
-      // Add new query part
-      setQueryParts([
-        ...queryParts,
-        { filter: currentFilter, operator: logicOperator }
-      ])
+      setQueryParts([...queryParts, { 
+        filter: currentFilter,
+        operator: logicOperator 
+      }]);
     }
-
+    
     // Reset current filter
-    setCurrentFilter({ strategy: 'wordmark', query: '' })
+    setCurrentFilter({
+      strategy: '',
+      query: '',
+      operator: logicOperator
+    });
   }
 
   const startEditing = (index: number) => {
@@ -137,13 +151,25 @@ export default function SearchPage() {
       return
     }
 
-    // If there's a valid current filter and we're not editing, add it to queryParts first
+    // Check if current filter would be a duplicate
+    const wouldBeDuplicate = currentFilter.strategy && 
+      queryParts.some(part => part.filter.strategy === currentFilter.strategy);
+
+    if (wouldBeDuplicate) {
+      toast({
+        title: "Filter already in use",
+        description: "This filter type is already part of your query. Please use a different filter.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // If there's a valid current filter, add it to queryParts
     if (shouldShowPreview()) {
-      setQueryParts([
-        ...queryParts,
-        { filter: currentFilter, operator: logicOperator }
-      ])
-      setCurrentFilter({ strategy: 'wordmark', query: '' })
+      setQueryParts([...queryParts, { 
+        filter: currentFilter,
+        operator: logicOperator 
+      }]);
     }
 
     // If we're editing, make sure to update the current part before searching
@@ -296,6 +322,7 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen bg-white p-6 md:p-10 flex flex-col items-center space-y-10">
+      <Toaster />
       <div className="w-full max-w-6xl space-y-8">
         <h2 className="text-3xl font-bold text-center text-gray-800">
           Federal Trademark Database Search
