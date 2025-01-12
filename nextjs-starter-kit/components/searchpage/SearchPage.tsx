@@ -14,6 +14,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/s
 import { Plus, X, ChevronRight, Search } from 'lucide-react'
 import { API_ENDPOINTS } from '@/lib/api-config'
 import type { SearchResult } from '@/utils/types/case'
+import CoordinatedClassSelector from './CoordinatedClassSelector'
 
 // Strategies that require date input in YYYY-MM-DD format
 const DATE_STRATEGIES = new Set([
@@ -289,6 +290,10 @@ export default function SearchPage() {
     )
   }
 
+  const handleClassSelect = (classes: string[]) => {
+    setCurrentFilter({ ...currentFilter, query: classes.join(',') })
+  }
+
   return (
     <div className="min-h-screen bg-white p-6 md:p-10 flex flex-col items-center space-y-10">
       <div className="w-full max-w-6xl space-y-8">
@@ -325,7 +330,10 @@ export default function SearchPage() {
                   selectedBooleanOptions={new Set()}
                   onOptionChange={(option, checked) => {
                     if (checked) {
-                      setCurrentFilter({ ...currentFilter, strategy: option })
+                      setCurrentFilter({ 
+                        strategy: option, 
+                        query: BOOLEAN_STRATEGIES.has(option) ? 'true' : ''  // Only clear for non-boolean filters
+                      })
                       setIsSidebarOpen(false)
                     }
                   }}
@@ -347,6 +355,10 @@ export default function SearchPage() {
                 placeholder="YYYY-MM-DD"
                 className="flex-1 h-12 text-lg max-w-xl"
               />
+            ) : currentFilter.strategy === 'coordinated_class' ? (
+              <div className="flex-1">
+                <CoordinatedClassSelector onClassSelect={handleClassSelect} />
+              </div>
             ) : (
               <Input
                 type="text"
