@@ -424,26 +424,10 @@ class CoordinatedClassSearchStrategy(BaseSearchStrategy):
                 CaseFileHeader.filing_date,
                 CaseFileHeader.registration_date,
                 CaseFileHeader.attorney_name,
-                Classification.international_code,
-                Classification.us_code
+                Classification.international_code
             ).filter(text('1=0'))
 
-        # Subquery #1: serials with at least one row matching international_code
-        subq_intl = (
-            session.query(Classification.serial_number)
-            .filter(Classification.international_code.in_(config['intl_classes']))
-        )
-
-        # Subquery #2: serials with at least one row matching us_code
-        subq_us = (
-            session.query(Classification.serial_number)
-            .filter(Classification.us_code.in_(config['us_classes']))
-        )
-
-        # We want cases that appear in both sets (meaning they have at least one row with each match)
-        intersect_subq = subq_intl.intersect(subq_us)
-
-        # Use these serials to get the main data
+        # Query for trademarks with matching international classes
         query = (
             session.query(
                 CaseFile.serial_number,
@@ -453,34 +437,25 @@ class CoordinatedClassSearchStrategy(BaseSearchStrategy):
                 CaseFileHeader.filing_date,
                 CaseFileHeader.registration_date,
                 CaseFileHeader.attorney_name,
-                Classification.international_code,
-                Classification.us_code
+                Classification.international_code
             )
             .join(CaseFileHeader)
             .join(Classification)
-            .filter(CaseFile.serial_number.in_(intersect_subq))
+            .filter(Classification.international_code.in_(config['intl_classes']))
+            .distinct()
         )
         return query
 
     def count_query(self, session: Session):
         config = COORDINATED_CLASS_CONFIG.get(self.query_str)
         if not config:
-            # Return zero results if invalid
             return session.query(func.count(CaseFile.serial_number)).filter(text('1=0'))
         
-        subq_intl = session.query(Classification.serial_number).filter(
-            Classification.international_code.in_(config['intl_classes'])
-        )
-        subq_us = session.query(Classification.serial_number).filter(
-            Classification.us_code.in_(config['us_classes'])
-        )
-        intersect_subq = subq_intl.intersect(subq_us)
-
         return (
             session.query(func.count(func.distinct(CaseFile.serial_number)))
             .join(CaseFileHeader)
             .join(Classification)
-            .filter(CaseFile.serial_number.in_(intersect_subq))
+            .filter(Classification.international_code.in_(config['intl_classes']))
         )
 
 class CancellationDateSearchStrategy(BaseSearchStrategy):

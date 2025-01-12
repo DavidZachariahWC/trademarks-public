@@ -65,7 +65,7 @@ COORDINATED_CLASS_CONFIG = {
         'intl_classes': ['009', '035', '041', '042'], 
         'us_classes': ['A', 'B', '200']
     },
-    'coord_class_017': {
+    '017': {
         'intl_classes': ['001', '002', '006', '019', '035', '037', '040', '042'],
         'us_classes': ['A', 'B', '200']
     },
