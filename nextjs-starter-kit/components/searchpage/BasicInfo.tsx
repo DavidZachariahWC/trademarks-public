@@ -7,6 +7,22 @@ interface BasicInfoProps {
   caseData: any // Replace 'any' with a proper type definition
 }
 
+function determineRegisterType(header: any): string {
+  if (header.supplemental_register_in) {
+    return 'Supplemental Register'
+  }
+  
+  if (header.section_2f_in) {
+    return 'Principal Register (Section 2(f))'
+  }
+  
+  if (header.section_2f_in_part_in) {
+    return 'Principal Register (Section 2(f) in part)'
+  }
+  
+  return 'Principal Register'
+}
+
 export default function BasicInfo({ caseData }: BasicInfoProps) {
   const {
     header,
@@ -14,27 +30,41 @@ export default function BasicInfo({ caseData }: BasicInfoProps) {
     registration_number
   } = caseData
 
+  const registerType = determineRegisterType(header)
+
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
       <h2 className="text-2xl font-bold mb-4">{header.mark_identification}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <InfoItem label="Serial Number" value={serial_number} />
-        <InfoItem label="Registration Number" value={registration_number || 'N/A'} />
+        <InfoItem label="US Serial Number" value={serial_number} />
+        <InfoItem label="US Registration Number" value={registration_number || 'N/A'} />
+        <InfoItem 
+          label="Mark Type" 
+          value={(() => {
+            // Certification mark must appear alone
+            if (header.certification_mark_in) {
+              return 'Certification Mark';
+            }
+            
+            // Collect all other active mark types
+            const types = [];
+            if (header.trademark_in) types.push('Trademark');
+            if (header.service_mark_in) types.push('Service Mark');
+            if (header.collective_trademark_in) types.push('Collective Trademark');
+            if (header.collective_service_mark_in) types.push('Collective Service Mark');
+            if (header.collective_membership_mark_in) types.push('Collective Membership Mark');
+            
+            return types.length > 0 ? types.join(' and ') : 'N/A';
+          })()} 
+        />
+        <InfoItem label="Register" value={registerType} />
         <InfoItem label="Status" value={header.status_code || 'N/A'} />
+        <InfoItem label="Status Date" value={formatDate(header.status_date)} />
         <InfoItem label="Filing Date" value={formatDate(header.filing_date)} />
         <InfoItem label="Registration Date" value={formatDate(header.registration_date)} />
         <InfoItem label="Date Cancelled" value={formatDate(header.cancellation_date)} />
-        <InfoItem label="Published for Opposition" value={formatDate(header.published_for_opposition_date) || 'No'} />
+        <InfoItem label="Publication Date" value={formatDate(header.published_for_opposition_date) || 'No'} />
         <InfoItem label="Attorney of Record" value={formatAttorneys(header.attorney_name)} />
-        <InfoItem 
-          label="Republished 12c Date" 
-          value={formatDate(header.republished_12c_date)}
-          tooltip="This indicates the date the mark was republished under section 12(c)."
-        />
-        <InfoItem label="Section 8 Partial Accept" value={header.section_8_partial_accept_in ? 'Yes' : 'No'} />
-        <InfoItem label="Section 8 Accepted" value={header.section_8_accepted_in ? 'Yes' : 'No'} />
-        <InfoItem label="Section 15 Filed" value={header.section_15_filed_in ? 'Yes' : 'No'} />
-        <InfoItem label="Section 15 Acknowledged" value={header.section_15_acknowledged_in ? 'Yes' : 'No'} />
         <InfoItem label="Change Registration" value={header.change_registration_in ? 'Yes' : 'No'} />
         <InfoItem label="Concurrent Use" value={header.concurrent_use_in ? 'Yes' : 'No'} />
         <InfoItem label="Concurrent Use Proceeding" value={header.concurrent_use_proceeding_in ? 'Yes' : 'No'} />

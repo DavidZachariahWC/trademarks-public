@@ -1,6 +1,7 @@
 export interface CaseHeader {
   mark_identification: string
   status_code: string | null
+  status_date: string | null
   filing_date: string | null
   registration_date: string | null
   cancellation_date: string | null
@@ -33,6 +34,7 @@ export interface CaseHeader {
   drawing_3d_filed_in: boolean
   section_2f_in: boolean
   section_2f_in_part_in: boolean
+  supplemental_register_in: boolean
 }
 
 export interface Classification {
