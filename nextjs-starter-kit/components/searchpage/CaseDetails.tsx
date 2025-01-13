@@ -15,6 +15,7 @@ import ForeignApplications from './ForeignApplications'
 import MarkInformation from './MarkInformation'
 import CorrespondentInfo from './CorrespondentInfo'
 import EventStatements from './EventStatements'
+import SectionStatus from './SectionStatus'
 
 interface CaseDetailsProps {
   case: Case
@@ -27,6 +28,8 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
       
       <div className="space-y-6">
         <BasicInfo caseData={caseData} />
+        
+        <SectionStatus header={caseData.header} />
         
         {caseData.owners && caseData.owners.length > 0 && (
           <OwnerInfo owners={caseData.owners} />

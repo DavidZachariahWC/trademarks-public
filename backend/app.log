@@ -2116,3 +2116,29 @@ WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(
 2025-01-12 13:38:16,545 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 13:38:16] "POST /api/combined_search HTTP/1.1" 200 -
 2025-01-12 13:38:27,763 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 13:38:27] "GET /api/case/73220202 HTTP/1.1" 200 -
 2025-01-12 13:38:27,952 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 13:38:27] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-12 15:58:10,541 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-12 15:58:10,542 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-12 15:58:10,548 - multi_filter_search - INFO - Processing condition 2: strategy=, query=sd
+2025-01-12 15:58:10,549 - multi_filter_search - WARNING - Unknown strategy: 
+2025-01-12 15:58:11,599 - multi_filter_search - INFO - Found 36945 total results in 1.05s
+2025-01-12 15:58:11,600 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-12 15:58:11,933 - multi_filter_search - INFO - Query executed in 1.38s, total processing time: 1.39s
+2025-01-12 15:58:11,969 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 15:58:11] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-12 16:00:43,107 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 16:00:43] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-12 16:00:43,113 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-12 16:00:43,113 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-12 16:00:43,341 - multi_filter_search - INFO - Found 36945 total results in 0.22s
+2025-01-12 16:00:43,344 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-12 16:00:43,551 - multi_filter_search - INFO - Query executed in 0.43s, total processing time: 0.44s
+2025-01-12 16:00:43,586 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 16:00:43] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-12 16:00:47,671 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 16:00:47] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-12 16:00:47,952 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 16:00:47] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-12 16:47:43,664 - werkzeug - INFO - 127.0.0.1 - - [12/Jan/2025 16:47:43] "GET /api/case/73220202 HTTP/1.1" 200 -
