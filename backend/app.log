@@ -2369,3 +2369,225 @@ WHERE casefileheader.attorney_name IS NOT NULL AND (similarity(coalesce(casefile
  LIMIT 20 OFFSET 0
 2025-01-13 16:28:08,984 - multi_filter_search - INFO - Query executed in 0.74s, total processing time: 0.74s
 2025-01-13 16:28:09,017 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 16:28:09] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-13 16:29:21,631 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 16:29:21] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-13 16:29:21,634 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-13 16:29:21,635 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-13 16:29:21,869 - multi_filter_search - INFO - Found 36945 total results in 0.23s
+2025-01-13 16:29:21,876 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-13 16:29:22,116 - multi_filter_search - INFO - Query executed in 0.48s, total processing time: 0.48s
+2025-01-13 16:29:22,147 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 16:29:22] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-13 16:29:23,866 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 16:29:23] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-13 16:29:23,900 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 16:29:23] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-13 23:25:57,981 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-13 23:25:57,981 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-13 23:25:57,985 - multi_filter_search - ERROR - Error in multi_filter_search: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 101, in multi_filter_search
+    total_count = count_query.scalar() or 0
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2831, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2804, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-13 23:25:57,999 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:25:57] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-13 23:26:06,570 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:26:06] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-13 23:26:06,575 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-13 23:26:06,576 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-13 23:26:07,452 - multi_filter_search - INFO - Found 36945 total results in 0.87s
+2025-01-13 23:26:07,457 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-13 23:26:07,697 - multi_filter_search - INFO - Query executed in 1.12s, total processing time: 1.12s
+2025-01-13 23:26:07,730 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:26:07] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-13 23:26:09,615 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:26:09] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-13 23:26:09,782 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:26:09] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-13 23:32:11,269 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:32:11] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-13 23:32:11,274 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-13 23:32:11,274 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=coonhound bloodlines
+2025-01-13 23:32:11,546 - multi_filter_search - INFO - Found 36945 total results in 0.27s
+2025-01-13 23:32:11,552 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'coonhound bloodlines') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%coonhound bloodlines%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-13 23:32:11,852 - multi_filter_search - INFO - Query executed in 0.57s, total processing time: 0.58s
+2025-01-13 23:32:11,888 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:32:11] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-13 23:32:14,384 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:32:14] "GET /api/case/73054589 HTTP/1.1" 200 -
+2025-01-13 23:32:14,443 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:32:14] "GET /api/case/73054589 HTTP/1.1" 200 -
+2025-01-13 23:32:30,143 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:32:30] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-13 23:32:30,144 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:32:30] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-13 23:32:30,160 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=20
+2025-01-13 23:32:30,160 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=20
+2025-01-13 23:32:30,160 - multi_filter_search - INFO - Processing condition 1: strategy=attorney_name, query=Timothy K. Kroninger
+2025-01-13 23:32:30,160 - multi_filter_search - INFO - Processing condition 1: strategy=attorney_name, query=Timothy K. Kroninger
+2025-01-13 23:32:30,797 - multi_filter_search - INFO - Found 36945 total results in 0.64s
+2025-01-13 23:32:30,798 - multi_filter_search - INFO - Found 36945 total results in 0.63s
+2025-01-13 23:32:30,803 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.attorney_name IS NOT NULL AND (similarity(coalesce(casefileheader.attorney_name, ''), 'Timothy K. Kroninger') > 0.3 OR lower(coalesce(casefileheader.attorney_name, '')) LIKE lower('%Timothy K. Kroninger%'))) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 20 OFFSET 0
+2025-01-13 23:32:30,806 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.attorney_name IS NOT NULL AND (similarity(coalesce(casefileheader.attorney_name, ''), 'Timothy K. Kroninger') > 0.3 OR lower(coalesce(casefileheader.attorney_name, '')) LIKE lower('%Timothy K. Kroninger%'))) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 20 OFFSET 0
+2025-01-13 23:32:31,206 - multi_filter_search - INFO - Query executed in 1.04s, total processing time: 1.05s
+2025-01-13 23:32:31,207 - multi_filter_search - INFO - Query executed in 1.05s, total processing time: 1.05s
+2025-01-13 23:32:31,238 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:32:31] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-13 23:32:31,239 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:32:31] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-13 23:32:34,994 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:32:34] "GET /api/case/73244000 HTTP/1.1" 200 -
+2025-01-13 23:32:35,033 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:32:35] "GET /api/case/73244000 HTTP/1.1" 200 -
+2025-01-13 23:34:46,234 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:34:46] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-13 23:34:46,237 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-13 23:34:46,238 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-13 23:34:46,479 - multi_filter_search - INFO - Found 36945 total results in 0.24s
+2025-01-13 23:34:46,486 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-13 23:34:46,692 - multi_filter_search - INFO - Query executed in 0.45s, total processing time: 0.45s
+2025-01-13 23:34:46,726 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:34:46] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-13 23:34:48,006 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:34:48] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-13 23:34:48,048 - werkzeug - INFO - 127.0.0.1 - - [13/Jan/2025 23:34:48] "GET /api/case/73220202 HTTP/1.1" 200 -
