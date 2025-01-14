@@ -1,6 +1,9 @@
 import React from 'react'
+import { legalEntityTypes } from '@/utils/constants/legalEntityTypes'
 
 interface Owner {
+  owner_entry_number: number
+  party_type: number
   party_name: string
   owner_address_1: string
   owner_address_2?: string
@@ -8,6 +11,7 @@ interface Owner {
   owner_state?: string
   postcode?: string
   owner_country?: string
+  owner_other?: string
   dba_aka_text?: string
   entity_statement?: string
   composed_of_statement?: string
@@ -15,8 +19,7 @@ interface Owner {
   nationality_country?: string
   nationality_state?: string
   nationality_other?: string
-  legal_entity_type_code?: string
-  party_type?: string
+  legal_entity_type_code: number
 }
 
 interface OwnerInfoProps {
@@ -82,7 +85,8 @@ export default function OwnerInfo({ owners }: OwnerInfoProps) {
                 )}
               </div>
               <p className="mt-2">
-                <span className="font-semibold">Legal Entity Type:</span> {owner.legal_entity_type_code || 'N/A'}
+                <span className="font-semibold">Legal Entity Type:</span>{' '}
+                {legalEntityTypes[owner.legal_entity_type_code]?.description || 'N/A'}
               </p>
               <p className="mt-2">
                 <span className="font-semibold">Party Type:</span> {owner.party_type || 'N/A'}
