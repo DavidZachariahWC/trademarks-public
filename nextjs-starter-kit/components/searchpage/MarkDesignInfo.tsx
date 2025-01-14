@@ -1,7 +1,18 @@
 import React from 'react'
 import { Case } from '@/utils/types/case'
-import InfoItem from '../shared/InfoItem'
 import { formatDate, getDrawingCodeDescription } from '@/lib/utils'
+
+interface InfoItemProps {
+  label: string
+  value: string | null | boolean
+}
+
+const InfoItem: React.FC<InfoItemProps> = ({ label, value }) => (
+  <div className="mb-2">
+    <span className="font-semibold text-gray-700">{label}:</span>{' '}
+    <span className="text-gray-900">{typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value || 'N/A'}</span>
+  </div>
+)
 
 interface MarkDesignInfoProps {
   caseData: Case
@@ -9,8 +20,7 @@ interface MarkDesignInfoProps {
 
 export default function MarkDesignInfo({ caseData }: MarkDesignInfoProps) {
   const { header, statements, design_searches } = caseData
-
-  const markDescriptions = statements?.filter(statement => statement.type_code === 'DM0000') ?? []
+  const markDescriptions = statements?.filter(statement => statement.type_code === 'DM0000') || []
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
@@ -49,14 +59,25 @@ export default function MarkDesignInfo({ caseData }: MarkDesignInfoProps) {
         )}
 
         {design_searches && design_searches.length > 0 && (
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Design Search Codes</h3>
-            {design_searches.map((design, index) => (
-              <p key={index} className="mb-1">
-                <span className="font-semibold">Design Code:</span> {design.design_search_code}
-              </p>
-            ))}
-          </div>
+          <>
+            <div className="mt-6 bg-gray-50 p-4 rounded-lg mb-4">
+              <h3 className="font-semibold text-gray-700 mb-3">Concurrent Use Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <InfoItem label="Concurrent Use" value={header.concurrent_use_in ? 'Yes' : 'No'} />
+                <InfoItem label="Concurrent Use Proceeding" value={header.concurrent_use_proceeding_in ? 'Yes' : 'No'} />
+                <InfoItem label="Published Concurrent" value={header.published_concurrent_in ? 'Yes' : 'No'} />
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold mb-2">Design Search Codes</h3>
+              {design_searches.map((design, index) => (
+                <p key={index} className="mb-1">
+                  <span className="font-semibold">Design Code:</span> {design.design_search_code}
+                </p>
+              ))}
+            </div>
+          </>
         )}
 
         <InfoItem

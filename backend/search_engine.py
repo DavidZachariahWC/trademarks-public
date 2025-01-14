@@ -72,7 +72,7 @@ class SearchEngine:
         'section_8_accepted': Section8AcceptedSearchStrategy,
         'section_15_filed': Section15FiledSearchStrategy,
         'section_15_acknowledged': Section15AcknowledgedSearchStrategy,
-        'attorney': AttorneySearchStrategy,
+        'attorney_name': AttorneySearchStrategy,
         'foreign_priority': ForeignPriorityClaimSearchStrategy,
         'foreign_registration': ForeignRegistrationSearchStrategy,
         'extension_protection': ExtensionProtectionSearchStrategy,
