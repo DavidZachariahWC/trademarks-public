@@ -254,7 +254,7 @@ interface BasisGroupProps {
 
 const BasisGroup: React.FC<BasisGroupProps> = ({ title, items }) => (
   <div>
-    <h3 className="font-medium mb-2">{title}</h3>
+    <h3 className="font-semibold mb-2">{title}</h3>
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
       {items.map((item, index) => (
         <div key={index} className="flex items-center">
