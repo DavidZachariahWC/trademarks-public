@@ -35,6 +35,12 @@ export interface CaseHeader {
   section_2f_in: boolean
   section_2f_in_part_in: boolean
   supplemental_register_in: boolean
+  certification_mark_in: boolean
+  trademark_in: boolean
+  service_mark_in: boolean
+  collective_trademark_in: boolean
+  collective_service_mark_in: boolean
+  collective_membership_mark_in: boolean
 }
 
 export interface Classification {
