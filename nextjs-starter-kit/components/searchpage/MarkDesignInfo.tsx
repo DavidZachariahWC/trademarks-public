@@ -1,6 +1,13 @@
 import React from 'react'
 import { Case } from '@/utils/types/case'
 import { formatDate, getDrawingCodeDescription } from '@/lib/utils'
+import { getDesignCodeDescription } from '@/utils/constants/designCodes'
+
+// Helper function to format design code with decimal points
+const formatDesignCode = (code: string): string => {
+  if (code.length !== 6) return code;
+  return `${code.slice(0, 2)}.${code.slice(2, 4)}.${code.slice(4, 6)}`;
+}
 
 interface InfoItemProps {
   label: string
@@ -71,11 +78,17 @@ export default function MarkDesignInfo({ caseData }: MarkDesignInfoProps) {
 
             <div>
               <h3 className="text-xl font-semibold mb-2">Design Search Codes</h3>
-              {design_searches.map((design, index) => (
-                <p key={index} className="mb-1">
-                  <span className="font-semibold">Design Code:</span> {design.design_search_code}
-                </p>
-              ))}
+              {design_searches.map((design, index) => {
+                const formattedCode = formatDesignCode(design.design_search_code);
+                return (
+                  <p key={index} className="mb-1">
+                    <span className="font-semibold">Design Code:</span> {formattedCode}{' '}
+                    <span className="text-gray-600">
+                      ({getDesignCodeDescription(formattedCode)})
+                    </span>
+                  </p>
+                );
+              })}
             </div>
           </>
         )}
