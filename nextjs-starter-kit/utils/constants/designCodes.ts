@@ -7077,8 +7077,991 @@ export const designCodeSections: Record<string, DesignCodeSection> = {
     description: "Miscellaneous designs with overall diamond shape, including letters forming or comprising a diamond",
     division: "26.07",
     excludes: "Jewelry (17.03)"
+  },
+  "26.09.01": {
+    code: "26.09.01",
+    description: "Squares as carriers or squares as single or multiple line borders",
+    division: "26.09",
+    guidelines: "If a square is coded as a carrier or a single or multiple line border, the drawing should not have any other code in 26.09. If there are multiple squares, one of which is a carrier or border, the significant square should be coded. The carrier or border will not be coded.",
+    excludes: "Carriers and borders do not include plain single line squares (26.09.02)"
+  },
+  "26.09.02": {
+    code: "26.09.02",
+    description: "Plain single line squares Including: Squares with slightly rounded corners. Including: A solid white square in another design element is coded as a plain single line square. For example, a solid white square in a circle",
+    division: "26.09"
+  },
+  "26.09.03": {
+    code: "26.09.03",
+    description: "Incomplete squares",
+    division: "26.09",
+    guidelines: "Squares whose borders are broken by words, letters or design elements are not incomplete.",
+    excludes: "Incomplete squares do not include entire squares made of broken or dotted lines (26.09.05)"
+  },
+  "26.09.05": {
+    code: "26.09.05",
+    description: "Squares made of broken or dotted lines",
+    division: "26.09"
+  },
+  "26.09.07": {
+    code: "26.09.07",
+    description: "Squares with a decorative border, including scalloped, ruffled and zig-zag edges Including: This section includes squares with concave corners",
+    division: "26.09"
+  },
+  "26.09.08": {
+    code: "26.09.08",
+    description: "Letters, numerals or punctuation forming the perimeter of a square, bordering the perimeter of a square or forming a square",
+    division: "26.09"
+  },
+  "26.09.09": {
+    code: "26.09.09",
+    description: "Squares made of geometric figures, objects, humans, plants or animals",
+    division: "26.09",
+    guidelines: "This section is cross-coded with the specific section(s) for the objects, humans, plants or animals which either form or border the perimeter or comprise the square."
+  },
+  "26.09.12": {
+    code: "26.09.12",
+    description: "Squares with bars, bands and lines",
+    division: "26.09"
+  },
+  "26.09.13": {
+    code: "26.09.13",
+    description: "Two squares",
+    division: "26.09",
+    excludes: "Squares inside one another (26.09.20) are not considered two squares for coding."
+  },
+  "26.09.14": {
+    code: "26.09.14",
+    description: "Three or more squares",
+    division: "26.09",
+    guidelines: "Checkerboards are coded in 25.03.01 also.",
+    excludes: "Squares inside one another (26.09.20) are not considered more than one square for coding."
+  },
+  "26.09.16": {
+    code: "26.09.16",
+    description: "Squares touching or intersecting",
+    division: "26.09"
+  },
+  "26.09.20": {
+    code: "26.09.20",
+    description: "Squares inside one another",
+    division: "26.09",
+    excludes: "Squares inside one another are not coded as more than one square (26.09.13)"
+  },
+  "26.09.21": {
+    code: "26.09.21",
+    description: "Squares that are completely or partially shaded",
+    division: "26.09",
+    guidelines: "This may encompass squares with bars, bands and lines (26.09.12)"
+  },
+  "26.09.25": {
+    code: "26.09.25",
+    description: "Squares with curved sides",
+    division: "26.09",
+    guidelines: "Alcohol bottle labels are coded in 20.03.10",
+    excludes: "Squares with curved corners (26.09.02) are not coded as squares with curved sides"
+  },
+  "26.09.28": {
+    code: "26.09.28",
+    description: "Miscellaneous designs with overall square shape",
+    division: "26.09"
+  },
+  "26.11.01": {
+    code: "26.11.01",
+    description: "Rectangles as carriers or rectangles as single or multiple line borders",
+    division: "26.11",
+    guidelines: "If a rectangle is coded as a carrier or a single or multiple line border, the drawing typically should not have any other code in 26.11. If there are multiple rectangles, one of which is a carrier or border, the significant rectangle should be coded. The carrier or border will not be coded."
+  },
+  "26.11.02": {
+    code: "26.11.02",
+    description: "Plain single line rectangles Including: Rectangles with slightly rounded corners. A solid white rectangle in another design element is coded as a plain single line rectangle. For example, a solid white rectangle in a circle",
+    division: "26.11"
+  },
+  "26.11.03": {
+    code: "26.11.03",
+    description: "Incomplete rectangles",
+    division: "26.11",
+    guidelines: "Rectangles whose borders are broken by words, letters or design elements are not incomplete.",
+    excludes: "Incomplete rectangles do not include entire rectangles made of broken or dotted lines (26.11.05)"
+  },
+  "26.11.05": {
+    code: "26.11.05",
+    description: "Rectangles made of broken or dotted lines",
+    division: "26.11"
+  },
+  "26.11.07": {
+    code: "26.11.07",
+    description: "Rectangles with a decorative border, including scalloped, ruffled and zig-zag edges",
+    division: "26.11"
+  },
+  "26.11.08": {
+    code: "26.11.08",
+    description: "Letters, numerals or punctuation and letters, numerals or punctuation forming the perimeter of a rectangle, bordering the perimeter of a rectangle or forming a rectangle",
+    division: "26.11"
+  },
+  "26.11.09": {
+    code: "26.11.09",
+    description: "Rectangles made of geometric figures, objects, humans, plants or animals",
+    division: "26.11",
+    guidelines: [
+      "This section is cross-coded with the specific section(s) for the objects, humans, plants or animals which either form or border the perimeter or comprise the rectangle.",
+      "See 26.11.27 for oblongs."
+    ].join("\n")
+  },
+  "26.11.10": {
+    code: "26.11.10",
+    description: "Rectangles divided once into two sections",
+    division: "26.11"
+  },
+  "26.11.11": {
+    code: "26.11.11",
+    description: "Rectangles divided twice into three sections",
+    division: "26.11"
+  },
+  "26.11.12": {
+    code: "26.11.12",
+    description: "Rectangles with bars, bands and lines",
+    division: "26.11",
+    excludes: "Rectangles with bars, bands and lines do not include rectangles divided once (26.11.10) or rectangles divided twice (26.11.11)"
+  },
+  "26.11.13": {
+    code: "26.11.13",
+    description: "Two rectangles",
+    division: "26.11",
+    guidelines: "This two rectangles code does not include rectangles divided once into two sections (26.11.10)",
+    excludes: "Rectangles inside one another (26.11.20) are not considered more than one rectangle for coding"
+  },
+  "26.11.14": {
+    code: "26.11.14",
+    description: "Three or more rectangles",
+    division: "26.11",
+    guidelines: "Three or more rectangles does not include rectangles divided twice into three sections (26.11.11)",
+    excludes: "Rectangles inside one another (26.11.20) are not considered more than one rectangle for coding"
+  },
+  "26.11.16": {
+    code: "26.11.16",
+    description: "Rectangles touching or intersecting",
+    division: "26.11",
+    guidelines: [
+      "Rectangles touching or intersecting do not include rectangles divided once into two sections (26.11.10) or rectangles divided twice into three sections (26.11.11)",
+      "Rectangles touching or intersecting may include incomplete rectangles (26.11.03)"
+    ].join("\n")
+  },
+  "26.11.20": {
+    code: "26.11.20",
+    description: "Rectangles inside another rectangle",
+    division: "26.11",
+    guidelines: "Specific Rectangles inside one another are not coded as more than one rectangle (26.11.13)"
+  },
+  "26.11.21": {
+    code: "26.11.21",
+    description: "Rectangles that are completely or partially shaded",
+    division: "26.11",
+    guidelines: "This may encompass rectangles with bars, bands and lines (26.11.12)"
+  },
+  "26.11.25": {
+    code: "26.11.25",
+    description: "Rectangles with one or more curved sides",
+    division: "26.11",
+    guidelines: "Alcohol bottle labels are coded in 20.03.10",
+    excludes: "Plain rectangles with curved corners (26.11.02) are not considered rectangles with curved sides. Oblongs are not considered rectangles with curved sides"
+  },
+  "26.11.26": {
+    code: "26.11.26",
+    description: "Oblongs as carriers for words, letters or designs",
+    division: "26.11",
+    guidelines: "Specific An oblong shaped figure is a geometric shape with approximately parallel sides and rounded ends"
+  },
+  "26.11.27": {
+    code: "26.11.27",
+    description: "Oblongs not being used as carriers for words, letters or designs",
+    division: "26.11"
+  },
+  "26.11.28": {
+    code: "26.11.28",
+    description: "Miscellaneous designs with overall rectangular shape",
+    division: "26.11"
+  },
+  "26.13.01": {
+    code: "26.13.01",
+    description: "Quadrilaterals as carriers or as single or multiple line borders",
+    division: "26.13",
+    guidelines: [
+      "For purposes of the code, a quadrilateral is defined as a four (4) sided geometric figure without four (4) right angles.",
+      "Designs which clearly depict banners are coded exclusively in 24.09.07.",
+      "If a quadrilateral is coded as a carrier or as a single or multiple line border, the drawing should not have any other code in 26.13. If there are multiple quadrilaterals, one of which is a carrier or a border, the significant quadrilateral will be coded. The carrier or border will not be coded."
+    ].join("\n"),
+    excludes: "Carriers and borders do not include plain single line quadrilaterals (26.13.02)"
+  },
+  "26.13.02": {
+    code: "26.13.02",
+    description: "Plain single or multiple line quadrilaterals Including: Quadrilaterals with slightly rounded corners and a solid white quadrilateral in another design element. For example, a solid white quadrilateral in a circle",
+    division: "26.13"
+  },
+  "26.13.03": {
+    code: "26.13.03",
+    description: "Incomplete quadrilaterals and quadrilaterals made of broken or dotted lines",
+    division: "26.13",
+    guidelines: "Quadrilaterals whose borders are broken by words, letters or design elements are not incomplete."
+  },
+  "26.13.07": {
+    code: "26.13.07",
+    description: "Quadrilaterals with a decorative border, including scalloped, ruffled and zig-zag edges",
+    division: "26.13"
+  },
+  "26.13.08": {
+    code: "26.13.08",
+    description: "Letters, numerals or punctuation forming the perimeter of a quadrilateral, bordering the perimeter of a quadrilateral or forming a quadrilateral",
+    division: "26.13"
+  },
+  "26.13.09": {
+    code: "26.13.09",
+    description: "Quadrilaterals made of geometric figures, objects, humans, plants or animals",
+    division: "26.13",
+    guidelines: "This section is cross-coded with the specific section(s) for the objects, humans, plants or animals which either form or border the perimeter or comprise the quadrilateral."
+  },
+  "26.13.12": {
+    code: "26.13.12",
+    description: "Quadrilaterals with bars, bands and lines",
+    division: "26.13"
+  },
+  "26.13.13": {
+    code: "26.13.13",
+    description: "Two quadrilaterals",
+    division: "26.13"
+  },
+  "26.13.14": {
+    code: "26.13.14",
+    description: "Three or more quadrilaterals",
+    division: "26.13"
+  },
+  "26.13.16": {
+    code: "26.13.16",
+    description: "Quadrilaterals touching or intersecting",
+    division: "26.13"
+  },
+  "26.13.21": {
+    code: "26.13.21",
+    description: "Quadrilaterals that are completely or partially shaded",
+    division: "26.13"
+  },
+  "26.13.25": {
+    code: "26.13.25",
+    description: "Quadrilaterals with one or more curved sides",
+    division: "26.13",
+    excludes: "Quadrilaterals with curved corners (26.13.02) are not considered to be quadrilaterals with curved sides"
+  },
+  "26.13.28": {
+    code: "26.13.28",
+    description: "Miscellaneous designs with overall quadrilateral shape",
+    division: "26.13"
+  },
+  "26.15.01": {
+    code: "26.15.01",
+    description: "Polygons as carriers or as single or multiple line borders",
+    division: "26.15",
+    guidelines: "If a polygon is coded as a carrier or as a single or multiple line border, the drawing should not have any other code in 26.15. If there are multiple polygons, one of which is a carrier or a border, the significant polygon should be coded. The carrier of border will not be coded."
+  },
+  "26.15.02": {
+    code: "26.15.02",
+    description: "Plain single or multiple line polygons Including: Polygons with slightly rounded corners. Including: A solid white polygon in another design element should be coded as a plain polygon. For example, a solid white polygon in a circle",
+    division: "26.15"
+  },
+  "26.15.03": {
+    code: "26.15.03",
+    description: "Incomplete polygons and polygons made of broken or dotted lines",
+    division: "26.15",
+    guidelines: "Polygons whose borders are broken by words, letters or design elements are not incomplete."
+  },
+  "26.15.07": {
+    code: "26.15.07",
+    description: "Polygons with a decorative border, including scalloped, ruffled and zig-zag edges",
+    division: "26.15"
+  },
+  "26.15.08": {
+    code: "26.15.08",
+    description: "Letters, numerals or punctuation forming the perimeter of a polygon, bordering the perimeter of a polygon or forming a polygon",
+    division: "26.15"
+  },
+  "26.15.09": {
+    code: "26.15.09",
+    description: "Polygons made of geometric figures, objects, humans, plants or animals",
+    division: "26.15",
+    guidelines: "This section is cross-coded with the specific section(s) for the objects, humans, plants or animals which either form or border the perimeter or comprise the polygon."
+  },
+  "26.15.12": {
+    code: "26.15.12",
+    description: "Polygons with bars, bands and lines",
+    division: "26.15"
+  },
+  "26.15.13": {
+    code: "26.15.13",
+    description: "More than one polygon",
+    division: "26.15",
+    excludes: "More than one polygon does not include polygons inside one another (26.15.20)"
+  },
+  "26.15.16": {
+    code: "26.15.16",
+    description: "Polygons touching or intersecting",
+    division: "26.15"
+  },
+  "26.15.20": {
+    code: "26.15.20",
+    description: "Polygons inside another polygon",
+    division: "26.15",
+    guidelines: "Specific Polygons inside another polygon are not coded as more than one polygon (26.15.13)"
+  },
+  "26.15.21": {
+    code: "26.15.21",
+    description: "Polygons that are completely or partially shaded",
+    division: "26.15"
+  },
+  "26.15.25": {
+    code: "26.15.25",
+    description: "Polygons with one or more curved sides",
+    division: "26.15"
+  },
+  "26.15.27": {
+    code: "26.15.27",
+    description: "Keystones",
+    division: "26.15",
+    guidelines: "Keystones are not double coded with any other third level code in Division 26.15"
+  },
+  "26.15.28": {
+    code: "26.15.28",
+    description: "Miscellaneous designs with overall polygon shape",
+    division: "26.15"
+  },
+  "26.17.01": {
+    code: "26.17.01",
+    description: "Straight line(s), band(s) or bar(s)",
+    division: "26.17",
+    guidelines: [
+      "Straight lines (26.17.01), wavy lines (26.17.02) and dotted lines (26.17.03) must be cross-referenced with vertical lines (26.17.04), horizontal lines (26.17.05) or diagonal lines (26.17.06).",
+      "Wavy lines must be cross-referenced with straight or wavy lines."
+    ].join("\n"),
+    excludes: "Lines which are components of other figurative elements, and bars and bands contained in geometric figures"
+  },
+  "26.17.02": {
+    code: "26.17.02",
+    description: "Wavy line(s), band(s) or bar(s)",
+    division: "26.17",
+    guidelines: "Wavy lines consist of more than one curve.",
+    excludes: "Lines which depict a single wave of water (01.15.13); lines which depict multiple ocean waves (06.03.03)"
+  },
+  "26.17.03": {
+    code: "26.17.03",
+    description: "Dotted line(s)",
+    division: "26.17"
+  },
+  "26.17.04": {
+    code: "26.17.04",
+    description: "Vertical line(s), band(s) or bar(s)",
+    division: "26.17"
+  },
+  "26.17.05": {
+    code: "26.17.05",
+    description: "Horizontal line(s), band(s) or bar(s)",
+    division: "26.17"
+  },
+  "26.17.06": {
+    code: "26.17.06",
+    description: "Diagonal line(s), band(s) or bar(s)",
+    division: "26.17"
+  },
+  "26.17.07": {
+    code: "26.17.07",
+    description: "Lines depicting speed, propulsion, heat or wind",
+    division: "26.17",
+    guidelines: "If a mark is coded for lines depicting speed, propulsion, heat or wind, the line depicting speed, propulsion, heat or wind should not have any other code in 26.17"
+  },
+  "26.17.08": {
+    code: "26.17.08",
+    description: "A single line, band, bar or diagonal",
+    division: "26.17"
+  },
+  "26.17.09": {
+    code: "26.17.09",
+    description: "Curved line(s), band(s) or bar(s)",
+    division: "26.17",
+    guidelines: "Curved lines, bands, or bars have one curve."
+  },
+  "26.17.10": {
+    code: "26.17.10",
+    description: "Zig-zag line(s)",
+    division: "26.17",
+    excludes: "Zig-zag lines on an oscilloscope are coded in 17.07.25"
+  },
+  "26.17.12": {
+    code: "26.17.12",
+    description: "Chevrons and angles",
+    division: "26.17"
+  },
+  "26.17.13": {
+    code: "26.17.13",
+    description: "Letters or words underlined and/or overlined by one or more strokes or lines",
+    division: "26.17",
+    guidelines: "This is similar to a carrier or a border. The lines are not significant elements of the mark. The lines serve merely to highlight other elements of the mark."
+  },
+  "26.17.25": {
+    code: "26.17.25",
+    description: "Other lines, bands or bars",
+    division: "26.17"
+  },
+  "26.19.01": {
+    code: "26.19.01",
+    description: "Spheres",
+    division: "26.19",
+    guidelines: [
+      "Geometrical solids have a 3 dimensional appearance.",
+      "Obvious articles of manufacture which have a 3 dimensional appearance should not be coded in this division. The articles of manufacture should be coded with the appropriate articles of manufacture."
+    ].join("\n")
+  },
+  "26.19.02": {
+    code: "26.19.02",
+    description: "Cylinders",
+    division: "26.19"
+  },
+  "26.19.03": {
+    code: "26.19.03",
+    description: "Cones",
+    division: "26.19"
+  },
+  "26.19.04": {
+    code: "26.19.04",
+    description: "Cubes",
+    division: "26.19"
+  },
+  "26.19.05": {
+    code: "26.19.05",
+    description: "Prisms and pyramids",
+    division: "26.19",
+    guidelines: "Also see structural pyramids in 07.09.01"
+  },
+  "26.19.25": {
+    code: "26.19.25",
+    description: "Other geometric solids",
+    division: "26.19"
+  },
+  "27.01.01": {
+    code: "27.01.01",
+    description: "Letters or numerals, including punctuation, forming representations of human beings or parts of human beings",
+    division: "27.01",
+    guidelines: [
+      "If there is one letter or numeral created by one object, human, plant, animal, or geometric figure, always search in the appropriate section of Division 27.03. If there is not a direct correlation between the number of letters, numerals or punctuation and the number of objects, humans, etc., forming design elements, then either 27.01 or 27.03 may apply.",
+      "Letters or numerals, including punctuation, that form a representation of a human are in 27.01.01 and in the appropriate sections of Category 02."
+    ].join("\n")
+  },
+  "27.01.02": {
+    code: "27.01.02",
+    description: "Letters or numerals, including punctuation, forming representations of animals or parts of animals",
+    division: "27.01",
+    guidelines: "Letters or numerals, including punctuation, that form a representation of an animal are in 27.01.02 and in the appropriate realistic third-level code section and the stylized section for the animal in Category 03."
+  },
+  "27.01.03": {
+    code: "27.01.03",
+    description: "Letters or numerals, including punctuation, forming representations of plants or parts of plants",
+    division: "27.01",
+    guidelines: "Letters or numerals, including punctuation, that form a representation of a plant are in 27.01.03 and in the appropriate section for the plant in Category 05."
+  },
+  "27.01.04": {
+    code: "27.01.04",
+    description: "Letters or numerals, including punctuation, forming representations of objects, parts of objects, or maps",
+    division: "27.01",
+    guidelines: "Letters or numerals, including punctuation, that form a representation of an object are in 27.01.04 and in the specific code section for the object."
+  },
+  "27.03.01": {
+    code: "27.03.01",
+    description: "Geometric figures forming letters or numerals, including punctuation",
+    division: "27.03",
+    guidelines: "Geometric figures that form letters or numerals, including punctuation, are in 27.03.01 and in the appropriate section for the geometric shape in Category 26."
+  },
+  "27.03.02": {
+    code: "27.03.02",
+    description: "Representations of human beings or parts of human beings forming letters or numerals, including punctuation",
+    division: "27.03",
+    guidelines: "A human being that forms letters or numerals, including punctuation, is in 27.03.02 and in the appropriate sections in Category 02."
+  },
+  "27.03.03": {
+    code: "27.03.03",
+    description: "Representations of animals or parts of animals forming letters or numerals, including punctuation",
+    division: "27.03",
+    guidelines: "An animal that forms letters or numerals, including punctuation, is in 27.03.03, the appropriate realistic third-level code section and, if applicable, the stylized section for the animal in Category 03."
+  },
+  "27.03.04": {
+    code: "27.03.04",
+    description: "Representations of plants or parts of plants forming letters or numerals, including punctuation",
+    division: "27.03",
+    guidelines: "A plant that forms letters or numerals, including punctuation, is in 27.03.04 and in the appropriate section for the plant in Category 05."
+  },
+  "27.03.05": {
+    code: "27.03.05",
+    description: "Representations of objects forming letters or numerals, including punctuation",
+    division: "27.03",
+    guidelines: "An object that forms letters or numerals, including punctuation, is in 27.03.05 and in the specific code section for the object."
+  },
+  "27.05.01": {
+    code: "27.05.01",
+    description: "Illegible signatures",
+    division: "27.05"
+  },
+  "28.01.01": {
+    code: "28.01.01",
+    description: "Inscriptions in Arabic characters",
+    division: "28.01"
+  },
+  "28.01.02": {
+    code: "28.01.02",
+    description: "Southeast Asian characters, e.g. Thai, Khmer, Indian languages (e.g. Hindi, Punjabi, Bengali, Gujarat)",
+    division: "28.01"
+  },
+  "28.01.03": {
+    code: "28.01.03",
+    description: "Japanese and Chinese characters",
+    division: "28.01",
+    guidelines: "Formerly Inscriptions in Chinese, Japanese, Korean, Vietnamese or other Asian characters"
+  },
+  "28.01.04": {
+    code: "28.01.04",
+    description: "Korean Hangul",
+    division: "28.01"
+  },
+  "28.01.05": {
+    code: "28.01.05",
+    description: "Inscriptions in Greek and Cyrillic characters",
+    division: "28.01",
+    guidelines: [
+      "Formerly Inscriptions in Greek characters",
+      "Pi symbols which are not accompanied by other Greek characters are in 24.17.11 exclusively. Pi symbols with other Greek letters are in 28.01.05"
+    ].join("\n")
+  },
+  "28.01.07": {
+    code: "28.01.07",
+    description: "Inscriptions in Hebrew characters.",
+    division: "28.01"
+  },
+  "28.01.25": {
+    code: "28.01.25",
+    description: "Inscriptions in other non-Latin characters, including hieroglyphic characters",
+    division: "28.01",
+    guidelines: "Formerly Inscriptions in other non-Latin characters, including Cyrillic (Russian) or hieroglyphic characters"
+  },
+  "28.02.01": {
+    code: "28.02.01",
+    description: "Braille, Morse Code and Sign Language",
+    division: "28.02",
+    guidelines: "Sign language may also be found in 02.11.07 (hands,fingers)"
+  },
+  "29.01.07": {
+    code: "29.01.07",
+    description: "Small, inconspicuous design elements functioning as punctuation or parts of letters",
+    division: "29.01",
+    guidelines: "Reference General Guideline 14"
+  },
+  "29.02.01": {
+    code: "29.02.01",
+    description: "Red or pink",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.02.02": {
+    code: "29.02.02",
+    description: "Brown",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.02.03": {
+    code: "29.02.03",
+    description: "Blue",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.02.04": {
+    code: "29.02.04",
+    description: "Gray or silver",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.02.05": {
+    code: "29.02.05",
+    description: "Violet or purple",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.02.06": {
+    code: "29.02.06",
+    description: "Green",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.02.07": {
+    code: "29.02.07",
+    description: "Orange",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.02.08": {
+    code: "29.02.08",
+    description: "Yellow or gold",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.02.09": {
+    code: "29.02.09",
+    description: "White",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.02.10": {
+    code: "29.02.10",
+    description: "Clear or translucent",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.02.11": {
+    code: "29.02.11",
+    description: "Black",
+    division: "29.02",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.01": {
+    code: "29.03.01",
+    description: "Red or pink",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.02": {
+    code: "29.03.02",
+    description: "Brown",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.03": {
+    code: "29.03.03",
+    description: "Blue",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.04": {
+    code: "29.03.04",
+    description: "Gray or silver",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.05": {
+    code: "29.03.05",
+    description: "Violet or purple",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.06": {
+    code: "29.03.06",
+    description: "Green",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.07": {
+    code: "29.03.07",
+    description: "Orange",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.08": {
+    code: "29.03.08",
+    description: "Yellow or gold",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.09": {
+    code: "29.03.09",
+    description: "White",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.10": {
+    code: "29.03.10",
+    description: "Clear or translucent",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.03.11": {
+    code: "29.03.11",
+    description: "Black",
+    division: "29.03",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.01": {
+    code: "29.04.01",
+    description: "Red or pink",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.02": {
+    code: "29.04.02",
+    description: "Brown",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.03": {
+    code: "29.04.03",
+    description: "Blue",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.04": {
+    code: "29.04.04",
+    description: "Gray or silver",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.05": {
+    code: "29.04.05",
+    description: "Violet or purple",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.06": {
+    code: "29.04.06",
+    description: "Green",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.07": {
+    code: "29.04.07",
+    description: "Orange",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.08": {
+    code: "29.04.08",
+    description: "Yellow or gold",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.09": {
+    code: "29.04.09",
+    description: "White",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.10": {
+    code: "29.04.10",
+    description: "Clear or translucent",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.04.11": {
+    code: "29.04.11",
+    description: "Black",
+    division: "29.04",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.01": {
+    code: "29.05.01",
+    description: "Red or pink",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.02": {
+    code: "29.05.02",
+    description: "Brown",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.03": {
+    code: "29.05.03",
+    description: "Blue",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.04": {
+    code: "29.05.04",
+    description: "Gray or silver",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.05": {
+    code: "29.05.05",
+    description: "Violet or purple",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.06": {
+    code: "29.05.06",
+    description: "Green",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.07": {
+    code: "29.05.07",
+    description: "Orange",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.08": {
+    code: "29.05.08",
+    description: "Yellow or gold",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.09": {
+    code: "29.05.09",
+    description: "White",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.10": {
+    code: "29.05.10",
+    description: "Clear or translucent",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.05.11": {
+    code: "29.05.11",
+    description: "Black",
+    division: "29.05",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.01": {
+    code: "29.06.01",
+    description: "Red or pink",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.02": {
+    code: "29.06.02",
+    description: "Brown",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.03": {
+    code: "29.06.03",
+    description: "Blue",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.04": {
+    code: "29.06.04",
+    description: "Gray or silver",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.05": {
+    code: "29.06.05",
+    description: "Violet or purple",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.06": {
+    code: "29.06.06",
+    description: "Green",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.07": {
+    code: "29.06.07",
+    description: "Orange",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.08": {
+    code: "29.06.08",
+    description: "Yellow or gold",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.09": {
+    code: "29.06.09",
+    description: "White",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.10": {
+    code: "29.06.10",
+    description: "Clear or translucent",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.06.11": {
+    code: "29.06.11",
+    description: "Black",
+    division: "29.06",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.01": {
+    code: "29.07.01",
+    description: "Red or pink",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.02": {
+    code: "29.07.02",
+    description: "Brown",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.03": {
+    code: "29.07.03",
+    description: "Blue",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.04": {
+    code: "29.07.04",
+    description: "Gray or silver",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.05": {
+    code: "29.07.05",
+    description: "Violet or purple",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.06": {
+    code: "29.07.06",
+    description: "Green",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.07": {
+    code: "29.07.07",
+    description: "Orange",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.08": {
+    code: "29.07.08",
+    description: "Yellow or gold",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.09": {
+    code: "29.07.09",
+    description: "White",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.10": {
+    code: "29.07.10",
+    description: "Clear or translucent",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
+  },
+  "29.07.11": {
+    code: "29.07.11",
+    description: "Black",
+    division: "29.07",
+    guidelines: "Reference General Guideline 15"
   }
-} 
+}
+
+
+
+
+
+
+
+
 
 
 
