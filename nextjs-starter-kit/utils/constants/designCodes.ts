@@ -279,7 +279,19 @@ export function getSectionCode(categoryCode: string, divisionCode: string, secti
   return `${categoryCode}.${divisionCode}.${sectionCode}`;
 }
 
-// Helper function to format design code description
+// Get just the category description
+export function getCategoryDescription(categoryCode: string): string {
+  const category = designCodeCategories[categoryCode];
+  return category ? category.description : 'Category not found';
+}
+
+// Get just the division description
+export function getDivisionDescription(categoryCode: string, divisionCode: string): string {
+  const division = designCodeDivisions[getDivisionCode(categoryCode, divisionCode)];
+  return division ? division.description : 'Division not found';
+}
+
+// Helper function to get design code description (returns just the section description)
 export function getDesignCodeDescription(code: string): string {
   const [categoryCode, divisionCode, sectionCode] = code.split('.');
   
@@ -287,18 +299,11 @@ export function getDesignCodeDescription(code: string): string {
     return 'Invalid design code format';
   }
 
-  const category = designCodeCategories[categoryCode];
-  const division = designCodeDivisions[getDivisionCode(categoryCode, divisionCode)];
   const section = designCodeSections[getSectionCode(categoryCode, divisionCode, sectionCode)];
-
-  if (!category || !division || !section) {
-    return 'Design code not found';
-  }
-
-  return `${code} - {${category.description}; ${division.description}; ${section.description}}`;
+  return section ? section.description : 'Section not found';
 }
 
-// Sections (XX.YY.ZZ) will be added in subsequent updates
+// Full design codes XX.YY.ZZ
 export const designCodeSections: Record<string, DesignCodeSection> = {
   "01.01.01": {
     code: "01.01.01",
