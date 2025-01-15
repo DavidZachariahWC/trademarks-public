@@ -5259,5 +5259,1828 @@ export const designCodeSections: Record<string, DesignCodeSection> = {
     description: "Other traffic signs, including railroad signs and lights",
     division: "18.15",
     guidelines: "For similar designs, see 18.15.03"
+  },
+  "19.01.01": {
+    code: "19.01.01",
+    description: "Luggage, suitcases",
+    division: "19.01"
+  },
+  "19.01.02": {
+    code: "19.01.02",
+    description: "Trunks, including foot lockers and treasure chests",
+    division: "19.01"
+  },
+  "19.01.03": {
+    code: "19.01.03",
+    description: "Garment bags",
+    division: "19.01"
+  },
+  "19.01.04": {
+    code: "19.01.04",
+    description: "Knapsacks, backpacks, duffel bags, fanny packs, gym bags",
+    division: "19.01"
+  },
+  "19.01.05": {
+    code: "19.01.05",
+    description: "Briefcases, attache cases, portfolios",
+    division: "19.01"
+  },
+  "19.01.06": {
+    code: "19.01.06",
+    description: "Purses, handbags",
+    division: "19.01"
+  },
+  "19.01.07": {
+    code: "19.01.07",
+    description: "Wallets",
+    division: "19.01"
+  },
+  "19.01.25": {
+    code: "19.01.25",
+    description: "Other baggage, including doctors' bags and tote bags",
+    division: "19.01"
+  },
+  "19.03.01": {
+    code: "19.03.01",
+    description: "Aquariums, fishbowls and fish tanks",
+    division: "19.03",
+    excludes: "Animal cages or kennels (07.01.10), bird cages (03.17.06) and beehives (03.23.07) are not coded in 19.03"
+  },
+  "19.03.25": {
+    code: "19.03.25",
+    description: "Other animal containers, including ant farms, vivariums and terrariums",
+    division: "19.03"
+  },
+  "19.05.01": {
+    code: "19.05.01",
+    description: "Barrels",
+    division: "19.05",
+    guidelines: "Generally, containers capable of being lifted by a human are not in 19.05; such containers are in 19.07. Barrels are generally large cylindrical containers with wooden slats"
+  },
+  "19.05.02": {
+    code: "19.05.02",
+    description: "Bins",
+    division: "19.05",
+    guidelines: "Bins are boxes or enclosed places for storing commodities such as grain, coal or the like"
+  },
+  "19.05.03": {
+    code: "19.05.03",
+    description: "Tanks, such as large oil and gas storage tanks or water towers",
+    division: "19.05"
+  },
+  "19.05.04": {
+    code: "19.05.04",
+    description: "Other large cylindrical containers or drums, including trash cans",
+    division: "19.05",
+    guidelines: "Portable oxygen tanks are coded in 19.07.23"
+  },
+  "19.05.05": {
+    code: "19.05.05",
+    description: "Crates, including large wooden boxes such as packing crates",
+    division: "19.05"
+  },
+  "19.05.06": {
+    code: "19.05.06",
+    description: "Other large boxes, including safes and bank vaults",
+    division: "19.05"
+  },
+  "19.05.07": {
+    code: "19.05.07",
+    description: "Coffins and caskets",
+    division: "19.05"
+  },
+  "19.05.08": {
+    code: "19.05.08",
+    description: "Fire hydrants",
+    division: "19.05"
+  },
+  "19.05.09": {
+    code: "19.05.09",
+    description: "U.S. mail deposit boxes",
+    division: "19.05",
+    excludes: "Home mail boxes 19.07.07"
+  },
+  "19.05.25": {
+    code: "19.05.25",
+    description: "Other large containers, including dumpsters and freight containers",
+    division: "19.05"
+  },
+  "19.07.01": {
+    code: "19.07.01",
+    description: "Baskets, including picnic baskets and bicycle baskets",
+    division: "19.07",
+    guidelines: "Small containers generally are capable of being lifted by a human",
+    excludes: "Milk bottles and cartons (11.03.04); milk cans (11.03.05) are not coded in 19.07"
+  },
+  "19.07.02": {
+    code: "19.07.02",
+    description: "Pails, buckets",
+    division: "19.07"
+  },
+  "19.07.03": {
+    code: "19.07.03",
+    description: "Cigarette packages and cartons",
+    division: "19.07"
+  },
+  "19.07.04": {
+    code: "19.07.04",
+    description: "Flattened packages and cartons",
+    division: "19.07",
+    guidelines: "Only the significant elements in the package or carton will be coded"
+  },
+  "19.07.05": {
+    code: "19.07.05",
+    description: "Gift-wrapped boxes",
+    division: "19.07"
+  },
+  "19.07.06": {
+    code: "19.07.06",
+    description: "Candy boxes",
+    division: "19.07",
+    guidelines: "Boxes of candy are in 19.07.06. When the candy inside of the box is visible, it is double coded in the appropriate section of Division 08.03"
+  },
+  "19.07.07": {
+    code: "19.07.07",
+    description: "Home mail boxes",
+    division: "19.07",
+    excludes: "U.S. mail deposit boxes (19.05.09)"
+  },
+  "19.07.08": {
+    code: "19.07.08",
+    description: "Tool boxes, tackle boxes",
+    division: "19.07"
+  },
+  "19.07.09": {
+    code: "19.07.09",
+    description: "Other small boxes",
+    division: "19.07"
+  },
+  "19.07.10": {
+    code: "19.07.10",
+    description: "Waste baskets, garbage bags and litter bags",
+    division: "19.07",
+    excludes: "This section does not include trash cans (19.05.04)"
+  },
+  "19.07.11": {
+    code: "19.07.11",
+    description: "Paper bags, shopping bags, sacks, including sacks or bags of grain",
+    division: "19.07"
+  },
+  "19.07.13": {
+    code: "19.07.13",
+    description: "Other small bags, including money bags, sachets, tea bags and laundry bags",
+    division: "19.07"
+  },
+  "19.07.14": {
+    code: "19.07.14",
+    description: "Watering cans",
+    division: "19.07"
+  },
+  "19.07.15": {
+    code: "19.07.15",
+    description: "Paint cans",
+    division: "19.07"
+  },
+  "19.07.16": {
+    code: "19.07.16",
+    description: "Aerosol cans",
+    division: "19.07",
+    guidelines: "Aerosol cans look similar to bottles or jugs with pumps or sprayers, including atomizers (19.09.12)"
+  },
+  "19.07.17": {
+    code: "19.07.17",
+    description: "Other small cans, including food cans, beverage cans and gasoline cans",
+    division: "19.07"
+  },
+  "19.07.18": {
+    code: "19.07.18",
+    description: "Tubes, including tubes of toothpaste",
+    division: "19.07"
+  },
+  "19.07.19": {
+    code: "19.07.19",
+    description: "Vases and urns not containing plants or flowers",
+    division: "19.07",
+    excludes: "Vases or urns containing plants or flowers (05.13.07)"
+  },
+  "19.07.20": {
+    code: "19.07.20",
+    description: "Flower pots not containing plants or flowers, including plant hangers",
+    division: "19.07",
+    excludes: "Flower pots containing plants or flowers (05.13.07)"
+  },
+  "19.07.21": {
+    code: "19.07.21",
+    description: "Oil cans",
+    division: "19.07"
+  },
+  "19.07.22": {
+    code: "19.07.22",
+    description: "Tobacco pouches",
+    division: "19.07"
+  },
+  "19.07.23": {
+    code: "19.07.23",
+    description: "Portable oxygen tanks and scuba tanks",
+    division: "19.07"
+  },
+  "19.07.25": {
+    code: "19.07.25",
+    description: "Other small containers, including take-out food containers and coolers",
+    division: "19.07"
+  },
+  "19.09.01": {
+    code: "19.09.01",
+    description: "Bottles, jars or flasks of conical or triangular shape",
+    division: "19.09",
+    guidelines: "Similar designs may also appear in 19.09.03",
+    excludes: "Milk bottles (11.03.04) and laboratory glassware (19.13) generally are not coded in 19.09. If milk bottles or laboratory glassware engender a significant commercial impression, they should be cross-coded in 19.09. Wine labels are coded in 20.03.10"
+  },
+  "19.09.02": {
+    code: "19.09.02",
+    description: "Bottles, jars or flasks with bulging, protruding or rounded sides",
+    division: "19.09"
+  },
+  "19.09.03": {
+    code: "19.09.03",
+    description: "Bottles, jars or flasks with straight, vertical sides",
+    division: "19.09",
+    guidelines: "Similar designs may also appear in 19.09.01"
+  },
+  "19.09.04": {
+    code: "19.09.04",
+    description: "Bottles, jars or flasks with concave sides",
+    division: "19.09"
+  },
+  "19.09.05": {
+    code: "19.09.05",
+    description: "Bottles, jars or flasks with wicker or other casing",
+    division: "19.09",
+    guidelines: "Bottles, jars or flasks with wicker or other casing are cross-coded with the applicable section of 19.09 indicating shape"
+  },
+  "19.09.06": {
+    code: "19.09.06",
+    description: "Bottles, jars or flasks with ribbing or other surface relief",
+    division: "19.09",
+    guidelines: "Bottles, jars or flasks with ribbing or other surface relief are cross-coded with the applicable section of 19.09 indicating shape"
+  },
+  "19.09.07": {
+    code: "19.09.07",
+    description: "Jugs",
+    division: "19.09"
+  },
+  "19.09.12": {
+    code: "19.09.12",
+    description: "Bottles or jugs with pumps or sprayers, including atomizers",
+    division: "19.09",
+    excludes: "Aerosol cans (19.07.16); sprayers, including paint spray guns, fire extinguishers and pump sprayers (15.01.07)"
+  },
+  "19.09.25": {
+    code: "19.09.25",
+    description: "Other bottles, jars or flasks, including cookie jars",
+    division: "19.09"
+  },
+  "19.11.01": {
+    code: "19.11.01",
+    description: "Bottle stoppers and corks, bottle caps, jar and bottle lids, and other parts or accessories for bottles, jars and flasks",
+    division: "19.11",
+    excludes: "Bottle openers and corkscrews (11.01.07)"
+  },
+  "19.13.01": {
+    code: "19.13.01",
+    description: "Mortars and pestles",
+    division: "19.13"
+  },
+  "19.13.02": {
+    code: "19.13.02",
+    description: "Test tubes",
+    division: "19.13"
+  },
+  "19.13.25": {
+    code: "19.13.25",
+    description: "Other receptacles for laboratory use, including beakers",
+    division: "19.13",
+    guidelines: "Designs of laboratory or pharmaceutical beakers may be cross-coded with 19.09.01"
+  },
+  "20.01.01": {
+    code: "20.01.01",
+    description: "Pencils, pens (excluding quill pens), crayons, pen points, chalk, markers",
+    division: "20.01",
+    excludes: "Quill pens and inkwells are coded in 20.01.09"
+  },
+  "20.01.02": {
+    code: "20.01.02",
+    description: "Paint brushes",
+    division: "20.01"
+  },
+  "20.01.03": {
+    code: "20.01.03",
+    description: "Paint rollers, paint trays, paint edgers",
+    division: "20.01"
+  },
+  "20.01.04": {
+    code: "20.01.04",
+    description: "Artist's easels, palettes, drawing boards, blackboards, clip boards, bulletin boards",
+    division: "20.01"
+  },
+  "20.01.05": {
+    code: "20.01.05",
+    description: "Other writing, drawing or painting materials",
+    division: "20.01",
+    excludes: "Drawing compasses (17.07.08)"
+  },
+  "20.01.06": {
+    code: "20.01.06",
+    description: "Paper clips, clamps",
+    division: "20.01"
+  },
+  "20.01.07": {
+    code: "20.01.07",
+    description: "Pencil sharpeners, tape dispensers, staplers, staples",
+    division: "20.01",
+    excludes: "Rolls of tape not in dispensers are coded in 20.01.25"
+  },
+  "20.01.08": {
+    code: "20.01.08",
+    description: "Embossed or rubber stamps; stamp pads",
+    division: "20.01"
+  },
+  "20.01.09": {
+    code: "20.01.09",
+    description: "Quill pens and inkwells",
+    division: "20.01"
+  },
+  "20.01.25": {
+    code: "20.01.25",
+    description: "Other small office materials and supplies Including: Rubber bands, paper weights, erasers, bookends and rolls of tape not in dispensers, book marks, hole punches and pencil cases",
+    division: "20.01",
+    excludes: "Measuring instruments are coded in 17.07; notebooks and ledgers are coded in 20.05.02"
+  },
+  "20.03.01": {
+    code: "20.03.01",
+    description: "Paper with furled, fringed or scalloped edges",
+    division: "20.03"
+  },
+  "20.03.02": {
+    code: "20.03.02",
+    description: "Scrolls, rolls of paper, including rolled wallpaper, toilet paper, paper towels and aluminum foil",
+    division: "20.03"
+  },
+  "20.03.03": {
+    code: "20.03.03",
+    description: "Envelopes of all sizes",
+    division: "20.03"
+  },
+  "20.03.04": {
+    code: "20.03.04",
+    description: "Business cards, including decals",
+    division: "20.03"
+  },
+  "20.03.05": {
+    code: "20.03.05",
+    description: "Other cards, such as index cards, punched cards (computer cards), bar code labels, QR Codes, postcards, credit cards, greeting cards",
+    division: "20.03",
+    excludes: "Playing cards are coded in 21.01.01"
+  },
+  "20.03.06": {
+    code: "20.03.06",
+    description: "Hang tags, labels including address labels",
+    division: "20.03",
+    guidelines: "Clothing labels are coded in 09.01.02. Alcohol bottle labels are coded in 20.03.10"
+  },
+  "20.03.07": {
+    code: "20.03.07",
+    description: "Postage stamps, postmarks",
+    division: "20.03"
+  },
+  "20.03.08": {
+    code: "20.03.08",
+    description: "Graph paper, diagrams, blueprints, the periodic table",
+    division: "20.03",
+    guidelines: "For similar designs, see also 17.07.25"
+  },
+  "20.03.09": {
+    code: "20.03.09",
+    description: "Tablets, stacks of sheets of paper, including writing pads",
+    division: "20.03"
+  },
+  "20.03.10": {
+    code: "20.03.10",
+    description: "Bottle label",
+    division: "20.03",
+    guidelines: "Bottle labels are generally squares or rectangles with curved sides or they may be other exotic geometric shapes. Bottle labels are coded here as well as the appropriate geometric shape in order to facilitate retrieval"
+  },
+  "20.03.24": {
+    code: "20.03.24",
+    description: "Other paper goods bearing handwritten or printed texts or tables Including: Bank checks, paper currency, calendars, trading stamps, paper tickets",
+    division: "20.03",
+    excludes: "Books, magazines, newspapers are coded in 20.05"
+  },
+  "20.03.25": {
+    code: "20.03.25",
+    description: "Other paper goods, including file folders, adhesive note pads, tissue paper, stencils and facial tissue",
+    division: "20.03"
+  },
+  "20.05.01": {
+    code: "20.05.01",
+    description: "Closed books",
+    division: "20.05",
+    guidelines: "For open books, see 20.05.05"
+  },
+  "20.05.02": {
+    code: "20.05.02",
+    description: "Ledgers, binders, notebooks and the like",
+    division: "20.05"
+  },
+  "20.05.03": {
+    code: "20.05.03",
+    description: "Magazines",
+    division: "20.05"
+  },
+  "20.05.04": {
+    code: "20.05.04",
+    description: "Newspapers",
+    division: "20.05"
+  },
+  "20.05.05": {
+    code: "20.05.05",
+    description: "Open books",
+    division: "20.05",
+    guidelines: "For closed books, see 20.05.01"
+  },
+  "21.01.01": {
+    code: "21.01.01",
+    description: "Playing cards, packs of cards; Tarot and other fortune telling cards",
+    division: "21.01",
+    excludes: "Hearts are coded in 02.11.01; clubs are coded in 05.03.06; diamonds are coded in 26.07; spades are coded in 21.01.02"
+  },
+  "21.01.02": {
+    code: "21.01.02",
+    description: "Spades",
+    division: "21.01",
+    excludes: "Agricultural spades in 14.07.01"
+  },
+  "21.01.03": {
+    code: "21.01.03",
+    description: "Dice, dominoes",
+    division: "21.01"
+  },
+  "21.01.04": {
+    code: "21.01.04",
+    description: "Chessmen (pieces)",
+    division: "21.01"
+  },
+  "21.01.05": {
+    code: "21.01.05",
+    description: "Checkerboard, chessboards, cross-word puzzles, toy hoops",
+    division: "21.01",
+    excludes: "Checkerboard patterns are coded in 25.03.01"
+  },
+  "21.01.06": {
+    code: "21.01.06",
+    description: "Box and board games, pieces for such games, poker chips",
+    division: "21.01"
+  },
+  "21.01.07": {
+    code: "21.01.07",
+    description: "Building blocks, including interlocking construction toys",
+    division: "21.01"
+  },
+  "21.01.08": {
+    code: "21.01.08",
+    description: "Jigsaw puzzles",
+    division: "21.01"
+  },
+  "21.01.09": {
+    code: "21.01.09",
+    description: "Tops",
+    division: "21.01"
+  },
+  "21.01.10": {
+    code: "21.01.10",
+    description: "Puppets, marionettes",
+    division: "21.01"
+  },
+  "21.01.11": {
+    code: "21.01.11",
+    description: "Stuffed animals, including teddy bears",
+    division: "21.01"
+  },
+  "21.01.12": {
+    code: "21.01.12",
+    description: "Dolls",
+    division: "21.01"
+  },
+  "21.01.13": {
+    code: "21.01.13",
+    description: "Toy balloons",
+    division: "21.01"
+  },
+  "21.01.14": {
+    code: "21.01.14",
+    description: "Kites",
+    division: "21.01"
+  },
+  "21.01.15": {
+    code: "21.01.15",
+    description: "Rattles, pacifiers and teething rings",
+    division: "21.01"
+  },
+  "21.01.25": {
+    code: "21.01.25",
+    description: "Other games or toys, including darts, jack-in-boxes, rocking horses, paper airplanes, infant toys and toy hoops, arcade games, pinball machines, roulette wheels, video game machines, yoyos",
+    division: "21.01",
+    excludes: "Rattles, pacifiers and teething rings in 21.01.15; Bicycles and tricycles 18.03.01"
+  },
+  "21.03.01": {
+    code: "21.03.01",
+    description: "Balls including playground balls, beach balls, billiard balls, tennis balls, bingo balls and lottery balls",
+    division: "21.03",
+    excludes: "Soccer balls and volleyballs in 21.03.15; golf balls (and golf tees) in 21.03.16; bowling balls in 21.03.17; footballs, rugby balls and other elliptical shaped balls in 21.03.18; baseballs and softballs in 21.03.19; and basketballs in 21.03.20"
+  },
+  "21.03.02": {
+    code: "21.03.02",
+    description: "Rackets, paddles",
+    division: "21.03",
+    excludes: "Oars and canoe paddles coded in 18.11.25"
+  },
+  "21.03.03": {
+    code: "21.03.03",
+    description: "Bats, including baseball bats and cricket bats",
+    division: "21.03"
+  },
+  "21.03.04": {
+    code: "21.03.04",
+    description: "Lacrosse sticks, polo mallets, croquet mallets",
+    division: "21.03"
+  },
+  "21.03.05": {
+    code: "21.03.05",
+    description: "Skis, ski poles",
+    division: "21.03",
+    excludes: "Snow boards coded in 21.03.27"
+  },
+  "21.03.06": {
+    code: "21.03.06",
+    description: "Baseball, hockey and boxing gloves",
+    division: "21.03",
+    excludes: "Golf and ski gloves are coded in 09.03.12"
+  },
+  "21.03.07": {
+    code: "21.03.07",
+    description: "Weights for lifting, exercise machines, kettle bells",
+    division: "21.03",
+    guidelines: "For stationary exercise bicycles, see also 18.03.01"
+  },
+  "21.03.08": {
+    code: "21.03.08",
+    description: "Fishing rods, tackle, nets, hooks and lures",
+    division: "21.03",
+    excludes: "Tackle boxes are coded in 19.07.08"
+  },
+  "21.03.09": {
+    code: "21.03.09",
+    description: "Nets for sports, such as basketball and tennis nets",
+    division: "21.03"
+  },
+  "21.03.10": {
+    code: "21.03.10",
+    description: "Traps and nets for wild animals",
+    division: "21.03",
+    excludes: "Mouse traps are coded in 11.09.05"
+  },
+  "21.03.11": {
+    code: "21.03.11",
+    description: "Sliding boards, swings, including porch swings, seesaws, water slides",
+    division: "21.03"
+  },
+  "21.03.12": {
+    code: "21.03.12",
+    description: "Targets without crosshairs or alignment guides",
+    division: "21.03",
+    guidelines: "Designs which clearly depict targets are in 21.03.12 exclusively. Targets are not in 26.01.17, 26.01.18 or 26.01.20 (Concentric circles) unless the target is not obvious. If there is any doubt, the design is double coded.",
+    excludes: "Targets with crosshairs or alignment guides are coded in 21.03.24"
+  },
+  "21.03.13": {
+    code: "21.03.13",
+    description: "Bowling pins",
+    division: "21.03",
+    guidelines: "Bowling balls are coded in 21.03.17"
+  },
+  "21.03.14": {
+    code: "21.03.14",
+    description: "Merry-go-rounds, carousels, roller coasters, Ferris wheels, and other amusement park rides",
+    division: "21.03"
+  },
+  "21.03.15": {
+    code: "21.03.15",
+    description: "Soccer balls, volleyballs",
+    division: "21.03"
+  },
+  "21.03.16": {
+    code: "21.03.16",
+    description: "Golf balls and golf tees",
+    division: "21.03",
+    guidelines: "Golf clubs are coded in 21.03.22; golf bags are coded in 21.03.28"
+  },
+  "21.03.17": {
+    code: "21.03.17",
+    description: "Bowling balls",
+    division: "21.03"
+  },
+  "21.03.18": {
+    code: "21.03.18",
+    description: "Footballs, including American and Australian footballs; rugby balls and other elliptical shaped balls",
+    division: "21.03"
+  },
+  "21.03.19": {
+    code: "21.03.19",
+    description: "Baseballs and softballs",
+    division: "21.03"
+  },
+  "21.03.20": {
+    code: "21.03.20",
+    description: "Basketballs",
+    division: "21.03"
+  },
+  "21.03.22": {
+    code: "21.03.22",
+    description: "Golf clubs",
+    division: "21.03",
+    guidelines: "Golf balls and golf tees are coded in 21.03.16; golf bags are coded in 21.03.28"
+  },
+  "21.03.23": {
+    code: "21.03.23",
+    description: "Ice hockey sticks, field hockey sticks, and street hockey sticks",
+    division: "21.03"
+  },
+  "21.03.24": {
+    code: "21.03.24",
+    description: "Targets with crosshairs or alignment guides",
+    division: "21.03",
+    guidelines: "Targets with neither crosshairs nor alignment guides are coded in 21.03.12"
+  },
+  "21.03.25": {
+    code: "21.03.25",
+    description: "Other sporting articles including gymnastic apparatus, face masks, scuba masks, diving boards, badminton shuttlecocks, punching bags, hockey pucks",
+    division: "21.03",
+    excludes: "Oars are coded in 18.11.25; portable oxygen tanks for scuba diving are coded in 19.07.23; skateboards are coded in 21.03.26; surfboards, body boards and snowboards are coded in 21.03.27; golf bags are coded in 21.03.28"
+  },
+  "21.03.26": {
+    code: "21.03.26",
+    description: "Skateboards",
+    division: "21.03"
+  },
+  "21.03.27": {
+    code: "21.03.27",
+    description: "Surfboards, body boards, snowboards",
+    division: "21.03"
+  },
+  "21.03.28": {
+    code: "21.03.28",
+    description: "Golf bags",
+    division: "21.03",
+    guidelines: "Golf balls and golf tees are coded in 21.03.16; golf clubs are coded in 21.03.22"
+  },
+  "22.01.01": {
+    code: "22.01.01",
+    description: "Pianos, organs, harpsichords",
+    division: "22.01",
+    excludes: "Bells are coded in 22.03; sound or recording equipment is coded in 16.01"
+  },
+  "22.01.02": {
+    code: "22.01.02",
+    description: "Other keyboard instruments, including accordions",
+    division: "22.01"
+  },
+  "22.01.04": {
+    code: "22.01.04",
+    description: "Percussion instruments, including drums, xylophones, triangles, cymbals and tambourines",
+    division: "22.01"
+  },
+  "22.01.06": {
+    code: "22.01.06",
+    description: "Guitars, banjos, ukuleles",
+    division: "22.01"
+  },
+  "22.01.07": {
+    code: "22.01.07",
+    description: "Other stringed instruments, including violins and harps",
+    division: "22.01"
+  },
+  "22.01.09": {
+    code: "22.01.09",
+    description: "Whistles",
+    division: "22.01"
+  },
+  "22.01.10": {
+    code: "22.01.10",
+    description: "Brass instruments, including trumpets, bugles, tubas, trombones, hunting horns and post horns",
+    division: "22.01"
+  },
+  "22.01.12": {
+    code: "22.01.12",
+    description: "Woodwind instruments, including clarinets, saxophones, flutes",
+    division: "22.01"
+  },
+  "22.01.13": {
+    code: "22.01.13",
+    description: "Bagpipes",
+    division: "22.01"
+  },
+  "22.01.14": {
+    code: "22.01.14",
+    description: "Tuning forks, metronomes",
+    division: "22.01"
+  },
+  "22.01.25": {
+    code: "22.01.25",
+    description: "Other musical instruments and accessories, including drumsticks, instrument cases, music stands, conductor's and magician's wands",
+    division: "22.01"
+  },
+  "22.03.01": {
+    code: "22.03.01",
+    description: "Liberty Bell or bells with cracks",
+    division: "22.03",
+    guidelines: "Bell designs classified in 22.03.01 must contain a crack"
+  },
+  "22.03.02": {
+    code: "22.03.02",
+    description: "More than one bell",
+    division: "22.03",
+    excludes: "Sleigh bells are coded in 22.03.03"
+  },
+  "22.03.03": {
+    code: "22.03.03",
+    description: "Sleigh bells",
+    division: "22.03"
+  },
+  "22.03.24": {
+    code: "22.03.24",
+    description: "Single bells",
+    division: "22.03",
+    excludes: "Liberty Bells and bells with cracks are coded in 22.03.01"
+  },
+  "22.05.03": {
+    code: "22.05.03",
+    description: "Sculptures of human beings",
+    division: "22.05",
+    guidelines: "Sculptures are coded in the appropriate section of Division 22.05 and in the section for the object, plant or living creature which the sculpture represents. If the sculpture is of a human riding a horse, it is in 22.05.03, 22.05.04 and in the appropriate section(s) of Category 02. See Guideline 02.09.17 for coding humans riding horses and other animals.",
+    excludes: "Statue of Liberty (07.09.08)"
+  },
+  "22.05.04": {
+    code: "22.05.04",
+    description: "Sculptures of horses",
+    division: "22.05",
+    guidelines: "See Specific Guideline 2 for coding sculptures of human beings riding horses"
+  },
+  "22.05.25": {
+    code: "22.05.25",
+    description: "Other sculptures",
+    division: "22.05",
+    guidelines: "See Specific Guideline for coding sculptures of animals: Category 23"
+  },
+  "23.01.01": {
+    code: "23.01.01",
+    description: "Swords, sabers, rapiers, foils, epees",
+    division: "23.01"
+  },
+  "23.01.02": {
+    code: "23.01.02",
+    description: "Bayonets, daggers, spears",
+    division: "23.01"
+  },
+  "23.01.03": {
+    code: "23.01.03",
+    description: "Bows, cross-bows",
+    division: "23.01",
+    excludes: "Arrows (24.15)"
+  },
+  "23.01.04": {
+    code: "23.01.04",
+    description: "Catapults",
+    division: "23.01"
+  },
+  "23.01.25": {
+    code: "23.01.25",
+    description: "Other weapons, including clubs, boomerangs, slings, sling shots, blow pipes, spear guns, or nunchakus",
+    division: "23.01",
+    excludes: "Firearms (23.03)"
+  },
+  "23.03.01": {
+    code: "23.03.01",
+    description: "Cannons",
+    division: "23.03"
+  },
+  "23.03.02": {
+    code: "23.03.02",
+    description: "Rifles, machine guns, muskets",
+    division: "23.03"
+  },
+  "23.03.03": {
+    code: "23.03.03",
+    description: "Pistols, revolvers",
+    division: "23.03"
+  },
+  "23.03.05": {
+    code: "23.03.05",
+    description: "Other firearms such as bazookas",
+    division: "23.03"
+  },
+  "23.03.07": {
+    code: "23.03.07",
+    description: "Sticks of dynamite, firecrackers, powder horns, time bombs",
+    division: "23.03",
+    excludes: "Firework displays (01.15.04)"
+  },
+  "23.03.08": {
+    code: "23.03.08",
+    description: "Bullets, cartridges, shells, cannon balls, cannon shells",
+    division: "23.03"
+  },
+  "23.03.09": {
+    code: "23.03.09",
+    description: "Grenades",
+    division: "23.03"
+  },
+  "23.03.12": {
+    code: "23.03.12",
+    description: "Other ammunition or explosives, including land mines, bombs or torpedos",
+    division: "23.03"
+  },
+  "23.05.01": {
+    code: "23.05.01",
+    description: "Helmets which are part of armor",
+    division: "23.05",
+    guidelines: "Only medieval European armor is in this division. Viking armor is in Category 09."
+  },
+  "23.05.02": {
+    code: "23.05.02",
+    description: "Suits of armor",
+    division: "23.05",
+    guidelines: "Only medieval European armor is in this division. Viking armor is in Category 09."
+  },
+  "23.05.25": {
+    code: "23.05.25",
+    description: "Other parts of armor, including gloves and breastplates",
+    division: "23.05",
+    guidelines: "Only medieval European armor is in this division. Viking armor is in Category 09."
+  },
+  "24.01.01": {
+    code: "24.01.01",
+    description: "Shields or crests (plain) with neither a figurative element nor an inscription contained therein or superimposed thereon",
+    division: "24.01",
+    guidelines: [
+      "Shields or crests can vary from quite simple to extremely ornate designs. While they are often surrounded by or contain crowns, armor and/or heraldic animals, they may merely suggest a shield or crest because of the overall shape of the design.",
+      "When the overall shape of a shield is also in the shape of a recognizable geometric design, see also the appropriate section of Category 26."
+    ].join("\n")
+  },
+  "24.01.02": {
+    code: "24.01.02",
+    description: "Shields or crests with figurative elements contained therein or superimposed thereon",
+    division: "24.01",
+    guidelines: [
+      "Shields or crests can vary from quite simple to extremely ornate designs. While they are often surrounded by or contain crowns, armor and/or heraldic animals, they may merely suggest a shield or crest because of the overall shape of the design.",
+      "When the overall shape of a shield is also in the shape of a recognizable geometric design, see also the appropriate section of Category 26."
+    ].join("\n")
+  },
+  "24.01.03": {
+    code: "24.01.03",
+    description: "Shields or crests with letters, punctuation or inscriptions contained therein or superimposed thereon",
+    division: "24.01",
+    guidelines: [
+      "Shields or crests can vary from quite simple to extremely ornate designs. While they are often surrounded by or contain crowns, armor and/or heraldic animals, they may merely suggest a shield or crest because of the overall shape of the design.",
+      "When the overall shape of a shield is also in the shape of a recognizable geometric design, see also the appropriate section of Category 26."
+    ].join("\n")
+  },
+  "24.01.04": {
+    code: "24.01.04",
+    description: "Shields or crests with numbers contained therein or superimposed thereon",
+    division: "24.01",
+    guidelines: [
+      "Shields or crests can vary from quite simple to extremely ornate designs. While they are often surrounded by or contain crowns, armor and/or heraldic animals, they may merely suggest a shield or crest because of the overall shape of the design.",
+      "When the overall shape of a shield is also in the shape of a recognizable geometric design, see also the appropriate section of Category 26."
+    ].join("\n")
+  },
+  "24.01.05": {
+    code: "24.01.05",
+    description: "More than one shield or crest",
+    division: "24.01",
+    guidelines: [
+      "Shields or crests can vary from quite simple to extremely ornate designs. While they are often surrounded by or contain crowns, armor and/or heraldic animals, they may merely suggest a shield or crest because of the overall shape of the design.",
+      "When the overall shape of a shield is also in the shape of a recognizable geometric design, see also the appropriate section of Category 26."
+    ].join("\n")
+  },
+  "24.03.01": {
+    code: "24.03.01",
+    description: "Scepters, orbs",
+    division: "24.03"
+  },
+  "24.03.02": {
+    code: "24.03.02",
+    description: "Miters (bishops' hats), papal hats, monsignor hats",
+    division: "24.03"
+  },
+  "24.03.03": {
+    code: "24.03.03",
+    description: "Mercury's helmet (winged helmet)",
+    division: "24.03"
+  },
+  "24.03.04": {
+    code: "24.03.04",
+    description: "Tridents",
+    division: "24.03",
+    guidelines: "Three-pronged scepters or spears are in 24.03.04. Tridents are not in 14.07.02 (Pitchforks). Tridents are normally distinguished from pitchforks by their barbed prongs or are clearly suggested by the text of the mark."
+  },
+  "24.03.25": {
+    code: "24.03.25",
+    description: "Other emblems and insignia Including: The Ten Commandments, Sheriff's badges",
+    division: "24.03",
+    guidelines: "For Sheriff's badges, see also the appropriate section of Division 01.01 (Stars, comets).",
+    excludes: "Cornucopia (horn of plenty) filled with fruit (05.09.14), filled with vegetables (05.11.10); serpent and staff (Caduceus medical symbol) (03.21.01); torches (13.01.02); skull and crossbones (Poison symbol) (02.11.11)"
+  },
+  "24.05.01": {
+    code: "24.05.01",
+    description: "Circular or elliptical seals",
+    division: "24.05",
+    guidelines: "Seals generally consist of concentric circles or ovals with words, letters or numbers between the concentric circles or ovals. When the text of the mark clearly indicates that the design is a seal, circular or elliptical seals are not cross-referenced in Category 26. When the shape of the seal engenders a commercial impression separate and apart from that of the seal, the circular or elliptical seal should be cross-referenced in Category 26. For example, a decorative or irregular shaped border or circumference or letters comprising a circle should be cross-referenced. Shading, concentric circles and letters forming the perimeter of a circle should not be cross-referenced. The following seals are not cross-referenced with Category 26."
+  },
+  "24.05.02": {
+    code: "24.05.02",
+    description: "Seals having some other shape",
+    division: "24.05",
+    guidelines: "Seals in this section should be cross-referenced in Category 26 or in another appropriate Category."
+  },
+  "24.07.01": {
+    code: "24.07.01",
+    description: "Coins",
+    division: "24.07",
+    guidelines: "Cross-reference medals not suspended from ribbons or pins with 24.07.01 and 24.07.04."
+  },
+  "24.07.04": {
+    code: "24.07.04",
+    description: "Medals (alone or suspended from ribbons or pins)",
+    division: "24.07",
+    guidelines: "A medal will often hang below a ribbon or pin. Medals which are not suspended below a ribbon or pin are cross-referenced with 24.07.01."
+  },
+  "24.07.07": {
+    code: "24.07.07",
+    description: "Prize ribbons",
+    division: "24.07",
+    guidelines: "Prize ribbons are often strips of ribbon which hang below a button or a badge. However, if otherwise indicated, this code is appropriate even if a badge or button is absent."
+  },
+  "24.07.08": {
+    code: "24.07.08",
+    description: "Ribbons to raise awareness or support for causes",
+    division: "24.07"
+  },
+  "24.07.10": {
+    code: "24.07.10",
+    description: "Trophies",
+    division: "24.07"
+  },
+  "24.07.14": {
+    code: "24.07.14",
+    description: "Plaques",
+    division: "24.07"
+  },
+  "24.07.25": {
+    code: "24.07.25",
+    description: "Other decorations or orders",
+    division: "24.07"
+  },
+  "24.09.01": {
+    code: "24.09.01",
+    description: "Rectangular or square flags excluding American flag or checkered flag",
+    division: "24.09",
+    guidelines: [
+      "Flags are generally characterized by flagpoles or furls.",
+      "Flag designs are in every applicable section of Division 24.09."
+    ].join("\n")
+  },
+  "24.09.02": {
+    code: "24.09.02",
+    description: "Pennants (flags in the form of a triangle), flags with forked sides",
+    division: "24.09",
+    guidelines: [
+      "Flags are generally characterized by flagpoles or furls.",
+      "Flag designs are in every applicable section of Division 24.09.",
+      "Flags with forked sides are similar to banners (24.09.07)."
+    ].join("\n")
+  },
+  "24.09.04": {
+    code: "24.09.04",
+    description: "Checkered flag",
+    division: "24.09",
+    guidelines: [
+      "Flags are generally characterized by flagpoles or furls.",
+      "Flag designs are in every applicable section of Division 24.09."
+    ].join("\n")
+  },
+  "24.09.05": {
+    code: "24.09.05",
+    description: "American flags in any form",
+    division: "24.09",
+    guidelines: [
+      "Flags are generally characterized by flagpoles or furls.",
+      "Flag designs are in every applicable section of Division 24.09.",
+      "This section includes the stars and stripes design of the American flag in any form. Designs in this section are not limited to flags."
+    ].join("\n")
+  },
+  "24.09.07": {
+    code: "24.09.07",
+    description: "Banners",
+    division: "24.09",
+    guidelines: [
+      "Flags are generally characterized by flagpoles or furls.",
+      "Flag designs are in every applicable section of Division 24.09.",
+      "A banner is a representation of a strip of fabric often displaying a device or legend. Designs containing more than one banner are not cross-coded with 24.09.09.",
+      "Many banner designs are cross-referenced with Division 26.13 (Quadrilaterals)."
+    ].join("\n")
+  },
+  "24.09.09": {
+    code: "24.09.09",
+    description: "More than one flag",
+    division: "24.09",
+    guidelines: [
+      "Flags are generally characterized by flagpoles or furls.",
+      "Flag designs are in every applicable section of Division 24.09."
+    ].join("\n")
+  },
+  "24.09.25": {
+    code: "24.09.25",
+    description: "Other flags, including bunting and signal flags",
+    division: "24.09",
+    guidelines: [
+      "Flags are generally characterized by flagpoles or furls.",
+      "Flag designs are in every applicable section of Division 24.09."
+    ].join("\n")
+  },
+  "24.11.01": {
+    code: "24.11.01",
+    description: "Crowns closed at the top",
+    division: "24.11",
+    guidelines: "If a crown is a small inconspicuous design element functioning as punctuation or as a part of a letter, the crown should be coded in 29.01.07.",
+    excludes: "Crowns of leaves, flowers or fruits (05.15.01)"
+  },
+  "24.11.02": {
+    code: "24.11.02",
+    description: "Crowns open at the top",
+    division: "24.11",
+    guidelines: "If a crown is a small inconspicuous design element functioning as punctuation or as a part of a letter, the crown should be coded in 29.01.07.",
+    excludes: "Crowns of leaves, flowers or fruits (05.15.01)"
+  },
+  "24.13.01": {
+    code: "24.13.01",
+    description: "Cross, Latin (shorter horizontal lines)",
+    division: "24.13"
+  },
+  "24.13.02": {
+    code: "24.13.02",
+    description: "Cross, Greek (equal sized lines)",
+    division: "24.13",
+    guidelines: [
+      "When the mark clearly indicates a mathematical symbol, only the plus symbol (24.17.06) is coded.",
+      "When a cross is accompanied by the word PLUS, double code the design in 24.13.02 and 24.17.06."
+    ].join("\n")
+  },
+  "24.13.03": {
+    code: "24.13.03",
+    description: "Crosses formed by inscriptions (words intersecting)",
+    division: "24.13",
+    guidelines: "Do not cross-reference marks in this section with the 24.13.01 or 24.01.02."
+  },
+  "24.13.04": {
+    code: "24.13.04",
+    description: "Crosses with rays or radiating lines",
+    division: "24.13"
+  },
+  "24.13.25": {
+    code: "24.13.25",
+    description: "Other crosses, including ankh, maltese",
+    division: "24.13"
+  },
+  "24.15.01": {
+    code: "24.15.01",
+    description: "Arrows forming a circle or an arc of a circle",
+    division: "24.15",
+    guidelines: "Specific Arrow(s) that form or comprise a circle are in 24.15.01. If the circle is made up of more that one arrow then also code 24.15.10. If arrow(s) is forming or bordering the perimeter of a circle, add code 26.01.09. If the arrow(s) is comprising a circle, add code 26.01.11."
+  },
+  "24.15.02": {
+    code: "24.15.02",
+    description: "Arrows forming any other geometric figure",
+    division: "24.15",
+    guidelines: [
+      "Arrow(s) which form a geometric figure other that a circle are in 24.15.02. If there is more than one arrow in the design then also code 24.15.10; also code the appropriate section for the geometric design in Category 26.",
+      "It is recommended that users search 24.15.25 after reviewing 24.15.02."
+    ].join("\n")
+  },
+  "24.15.03": {
+    code: "24.15.03",
+    description: "Arrows formed by words, letters, numbers or punctuation",
+    division: "24.15"
+  },
+  "24.15.04": {
+    code: "24.15.04",
+    description: "Arrowheads",
+    division: "24.15",
+    guidelines: "Only designs which clearly look like they are off an arrow are in 24.15.04."
+  },
+  "24.15.10": {
+    code: "24.15.10",
+    description: "More than one arrow",
+    division: "24.15"
+  },
+  "24.15.25": {
+    code: "24.15.25",
+    description: "Other arrows",
+    division: "24.15",
+    guidelines: "Chevrons (26.17.12) may appear similar to other arrows."
+  },
+  "24.17.01": {
+    code: "24.17.01",
+    description: "Astrological (Zodiac) symbols and signs",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.02": {
+    code: "24.17.02",
+    description: "Male and female biological symbols",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.03": {
+    code: "24.17.03",
+    description: "Dollar symbol ( $ )",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.04": {
+    code: "24.17.04",
+    description: "Cent symbol ( ¢ )",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.05": {
+    code: "24.17.05",
+    description: "Pound sterling symbol ( £ ), Yen ( ¥ ) and Euro ( € )",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.06": {
+    code: "24.17.06",
+    description: "Plus symbol ( + )",
+    division: "24.17",
+    guidelines: [
+      "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text.",
+      "When the mark clearly indicates a mathematical symbol, only the plus symbol (24.17.06) is coded.",
+      "When a cross is accompanied by the word PLUS, double code the design in 24.13.02 and 24.17.06."
+    ].join("\n")
+  },
+  "24.17.07": {
+    code: "24.17.07",
+    description: "Minus symbol ( - )",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text.",
+    excludes: "Hyphens (24.17.14)"
+  },
+  "24.17.08": {
+    code: "24.17.08",
+    description: "Multiplication symbol ( × )",
+    division: "24.17",
+    guidelines: [
+      "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text.",
+      "Only code the multiplication symbols when it appears in a mathematical expression."
+    ].join("\n")
+  },
+  "24.17.09": {
+    code: "24.17.09",
+    description: "Division symbols ( ÷ ) or square root symbols",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.10": {
+    code: "24.17.10",
+    description: "Percentage symbol ( % )",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.11": {
+    code: "24.17.11",
+    description: "Pi symbol",
+    division: "24.17",
+    guidelines: [
+      "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text.",
+      "Pi symbols which are not accompanied by other Greek characters are in 24.17.11 exclusively. Pi symbols with other Greek letters are in 28.01.05."
+    ].join("\n")
+  },
+  "24.17.12": {
+    code: "24.17.12",
+    description: "Infinity symbol",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.13": {
+    code: "24.17.13",
+    description: "Musical symbols, including treble and bass clef symbols, sharp and flat symbols and notes",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.14": {
+    code: "24.17.14",
+    description: "Punctuation marks, including commas( , ), question marks( ? ), exclamation points( !¡ ), ampersands( & ), at symbols( @ ), and hyphens( - )",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text.",
+    excludes: "Asterisks( * ) (01.01.04) and emoticons (24.17.21)"
+  },
+  "24.17.15": {
+    code: "24.17.15",
+    description: "Check marks",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.16": {
+    code: "24.17.16",
+    description: "Universal prohibition symbol",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.17": {
+    code: "24.17.17",
+    description: "Prescription symbol (Rx)",
+    division: "24.17",
+    guidelines: [
+      "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text.",
+      "This section should include marks that look like the prescription symbol."
+    ].join("\n")
+  },
+  "24.17.18": {
+    code: "24.17.18",
+    description: "Yin-Yang symbol",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.19": {
+    code: "24.17.19",
+    description: "Recycling symbol",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.20": {
+    code: "24.17.20",
+    description: "Peace symbol",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.21": {
+    code: "24.17.21",
+    description: "Emoticons (icons expressing emotions)",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text."
+  },
+  "24.17.25": {
+    code: "24.17.25",
+    description: "Other notational signs and symbols, including pH, hazardous materials symbols, degree sign( ° ), pound sign( # ), equal signs( = ), and other mathematical symbols",
+    division: "24.17",
+    guidelines: "Specific Notational signs and symbols are coded only when they appear as design elements as opposed to mere text.",
+    excludes: "Skull and crossbones (Poison symbol) (02.11.11); serpent and staff (Caduceus-medical symbol) (03.21.01)"
+  },
+  "24.19.01": {
+    code: "24.19.01",
+    description: "Power button on/off symbol",
+    division: "24.19",
+    guidelines: "Physical electrical switches are in 15.09.03."
+  },
+  "24.19.02": {
+    code: "24.19.02",
+    description: "Control button symbols (play, pause, forward, eject, etc.) used in media player devices",
+    division: "24.19",
+    guidelines: "The typical symbols are as follows: right-facing triangle (play/forward); vertical parallel bars (pause); left-facing triangle(s) (reverse/rewind); two or more right-facing triangles (fast forward); triangles pointing at a vertical bar (back/skip); circle (record); square (stop); upward-pointing triangle above a horizontal bar (eject); intertwined arrows (shuffle)."
+  },
+  "24.19.04": {
+    code: "24.19.04",
+    description: "Symbols for mobile internet, radio, or wireless communications, service, and signal strength",
+    division: "24.19",
+    guidelines: "Lines indicating sound are in 01.15.24 and lines indicating speed, heat, or wind are in 26.17.07. Cross-coding may be appropriate."
+  },
+  "24.19.25": {
+    code: "24.19.25",
+    description: "Other computer hardware symbols, including USB symbols, networking symbols, and hard drive symbols",
+    division: "24.19",
+    guidelines: "Designs of actual hardware are coded elsewhere, such as cables in 14.01.xx, computers in 15.01.04, and speakers in 16.01.04. Cross-coding may be necessary."
+  },
+  "24.21.01": {
+    code: "24.21.01",
+    description: "Pins, arrows, and flags denoting electronic mapping and navigation, most commonly comprised of a downward-pointing arrow extending below a circular shape like an inverted raindrop",
+    division: "24.21"
+  },
+  "25.01.01": {
+    code: "25.01.01",
+    description: "Frames for pictures and the like",
+    division: "25.01"
+  },
+  "25.01.25": {
+    code: "25.01.25",
+    description: "Other framework and ornamental borders",
+    division: "25.01",
+    guidelines: "When applicable, cross-reference other framework and ornamental borders with the appropriate overall geometric shape."
+  },
+  "25.03.01": {
+    code: "25.03.01",
+    description: "Checkerboard pattern",
+    division: "25.03",
+    excludes: "Checkerboards (games) are coded in 21.01.05"
+  },
+  "25.03.02": {
+    code: "25.03.02",
+    description: "Backgrounds covered with other squares or rectangles",
+    division: "25.03"
+  },
+  "25.03.03": {
+    code: "25.03.03",
+    description: "Backgrounds covered with polygons",
+    division: "25.03"
+  },
+  "25.03.04": {
+    code: "25.03.04",
+    description: "Backgrounds covered with circles or ellipses",
+    division: "25.03"
+  },
+  "25.03.05": {
+    code: "25.03.05",
+    description: "Backgrounds covered with dots (not mere stippling)",
+    division: "25.03"
+  },
+  "25.03.06": {
+    code: "25.03.06",
+    description: "Backgrounds covered with wood graining",
+    division: "25.03",
+    excludes: "Representations of wood (building material) are coded in 07.15.04"
+  },
+  "25.03.25": {
+    code: "25.03.25",
+    description: "Backgrounds covered with other figurative elements or repetitive designs, words or letters",
+    division: "25.03"
+  },
+  "26.01.01": {
+    code: "26.01.01",
+    description: "Circles as carriers or as single line borders",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "If a circle is coded as a carrier or a single line border, the drawing should not have any other code in 26.01. If there are multiple circles, one of which is a carrier or a border, the significant circular element will be coded. The carrier or border will not be coded."
+    ].join("\n"),
+    excludes: "Carriers and borders do not include plain single line circles (26.01.02)"
+  },
+  "26.01.02": {
+    code: "26.01.02",
+    description: "Plain single line circles Including: A solid white circle in another design element. For example, a solid white circle in a square",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+    excludes: "Single line circles do not include concentric circles (26.01.17 and 26.01.18) or circles as carriers or as single line borders (26.01.01)"
+  },
+  "26.01.03": {
+    code: "26.01.03",
+    description: "Incomplete circles (more than semi-circles)",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "Circles whose borders are broken by words, letters or design elements are not incomplete."
+    ].join("\n"),
+    excludes: "Incomplete circles do not include entire circles made of broken or dotted lines (26.01.05)"
+  },
+  "26.01.04": {
+    code: "26.01.04",
+    description: "Circles with two breaks or divided in the middle",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04)."
+  },
+  "26.01.05": {
+    code: "26.01.05",
+    description: "Circles made of broken or dotted lines Including: Circles with more than two breaks",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04)."
+  },
+  "26.01.06": {
+    code: "26.01.06",
+    description: "Semi-circles",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "A semi-circle is a mark which resembles a half-circle. The mark may be an object or arrangement of objects in the shape of a 'half-circle'."
+    ].join("\n")
+  },
+  "26.01.07": {
+    code: "26.01.07",
+    description: "Circles with a decorative border, including scalloped, ruffled and zig-zag edges",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04)."
+  },
+  "26.01.08": {
+    code: "26.01.08",
+    description: "Letters, numerals or punctuation forming or bordering the perimeter of a circle",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04)."
+  },
+  "26.01.09": {
+    code: "26.01.09",
+    description: "Geometric figures, objects, humans, plants or animals forming or bordering the perimeter of a circle",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "This section is cross-coded with the specific section(s) for the objects, humans, plants or animals which form or border the perimeter the circle."
+    ].join("\n")
+  },
+  "26.01.11": {
+    code: "26.01.11",
+    description: "Letters, numerals, punctuation, geometric figures, objects, humans, plants or animals comprising a circle",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "This section is cross-coded with the specific section(s) for the objects, humans, plants or animals which comprise the circle.",
+      "If a design falling in this section is surrounded by a circle, do not cross-code the design as concentric circles (26.01.17 and 26.01.18) or as a circle within a circle (26.01.20)."
+    ].join("\n")
+  },
+  "26.01.12": {
+    code: "26.01.12",
+    description: "Circles with bars, bands and lines",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+    excludes: "Lining for color is not considered a bar, band or line unless the color comprises a bar, band or line."
+  },
+  "26.01.13": {
+    code: "26.01.13",
+    description: "Two circles",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+    excludes: "Concentric circles (26.01.17 and 26.01.18) and circles within a circle (26.01.20) are not considered two circles for coding."
+  },
+  "26.01.15": {
+    code: "26.01.15",
+    description: "Three circles",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+    excludes: "Concentric circles (26.01.17 and 26.01.18) and circles within a circle (26.01.20) are not considered three circles for purposes of coding."
+  },
+  "26.01.16": {
+    code: "26.01.16",
+    description: "Circles touching or intersecting",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "Designs coded in this section must be cross-referenced with 26.01.13 or 26.01.15."
+    ].join("\n")
+  },
+  "26.01.17": {
+    code: "26.01.17",
+    description: "Two concentric circles",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "Concentric circles share a common center."
+    ].join("\n"),
+    excludes: "Concentric circles are not coded as two circles (26.01.13) unless there is more than one concentric circle."
+  },
+  "26.01.18": {
+    code: "26.01.18",
+    description: "Three or more concentric circles",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "Concentric circles share a common center."
+    ].join("\n"),
+    excludes: "Concentric circles are not coded as three or more circles (26.01.15) unless there are more than one concentric circle."
+  },
+  "26.01.20": {
+    code: "26.01.20",
+    description: "Circles within a circle",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "Circles within a circle do not share a common center."
+    ].join("\n"),
+    excludes: "Circles within a circle are not coded as two and three or more circles (26.01.13 and 26.01.15)."
+  },
+  "26.01.21": {
+    code: "26.01.21",
+    description: "Circles that are totally or partially shaded",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04)."
+  },
+  "26.01.26": {
+    code: "26.01.26",
+    description: "Spirals, coils and swirls",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+    excludes: "Helixes are coded in 26.01.29"
+  },
+  "26.01.27": {
+    code: "26.01.27",
+    description: "Circles containing irregular exterior lining or elements not amounting to a decorative border",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "This section is for a design which is generally circular but has additional elements; a circle plus."
+    ].join("\n")
+  },
+  "26.01.28": {
+    code: "26.01.28",
+    description: "Miscellaneous circular designs with an irregular circumference",
+    division: "26.01",
+    guidelines: [
+      "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04).",
+      "This section is for designs which look somewhat like a circle."
+    ].join("\n")
+  },
+  "26.01.29": {
+    code: "26.01.29",
+    description: "Helixes",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04)."
+  },
+  "26.01.30": {
+    code: "26.01.30",
+    description: "Four Circles Including: Multiple concentric circles or circles within circles should be coded",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04)."
+  },
+  "26.01.31": {
+    code: "26.01.31",
+    description: "Five or more circles Including: Multiple concentric circles or circles within circles should be coded",
+    division: "26.01",
+    guidelines: "The term circle refers to semi-circles except in reference to carriers or borders (26.01.01), incomplete circles (26.01.03) and circles with two breaks (26.01.04)."
+  },
+  "26.03.01": {
+    code: "26.03.01",
+    description: "Ovals as carriers and single line borders",
+    division: "26.03",
+    guidelines: [
+      "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape.",
+      "If an oval is coded as a carrier or a single line border, the drawing should not have any other code in 26.03. If there are multiple ovals, one of which is a carrier or border, the significant ovals should be coded. The carrier or border will not be coded."
+    ].join("\n"),
+    excludes: "Plain single line ovals (26.03.02)"
+  },
+  "26.03.02": {
+    code: "26.03.02",
+    description: "Plain single line ovals Including: A solid white oval in another design element. For example, a solid white oval in a square",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape.",
+    excludes: "Single line ovals do not include concentric ovals (26.03.17) or ovals as carriers or single line borders (26.03.01)"
+  },
+  "26.03.03": {
+    code: "26.03.03",
+    description: "Incomplete ovals",
+    division: "26.03",
+    guidelines: [
+      "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape.",
+      "Ovals whose borders are broken by words, letters or design elements are not incomplete."
+    ].join("\n"),
+    excludes: "Incomplete ovals do not include entire ovals made of broken or dotted lines (26.03.05)"
+  },
+  "26.03.04": {
+    code: "26.03.04",
+    description: "Ovals with two breaks or divided in the middle",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape."
+  },
+  "26.03.05": {
+    code: "26.03.05",
+    description: "Ovals made of broken or dotted lines Including: Ovals made of broken or dotted lines include ovals with more than two breaks",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape."
+  },
+  "26.03.07": {
+    code: "26.03.07",
+    description: "Ovals with a decorative border, including scalloped, ruffled and zig-zag edges",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape."
+  },
+  "26.03.08": {
+    code: "26.03.08",
+    description: "Letters, numerals or punctuation forming the perimeter of an oval or bordering the perimeter of an oval",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape."
+  },
+  "26.03.09": {
+    code: "26.03.09",
+    description: "Geometric figures, objects, humans, plants or animals forming the perimeter of an oval or bordering the perimeter of an oval",
+    division: "26.03",
+    guidelines: [
+      "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape.",
+      "This section is cross-coded with the specific section(s) for the objects, humans, plants or animals which form or border the perimeter of the oval."
+    ].join("\n")
+  },
+  "26.03.11": {
+    code: "26.03.11",
+    description: "Letters, numerals, punctuation, geometric figures, objects, humans, plants or animals comprising an oval",
+    division: "26.03",
+    guidelines: [
+      "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape.",
+      "This section is cross-coded with the specific section(s) for the objects, humans, plants or animals which comprise the oval.",
+      "If a design falling in this section is surrounded by an oval, do not cross-code the design as concentric ovals (26.03.17)."
+    ].join("\n")
+  },
+  "26.03.12": {
+    code: "26.03.12",
+    description: "Ovals with bars, bands or lines",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape."
+  },
+  "26.03.13": {
+    code: "26.03.13",
+    description: "Two ovals",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape.",
+    excludes: "Concentric ovals 26.03.17 are not considered two ovals for coding."
+  },
+  "26.03.14": {
+    code: "26.03.14",
+    description: "Three or more ovals",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape.",
+    excludes: "Concentric ovals 26.03.17 are not considered three or more ovals for coding."
+  },
+  "26.03.16": {
+    code: "26.03.16",
+    description: "Ovals touching or intersecting",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape."
+  },
+  "26.03.17": {
+    code: "26.03.17",
+    description: "Concentric ovals and ovals within ovals",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape.",
+    excludes: "Concentric ovals are not coded as two ovals (26.03.13)."
+  },
+  "26.03.21": {
+    code: "26.03.21",
+    description: "Ovals that are completely or partially shaded",
+    division: "26.03",
+    guidelines: "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape."
+  },
+  "26.03.28": {
+    code: "26.03.28",
+    description: "Miscellaneous designs with overall oval shape, including amoeba-like shapes and irregular ovals",
+    division: "26.03",
+    guidelines: [
+      "The term oval refers to a geometric shape that resembles an ellipse or an egg in shape.",
+      "This section is for designs which look somewhat like an oval."
+    ].join("\n"),
+    excludes: "Rectangles with curved sides (26.11.25). For example, if the design has two straight sides and two curved sides, the design should be coded as a rectangle with curved sides or as an oblong shape."
+  },
+  "26.05.01": {
+    code: "26.05.01",
+    description: "Triangles as borders or carriers",
+    division: "26.05",
+    guidelines: [
+      "Chevrons or other V-shaped patterns are coded in 26.17.12.",
+      "If a triangle is coded as a carrier or a border, the drawing should not have any other code in 26.05. If there are multiple triangles, one of which is a carrier or border, the significant triangle should be coded. The carrier or border will not be coded."
+    ].join("\n")
+  },
+  "26.05.02": {
+    code: "26.05.02",
+    description: "Plain single line triangles Including: Triangles with slightly rounded corners and a solid white triangle in another design element. For example, a solid white triangle in a square",
+    division: "26.05",
+    guidelines: "Triangles whose borders are broken by words, letters or designs are not incomplete."
+  },
+  "26.05.03": {
+    code: "26.05.03",
+    description: "Incomplete triangles (must have two angles)",
+    division: "26.05",
+    guidelines: "Triangles whose borders are broken by words, letters or design elements are not incomplete.",
+    excludes: "Entire triangles made of broken or dotted lines (26.05.05) are not coded as incomplete triangles."
+  },
+  "26.05.05": {
+    code: "26.05.05",
+    description: "Triangles made of broken or dotted lines",
+    division: "26.05"
+  },
+  "26.05.07": {
+    code: "26.05.07",
+    description: "Triangles with a decorative border, including scalloped, ruffled and zig-zag edges",
+    division: "26.05"
+  },
+  "26.05.08": {
+    code: "26.05.08",
+    description: "Letters, numerals or punctuation forming the perimeter of a triangle, bordering the perimeter of a triangle or forming a triangle",
+    division: "26.05"
+  },
+  "26.05.09": {
+    code: "26.05.09",
+    description: "Triangles made of geometric figures, objects, humans, plants or animals",
+    division: "26.05",
+    guidelines: "This section is cross-coded with the specific section(s) for the objects, humans, plants or animals which either form or border the perimeter or comprise the triangle."
+  },
+  "26.05.12": {
+    code: "26.05.12",
+    description: "Triangles with bars, bands and lines",
+    division: "26.05"
+  },
+  "26.05.13": {
+    code: "26.05.13",
+    description: "Two Triangles",
+    division: "26.05",
+    excludes: "Triangles inside one another (26.05.20) are not coded as more than one triangle."
+  },
+  "26.05.14": {
+    code: "26.05.14",
+    description: "Three triangles",
+    division: "26.05"
+  },
+  "26.05.15": {
+    code: "26.05.15",
+    description: "Four or more triangles",
+    division: "26.05"
+  },
+  "26.05.16": {
+    code: "26.05.16",
+    description: "Triangles touching or intersecting",
+    division: "26.05"
+  },
+  "26.05.20": {
+    code: "26.05.20",
+    description: "Triangles inside other triangles",
+    division: "26.05",
+    guidelines: [
+      "Only a triangle inside another triangle is coded in this section.",
+      "A triangle inside another triangle is not coded as more than one triangle. (26.05.13)."
+    ].join("\n")
+  },
+  "26.05.21": {
+    code: "26.05.21",
+    description: "Triangles that are completely or partially shaded",
+    division: "26.05"
+  },
+  "26.05.25": {
+    code: "26.05.25",
+    description: "Triangles with one or more curved sides",
+    division: "26.05",
+    excludes: "Triangle with curved corners (26.05.02) are not coded as triangles with curved sides."
+  },
+  "26.05.28": {
+    code: "26.05.28",
+    description: "Miscellaneous designs with overall triangular shape",
+    division: "26.05"
+  },
+  "26.07.01": {
+    code: "26.07.01",
+    description: "Plain diamonds with single or multiple line borders Including: Diamonds with slightly rounded corners and a solid white diamond in another design element. For example, a solid white diamond in a square",
+    division: "26.07",
+    excludes: "Jewelry (17.03)"
+  },
+  "26.07.02": {
+    code: "26.07.02",
+    description: "Diamonds with decorative borders",
+    division: "26.07",
+    excludes: "Jewelry (17.03)"
+  },
+  "26.07.03": {
+    code: "26.07.03",
+    description: "Incomplete diamonds or divided in the middle",
+    division: "26.07",
+    guidelines: "Diamonds whose borders are broken by words, letters or design elements are not incomplete.",
+    excludes: "Jewelry (17.03)"
+  },
+  "26.07.12": {
+    code: "26.07.12",
+    description: "Diamonds with bars, bands and lines",
+    division: "26.07",
+    excludes: "Jewelry (17.03)"
+  },
+  "26.07.13": {
+    code: "26.07.13",
+    description: "Two diamonds",
+    division: "26.07",
+    excludes: "Jewelry (17.03)"
+  },
+  "26.07.14": {
+    code: "26.07.14",
+    description: "Three diamonds",
+    division: "26.07",
+    excludes: "Jewelry (17.03)"
+  },
+  "26.07.15": {
+    code: "26.07.15",
+    description: "Four or more diamonds",
+    division: "26.07",
+    excludes: "Jewelry (17.03)"
+  },
+  "26.07.21": {
+    code: "26.07.21",
+    description: "Diamonds that are completely or partially shaded",
+    division: "26.07",
+    excludes: "Jewelry (17.03)"
+  },
+  "26.07.28": {
+    code: "26.07.28",
+    description: "Miscellaneous designs with overall diamond shape, including letters forming or comprising a diamond",
+    division: "26.07",
+    excludes: "Jewelry (17.03)"
   }
 } 
+
+
+
+
+
