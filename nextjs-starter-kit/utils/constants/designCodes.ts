@@ -137,7 +137,6 @@ export const designCodeDivisions: Record<string, DesignCodeDivision> = {
   "03.19": { code: "03.19", description: "Fish, whales, seals, and the like, and other underwater animals", category: "03" },
   "03.21": { code: "03.21", description: "Amphibians and reptiles, including frogs, snakes, lizards, and turtles", category: "03" },
   "03.23": { code: "03.23", description: "Insects, spiders, micro-organisms", category: "03" },
-  "03.25": { code: "03.25", description: "Prehistoric animals", category: "03" },
   "04.01": { code: "04.01", description: "Winged or horned personages, fairies, supernatural beings, mythological or legendary personages", category: "04" },
   "04.03": { code: "04.03", description: "Beings partly human and partly animal", category: "04" },
   "04.05": { code: "04.05", description: "Mythological or legendary animals", category: "04" },
@@ -1671,5 +1670,1689 @@ export const designCodeSections: Record<string, DesignCodeSection> = {
     description: "Costumed goats and sheep and those with human attributes",
     division: "03.07",
     guidelines: "Cross-code with basic code(s) for associated animals of these types, as well as the stylized code if appropriate."
+  },
+  "03.09.01": {
+    code: "03.09.01",
+    description: "Rabbits, hares",
+    division: "03.09"
+  },
+  "03.09.02": {
+    code: "03.09.02",
+    description: "Small mammals other than rabbits, mice, and those with spines or armor. Includes squirrels, beavers, gophers, opossums, weasels, and so on.",
+    division: "03.09"
+  },
+  "03.09.06": {
+    code: "03.09.06",
+    description: "Rats, mice, moles, gerbils, guinea pigs and the like",
+    division: "03.09"
+  },
+  "03.09.07": {
+    code: "03.09.07",
+    description: "Mammals with exteriors of armor, spines, or quills, such as armadillos and porcupines",
+    division: "03.09"
+  },
+  "03.09.09": {
+    code: "03.09.09",
+    description: "Kangaroos and wallabies",
+    division: "03.09",
+    guidelines: "As an identifiable single species, code includes heads and other parts uniquely identifiable with the species, also including stylized, costumed, and those with human attributes."
+  },
+  "03.09.24": {
+    code: "03.09.24",
+    description: "Stylized rodents and other small mammals other than cats and dogs",
+    division: "03.09",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types."
+  },
+  "03.09.26": {
+    code: "03.09.26",
+    description: "Costumed rodents and other small mammals, other than cats and dogs, and those with human attributes",
+    division: "03.09",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types, as well as the stylized code if appropriate."
+  },
+  "03.11.01": {
+    code: "03.11.01",
+    description: "Primates other than humans (apes, monkeys, gorillas, etc.)",
+    division: "03.11"
+  },
+  "03.11.16": {
+    code: "03.11.16",
+    description: "Heads of primates",
+    division: "03.11",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types, as well as the stylized code if appropriate."
+  },
+  "03.11.24": {
+    code: "03.11.24",
+    description: "Stylized primates",
+    division: "03.11",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types."
+  },
+  "03.11.26": {
+    code: "03.11.26",
+    description: "Costumed primates and those with human attributes",
+    division: "03.11",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types, as well as the stylized code if appropriate."
+  },
+  "03.13.01": {
+    code: "03.13.01",
+    description: "Paws, feet, and paw prints of mammals and primates other than humans",
+    division: "03.13",
+    guidelines: "If possible, cross-code with basic code(s) for associated animals of the particular type, as well as the stylized code if appropriate.",
+    excludes: "Human footprints are coded in 02.11.08. Bird feet, footprints, and talons are coded in 03.17.03."
+  },
+  "03.13.02": {
+    code: "03.13.02",
+    description: "Skeletons, skulls, and bones of mammals",
+    division: "03.13",
+    guidelines: "If possible, cross-code with basic code(s) for associated animals of the particular type as well as the stylized code if appropriate.",
+    excludes: "Bones, skulls, and skeletons of humans, including skull and crossbones, should be coded in 02.11.10. Bones, skeletons, skulls, and fossils of non-mammals should be coded in 03.13.05."
+  },
+  "03.13.03": {
+    code: "03.13.03",
+    description: "Horns and antlers shown alone or otherwise not as part of associated animal heads",
+    division: "03.13",
+    guidelines: "If possible, cross-code with basic code(s) for associated animals of the particular type as well as the stylized code if appropriate."
+  },
+  "03.13.04": {
+    code: "03.13.04",
+    description: "Hides, fur, pelts, scales, and skins of animals",
+    division: "03.13",
+    guidelines: "If possible, cross-code with basic code(s) for associated animals of the particular type as well as the stylized code if appropriate."
+  },
+  "03.13.05": {
+    code: "03.13.05",
+    description: "Skeletons, skulls, and bones of fish, birds, reptiles, insects, dinosaurs",
+    division: "03.13",
+    guidelines: "If possible, cross-code with basic code(s) for associated animals of the particular type as well as the stylized code if appropriate.",
+    excludes: "Bones, skulls, and skeletons of humans, including skull and crossbones, should be coded in 02.11.10. Bones, skeletons, skulls, and fossils of other mammals are coded in 03.13.02."
+  },
+  "03.13.25": {
+    code: "03.13.25",
+    description: "Parts of mammals other than humans, other than paws, horns, skins, and bones",
+    division: "03.13",
+    guidelines: "If particular species are identifiable, cross-code as appropriate (e.g., stylized tiger tail also coded as 03.01.03 (tigers) and 03.01.21 (stylized felines)).",
+    excludes: "Note that bite marks, whether made by animal or human teeth, are in 02.11.05."
+  },
+  "03.15.01": {
+    code: "03.15.01",
+    description: "Eagles",
+    division: "03.15",
+    excludes: "Note that birds prepared for cooking are coded in 08.11.05."
+  },
+  "03.15.02": {
+    code: "03.15.02",
+    description: "Birds of prey other than eagles, including condors, falcons, hawks, and vultures",
+    division: "03.15"
+  },
+  "03.15.03": {
+    code: "03.15.03",
+    description: "Chickens, hens, roosters",
+    division: "03.15"
+  },
+  "03.15.05": {
+    code: "03.15.05",
+    description: "Turkeys",
+    division: "03.15",
+    guidelines: "As an identifiable single species, code includes heads and other parts uniquely identifiable with the species, also including stylized, costumed, and those with human attributes."
+  },
+  "03.15.06": {
+    code: "03.15.06",
+    description: "Ducks, geese, swans",
+    division: "03.15"
+  },
+  "03.15.07": {
+    code: "03.15.07",
+    description: "Owls",
+    division: "03.15",
+    guidelines: "As an identifiable single species, code includes heads and other parts uniquely identifiable with the species, also including stylized, costumed, and those with human attributes."
+  },
+  "03.15.08": {
+    code: "03.15.08",
+    description: "Storks, cranes, flamingos, heron and other long-legged wading birds",
+    division: "03.15",
+    excludes: "Other sea birds such as gulls and pelicans are coded in 03.15.09."
+  },
+  "03.15.09": {
+    code: "03.15.09",
+    description: "Gulls, pelicans, and other sea birds",
+    division: "03.15",
+    excludes: "Long-legged wading birds such as cranes and flamingos are in 03.15.08."
+  },
+  "03.15.10": {
+    code: "03.15.10",
+    description: "Doves and pigeons",
+    division: "03.15"
+  },
+  "03.15.12": {
+    code: "03.15.12",
+    description: "Pheasants, peacocks, quail",
+    division: "03.15"
+  },
+  "03.15.13": {
+    code: "03.15.13",
+    description: "Emus, kiwis, ostriches",
+    division: "03.15"
+  },
+  "03.15.14": {
+    code: "03.15.14",
+    description: "Macaws, parakeets, parrots, toucans",
+    division: "03.15"
+  },
+  "03.15.15": {
+    code: "03.15.15",
+    description: "Penguins; Puffins",
+    division: "03.15"
+  },
+  "03.15.16": {
+    code: "03.15.16",
+    description: "Bats, including those in flight, stylized, costumed, and identifiable parts of bats",
+    division: "03.15",
+    guidelines: "As an identifiable single species, code includes heads and other parts uniquely identifiable with the species, also including stylized, costumed, and those with human attributes."
+  },
+  "03.15.19": {
+    code: "03.15.19",
+    description: "Birds in flight or with outspread wings",
+    division: "03.15",
+    guidelines: "Cross-code with basic code(s) for associated animals of the particular type, as well as the stylized code if appropriate."
+  },
+  "03.15.24": {
+    code: "03.15.24",
+    description: "Stylized birds",
+    division: "03.15",
+    guidelines: "Cross-code with basic codes of appropriate species. However, this code does not include particularly identifiable species that have individual codes, such as owls (03.15.07)."
+  },
+  "03.15.25": {
+    code: "03.15.25",
+    description: "Other birds",
+    division: "03.15",
+    guidelines: "Includes common birds not categorized elsewhere, such as robins, crows, cardinals, etc."
+  },
+  "03.15.26": {
+    code: "03.15.26",
+    description: "Costumed birds and those with human attributes",
+    division: "03.15",
+    guidelines: "Cross-code with basic codes of appropriate species. However, this code does not include particularly identifiable species that have individual codes, such as owls (03.15.07)."
+  },
+  "03.17.01": {
+    code: "03.17.01",
+    description: "Wings of birds shown alone or as part of something other than associated animal",
+    division: "03.17",
+    guidelines: "Cross-code with basic codes of appropriate species. However, this code does not include particularly identifiable species that have individual codes, such as owls (03.15.07). Cross-code with 24.03.25 if part of insignia."
+  },
+  "03.17.02": {
+    code: "03.17.02",
+    description: "Feathers, shown alone or as part of something other than associated animal",
+    division: "03.17",
+    excludes: "Feather pens and quills are in 20.01.09, but may be cross-coded here in 03.17.02 if the feathers are distinctive."
+  },
+  "03.17.03": {
+    code: "03.17.03",
+    description: "Bird talons, claws, feet, and foot tracks",
+    division: "03.17",
+    guidelines: "If possible, cross-code with basic code(s) for associated animals of the particular type as well as the stylized code if appropriate."
+  },
+  "03.17.05": {
+    code: "03.17.05",
+    description: "Bird nests, whether or not eggs present",
+    division: "03.17",
+    excludes: "Do not code in this section when eggs shown as food (08.13.02 or 08.13.03)."
+  },
+  "03.17.06": {
+    code: "03.17.06",
+    description: "Bird cages, houses, and feeders",
+    division: "03.17",
+    excludes: "Do not code other animal cages or kennels (07.01.10) in this section."
+  },
+  "03.17.16": {
+    code: "03.17.16",
+    description: "Heads of birds",
+    division: "03.17",
+    guidelines: "Cross-code with basic codes of appropriate species if possible to determine. However, this code does not include particularly identifiable species, such as owls (03.15.07)."
+  },
+  "03.17.25": {
+    code: "03.17.25",
+    description: "Beaks and other parts of birds other than feathers or feet",
+    division: "03.17",
+    guidelines: "Cross-code with basic codes of appropriate species if possible to determine. However, this code does not include particularly identifiable species, such as owls (03.15.07)."
+  },
+  "03.19.01": {
+    code: "03.19.01",
+    description: "Sharks",
+    division: "03.19"
+  },
+  "03.19.02": {
+    code: "03.19.02",
+    description: "Whales and orcas",
+    division: "03.19"
+  },
+  "03.19.03": {
+    code: "03.19.03",
+    description: "Dolphins and porpoises",
+    division: "03.19"
+  },
+  "03.19.04": {
+    code: "03.19.04",
+    description: "Marlin; Sail fish; Sawfish; Swordfish",
+    division: "03.19"
+  },
+  "03.19.05": {
+    code: "03.19.05",
+    description: "Octopi, jellyfish, rays, squid, and sea animals with tentacles other than starfish",
+    division: "03.19",
+    excludes: "Starfish are coded in 03.19.11."
+  },
+  "03.19.07": {
+    code: "03.19.07",
+    description: "Seahorses",
+    division: "03.19"
+  },
+  "03.19.08": {
+    code: "03.19.08",
+    description: "Crabs",
+    division: "03.19",
+    excludes: "Shellfish like shrimp and lobsters are coded in 03.19.09. Shells and other shelled sea creatures like clams are in 03.19.18."
+  },
+  "03.19.09": {
+    code: "03.19.09",
+    description: "Crustaceans other than crabs, such as shrimp, lobsters, crayfish",
+    division: "03.19",
+    excludes: "Crabs are coded in 03.19.08. Shells and other shelled sea creatures like clams are in 03.19.18."
+  },
+  "03.19.11": {
+    code: "03.19.11",
+    description: "Starfish",
+    division: "03.19"
+  },
+  "03.19.13": {
+    code: "03.19.13",
+    description: "Coral formations excluding scenery such as entire reefs and islands",
+    division: "03.19",
+    excludes: "Islands are in 06.03.02. Coral reefs are in 06.03.09."
+  },
+  "03.19.14": {
+    code: "03.19.14",
+    description: "Seals, sea lions, manatees, and walruses",
+    division: "03.19"
+  },
+  "03.19.15": {
+    code: "03.19.15",
+    description: "Schools of fish and marine animals (three or more)",
+    division: "03.19",
+    guidelines: "Cross-code with appropriate basic code(s), such as 03.19.01 (sharks) or 03.19.25 (other fish)."
+  },
+  "03.19.17": {
+    code: "03.19.17",
+    description: "Ichthys fish symbol often used for religious significance",
+    division: "03.19"
+  },
+  "03.19.18": {
+    code: "03.19.18",
+    description: "Shells and shellfish other than crabs, shrimp, and lobsters, and including clams, nautilus, oysters, sand dollars, scallops, and the like",
+    division: "03.19",
+    excludes: "Crabs are coded in 03.19.08. Shrimp and lobsters are coded in 03.19.09."
+  },
+  "03.19.19": {
+    code: "03.19.19",
+    description: "Snails",
+    division: "03.19"
+  },
+  "03.19.21": {
+    code: "03.19.21",
+    description: "Stylized sharks, whales, dolphins, swordfish, and the like",
+    division: "03.19",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types."
+  },
+  "03.19.22": {
+    code: "03.19.22",
+    description: "Stylized seals, sea lions, walruses, and similar marine mammals",
+    division: "03.19",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types."
+  },
+  "03.19.23": {
+    code: "03.19.23",
+    description: "Stylized octopus, squids, jellyfish, crabs, lobsters, clams, snails, starfish, and other similar shellfish, shells, crustaceans, and mollusks",
+    division: "03.19",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types."
+  },
+  "03.19.24": {
+    code: "03.19.24",
+    description: "Stylized small fish, such as common fish and seahorses",
+    division: "03.19",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types."
+  },
+  "03.19.25": {
+    code: "03.19.25",
+    description: "Fish being common fish or not categorized elsewhere, including bass, catfish, eels, piranhas, angelfish, clown fish, and the like",
+    division: "03.19"
+  },
+  "03.19.26": {
+    code: "03.19.26",
+    description: "Costumed fish and other marine animals and those with human attributes",
+    division: "03.19",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types, as well as the stylized code if appropriate."
+  },
+  "03.21.01": {
+    code: "03.21.01",
+    description: "Staff and serpent(s) symbols like Rod of Asclepius medical symbol and caduceus",
+    division: "03.21"
+  },
+  "03.21.02": {
+    code: "03.21.02",
+    description: "Snakes",
+    division: "03.21"
+  },
+  "03.21.05": {
+    code: "03.21.05",
+    description: "Alligators, crocodiles, and the like",
+    division: "03.21"
+  },
+  "03.21.06": {
+    code: "03.21.06",
+    description: "Lizards, salamanders, chameleons, iguanas, and other reptiles not categorized elsewhere",
+    division: "03.21"
+  },
+  "03.21.07": {
+    code: "03.21.07",
+    description: "Turtles, tortoises",
+    division: "03.21"
+  },
+  "03.21.08": {
+    code: "03.21.08",
+    description: "Frogs, toads",
+    division: "03.21"
+  },
+  "03.21.24": {
+    code: "03.21.24",
+    description: "Stylized amphibians and reptiles, including frogs, snakes, lizards, and turtles",
+    division: "03.21",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types."
+  },
+  "03.21.26": {
+    code: "03.21.26",
+    description: "Costumed amphibians and reptiles, including frogs, snakes, lizards, and turtles, and those with human attributes",
+    division: "03.21",
+    guidelines: "Cross-code with basic code(s) for associated animals of these types."
+  },
+  "03.23.01": {
+    code: "03.23.01",
+    description: "Butterflies; Moths",
+    division: "03.23"
+  },
+  "03.23.02": {
+    code: "03.23.02",
+    description: "Worms, slugs, caterpillars, larvae, centipedes and cocoons",
+    division: "03.23"
+  },
+  "03.23.05": {
+    code: "03.23.05",
+    description: "Scorpions",
+    division: "03.23"
+  },
+  "03.23.06": {
+    code: "03.23.06",
+    description: "Bees, wasps, hornets",
+    division: "03.23"
+  },
+  "03.23.07": {
+    code: "03.23.07",
+    description: "Beehives, honeycombs",
+    division: "03.23"
+  },
+  "03.23.08": {
+    code: "03.23.08",
+    description: "Dragonflies",
+    division: "03.23"
+  },
+  "03.23.09": {
+    code: "03.23.09",
+    description: "Flies, mosquitos, ticks, fleas and mites",
+    division: "03.23"
+  },
+  "03.23.10": {
+    code: "03.23.10",
+    description: "Grasshoppers, praying mantis, crickets, locusts, cicadas",
+    division: "03.23"
+  },
+  "03.23.11": {
+    code: "03.23.11",
+    description: "Ants",
+    division: "03.23"
+  },
+  "03.23.12": {
+    code: "03.23.12",
+    description: "Spiders and spiderwebs",
+    division: "03.23"
+  },
+  "03.23.14": {
+    code: "03.23.14",
+    description: "Beetles, ladybugs, waterbugs, roaches, termites, fireflies (lightning bugs)",
+    division: "03.23"
+  },
+  "03.23.15": {
+    code: "03.23.15",
+    description: "Microorganisms and cells of microscopic size (e.g., amoebas, bacteria, sperm, viruses, etc.)",
+    division: "03.23"
+  },
+  "03.23.21": {
+    code: "03.23.21",
+    description: "Parts of insects not representing the entire insect, including affixed to words or other designs",
+    division: "03.23",
+    guidelines: "If possible, cross-code with basic code(s) for associated animals of the particular type."
+  },
+  "03.23.24": {
+    code: "03.23.24",
+    description: "Stylized insects, spiders and micro-organisms",
+    division: "03.23",
+    guidelines: "If possible, cross-code with basic code(s) for associated animals of the particular type."
+  },
+  "03.23.25": {
+    code: "03.23.25",
+    description: "Other insects",
+    division: "03.23"
+  },
+  "03.23.26": {
+    code: "03.23.26",
+    description: "Costumed insects, spiders, and micro-organisms, and those with human attributes",
+    division: "03.23",
+    guidelines: "If possible, cross-code with basic code(s) for associated animals of the particular type, as well as the stylized code if appropriate."
+  },
+  "03.25.01": {
+    code: "03.25.01",
+    description: "Dinosaurs and prehistoric animals without wings",
+    division: "03.25"
+  },
+  "03.25.02": {
+    code: "03.25.02",
+    description: "Flying dinosaurs and other flying prehistoric animals",
+    division: "03.25"
+  },
+  "04.01.01": {
+    code: "04.01.01",
+    description: "Winged human heads, feet, shoes or other parts",
+    division: "04.01"
+  },
+  "04.01.02": {
+    code: "04.01.02",
+    description: "Angels, winged personages, including cherubs and cupids; humans or animals with halos",
+    division: "04.01"
+  },
+  "04.01.03": {
+    code: "04.01.03",
+    description: "Halos appearing on objects, letters, numbers and symbols",
+    division: "04.01"
+  },
+  "04.01.04": {
+    code: "04.01.04",
+    description: "Devils or other horned personages",
+    division: "04.01"
+  },
+  "04.01.05": {
+    code: "04.01.05",
+    description: "Heads of devils or horned personages, with or without wings",
+    division: "04.01",
+    guidelines: "Heads of devils are not cross-coded with devils in 04.01.04."
+  },
+  "04.01.06": {
+    code: "04.01.06",
+    description: "Leprechauns, elves, gnomes",
+    division: "04.01"
+  },
+  "04.01.07": {
+    code: "04.01.07",
+    description: "Mythological beings, superbeings, ghosts, aliens",
+    division: "04.01",
+    guidelines: "All designs of mythological beings (personages, not creatures) are in 04.01.07. Mythological beings are cross-coded in the Human Category only when they are depicted as ordinary humans having no indicia of their mythological powers. Superbeings are always double coded in 04.01.07 and in the appropriate human section in Category 02. Superbeings are characterized as cartoon-type superheroes and are often wearing a cape and tights."
+  },
+  "04.01.08": {
+    code: "04.01.08",
+    description: "Santa Claus",
+    division: "04.01"
+  },
+  "04.01.09": {
+    code: "04.01.09",
+    description: "Uncle Sam (full-figure or bust)",
+    division: "04.01"
+  },
+  "04.01.25": {
+    code: "04.01.25",
+    description: "Other supernatural, fictional or legendary characters",
+    division: "04.01",
+    guidelines: "Including: Witches, genies, Robin Hood, Paul Bunyan and other giants, the Pied Piper, and Wizards. Many beings in 04.01.25 such as Robin Hood, Paul Bunyan and other giants, the Pied Piper and wizards are often double coded in the appropriate human section in Category 02. For example, when searching wizards also cross-reference with 02.01.04 and 02.01.21."
+  },
+  "04.03.01": {
+    code: "04.03.01",
+    description: "Centaurs (half man, half horse), minotaurs (half man, half bull)",
+    division: "04.03"
+  },
+  "04.03.02": {
+    code: "04.03.02",
+    description: "Sphinx (half human, half lion)",
+    division: "04.03"
+  },
+  "04.03.03": {
+    code: "04.03.03",
+    description: "Tritons (half man, half fish), mermaids (half woman, half fish)",
+    division: "04.03"
+  },
+  "04.03.25": {
+    code: "04.03.25",
+    description: "Other beings partly human and partly animal",
+    division: "04.03"
+  },
+  "04.05.01": {
+    code: "04.05.01",
+    description: "Dragons and griffons (half eagle, half lion)",
+    division: "04.05",
+    guidelines: "Winged lions should be coded with heraldic lions (03.01.02)."
+  },
+  "04.05.03": {
+    code: "04.05.03",
+    description: "Winged horses, including Pegasus",
+    division: "04.05"
+  },
+  "04.05.04": {
+    code: "04.05.04",
+    description: "Unicorns",
+    division: "04.05"
+  },
+  "04.05.05": {
+    code: "04.05.05",
+    description: "Phoenix (legendary bird)",
+    division: "04.05"
+  },
+  "04.05.25": {
+    code: "04.05.25",
+    description: "Other mythological or legendary animals",
+    division: "04.05"
+  },
+  "04.07.01": {
+    code: "04.07.01",
+    description: "Plants, parts of plants, or combinations of plants representing a person",
+    division: "04.07",
+    guidelines: "A plant that represents or forms a human is in 04.07.01, the specific section for the plant in Category 05 and grotesque humans in 02.01.33, 02.03.26 or 02.05.26.",
+    excludes: "Letters or numerals, including punctuation, forming representations of human beings or animals (27.01.01; 27.01.02)."
+  },
+  "04.07.02": {
+    code: "04.07.02",
+    description: "Objects or combinations of objects representing a person",
+    division: "04.07",
+    guidelines: "Objects include design elements other than humans, animals, plants, geometric figures, letters or numbers. An object that represents or forms a human is coded in 04.07.02, in the specific section for the object and in grotesque humans in Category 02."
+  },
+  "04.07.03": {
+    code: "04.07.03",
+    description: "Geometric figures or combinations of geometric figures representing a person",
+    division: "04.07",
+    guidelines: "A geometric figure or a combination of geometric figures representing or forming a person are in 04.07.03, in the appropriate section for geometrics in Category 26 and in grotesque humans in Category 02."
+  },
+  "04.07.05": {
+    code: "04.07.05",
+    description: "Plants, parts of plants, or combinations of plants representing an animal",
+    division: "04.07",
+    guidelines: "A plant that represents or forms an animal is coded in 04.07.05, in the specific section for the plant in Category 05, and in the appropriate realistic animal section and the stylized section for the animal in Category 03."
+  },
+  "04.07.06": {
+    code: "04.07.06",
+    description: "Objects or combinations of objects representing an animal",
+    division: "04.07",
+    guidelines: "Objects include design elements other than humans, animals, plants, geometric figures, letters or numbers. An object that represents or forms an animal is in 04.07.06, the specific section for the object, the appropriate realistic animal section and the stylized section for the animal in Category 03."
+  },
+  "04.07.07": {
+    code: "04.07.07",
+    description: "Geometric figures or combinations of geometric figures representing an animal",
+    division: "04.07",
+    guidelines: "A geometric figure or combination of geometric figures representing or forming an animal are in 04.07.07, the appropriate realistic third-level code section and the stylized section for the animal in Category 03."
+  },
+  "04.09.01": {
+    code: "04.09.01",
+    description: "Masks",
+    division: "04.09",
+    excludes: "Athletic face masks (21.03.25); surgical masks (10.07.25)"
+  },
+  "05.01.01": {
+    code: "05.01.01",
+    description: "Evergreens and other trees or bushes of triangular or conical shape",
+    division: "05.01",
+    excludes: "Christmas trees decorated with ornaments are coded in 05.15.04."
+  },
+  "05.01.02": {
+    code: "05.01.02",
+    description: "Trees or bushes with a generally rounded shape, including deciduous trees",
+    division: "05.01"
+  },
+  "05.01.03": {
+    code: "05.01.03",
+    description: "Palm trees",
+    division: "05.01"
+  },
+  "05.01.04": {
+    code: "05.01.04",
+    description: "Climbing bushes and plants, including ivy and vines",
+    division: "05.01"
+  },
+  "05.01.05": {
+    code: "05.01.05",
+    description: "Leafless trees and bushes",
+    division: "05.01",
+    excludes: "Cut logs are coded in 07.15.05."
+  },
+  "05.01.06": {
+    code: "05.01.06",
+    description: "Stumps of trees, fallen trees, trunks of trees without branches",
+    division: "05.01",
+    excludes: "Logs and bark are coded in 07.15.05."
+  },
+  "05.01.08": {
+    code: "05.01.08",
+    description: "Trees or bushes bearing fruit",
+    division: "05.01",
+    guidelines: "Trees or bushes bearing fruit are double coded with 05.01.01 or 05.01.02 depending on the shape."
+  },
+  "05.01.10": {
+    code: "05.01.10",
+    description: "More than one tree or bush; thicket; group of trees",
+    division: "05.01",
+    excludes: "Forests (large, dense groups of trees) are coded 06.09.01."
+  },
+  "05.01.25": {
+    code: "05.01.25",
+    description: "Other trees or bushes",
+    division: "05.01"
+  },
+  "05.03.01": {
+    code: "05.03.01",
+    description: "Tobacco leaf",
+    division: "05.03"
+  },
+  "05.03.02": {
+    code: "05.03.02",
+    description: "Oak leaf",
+    division: "05.03"
+  },
+  "05.03.03": {
+    code: "05.03.03",
+    description: "Maple leaf",
+    division: "05.03"
+  },
+  "05.03.04": {
+    code: "05.03.04",
+    description: "Holly leaf",
+    division: "05.03"
+  },
+  "05.03.05": {
+    code: "05.03.05",
+    description: "Fern or palm fronds",
+    division: "05.03"
+  },
+  "05.03.06": {
+    code: "05.03.06",
+    description: "Clover, shamrocks and other trefoils",
+    division: "05.03",
+    guidelines: "When applicable, cross-reference trefoils with 24.03.25 (other emblems and insignia). Including: Trefoils as symbols on playing cards (clubs).",
+    excludes: "Four leaf clovers are coded in 05.03.07."
+  },
+  "05.03.07": {
+    code: "05.03.07",
+    description: "Four leaf clover",
+    division: "05.03",
+    excludes: "Three leaf clovers are coded in 05.03.06."
+  },
+  "05.03.08": {
+    code: "05.03.08",
+    description: "More than one leaf, including scattered leaves, bunches of leaves not attached to branches",
+    division: "05.03"
+  },
+  "05.03.09": {
+    code: "05.03.09",
+    description: "Needles, branches with needles",
+    division: "05.03"
+  },
+  "05.03.10": {
+    code: "05.03.10",
+    description: "Other branches with leaves, with or without fruit",
+    division: "05.03"
+  },
+  "05.03.25": {
+    code: "05.03.25",
+    description: "Other leaves",
+    division: "05.03",
+    guidelines: "Marijuana, hemp, and cannabis leaves and plants have a separate code 05.13.09, though cross-coding may be appropriate."
+  },
+  "05.05.01": {
+    code: "05.05.01",
+    description: "Lilies, tulips, orchids",
+    division: "05.05",
+    guidelines: "It is advisable to combine 05.05.25 with 05.05.01 or 05.05.05 when searching flowers. Including heraldic flowers. Cut flowers in pots, vases, bouquets, baskets, sheaves, ornamental stands, window-boxes, tubs and other containers are also coded in 05.13.07."
+  },
+  "05.05.02": {
+    code: "05.05.02",
+    description: "Roses",
+    division: "05.05"
+  },
+  "05.05.03": {
+    code: "05.05.03",
+    description: "Fleur-de-lis",
+    division: "05.05"
+  },
+  "05.05.05": {
+    code: "05.05.05",
+    description: "Daisies, sunflowers, dandelions",
+    division: "05.05"
+  },
+  "05.05.06": {
+    code: "05.05.06",
+    description: "Lotus flowers",
+    division: "05.05"
+  },
+  "05.05.25": {
+    code: "05.05.25",
+    description: "Other flowers including daffodils and irises",
+    division: "05.05",
+    guidelines: "When applicable, cross-reference 05.05.25 (other flowers) with 26.01.07 (circles with decorative borders)."
+  },
+  "05.07.01": {
+    code: "05.07.01",
+    description: "Corn stalks, corn in the husk",
+    division: "05.07",
+    excludes: "Ears of corn without husks are coded in 05.11.08."
+  },
+  "05.07.02": {
+    code: "05.07.02",
+    description: "Clusters and sheaves of other grains, including stalks of grains",
+    division: "05.07"
+  },
+  "05.07.03": {
+    code: "05.07.03",
+    description: "Coffee and cocoa beans",
+    division: "05.07"
+  },
+  "05.07.04": {
+    code: "05.07.04",
+    description: "Nuts, without shells",
+    division: "05.07"
+  },
+  "05.07.05": {
+    code: "05.07.05",
+    description: "Nuts, with shells",
+    division: "05.07"
+  },
+  "05.07.06": {
+    code: "05.07.06",
+    description: "Seeds, including sunflower and pumpkin seeds",
+    division: "05.07"
+  },
+  "05.07.07": {
+    code: "05.07.07",
+    description: "Acorns",
+    division: "05.07"
+  },
+  "05.07.25": {
+    code: "05.07.25",
+    description: "Other grain and seeds, including corn kernels",
+    division: "05.07",
+    excludes: "Popped popcorn is coded in 08.13.06."
+  },
+  "05.09.01": {
+    code: "05.09.01",
+    description: "Berries",
+    division: "05.09",
+    excludes: "Tomatoes (05.11.04); fruit salads, cooked fruit (08.13.04)."
+  },
+  "05.09.02": {
+    code: "05.09.02",
+    description: "Grapes (alone or in bunches)",
+    division: "05.09"
+  },
+  "05.09.03": {
+    code: "05.09.03",
+    description: "Oranges, tangerines and the like; grapefruit",
+    division: "05.09"
+  },
+  "05.09.04": {
+    code: "05.09.04",
+    description: "Lemons, limes",
+    division: "05.09"
+  },
+  "05.09.05": {
+    code: "05.09.05",
+    description: "Apples",
+    division: "05.09"
+  },
+  "05.09.06": {
+    code: "05.09.06",
+    description: "Fruits with pits (apricots, peaches, plums, olives and the like)",
+    division: "05.09",
+    excludes: "Cherries are coded in 05.09.08."
+  },
+  "05.09.07": {
+    code: "05.09.07",
+    description: "Pears",
+    division: "05.09"
+  },
+  "05.09.08": {
+    code: "05.09.08",
+    description: "Cherries",
+    division: "05.09"
+  },
+  "05.09.09": {
+    code: "05.09.09",
+    description: "Pineapples",
+    division: "05.09"
+  },
+  "05.09.10": {
+    code: "05.09.10",
+    description: "Melons, including watermelon",
+    division: "05.09"
+  },
+  "05.09.11": {
+    code: "05.09.11",
+    description: "Bananas",
+    division: "05.09"
+  },
+  "05.09.12": {
+    code: "05.09.12",
+    description: "Pumpkins",
+    division: "05.09"
+  },
+  "05.09.13": {
+    code: "05.09.13",
+    description: "Slices or quarters of fruits, open fruits",
+    division: "05.09",
+    guidelines: "This section is double coded with the specific section for the fruit."
+  },
+  "05.09.14": {
+    code: "05.09.14",
+    description: "Baskets, bowls, and other containers of fruits, including cornucopia (horn of plenty)",
+    division: "05.09"
+  },
+  "05.09.25": {
+    code: "05.09.25",
+    description: "Other fruits including coconuts, kiwi fruit",
+    division: "05.09"
+  },
+  "05.11.01": {
+    code: "05.11.01",
+    description: "Potatoes and other tubers, such as beets, carrots, and parsnips",
+    division: "05.11",
+    excludes: "Vegetable salads (08.13.04)."
+  },
+  "05.11.02": {
+    code: "05.11.02",
+    description: "Onions, leeks, spring onions, garlic",
+    division: "05.11"
+  },
+  "05.11.03": {
+    code: "05.11.03",
+    description: "Cabbages, lettuce",
+    division: "05.11"
+  },
+  "05.11.04": {
+    code: "05.11.04",
+    description: "Tomatoes",
+    division: "05.11"
+  },
+  "05.11.05": {
+    code: "05.11.05",
+    description: "Beans, peas",
+    division: "05.11"
+  },
+  "05.11.06": {
+    code: "05.11.06",
+    description: "Cucumbers, gourds, squash, pickles",
+    division: "05.11"
+  },
+  "05.11.07": {
+    code: "05.11.07",
+    description: "Mushrooms, toadstools",
+    division: "05.11"
+  },
+  "05.11.08": {
+    code: "05.11.08",
+    description: "Ears of corn without husks",
+    division: "05.11",
+    excludes: "Corn stalks and corn in the husk are coded in 05.07.01."
+  },
+  "05.11.09": {
+    code: "05.11.09",
+    description: "Peppers",
+    division: "05.11"
+  },
+  "05.11.10": {
+    code: "05.11.10",
+    description: "Baskets, bowls, and other containers of vegetables",
+    division: "05.11"
+  },
+  "05.11.25": {
+    code: "05.11.25",
+    description: "Other vegetables including celery, turnips, broccoli, asparagus and artichokes",
+    division: "05.11"
+  },
+  "05.13.01": {
+    code: "05.13.01",
+    description: "Roots, including ginger and ginseng",
+    division: "05.13"
+  },
+  "05.13.02": {
+    code: "05.13.02",
+    description: "Mosses, lichen, algae, fungi",
+    division: "05.13",
+    excludes: "Mushrooms and toadstools are coded in 05.11.07."
+  },
+  "05.13.03": {
+    code: "05.13.03",
+    description: "Grasses",
+    division: "05.13"
+  },
+  "05.13.04": {
+    code: "05.13.04",
+    description: "Bamboo, sugar cane",
+    division: "05.13"
+  },
+  "05.13.05": {
+    code: "05.13.05",
+    description: "Pine cones",
+    division: "05.13"
+  },
+  "05.13.06": {
+    code: "05.13.06",
+    description: "Cacti, including prickly pears",
+    division: "05.13"
+  },
+  "05.13.07": {
+    code: "05.13.07",
+    description: "Plants, flowering plants and cut flowers in pots, vases, bouquets, baskets, sheaves, ornamental stands, window-boxes, tube and other containers",
+    division: "05.13",
+    guidelines: "Plants or flowers which are coded in 05.13.07 are generally double coded in the appropriate plant section of Category 05."
+  },
+  "05.13.08": {
+    code: "05.13.08",
+    description: "Cotton plants",
+    division: "05.13"
+  },
+  "05.13.09": {
+    code: "05.13.09",
+    description: "Marijuana, cannabis, and hemp plants or leaves",
+    division: "05.13"
+  },
+  "05.13.25": {
+    code: "05.13.25",
+    description: "Other plants including bales of hay or straw",
+    division: "05.13"
+  },
+  "05.15.01": {
+    code: "05.15.01",
+    description: "Crowns made of leaves, flowers or fruit",
+    division: "05.15"
+  },
+  "05.15.02": {
+    code: "05.15.02",
+    description: "Garlands, wreaths, bands, borders or frames made of plants",
+    division: "05.15"
+  },
+  "05.15.04": {
+    code: "05.15.04",
+    description: "Christmas trees decorated with ornaments",
+    division: "05.15"
+  },
+  "05.15.25": {
+    code: "05.15.25",
+    description: "Other decorations made of plants",
+    division: "05.15"
+  },
+  "06.01.01": {
+    code: "06.01.01",
+    description: "Cliffs, rocks, walls of rock",
+    division: "06.01",
+    excludes: "Reefs are coded in 06.03.02 and coral reefs are coded in 06.03.09."
+  },
+  "06.01.02": {
+    code: "06.01.02",
+    description: "Volcanoes",
+    division: "06.01"
+  },
+  "06.01.03": {
+    code: "06.01.03",
+    description: "Caves",
+    division: "06.01"
+  },
+  "06.01.04": {
+    code: "06.01.04",
+    description: "Mountains, mountain landscapes",
+    division: "06.01"
+  },
+  "06.03.01": {
+    code: "06.03.01",
+    description: "Beaches, shores, coasts",
+    division: "06.03"
+  },
+  "06.03.02": {
+    code: "06.03.02",
+    description: "Islands, reefs",
+    division: "06.03",
+    guidelines: "Maps of islands in 01.17.13.",
+    excludes: "Walls of rock are coded in 06.01.01; coral reefs are coded in 06.03.09; coral formations are coded in 03.19.13."
+  },
+  "06.03.03": {
+    code: "06.03.03",
+    description: "Open sea, stretches of water without shore, multiple waves",
+    division: "06.03",
+    excludes: "Single wave of water are coded in 01.15.13. Wavy lines consisting of more than one curve are coded in 26.17.02."
+  },
+  "06.03.04": {
+    code: "06.03.04",
+    description: "Lakes, ponds",
+    division: "06.03"
+  },
+  "06.03.05": {
+    code: "06.03.05",
+    description: "Harbors",
+    division: "06.03"
+  },
+  "06.03.06": {
+    code: "06.03.06",
+    description: "Geysers",
+    division: "06.03"
+  },
+  "06.03.07": {
+    code: "06.03.07",
+    description: "Waterfalls",
+    division: "06.03"
+  },
+  "06.03.08": {
+    code: "06.03.08",
+    description: "Rivers, streams, rapids",
+    division: "06.03"
+  },
+  "06.03.09": {
+    code: "06.03.09",
+    description: "Underwater scenes, including coral reefs",
+    division: "06.03",
+    excludes: "Coral formations are coded in 03.19.13 and walls of rock are coded in 06.01.01."
+  },
+  "06.03.25": {
+    code: "06.03.25",
+    description: "Other scenery with water",
+    division: "06.03"
+  },
+  "06.05.01": {
+    code: "06.05.01",
+    description: "Desert scenery (with sand or sparse vegetation)",
+    division: "06.05"
+  },
+  "06.05.02": {
+    code: "06.05.02",
+    description: "Oasis",
+    division: "06.05"
+  },
+  "06.07.01": {
+    code: "06.07.01",
+    description: "Cities from a distant perspective, skylines",
+    division: "06.07"
+  },
+  "06.07.02": {
+    code: "06.07.02",
+    description: "Villages from a distant perspective",
+    division: "06.07"
+  },
+  "06.07.03": {
+    code: "06.07.03",
+    description: "Street scenes",
+    division: "06.07"
+  },
+  "06.09.01": {
+    code: "06.09.01",
+    description: "Forests",
+    division: "06.09",
+    excludes: "Smaller groups of trees are coded in 05.01.10."
+  },
+  "06.09.02": {
+    code: "06.09.02",
+    description: "Vineyards, wineries",
+    division: "06.09"
+  },
+  "06.09.03": {
+    code: "06.09.03",
+    description: "Farms",
+    division: "06.09",
+    guidelines: "Cultivated areas with a farmhouse or a barn are in 06.09.03, not 06.09.05 (Other cultivated areas). Also coded is the farmhouse in 07.01.02(Farmhouses) or the barn in 07.03.04 (Barns, silos, stables)."
+  },
+  "06.09.04": {
+    code: "06.09.04",
+    description: "Orchards",
+    division: "06.09"
+  },
+  "06.09.05": {
+    code: "06.09.05",
+    description: "Other cultivated areas",
+    division: "06.09",
+    excludes: "Cultivated areas with a farmhouse or a barn."
+  },
+  "06.09.06": {
+    code: "06.09.06",
+    description: "Polar and snow-covered landscapes; icebergs",
+    division: "06.09"
+  },
+  "06.09.08": {
+    code: "06.09.08",
+    description: "Playing fields and courts of all types",
+    division: "06.09",
+    guidelines: "Including: Tennis courts, basketball courts, baseball diamonds and fields, football fields and running tracks.",
+    excludes: "Stadiums, arenas, amphitheaters are coded in 07.09.05."
+  },
+  "06.09.09": {
+    code: "06.09.09",
+    description: "Golf courses, golf holes and putting greens",
+    division: "06.09"
+  },
+  "06.09.25": {
+    code: "06.09.25",
+    description: "Other scenery",
+    division: "06.09",
+    guidelines: "Scenery is coded in 06.09.25 when the scenery cannot be coded in any other section of Division of 06.09 or when the design elements are too insignificant to code individually."
+  },
+  "07.01.01": {
+    code: "07.01.01",
+    description: "Castles, palaces, forts, fortresses, battlements",
+    division: "07.01"
+  },
+  "07.01.02": {
+    code: "07.01.02",
+    description: "Farmhouses",
+    division: "07.01",
+    guidelines: "A farmhouses in a cultivated area is in 07.01.02 and in 06.09.02 (Farms). A farmhouse is not coded in 07.01.04 (Detached houses)."
+  },
+  "07.01.03": {
+    code: "07.01.03",
+    description: "Rowhouses",
+    division: "07.01"
+  },
+  "07.01.04": {
+    code: "07.01.04",
+    description: "Detached house",
+    division: "07.01",
+    guidelines: "For similar designs of highly stylized designs of houses or dwellings, see also sections 07.01.06, 07.01.25 or 07.07.03.",
+    excludes: "Farmhouses (07.01.02)"
+  },
+  "07.01.05": {
+    code: "07.01.05",
+    description: "Apartment houses",
+    division: "07.01"
+  },
+  "07.01.06": {
+    code: "07.01.06",
+    description: "Other stylized houses",
+    division: "07.01",
+    guidelines: "See note in 07.01.04 regarding stylized houses and dwellings.",
+    excludes: "Lighthouses (07.03.09)"
+  },
+  "07.01.07": {
+    code: "07.01.07",
+    description: "Cabins, huts, outhouses, sheds",
+    division: "07.01"
+  },
+  "07.01.08": {
+    code: "07.01.08",
+    description: "Tents, canopies",
+    division: "07.01"
+  },
+  "07.01.09": {
+    code: "07.01.09",
+    description: "Igloos",
+    division: "07.01"
+  },
+  "07.01.10": {
+    code: "07.01.10",
+    description: "Animal cages, kennels or animal houses (including dog houses)",
+    division: "07.01",
+    excludes: "Bird cages and bird houses (03.17.06); beehives (03.23.07); animal containers (19.03); animal equipment (18.13)"
+  },
+  "07.01.25": {
+    code: "07.01.25",
+    description: "Other dwellings, including stylized dwellings, dwellings composed of geometric shapes, greenhouses or prisons",
+    division: "07.01",
+    guidelines: "See note in 07.01.04 regarding stylized houses and dwellings."
+  },
+  "07.03.01": {
+    code: "07.03.01",
+    description: "Skyscrapers",
+    division: "07.03",
+    excludes: "Skylines are coded in 06.07.01."
+  },
+  "07.03.02": {
+    code: "07.03.02",
+    description: "Churches, cathedrals",
+    division: "07.03"
+  },
+  "07.03.03": {
+    code: "07.03.03",
+    description: "Mosques, minarets, synagogues, pagodas and religious temples",
+    division: "07.03"
+  },
+  "07.03.04": {
+    code: "07.03.04",
+    description: "Barns, silos, stables",
+    division: "07.03",
+    guidelines: "A barn in a cultivated area is in 07.03.04 and in 06.09.03 (Farms)."
+  },
+  "07.03.05": {
+    code: "07.03.05",
+    description: "Windmills, watermills",
+    division: "07.03"
+  },
+  "07.03.06": {
+    code: "07.03.06",
+    description: "Commercial establishments such as supermarkets, department stores, retail stores and restaurants",
+    division: "07.03",
+    guidelines: "Depictions of complete commercial buildings or partial frontal views are in 07.03.06. Complete buildings are double coded with the appropriate sections of Category 07, such as those in Divisions 07.07 (Exteriors and exterior parts of dwellings or buildings) and 07.13(Billboards, signs), when the exterior parts are significant. Drive-in-theaters are often cross referenced with 07.09.05 (Stadiums, arenas, amphitheaters)."
+  },
+  "07.03.07": {
+    code: "07.03.07",
+    description: "Hotels, motels",
+    division: "07.03",
+    guidelines: "Country inns are in 07.03.07 only if the word portion of the mark indicates it is an inn. Absent this word, an inn is in 07.01.04 (Detached house)."
+  },
+  "07.03.08": {
+    code: "07.03.08",
+    description: "Industrial establishments, factory smokestacks",
+    division: "07.03"
+  },
+  "07.03.09": {
+    code: "07.03.09",
+    description: "Lighthouses",
+    division: "07.03"
+  },
+  "07.03.10": {
+    code: "07.03.10",
+    description: "Bus shelters, fair booths, newsstands, telephone booths",
+    division: "07.03"
+  },
+  "07.03.25": {
+    code: "07.03.25",
+    description: "Other buildings, including schools, hospitals and libraries",
+    division: "07.03",
+    guidelines: "The United States Capitol building may be cross-coded with 07.03.25, 07.09.25 and/or 07.07.25.",
+    excludes: "Garages (07.07.08)"
+  },
+  "07.05.01": {
+    code: "07.05.01",
+    description: "Kitchens",
+    division: "07.05"
+  },
+  "07.05.02": {
+    code: "07.05.02",
+    description: "Bathrooms",
+    division: "07.05"
+  },
+  "07.05.03": {
+    code: "07.05.03",
+    description: "Bedrooms",
+    division: "07.05"
+  },
+  "07.05.04": {
+    code: "07.05.04",
+    description: "Living rooms, dens",
+    division: "07.05"
+  },
+  "07.05.05": {
+    code: "07.05.05",
+    description: "Dining rooms",
+    division: "07.05"
+  },
+  "07.05.06": {
+    code: "07.05.06",
+    description: "Basements, cellars",
+    division: "07.05"
+  },
+  "07.05.07": {
+    code: "07.05.07",
+    description: "Fireplaces",
+    division: "07.05",
+    excludes: "Wood-burning stoves (13.03.06)"
+  },
+  "07.05.08": {
+    code: "07.05.08",
+    description: "Staircases, escalators, elevators",
+    division: "07.05"
+  },
+  "07.05.09": {
+    code: "07.05.09",
+    description: "Offices",
+    division: "07.05"
+  },
+  "07.05.10": {
+    code: "07.05.10",
+    description: "Lobbies",
+    division: "07.05"
+  },
+  "07.05.25": {
+    code: "07.05.25",
+    description: "Other interiors and interior parts of dwellings or buildings",
+    division: "07.05"
+  },
+  "07.07.01": {
+    code: "07.07.01",
+    description: "Doors, entrances",
+    division: "07.07",
+    guidelines: "See Specific Guideline 07.03.06 for coding exteriors and exterior parts of commercial establishments."
+  },
+  "07.07.02": {
+    code: "07.07.02",
+    description: "Windows",
+    division: "07.07",
+    guidelines: "All types of windows of dwellings or buildings are in 07.07.02. This includes windows portrayed as openings in dwellings or buildings as well as sashes (pre-fabricated assemblies) not yet affixed to dwellings or buildings."
+  },
+  "07.07.03": {
+    code: "07.07.03",
+    description: "Roofs",
+    division: "07.07",
+    guidelines: "See note in 07.01.04 regarding stylized houses and dwellings."
+  },
+  "07.07.04": {
+    code: "07.07.04",
+    description: "Gutters, downspouts",
+    division: "07.07"
+  },
+  "07.07.05": {
+    code: "07.07.05",
+    description: "Shutters, awnings",
+    division: "07.07"
+  },
+  "07.07.06": {
+    code: "07.07.06",
+    description: "Chimneys",
+    division: "07.07",
+    excludes: "Factory smokestacks (07.03.08)"
+  },
+  "07.07.07": {
+    code: "07.07.07",
+    description: "Porches, patios, decks",
+    division: "07.07"
+  },
+  "07.07.08": {
+    code: "07.07.08",
+    description: "Garages",
+    division: "07.07"
+  },
+  "07.07.09": {
+    code: "07.07.09",
+    description: "Barbershop poles",
+    division: "07.07"
+  },
+  "07.07.25": {
+    code: "07.07.25",
+    description: "Other exteriors and exterior parts of dwellings or buildings",
+    division: "07.07",
+    guidelines: "Note 1: For designs of solar panels, see also 13.03.25. Note 2: See the notation in 07.03.25 (Other buildings) for search references for the United States Capitol building."
+  },
+  "07.09.01": {
+    code: "07.09.01",
+    description: "Pyramids",
+    division: "07.09",
+    guidelines: "Also see geometric pyramids in 26.19.05."
+  },
+  "07.09.02": {
+    code: "07.09.02",
+    description: "Ancient temples and monuments or parts thereof",
+    division: "07.09"
+  },
+  "07.09.03": {
+    code: "07.09.03",
+    description: "Columns",
+    division: "07.09"
+  },
+  "07.09.04": {
+    code: "07.09.04",
+    description: "Obelisks",
+    division: "07.09"
+  },
+  "07.09.05": {
+    code: "07.09.05",
+    description: "Stadiums, arenas, amphitheaters",
+    division: "07.09",
+    guidelines: "Note 1: Cross reference drive-in-theaters with 07.03.06. Note 2: For trademarks depicting football fields, baseball diamonds, etc., see 06.09.08 (Playing fields and courts of all types)."
+  },
+  "07.09.06": {
+    code: "07.09.06",
+    description: "Triumphal arches, arches, porticos",
+    division: "07.09"
+  },
+  "07.09.07": {
+    code: "07.09.07",
+    description: "Eiffel Tower",
+    division: "07.09"
+  },
+  "07.09.08": {
+    code: "07.09.08",
+    description: "Statue of Liberty",
+    division: "07.09"
+  },
+  "07.09.09": {
+    code: "07.09.09",
+    description: "Fountains (man-made)",
+    division: "07.09",
+    excludes: "Geysers (06.03.06)"
+  },
+  "07.09.10": {
+    code: "07.09.10",
+    description: "Wells",
+    division: "07.09"
+  },
+  "07.09.11": {
+    code: "07.09.11",
+    description: "Swimming pools, hot tubs",
+    division: "07.09",
+    guidelines: "For designs of hot tubs, see also 12.03.02 (Bath tubs, showers)."
+  },
+  "07.09.25": {
+    code: "07.09.25",
+    description: "Other monuments and recognizable landmarks, such as famous towers, skyscrapers, and buildings not grouped elsewhere; Tombstones; Totem poles.",
+    division: "07.09",
+    guidelines: "Designs of some landmarks may require cross-coding and cross-searching, such as with 07.03.01, 07.03.25, 07.07.25, 07.09.25, or perhaps others."
+  },
+  "07.11.01": {
+    code: "07.11.01",
+    description: "Bridges",
+    division: "07.11"
+  },
+  "07.11.02": {
+    code: "07.11.02",
+    description: "Derricks, such as oil derricks",
+    division: "07.11",
+    guidelines: "For other oil extracting devices, such as pumps, see 15.01.25."
+  },
+  "07.11.03": {
+    code: "07.11.03",
+    description: "Transmitting towers, signal beacons",
+    division: "07.11",
+    excludes: "Antennas (16.01.01); lighthouses (07.03.09)"
+  },
+  "07.11.04": {
+    code: "07.11.04",
+    description: "Scaffolding",
+    division: "07.11"
+  },
+  "07.11.05": {
+    code: "07.11.05",
+    description: "Tunnels",
+    division: "07.11"
+  },
+  "07.11.06": {
+    code: "07.11.06",
+    description: "Dams",
+    division: "07.11"
+  },
+  "07.11.07": {
+    code: "07.11.07",
+    description: "Roads, streets, intersections, highways with lines or dividers",
+    division: "07.11",
+    guidelines: "For roads, streets, intersections, highways without lines for dividers, see 07.11.11."
+  },
+  "07.11.08": {
+    code: "07.11.08",
+    description: "Railroad tracks",
+    division: "07.11"
+  },
+  "07.11.09": {
+    code: "07.11.09",
+    description: "Walls, fences, gates",
+    division: "07.11",
+    excludes: "Walls of rock (06.01.01)"
+  },
+  "07.11.10": {
+    code: "07.11.10",
+    description: "Mooring or hitching posts",
+    division: "07.11"
+  },
+  "07.11.11": {
+    code: "07.11.11",
+    description: "Roads, streets, intersections, highways without lines or dividers",
+    division: "07.11"
+  },
+  "07.11.25": {
+    code: "07.11.25",
+    description: "Other structural works, including parking meters and docks",
+    division: "07.11"
+  },
+  "07.13.01": {
+    code: "07.13.01",
+    description: "Billboards",
+    division: "07.13",
+    excludes: "Traffic signs (18.15)"
+  },
+  "07.13.02": {
+    code: "07.13.02",
+    description: "Signs not attached to a support",
+    division: "07.13"
+  },
+  "07.13.03": {
+    code: "07.13.03",
+    description: "Signs mounted with posts or standards",
+    division: "07.13"
+  },
+  "07.15.01": {
+    code: "07.15.01",
+    description: "Bricks and stones for building, including cinderblocks",
+    division: "07.15"
+  },
+  "07.15.02": {
+    code: "07.15.02",
+    description: "Flagstones",
+    division: "07.15"
+  },
+  "07.15.03": {
+    code: "07.15.03",
+    description: "Corrugated iron and other corrugated metal",
+    division: "07.15"
+  },
+  "07.15.04": {
+    code: "07.15.04",
+    description: "Representations of wood",
+    division: "07.15",
+    guidelines: "Including: Representations of natural wood surfaces, cut wood such as boards and graining, planks, cut board, beams, plywood panels and paneling",
+    excludes: "Wood graining as an ornamental background (25.03.06)"
+  },
+  "07.15.05": {
+    code: "07.15.05",
+    description: "Logs, bark",
+    division: "07.15"
+  },
+  "07.15.25": {
+    code: "07.15.25",
+    description: "Other building materials, including tiles",
+    division: "07.15",
+    guidelines: "Including: Rolls of fiberglass and rolls of metal. See Specific Guideline 07.07.02.",
+    excludes: "Windows and window sashes (pre-fabricated window assemblies)."
+  },
+  "08.01.01": {
+    code: "08.01.01",
+    description: "Bread including pita bread",
+    division: "08.01"
+  },
+  "08.01.02": {
+    code: "08.01.02",
+    description: "Slices of bread, with or without spread",
+    division: "08.01",
+    excludes: "Sandwiches 08.05"
+  },
+  "08.01.03": {
+    code: "08.01.03",
+    description: "Rolls, including sweet rolls and biscuits",
+    division: "08.01",
+    excludes: "Sandwiches 08.05"
+  },
+  "08.01.04": {
+    code: "08.01.04",
+    description: "Croissants",
+    division: "08.01"
+  },
+  "08.01.05": {
+    code: "08.01.05",
+    description: "Cookies including fortune cookies",
+    division: "08.01"
+  },
+  "08.01.06": {
+    code: "08.01.06",
+    description: "Crackers",
+    division: "08.01"
+  },
+  "08.01.07": {
+    code: "08.01.07",
+    description: "Pies, pieces of pies, tarts",
+    division: "08.01"
+  },
+  "08.01.08": {
+    code: "08.01.08",
+    description: "Cakes, cupcakes, muffins",
+    division: "08.01"
+  },
+  "08.01.09": {
+    code: "08.01.09",
+    description: "Doughnuts, bagels",
+    division: "08.01"
+  },
+  "08.01.10": {
+    code: "08.01.10",
+    description: "Pretzels",
+    division: "08.01"
+  },
+  "08.01.11": {
+    code: "08.01.11",
+    description: "Waffles, pancakes, crepes",
+    division: "08.01"
+  },
+  "08.01.12": {
+    code: "08.01.12",
+    description: "Pizza, slices of pizza",
+    division: "08.01"
+  },
+  "08.01.25": {
+    code: "08.01.25",
+    description: "Other baked goods, including tortillas, breadsticks and taco shells",
+    division: "08.01"
+  },
+  "08.03.01": {
+    code: "08.03.01",
+    description: "Chocolate candies including chocolate candy bars",
+    division: "08.03"
+  },
+  "08.03.02": {
+    code: "08.03.02",
+    description: "Candy on a stick, such as suckers",
+    division: "08.03",
+    excludes: "Frozen confections on a stick 08.09.03"
+  },
+  "08.03.03": {
+    code: "08.03.03",
+    description: "Individually wrapped bite-size candies excluding candy bars",
+    division: "08.03",
+    guidelines: "Bite-sized wrapped candy is in 08.03.03. Candy in boxes is in 19.07.06. If the outline of the candy in the box is distinctive, it is also in the appropriate section of Division 08.03."
+  },
+  "08.03.04": {
+    code: "08.03.04",
+    description: "Candy sticks, candy canes",
+    division: "08.03"
+  },
+  "08.03.25": {
+    code: "08.03.25",
+    description: "Other candies, including jelly beans, chewing gum and gumdrops",
+    division: "08.03"
   }
 } 
