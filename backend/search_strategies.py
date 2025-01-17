@@ -1,13 +1,14 @@
 # search_strategies.py
 from enum import Enum
 from typing import List, Tuple, Optional, Dict, Any, Type
-from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal, String
+from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal, String, Text
 from sqlalchemy.orm import Session
 from models import CaseFile, CaseFileHeader, Classification, DesignSearch, CaseFileStatement, Owner, ForeignApplication, InternationalRegistration, PriorRegistrationApplication
 from db_utils import get_db_session, create_soundex_array, base_query
 from sqlalchemy.dialects.postgresql import ARRAY, TEXT as PgText
 from coordinated_class_config import COORDINATED_CLASS_CONFIG
 from datetime import datetime
+from sqlalchemy.sql.elements import TextClause
 
 class LogicOperator(Enum):
     AND = 'AND'
@@ -503,9 +504,41 @@ class ConcurrentUseProceedingSearchStrategy(BaseSearchStrategy):
 class DesignSearchCodeStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_code = int(self.query_str)  # Design codes should be integers
-            filters = [DesignSearch.design_search_code == search_code]
-            return filters, []  # No scoring needed for exact match
+            # Check if the query is in XXYYZZ format
+            if not len(self.query_str) == 6:
+                return [False], []
+
+            # Check if it's a wildcard search (ends with XX)
+            is_wildcard = self.query_str.endswith('XX')
+            
+            if is_wildcard:
+                # Extract the first four digits for pattern matching
+                pattern_prefix = self.query_str[:4]
+                
+                # Convert to database format (XX.YY) for pattern matching
+                db_pattern = f"{pattern_prefix[:2]}.{pattern_prefix[2:]}"
+                
+                # Create a LIKE pattern that matches any last two digits
+                filters = [
+                    text("LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE :pattern")
+                ]
+                
+                # Bind the pattern parameter with padded zeros
+                self._query_params = {"pattern": f"{pattern_prefix}%"}
+            else:
+                # Convert XXYYZZ to XX.YY.ZZ format for display
+                formatted_code = f"{self.query_str[:2]}.{self.query_str[2:4]}.{self.query_str[4:]}"
+                
+                # For exact matches, use the original 6-digit code
+                filters = [
+                    text("LPAD(CAST(design_search_code AS TEXT), 6, '0') = :code")
+                ]
+                self._query_params = {"code": self.query_str}
+
+            match_score = literal(100).label('match_score')
+            match_quality = literal('High').label('match_quality')
+            
+            return filters, [match_score, match_quality]
         except ValueError:
             return [False], []
 
@@ -523,9 +556,16 @@ class DesignSearchCodeStrategy(BaseSearchStrategy):
         .join(CaseFileHeader)
         .join(DesignSearch))
         
-        filters, _ = self.get_filters_and_scoring()
+        filters, scoring = self.get_filters_and_scoring()
         if filters:
-            query = query.filter(*filters)
+            if hasattr(self, '_query_params'):
+                # Apply filters with parameters for LIKE queries
+                query = query.filter(*[f.bindparams(**self._query_params) if isinstance(f, TextClause) else f for f in filters])
+            else:
+                query = query.filter(*filters)
+            
+        for score_col in scoring:
+            query = query.add_columns(score_col)
             
         return query
 

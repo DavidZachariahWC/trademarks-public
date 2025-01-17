@@ -2918,3 +2918,315 @@ WHERE classification.international_code = '006') AS subquery_2 ON casefile.seria
  LIMIT 10 OFFSET 0
 2025-01-16 21:06:24,312 - multi_filter_search - INFO - Query executed in 0.60s, total processing time: 0.60s
 2025-01-16 21:06:24,349 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 21:06:24] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:05:24,573 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-17 14:05:24,573 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-17 14:05:26,302 - multi_filter_search - INFO - Found 36945 total results in 1.73s
+2025-01-17 14:05:26,308 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-17 14:05:26,566 - multi_filter_search - INFO - Query executed in 1.99s, total processing time: 1.99s
+2025-01-17 14:05:26,828 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:05:26] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:05:29,512 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:05:29] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-17 14:06:21,641 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:06:21] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:06:21,644 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-17 14:06:21,645 - multi_filter_search - INFO - Processing condition 1: strategy=design_code, query=030122
+2025-01-17 14:06:21,646 - multi_filter_search - ERROR - Error in multi_filter_search: isinstance() arg 2 must be a type, a tuple of types, or a union
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 61, in multi_filter_search
+    query = strategy.build_query(session)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py", line 561, in build_query
+    query = query.filter(*[f.params(**self._query_params) if isinstance(f, text) else f for f in filters])
+                                                             ^^^^^^^^^^^^^^^^^^^
+TypeError: isinstance() arg 2 must be a type, a tuple of types, or a union
+2025-01-17 14:06:21,649 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:06:21] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-17 14:07:19,003 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py', reloading
+2025-01-17 14:07:36,064 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-17 14:07:36,065 - multi_filter_search - INFO - Processing condition 1: strategy=design_code, query=030122
+2025-01-17 14:07:37,154 - multi_filter_search - ERROR - Error in multi_filter_search: (psycopg2.errors.UndefinedFunction) operator does not exist: text = integer
+LINE 5: WHERE designsearch.design_search_code = 30122) AS subquery_0...
+                                              ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT count(DISTINCT casefile.serial_number) AS count_1 
+FROM (SELECT DISTINCT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefile.transaction_date AS transaction_date, casefile.application_information_id AS application_information_id 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE designsearch.design_search_code = %(design_search_code_1)s) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number) AS anon_1, casefile]
+[parameters: {'design_search_code_1': 30122}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedFunction: operator does not exist: text = integer
+LINE 5: WHERE designsearch.design_search_code = 30122) AS subquery_0...
+                                              ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 101, in multi_filter_search
+    total_count = count_query.scalar() or 0
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2831, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2804, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedFunction) operator does not exist: text = integer
+LINE 5: WHERE designsearch.design_search_code = 30122) AS subquery_0...
+                                              ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT count(DISTINCT casefile.serial_number) AS count_1 
+FROM (SELECT DISTINCT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefile.transaction_date AS transaction_date, casefile.application_information_id AS application_information_id 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE designsearch.design_search_code = %(design_search_code_1)s) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number) AS anon_1, casefile]
+[parameters: {'design_search_code_1': 30122}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-17 14:07:37,197 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:07:37] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-17 14:07:40,770 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:07:40] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-17 14:07:48,379 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:07:48] "GET /api/case/73058964 HTTP/1.1" 200 -
+2025-01-17 14:09:10,266 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:09:10] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:09:10,270 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-17 14:09:10,270 - multi_filter_search - INFO - Processing condition 1: strategy=design_code, query=030122
+2025-01-17 14:09:10,353 - multi_filter_search - ERROR - Error in multi_filter_search: (psycopg2.errors.UndefinedFunction) operator does not exist: text = integer
+LINE 5: WHERE designsearch.design_search_code = 30122) AS subquery_0...
+                                              ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT count(DISTINCT casefile.serial_number) AS count_1 
+FROM (SELECT DISTINCT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefile.transaction_date AS transaction_date, casefile.application_information_id AS application_information_id 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE designsearch.design_search_code = %(design_search_code_1)s) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number) AS anon_1, casefile]
+[parameters: {'design_search_code_1': 30122}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedFunction: operator does not exist: text = integer
+LINE 5: WHERE designsearch.design_search_code = 30122) AS subquery_0...
+                                              ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 101, in multi_filter_search
+    total_count = count_query.scalar() or 0
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2831, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2804, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedFunction) operator does not exist: text = integer
+LINE 5: WHERE designsearch.design_search_code = 30122) AS subquery_0...
+                                              ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT count(DISTINCT casefile.serial_number) AS count_1 
+FROM (SELECT DISTINCT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefile.transaction_date AS transaction_date, casefile.application_information_id AS application_information_id 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE designsearch.design_search_code = %(design_search_code_1)s) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number) AS anon_1, casefile]
+[parameters: {'design_search_code_1': 30122}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-17 14:09:10,392 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:09:10] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-17 14:10:29,994 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py', reloading
+2025-01-17 14:10:55,782 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-17 14:10:55,782 - multi_filter_search - INFO - Processing condition 1: strategy=design_code, query=030122
+2025-01-17 14:10:57,115 - multi_filter_search - INFO - Found 36945 total results in 1.33s
+2025-01-17 14:10:57,120 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE LPAD(CAST(design_search_code AS TEXT), 6, '0') = '030122') AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-17 14:10:57,197 - multi_filter_search - INFO - Query executed in 1.41s, total processing time: 1.41s
+2025-01-17 14:10:57,234 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:10:57] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:11:03,310 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:11:03] "GET /api/case/73256496 HTTP/1.1" 200 -
+2025-01-17 14:11:12,107 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:11:12] "GET /api/case/73114048 HTTP/1.1" 200 -
+2025-01-17 14:11:19,198 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:11:19] "GET /api/case/73109951 HTTP/1.1" 200 -
+2025-01-17 14:11:28,323 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:11:28] "GET /api/case/73216575 HTTP/1.1" 200 -
+2025-01-17 14:11:56,172 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:11:56] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:11:56,177 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-17 14:11:56,177 - multi_filter_search - INFO - Processing condition 1: strategy=design_code, query=0301XX
+2025-01-17 14:11:56,885 - multi_filter_search - INFO - Found 36945 total results in 0.71s
+2025-01-17 14:11:56,891 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE '0301%') AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-17 14:11:56,971 - multi_filter_search - INFO - Query executed in 0.79s, total processing time: 0.79s
+2025-01-17 14:11:57,016 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:11:57] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:12:01,436 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:12:01] "GET /api/case/73258180 HTTP/1.1" 200 -
+2025-01-17 14:12:11,292 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:12:11] "GET /api/case/73249846 HTTP/1.1" 200 -
+2025-01-17 14:18:42,814 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py', reloading
+2025-01-17 14:21:35,334 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-17 14:21:35,335 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-17 14:21:36,611 - multi_filter_search - INFO - Found 36945 total results in 1.26s
+2025-01-17 14:21:36,616 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-17 14:21:36,849 - multi_filter_search - INFO - Query executed in 1.50s, total processing time: 1.51s
+2025-01-17 14:21:36,884 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:21:36] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:21:41,918 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:21:41] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:21:41,921 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-17 14:21:41,921 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull doggy
+2025-01-17 14:21:42,494 - multi_filter_search - INFO - Found 36945 total results in 0.57s
+2025-01-17 14:21:42,499 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull doggy') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull doggy%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-17 14:21:42,787 - multi_filter_search - INFO - Query executed in 0.86s, total processing time: 0.87s
+2025-01-17 14:21:43,018 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:21:43] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:21:58,126 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:21:58] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:21:58,131 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-17 14:21:58,131 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull doggy
+2025-01-17 14:21:58,133 - multi_filter_search - INFO - Processing condition 2: strategy=design_code, query=0602XX
+2025-01-17 14:21:58,311 - multi_filter_search - INFO - Found 0 total results in 0.18s
+2025-01-17 14:21:58,321 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull doggy') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull doggy%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE '0602%') AS subquery_1 ON casefile.serial_number = subquery_1.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-17 14:21:58,415 - multi_filter_search - INFO - Query executed in 0.28s, total processing time: 0.28s
+2025-01-17 14:21:58,451 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:21:58] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:22:08,409 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:22:08] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:22:08,413 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-17 14:22:08,413 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-17 14:22:08,414 - multi_filter_search - INFO - Processing condition 2: strategy=design_code, query=0602XX
+2025-01-17 14:22:08,540 - multi_filter_search - INFO - Found 0 total results in 0.12s
+2025-01-17 14:22:08,545 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE '0602%') AS subquery_1 ON casefile.serial_number = subquery_1.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-17 14:22:08,707 - multi_filter_search - INFO - Query executed in 0.29s, total processing time: 0.29s
+2025-01-17 14:22:08,745 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:22:08] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:22:23,357 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:22:23] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:22:23,362 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-17 14:22:23,362 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-17 14:22:23,365 - multi_filter_search - INFO - Processing condition 2: strategy=design_code, query=0302XX
+2025-01-17 14:22:23,510 - multi_filter_search - INFO - Found 0 total results in 0.15s
+2025-01-17 14:22:23,517 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE '0302%') AS subquery_1 ON casefile.serial_number = subquery_1.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-17 14:22:23,627 - multi_filter_search - INFO - Query executed in 0.26s, total processing time: 0.26s
+2025-01-17 14:22:23,664 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:22:23] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:22:29,228 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:22:29] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:22:29,232 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-17 14:22:29,232 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-17 14:22:29,233 - multi_filter_search - INFO - Processing condition 2: strategy=design_code, query=0302XX
+2025-01-17 14:22:29,436 - multi_filter_search - INFO - Found 0 total results in 0.20s
+2025-01-17 14:22:29,439 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE '0302%') AS subquery_1 ON casefile.serial_number = subquery_1.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-17 14:22:29,873 - multi_filter_search - INFO - Query executed in 0.64s, total processing time: 0.64s
+2025-01-17 14:22:29,910 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:22:29] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:22:45,064 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:22:45] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-17 14:22:45,068 - multi_filter_search - INFO - Starting search with 2 conditions, page=1, per_page=10
+2025-01-17 14:22:45,068 - multi_filter_search - INFO - Processing condition 1: strategy=wordmark, query=bull dog
+2025-01-17 14:22:45,070 - multi_filter_search - INFO - Processing condition 2: strategy=design_code, query=0301XX
+2025-01-17 14:22:45,406 - multi_filter_search - INFO - Found 36945 total results in 0.34s
+2025-01-17 14:22:45,412 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS subquery_0 ON casefile.serial_number = subquery_0.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN designsearch ON casefile.serial_number = designsearch.serial_number 
+WHERE LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE '0301%') AS subquery_1 ON casefile.serial_number = subquery_1.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-17 14:22:45,642 - multi_filter_search - INFO - Query executed in 0.57s, total processing time: 0.57s
+2025-01-17 14:22:45,677 - werkzeug - INFO - 127.0.0.1 - - [17/Jan/2025 14:22:45] "POST /api/combined_search HTTP/1.1" 200 -
