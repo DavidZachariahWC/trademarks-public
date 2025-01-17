@@ -84,16 +84,19 @@ export default function SearchPage() {
   })
 
   const addToQuery = () => {
-    // Check if this strategy is already used in queryParts
-    const isDuplicate = queryParts.some(part => part.filter.strategy === currentFilter.strategy);
-    
-    if (isDuplicate) {
-      toast({
-        title: "Filter already in use",
-        description: "This filter type is already part of your query. Please use a different filter.",
-        variant: "destructive"
-      });
-      return;
+    // Only check for duplicates if we're not editing an existing filter
+    if (editingIndex === null) {
+      // Check if this strategy is already used in queryParts
+      const isDuplicate = queryParts.some(part => part.filter.strategy === currentFilter.strategy);
+      
+      if (isDuplicate) {
+        toast({
+          title: "Filter already in use",
+          description: "This filter type is already part of your query. Please use a different filter.",
+          variant: "destructive"
+        });
+        return;
+      }
     }
 
     if (editingIndex !== null) {
@@ -120,10 +123,11 @@ export default function SearchPage() {
   }
 
   const startEditing = (index: number) => {
-    const part = queryParts[index]
-    setCurrentFilter(part.filter)
-    setLogicOperator(part.operator)
-    setEditingIndex(index)
+    const part = queryParts[index];
+    setCurrentFilter(part.filter);
+    setLogicOperator(part.operator);
+    setEditingIndex(index);
+    setIsSidebarOpen(false); // Close the sidebar if it's open
   }
 
   const removeQueryPart = (index: number) => {
@@ -151,55 +155,29 @@ export default function SearchPage() {
       return
     }
 
-    // Check if current filter would be a duplicate
-    const wouldBeDuplicate = currentFilter.strategy && 
-      queryParts.some(part => part.filter.strategy === currentFilter.strategy);
-
-    if (wouldBeDuplicate) {
-      toast({
-        title: "Filter already in use",
-        description: "This filter type is already part of your query. Please use a different filter.",
-        variant: "destructive"
-      });
-      return;
-    }
-
     // If we're editing, make sure to update the current part before searching
+    let searchQueryParts = [...queryParts];
     if (editingIndex !== null) {
-      const newQueryParts = [...queryParts]
-      newQueryParts[editingIndex] = { filter: currentFilter, operator: logicOperator }
-      setQueryParts(newQueryParts)
-      setEditingIndex(null)
-      setCurrentFilter({ strategy: 'wordmark', query: '' })
-    }
-
-    // Include current filter if it has a query, and map conditions to include operators
-    const allFilters = queryParts.map(p => ({
-      strategy: p.filter.strategy,
-      query: p.filter.query,
-      operator: p.operator
-    }))
-
-    if (currentFilter.query && editingIndex === null) {
-      allFilters.push({
-        strategy: currentFilter.strategy,
-        query: currentFilter.query,
-        operator: logicOperator
-      })
-    }
-
-    // Validate all date filters
-    for (const filter of allFilters) {
-      if (DATE_STRATEGIES.has(filter.strategy)) {
-        if (!validateDateFormat(filter.query)) {
-          setError(`Invalid date format for ${filter.strategy}. Please use YYYY-MM-DD format.`)
-          return
-        }
+      searchQueryParts[editingIndex] = { filter: currentFilter, operator: logicOperator };
+      setQueryParts(searchQueryParts);
+      setEditingIndex(null);
+      setCurrentFilter({ strategy: 'wordmark', query: '' });
+    } else if (currentFilter.query) {
+      // Only check for duplicates if we're not editing and have a current filter
+      const wouldBeDuplicate = searchQueryParts.some(part => part.filter.strategy === currentFilter.strategy);
+      if (wouldBeDuplicate) {
+        toast({
+          title: "Filter already in use",
+          description: "This filter type is already part of your query. Please use a different filter.",
+          variant: "destructive"
+        });
+        return;
       }
+      searchQueryParts = [...searchQueryParts, { filter: currentFilter, operator: logicOperator }];
     }
 
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
       const response = await fetch(API_ENDPOINTS.combinedSearch, {
@@ -208,24 +186,34 @@ export default function SearchPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          conditions: allFilters,
+          conditions: searchQueryParts.map(p => ({
+            strategy: p.filter.strategy,
+            query: p.filter.query,
+            operator: p.operator
+          })),
           page,
           per_page: pagination.per_page
         }),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error('Search failed')
+        throw new Error('Search failed');
       }
 
-      const data = await response.json()
-      setResults(data.results)
-      setPagination(data.pagination)
+      const data = await response.json();
+      setResults(data.results);
+      setPagination(data.pagination);
+      
+      // After successful search, update queryParts if we added a new filter
+      if (currentFilter.query && editingIndex === null) {
+        setQueryParts(searchQueryParts);
+      }
+      setCurrentFilter({ strategy: 'wordmark', query: '' });
     } catch (err) {
-      setError('Search failed. Please try again.')
-      console.error('Search error:', err)
+      setError('Search failed. Please try again.');
+      console.error('Search error:', err);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
