@@ -2651,3 +2651,86 @@ WHERE casefileheader.attorney_name IS NOT NULL AND (similarity(coalesce(casefile
 2025-01-14 13:29:32,330 - werkzeug - INFO - 127.0.0.1 - - [14/Jan/2025 13:29:32] "POST /api/combined_search HTTP/1.1" 200 -
 2025-01-14 13:29:36,452 - werkzeug - INFO - 127.0.0.1 - - [14/Jan/2025 13:29:36] "GET /api/case/73220202 HTTP/1.1" 200 -
 2025-01-14 13:29:36,731 - werkzeug - INFO - 127.0.0.1 - - [14/Jan/2025 13:29:36] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-01-16 14:32:46,069 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-16 14:32:46,069 - multi_filter_search - INFO - Processing condition 1: strategy=serial_number, query=73229966
+2025-01-16 14:32:46,187 - multi_filter_search - INFO - Found 36945 total results in 0.11s
+2025-01-16 14:32:46,189 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73229966') AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-16 14:32:46,240 - multi_filter_search - INFO - Query executed in 0.17s, total processing time: 0.17s
+2025-01-16 14:32:46,277 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 14:32:46] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-16 14:32:48,302 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 14:32:48] "GET /api/case/73229966 HTTP/1.1" 200 -
+2025-01-16 14:32:48,518 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 14:32:48] "GET /api/case/73229966 HTTP/1.1" 200 -
+2025-01-16 14:35:45,790 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 14:35:45] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-16 14:35:45,794 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-16 14:35:45,795 - multi_filter_search - INFO - Processing condition 1: strategy=serial_number, query=73141134
+2025-01-16 14:35:45,894 - multi_filter_search - INFO - Found 36945 total results in 0.10s
+2025-01-16 14:35:45,899 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73141134') AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-16 14:35:45,954 - multi_filter_search - INFO - Query executed in 0.16s, total processing time: 0.16s
+2025-01-16 14:35:46,008 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 14:35:46] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-16 14:35:47,896 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 14:35:47] "GET /api/case/73141134 HTTP/1.1" 200 -
+2025-01-16 14:35:47,896 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 14:35:47] "GET /api/case/73141134 HTTP/1.1" 200 -
+2025-01-16 15:42:05,358 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 15:42:05] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-16 15:42:05,362 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-16 15:42:05,362 - multi_filter_search - INFO - Processing condition 1: strategy=serial_number, query=73054761
+2025-01-16 15:42:05,491 - multi_filter_search - INFO - Found 36945 total results in 0.13s
+2025-01-16 15:42:05,495 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73054761') AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-16 15:42:05,543 - multi_filter_search - INFO - Query executed in 0.18s, total processing time: 0.18s
+2025-01-16 15:42:05,732 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 15:42:05] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-16 15:42:07,398 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 15:42:07] "GET /api/case/73054761 HTTP/1.1" 200 -
+2025-01-16 15:42:07,398 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 15:42:07] "GET /api/case/73054761 HTTP/1.1" 200 -
+2025-01-16 15:55:55,080 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 15:55:55] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-16 15:55:55,083 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-16 15:55:55,083 - multi_filter_search - INFO - Processing condition 1: strategy=serial_number, query=73055025
+2025-01-16 15:55:55,183 - multi_filter_search - INFO - Found 36945 total results in 0.10s
+2025-01-16 15:55:55,188 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73055025') AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-16 15:55:55,233 - multi_filter_search - INFO - Query executed in 0.15s, total processing time: 0.15s
+2025-01-16 15:55:55,291 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 15:55:55] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-16 15:55:57,470 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 15:55:57] "GET /api/case/73055025 HTTP/1.1" 200 -
+2025-01-16 15:55:57,560 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 15:55:57] "GET /api/case/73055025 HTTP/1.1" 200 -
+2025-01-16 16:06:52,045 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 16:06:52] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-16 16:06:52,048 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-16 16:06:52,049 - multi_filter_search - INFO - Processing condition 1: strategy=serial_number, query=73054761
+2025-01-16 16:06:52,156 - multi_filter_search - INFO - Found 36945 total results in 0.11s
+2025-01-16 16:06:52,160 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73054761') AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-16 16:06:52,205 - multi_filter_search - INFO - Query executed in 0.15s, total processing time: 0.16s
+2025-01-16 16:06:52,257 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 16:06:52] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-16 16:06:53,970 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 16:06:53] "GET /api/case/73054761 HTTP/1.1" 200 -
+2025-01-16 16:06:53,977 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 16:06:53] "GET /api/case/73054761 HTTP/1.1" 200 -
+2025-01-16 16:30:40,274 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 16:30:40] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-16 16:30:40,277 - multi_filter_search - INFO - Starting search with 1 conditions, page=1, per_page=10
+2025-01-16 16:30:40,278 - multi_filter_search - INFO - Processing condition 1: strategy=serial_number, query=73069742
+2025-01-16 16:30:40,413 - multi_filter_search - INFO - Found 36945 total results in 0.13s
+2025-01-16 16:30:40,418 - multi_filter_search - INFO - Final query SQL: SELECT DISTINCT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number JOIN (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73069742') AS subquery_0 ON casefile.serial_number = subquery_0.serial_number ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-16 16:30:40,462 - multi_filter_search - INFO - Query executed in 0.18s, total processing time: 0.19s
+2025-01-16 16:30:40,500 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 16:30:40] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-16 16:30:42,035 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 16:30:42] "GET /api/case/73069742 HTTP/1.1" 200 -
+2025-01-16 16:30:42,262 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 16:30:42] "GET /api/case/73069742 HTTP/1.1" 200 -
+2025-01-16 16:36:11,835 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 16:36:11] "GET /api/case/73054761 HTTP/1.1" 200 -
+2025-01-16 17:13:00,164 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 17:13:00] "GET /api/case/73054761 HTTP/1.1" 200 -
+2025-01-16 17:13:00,189 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 17:13:00] "GET /api/case/73054761 HTTP/1.1" 200 -
+2025-01-16 17:13:00,875 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 17:13:00] "GET /api/case/73054761 HTTP/1.1" 200 -
+2025-01-16 17:13:40,579 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 17:13:40] "GET /api/case/73054761 HTTP/1.1" 200 -
+2025-01-16 17:14:07,335 - werkzeug - INFO - 127.0.0.1 - - [16/Jan/2025 17:14:07] "GET /api/case/73054761 HTTP/1.1" 200 -
