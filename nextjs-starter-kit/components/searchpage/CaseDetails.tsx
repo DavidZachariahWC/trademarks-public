@@ -6,7 +6,6 @@ import OwnerInfo from './OwnerInfo'
 import Classifications from './Classifications'
 import GoodsServicesStatements from './GoodsServicesStatements'
 import MarkDesignInfo from './MarkDesignInfo'
-import DisclaimerStatements from './DisclaimerStatements'
 import ForeignFilingDates from './ForeignFilingDates'
 import InternationalRegistration from './InternationalRegistration'
 import PriorRegistrations from './PriorRegistrations'
@@ -31,6 +30,17 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
         
         <SectionStatus header={caseData.header} />
         
+        {caseData.classifications && caseData.classifications.length > 0 && (
+          <Classifications 
+            classifications={caseData.classifications} 
+            statements={caseData.statements}
+          />
+        )}
+
+        <MarkDesignInfo caseData={caseData} />
+        
+        <MarkInformation caseData={caseData} />
+        
         {caseData.owners && caseData.owners.length > 0 && (
           <OwnerInfo owners={caseData.owners} />
         )}
@@ -39,18 +49,8 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
           <CorrespondentInfo correspondents={caseData.correspondents} />
         )}
         
-        {caseData.classifications && caseData.classifications.length > 0 && (
-          <Classifications classifications={caseData.classifications} />
-        )}
-        
         {caseData.statements && (
           <GoodsServicesStatements statements={caseData.statements} />
-        )}
-        
-        <MarkDesignInfo caseData={caseData} />
-        
-        {caseData.statements && (
-          <DisclaimerStatements statements={caseData.statements} />
         )}
         
         {caseData.foreign_applications && caseData.foreign_applications.length > 0 && (
@@ -70,8 +70,6 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
         {caseData.foreign_applications && caseData.foreign_applications.length > 0 && (
           <ForeignApplications foreignApplications={caseData.foreign_applications} />
         )}
-        
-        <MarkInformation caseData={caseData} />
         
         {caseData.event_statements && caseData.event_statements.length > 0 && (
           <EventStatements eventStatements={caseData.event_statements} />
