@@ -42,6 +42,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           <Link
             key={result.serial_number}
             href={`/case/${result.serial_number}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="block p-6 border rounded-lg hover:bg-gray-50 transition-colors h-full"
           >
             <h3 className="text-lg font-semibold line-clamp-2 mb-3">{result.mark_identification}</h3>

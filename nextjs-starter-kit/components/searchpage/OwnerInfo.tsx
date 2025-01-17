@@ -70,7 +70,7 @@ function OwnerDetails({ owner }: { owner: Owner }) {
       )}
 
       <div className="mt-4">
-        <p className="font-semibold mb-1">Nationality:</p>
+        <p className="font-semibold mb-1">State or Country Where Organized:</p>
         <p>
           {owner.nationality_country || owner.nationality_state
             ? `${owner.nationality_country || ''}${owner.nationality_country && owner.nationality_state ? ', ' : ''}${owner.nationality_state || ''}`

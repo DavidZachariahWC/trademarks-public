@@ -55,7 +55,7 @@ export default function MarkDesignInfo({ caseData }: MarkDesignInfoProps) {
   const colorsClaimed = statements?.filter(statement => statement.type_code === 'CC0000') || []
   const colorsDescription = statements?.filter(statement => statement.type_code === 'CD0000') || []
   const liningStippling = statements?.filter(statement => statement.type_code === 'LS0000') || []
-  const disclaimers = statements?.filter(statement => statement.type_code === 'DS0000') || []
+  const disclaimers = statements?.filter(statement => statement.type_code === 'D00000' || statement.type_code === 'D10000') || []
   const acquiredDistinctivenessStatements = statements?.filter(statement => statement.type_code.startsWith('TF')) ?? []
 
   return (
