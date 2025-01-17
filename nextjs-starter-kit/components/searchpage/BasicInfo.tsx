@@ -163,17 +163,17 @@ export default function BasicInfo({ caseData }: BasicInfoProps) {
                 { 
                   label: 'Filed As', 
                   value: header.filing_basis_filed_as_44d_in,
-                  tooltip: 'This application contained a claim based on foreign filing priority under Section 44(d) at the time of initial filing'
+                  tooltip: 'Determines if this application contained a claim based on foreign filing priority under Section 44(d) at the time of initial filing'
                 },
                 { 
                   label: 'Amended To Include', 
                   value: header.amended_to_44d_application_in,
-                  tooltip: 'This application was amended after filing to add a claim based on foreign filing priority under Section 44(d)'
+                  tooltip: 'Determines if this application was amended after filing to add a claim based on foreign filing priority under Section 44(d)'
                 },
                 { 
                   label: 'Current', 
                   value: header.filing_basis_current_44d_in,
-                  tooltip: 'This application currently contains a claim based on foreign filing priority under Section 44(d)'
+                  tooltip: 'Determines if this application currently contains a claim based on foreign filing priority under Section 44(d)'
                 }
               ]}
             />
@@ -186,17 +186,17 @@ export default function BasicInfo({ caseData }: BasicInfoProps) {
                 { 
                   label: 'Filed As', 
                   value: header.filing_basis_filed_as_44e_in,
-                  tooltip: 'This application contained a claim based on foreign registration under Section 44(e) at the time of initial filing'
+                  tooltip: 'Determines if this application contained a claim based on foreign registration under Section 44(e) at the time of initial filing'
                 },
                 { 
                   label: 'Amended To Include', 
                   value: header.amended_to_44e_application_in,
-                  tooltip: 'This application was amended after filing to add a claim based on foreign registration under Section 44(e)'
+                  tooltip: 'Determines if this application was amended after filing to add a claim based on foreign registration under Section 44(e)'
                 },
                 { 
                   label: 'Current', 
                   value: header.filing_basis_current_44e_in,
-                  tooltip: 'This application currently contains a claim based on foreign registration under Section 44(e)'
+                  tooltip: 'Determines if this application currently contains a claim based on foreign registration under Section 44(e)'
                 }
               ]}
             />
@@ -209,12 +209,12 @@ export default function BasicInfo({ caseData }: BasicInfoProps) {
                 { 
                   label: 'Filed As', 
                   value: header.filing_basis_filed_as_66a_in,
-                  tooltip: 'This application contained a Request for Extension of Protection in the US under Section 66(a) at the time of filing'
+                  tooltip: 'Determines if this application contained a Request for Extension of Protection in the US under Section 66(a) at the time of filing'
                 },
                 { 
                   label: 'Current', 
                   value: header.filing_basis_current_66a_in,
-                  tooltip: 'This application currently contains a Request for Extension of Protection in the US under Section 66(a)'
+                  tooltip: 'Determines if this application currently contains a Request for Extension of Protection in the US under Section 66(a)'
                 }
               ]}
             />
@@ -227,12 +227,12 @@ export default function BasicInfo({ caseData }: BasicInfoProps) {
                 { 
                   label: 'Current No Basis', 
                   value: header.filing_current_no_basis_in,
-                  tooltip: 'This application currently has no valid filing basis'
+                  tooltip: 'Determines if this application currently has no valid filing basis'
                 },
                 { 
                   label: 'Without Basis Currently', 
                   value: header.without_basis_currently_in,
-                  tooltip: 'This application is currently without any filing basis'
+                  tooltip: 'Determines if this application is currently without any filing basis'
                 }
               ]}
             />

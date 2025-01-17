@@ -113,7 +113,7 @@ export default function SearchPage() {
     
     // Reset current filter
     setCurrentFilter({
-      strategy: '',
+      strategy: 'wordmark',
       query: '',
       operator: logicOperator
     });
@@ -162,14 +162,6 @@ export default function SearchPage() {
         variant: "destructive"
       });
       return;
-    }
-
-    // If there's a valid current filter, add it to queryParts
-    if (shouldShowPreview()) {
-      setQueryParts([...queryParts, { 
-        filter: currentFilter,
-        operator: logicOperator 
-      }]);
     }
 
     // If we're editing, make sure to update the current part before searching

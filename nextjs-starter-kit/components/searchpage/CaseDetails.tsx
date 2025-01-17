@@ -11,7 +11,6 @@ import InternationalRegistration from './InternationalRegistration'
 import PriorRegistrations from './PriorRegistrations'
 import AllStatements from './AllStatements'
 import ForeignApplications from './ForeignApplications'
-import MarkInformation from './MarkInformation'
 import CorrespondentInfo from './CorrespondentInfo'
 import EventStatements from './EventStatements'
 import SectionStatus from './SectionStatus'
@@ -38,9 +37,7 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
         )}
 
         <MarkDesignInfo caseData={caseData} />
-        
-        <MarkInformation caseData={caseData} />
-        
+                
         {caseData.owners && caseData.owners.length > 0 && (
           <OwnerInfo owners={caseData.owners} />
         )}
