@@ -18,18 +18,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_page: int = 10, logic_operator: str = 'OR') -> Dict[str, Any]:
+def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) -> Dict[str, Any]:
     """
-    Combine multiple search conditions using JOINs.
+    Combine multiple search conditions using JOINs for AND and UNION ALL for OR.
 
     Args:
-        conditions: List of dicts, each containing:
-            - strategy: str, the search strategy name
-            - query: str, the search query
-            - operator: str, optional, 'AND' or 'OR' (defaults to top-level logic_operator)
+        filter_tree: Dict representing the nested filter structure.
         page: int, the page number (1-indexed)
         per_page: int, results per page
-        logic_operator: str, 'AND' or 'OR', applied to entire set if not specified per condition
 
     Returns:
         Dict containing:
@@ -37,77 +33,101 @@ def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_pag
             - pagination: Dict with pagination info
     """
     start_time = time.time()
-    logger.info(f"Starting search with {len(conditions)} conditions, page={page}, per_page={per_page}")
+    logger.info(f"Starting search with filter tree: {filter_tree}, page={page}, per_page={per_page}")
 
     session = get_db_session()
     try:
-        # Build queries for each condition
-        queries = []
-        for i, condition in enumerate(conditions):
-            strategy_name = condition.get('strategy')
-            query_str = condition.get('query', '')
-            logger.info(f"Processing condition {i+1}: strategy={strategy_name}, query={query_str}")
+        def build_query_recursive(node: Dict, session: Session) -> Query:
+            if 'strategy' in node:
+                # Base case: This is a filter condition
+                strategy_name = node['strategy']
+                query_str = node['query']
+                StrategyClass = SearchEngine.STRATEGY_MAP.get(strategy_name)
+                if not StrategyClass:
+                    logger.warning(f"Unknown strategy: {strategy_name}")
+                    return None  # Or handle unknown strategy appropriately
+                
+                strategy = StrategyClass(query_str, page=1, per_page=999999999)
+                query = strategy.build_query(session)
+                if query is not None:
+                    logger.info(f"Generated query for strategy '{strategy_name}': {query.statement.compile(compile_kwargs={'literal_binds': True})}")
+                else:
+                    logger.warning(f"Query generation failed for strategy: {strategy_name}")
+                return query
 
-            # Get the strategy class from our existing SearchEngine
-            StrategyClass = SearchEngine.STRATEGY_MAP.get(strategy_name)
-            if not StrategyClass:
-                logger.warning(f"Unknown strategy: {strategy_name}")
-                continue
+            elif 'operator' in node and 'operands' in node:
+                # Recursive case: This is a group of conditions
+                operator = node['operator']
+                operands = node['operands']
 
-            # Initialize strategy with query but disable pagination
-            strategy = StrategyClass(query_str, page=1, per_page=999999999)
+                if not operands:
+                    return None
 
-            # Build the base query
-            query = strategy.build_query(session)
+                subqueries = [build_query_recursive(op, session) for op in operands]
+                subqueries = [sq for sq in subqueries if sq is not None]  # Filter out None queries
 
-            # Ensure only necessary columns are selected
-            query = query.with_entities(CaseFile.serial_number)
-            
-            queries.append(query)
-            logger.debug(f"Built query for condition {i+1}")
+                if not subqueries:
+                    return None
 
-        if not queries:
-            logger.warning("No valid queries generated")
+                # Convert Query objects to Subquery objects
+                subqueries = [sq.subquery() for sq in subqueries]
+
+                if operator == 'AND':
+                    combined_query = session.query(subqueries[0].c.serial_number)
+                    for sq in subqueries[1:]:
+                        combined_query = combined_query.intersect(session.query(sq.c.serial_number))
+                    return combined_query
+                elif operator == 'OR':
+                    combined_query = session.query(subqueries[0].c.serial_number)
+                    for sq in subqueries[1:]:
+                        combined_query = combined_query.union_all(session.query(sq.c.serial_number))
+                    return combined_query
+                else:
+                    logger.warning(f"Unknown operator: {operator}")
+                    return None
+            else:
+                logger.error(f"Invalid filter tree node: {node}")
+                return None
+
+        # Handle empty filter tree case
+        if not filter_tree:
             return {
                 'results': [],
                 'pagination': {
-                    'current_page': page,
+                    'current_page': 1,
                     'total_pages': 0,
                     'total_results': 0,
                     'per_page': per_page
                 }
             }
 
-        # Build final query joining back to get full case details
+        # Start the recursive query building process
+        final_query = build_query_recursive(filter_tree, session)
+
+        # Handle empty filter tree case
+        if final_query is None:
+            return {
+                'results': [],
+                'pagination': {
+                    'current_page': 1,
+                    'total_pages': 0,
+                    'total_results': 0,
+                    'per_page': per_page
+                }
+            }
+
+        # Count total results for pagination (before applying limit and offset)
         query_start = time.time()
-
-        final_query = session.query(CaseFile).join(CaseFileHeader)
-
-        for i, query in enumerate(queries):
-            alias = f"subquery_{i}"
-            final_query = final_query.join(query.subquery(alias), text(f"{alias}.serial_number") == CaseFile.serial_number)
-
-        # Apply the logic operator to filter the results
-        if logic_operator.upper() == 'AND':
-            # For 'AND', all conditions must match, so no further action needed
-            pass
-        else:
-            # For 'OR', any condition can match
-            # We need to apply distinct since multiple joins can cause duplicate rows
-            final_query = final_query.distinct()
-
-        # Get total count for pagination - Use a subquery to count distinct serial numbers
-        count_query = session.query(func.count(distinct(CaseFile.serial_number))).select_from(final_query.subquery())
-        total_count = count_query.scalar() or 0
-
-        logger.info(f"Found {total_count} total results in {time.time() - query_start:.2f}s")
-
+        total_count = final_query.count()
         total_pages = (total_count + per_page - 1) // per_page
+        logger.info(f"Total results before pagination: {total_count}")
+
+        # Apply pagination
         offset = (page - 1) * per_page
-        logger.debug(f"Pagination: page {page}/{total_pages}, offset={offset}, limit={per_page}")
+        final_results_query = session.query(CaseFile).join(CaseFileHeader).filter(CaseFile.serial_number.in_(final_query))
 
         # Add the columns you want to select from CaseFile and CaseFileHeader
-        final_query = final_query.add_columns(
+        final_results_query = final_results_query.add_columns(
             CaseFile.serial_number,
             CaseFile.registration_number,
             CaseFileHeader.mark_identification,
@@ -118,14 +138,14 @@ def multi_filter_search(conditions: List[Dict[str, Any]], page: int = 1, per_pag
         )
 
         # Order by and apply pagination to final query
-        final_query = final_query.order_by(CaseFileHeader.filing_date.desc()).limit(per_page).offset(offset)
+        final_results_query = final_results_query.order_by(CaseFileHeader.filing_date.desc()).limit(per_page).offset(offset)
 
         # Print the final query SQL before execution
-        logger.info(f"Final query SQL: {str(final_query.statement.compile(compile_kwargs={'literal_binds': True}))}")
+        logger.info(f"Final query SQL: {str(final_results_query.statement.compile(compile_kwargs={'literal_binds': True}))}")
 
         # Execute and format results
         results = []
-        for row in final_query.all():
+        for row in final_results_query.all():
             results.append({
                 'serial_number': row.serial_number,
                 'registration_number': row.registration_number,

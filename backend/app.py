@@ -1,9 +1,29 @@
 # app.py
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, json
 from search_engine import SearchEngine
 from db_utils import get_autocomplete_suggestions, get_db_session
-from models import CaseFile, CaseFileHeader
+from models import (
+    CaseFile, CaseFileHeader, Owner, Classification, 
+    InternationalRegistration, PriorRegistrationApplication,
+    CaseFileStatement, DesignSearch, CaseFileEventStatement,
+    Correspondent, MadridInternationalFilingRequest
+)
 from flask_cors import CORS  # Add CORS support
+from multi_filter_search import multi_filter_search
+import logging
+import datetime
+from flask.json import dumps
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('app.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -26,6 +46,7 @@ def search():
         return jsonify(results)
         
     except Exception as e:
+        logger.error(f"Error in /api/search: {e}", exc_info=True)
         return jsonify({"error": "Internal server error"}), 500
 
 @app.route('/api/autocomplete')
@@ -41,195 +62,308 @@ def autocomplete():
         return jsonify(suggestions)
         
     except Exception as e:
+        logger.error(f"Error in /api/autocomplete: {e}", exc_info=True)
         return jsonify({"error": "Internal server error"}), 500
+
+def custom_serializer(obj):
+  """JSON serializer for objects not serializable by default json code"""
+  if isinstance(obj, datetime.date):
+    return obj.isoformat()
+  raise TypeError ("Type %s not serializable" % type(obj))
 
 @app.route('/api/case/<int:serial_number>')
 def case_details(serial_number):
     """API endpoint for case details"""
+    logger.info(f"Fetching details for case: {serial_number}")
     try:
         session = get_db_session()
-        case = (session.query(CaseFile)
-               .join(CaseFileHeader)
-               .filter(CaseFile.serial_number == serial_number)
-               .first())
-               
+        logger.info("Database session established.")
+
+        case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+        logger.info(f"Case query executed. Case found: {case is not None}")
+
         if not case:
+            logger.warning(f"Case not found: {serial_number}")
             return jsonify({"error": "Case not found"}), 404
 
-        def format_date(date):
-            """Format date as YYYY-MM-DD without timezone conversion"""
-            return date.strftime('%Y-%m-%d') if date else None
-            
+        header = session.query(CaseFileHeader).filter(CaseFileHeader.serial_number == case.serial_number).first()
+        logger.info(f"Header query executed. Header found: {header is not None}")
+        
+        if not header:
+            logger.warning(f"Header not found for case: {serial_number}")
+            return jsonify({"error": "Header not found for case"}), 404
+
+        # Construct response
         response = {
-            "serial_number": case.serial_number,
-            "registration_number": case.registration_number,
-            "header": {
-                "mark_identification": case.header.mark_identification,
-                "status_code": case.header.status_code,
-                "status_date": format_date(case.header.status_date),
-                "filing_date": format_date(case.header.filing_date),
-                "registration_date": format_date(case.header.registration_date),
-                "cancellation_date": format_date(case.header.cancellation_date),
-                "published_for_opposition_date": format_date(case.header.published_for_opposition_date),
-                "attorney_name": case.header.attorney_name,
-                "republished_12c_date": format_date(case.header.republished_12c_date),
-                "section_8_partial_accept_in": case.header.section_8_partial_accept_in or False,
-                "section_8_accepted_in": case.header.section_8_accepted_in or False,
-                "section_15_filed_in": case.header.section_15_filed_in or False,
-                "section_15_acknowledged_in": case.header.section_15_acknowledged_in or False,
-                "change_registration_in": case.header.change_registration_in or False,
-                "concurrent_use_in": case.header.concurrent_use_in or False,
-                "concurrent_use_proceeding_in": case.header.concurrent_use_proceeding_in or False,
-                "published_concurrent_in": case.header.published_concurrent_in or False,
-                "trademark_in": case.header.trademark_in or False,
-                "service_mark_in": case.header.service_mark_in or False,
-                "collective_trademark_in": case.header.collective_trademark_in or False,
-                "collective_service_mark_in": case.header.collective_service_mark_in or False,
-                "collective_membership_mark_in": case.header.collective_membership_mark_in or False,
-                "certification_mark_in": case.header.certification_mark_in or False,
-                "filing_basis_filed_as_44d_in": case.header.filing_basis_filed_as_44d_in or False,
-                "amended_to_44d_application_in": case.header.amended_to_44d_application_in or False,
-                "filing_basis_current_44d_in": case.header.filing_basis_current_44d_in or False,
-                "filing_basis_filed_as_44e_in": case.header.filing_basis_filed_as_44e_in or False,
-                "amended_to_44e_application_in": case.header.amended_to_44e_application_in or False,
-                "filing_basis_current_44e_in": case.header.filing_basis_current_44e_in or False,
-                "filing_basis_filed_as_66a_in": case.header.filing_basis_filed_as_66a_in or False,
-                "filing_basis_current_66a_in": case.header.filing_basis_current_66a_in or False,
-                "filing_current_no_basis_in": case.header.filing_current_no_basis_in or False,
-                "without_basis_currently_in": case.header.without_basis_currently_in or False,
-                "standard_characters_claimed_in": case.header.standard_characters_claimed_in or False,
-                "mark_drawing_code": case.header.mark_drawing_code,
-                "color_drawing_current_in": case.header.color_drawing_current_in or False,
-                "color_drawing_filed_in": case.header.color_drawing_filed_in or False,
-                "drawing_3d_current_in": case.header.drawing_3d_current_in or False,
-                "drawing_3d_filed_in": case.header.drawing_3d_filed_in or False,
-                "section_2f_in": case.header.section_2f_in or False,
-                "section_2f_in_part_in": case.header.section_2f_in_part_in or False
+            'serial_number': case.serial_number,
+            'registration_number': case.registration_number,
+            'transaction_date': case.transaction_date,
+            'header': {
+                'serial_number': header.serial_number,
+                'case_file_header_id': header.case_file_header_id,
+                'filing_date': header.filing_date,
+                'registration_date': header.registration_date,
+                'status_code': header.status_code,
+                'status_date': header.status_date,
+                'mark_identification': header.mark_identification,
+                'mark_drawing_code': header.mark_drawing_code,
+                'published_for_opposition_date': header.published_for_opposition_date,
+                'abandonment_date': header.abandonment_date,
+                'cancellation_code': header.cancellation_code,
+                'cancellation_date': header.cancellation_date,
+                'republished_12c_date': header.republished_12c_date,
+                'attorney_docket_number': header.attorney_docket_number,
+                'attorney_name': header.attorney_name,
+                'amend_to_register_date': header.amend_to_register_date,
+                'domestic_representative_name': header.domestic_representative_name,
+                'trademark_in': header.trademark_in,
+                'service_mark_in': header.service_mark_in,
+                'collective_membership_mark_in': header.collective_membership_mark_in,
+                'collective_trademark_in': header.collective_trademark_in,
+                'collective_service_mark_in': header.collective_service_mark_in,
+                'certification_mark_in': header.certification_mark_in,
+                'principal_register_amended_in': header.principal_register_amended_in,
+                'supplemental_register_amended_in': header.supplemental_register_amended_in,
+                'cancellation_pending_in': header.cancellation_pending_in,
+                'published_concurrent_in': header.published_concurrent_in,
+                'concurrent_use_in': header.concurrent_use_in,
+                'concurrent_use_proceeding_in': header.concurrent_use_proceeding_in,
+                'interference_pending_in': header.interference_pending_in,
+                'opposition_pending_in': header.opposition_pending_in,
+                'section_12c_in': header.section_12c_in,
+                'section_2f_in': header.section_2f_in,
+                'section_2f_in_part_in': header.section_2f_in_part_in,
+                'section_8_filed_in': header.section_8_filed_in,
+                'section_8_partial_accept_in': header.section_8_partial_accept_in,
+                'section_8_accepted_in': header.section_8_accepted_in,
+                'section_15_acknowledged_in': header.section_15_acknowledged_in,
+                'section_15_filed_in': header.section_15_filed_in,
+                'supplemental_register_in': header.supplemental_register_in,
+                'foreign_priority_in': header.foreign_priority_in,
+                'change_registration_in': header.change_registration_in,
+                'intent_to_use_in': header.intent_to_use_in,
+                'intent_to_use_current_in': header.intent_to_use_current_in,
+                'filed_as_use_application_in': header.filed_as_use_application_in,
+                'amended_to_use_application_in': header.amended_to_use_application_in,
+                'use_application_currently_in': header.use_application_currently_in,
+                'amended_to_itu_application_in': header.amended_to_itu_application_in,
+                'filing_basis_filed_as_44d_in': header.filing_basis_filed_as_44d_in,
+                'amended_to_44d_application_in': header.amended_to_44d_application_in,
+                'filing_basis_current_44d_in': header.filing_basis_current_44d_in,
+                'filing_basis_filed_as_44e_in': header.filing_basis_filed_as_44e_in,
+                'amended_to_44e_application_in': header.amended_to_44e_application_in,
+                'filing_basis_current_44e_in': header.filing_basis_current_44e_in,
+                'without_basis_currently_in': header.without_basis_currently_in,
+                'filing_current_no_basis_in': header.filing_current_no_basis_in,
+                'standard_characters_claimed_in': header.standard_characters_claimed_in,
+                'color_drawing_filed_in': header.color_drawing_filed_in,
+                'color_drawing_current_in': header.color_drawing_current_in,
+                'drawing_3d_filed_in': header.drawing_3d_filed_in,
+                'drawing_3d_current_in': header.drawing_3d_current_in,
+                'filing_basis_filed_as_66a_in': header.filing_basis_filed_as_66a_in,
+                'filing_basis_current_66a_in': header.filing_basis_current_66a_in,
+                'renewal_filed_in': header.renewal_filed_in,
+                'renewal_date': header.renewal_date,
+                'law_office_assigned_location_code': header.law_office_assigned_location_code,
+                'current_location': header.current_location,
+                'location_date': header.location_date,
+                'employee_name': header.employee_name,
+                'mark_identification_soundex': header.mark_identification_soundex
             },
-            "statements": [{
-                "type_code": stmt.type_code,
-                "statement_text": stmt.statement_text
-            } for stmt in case.statements] if case.statements else None,
-            "event_statements": [{
-                "event_code": stmt.event_code,
-                "event_type": stmt.event_type,
-                "description_text": stmt.description_text,
-                "event_date": format_date(stmt.event_date),
-                "event_number": stmt.event_number
-            } for stmt in case.event_statements] if case.event_statements else None,
-            "design_searches": [{
-                "design_search_code": str(ds.design_search_code)
-            } for ds in case.design_searches] if case.design_searches else None,
-            "owners": [{
-                "party_name": owner.party_name,
-                "owner_address_1": owner.owner_address_1,
-                "owner_address_2": owner.owner_address_2,
-                "city": owner.city,
-                "owner_state": owner.owner_state,
-                "postcode": owner.postcode,
-                "owner_country": owner.owner_country,
-                "dba_aka_text": owner.dba_aka_text,
-                "entity_statement": owner.entity_statement,
-                "composed_of_statement": owner.composed_of_statement,
-                "name_change_explanation": owner.name_change_explanation,
-                "nationality_country": owner.nationality_country,
-                "nationality_state": owner.nationality_state,
-                "nationality_other": owner.nationality_other,
-                "legal_entity_type_code": str(owner.legal_entity_type_code) if owner.legal_entity_type_code else None,
-                "party_type": str(owner.party_type) if owner.party_type else None
-            } for owner in case.owners] if case.owners else None,
-            "correspondents": [{
-                "address_1": corr.address_1,
-                "address_2": corr.address_2,
-                "address_3": corr.address_3,
-                "address_4": corr.address_4,
-                "address_5": corr.address_5
-            } for corr in case.correspondents] if case.correspondents else None,
-            "foreign_applications": [{
-                "foreign_country": app.foreign_country,
-                "foreign_other": app.foreign_other,
-                "application_number": app.application_number,
-                "foreign_registration_number": app.foreign_registration_number,
-                "foreign_filing_date": format_date(app.foreign_filing_date),
-                "foreign_registration_date": format_date(app.foreign_registration_date),
-                "registration_expiration_date": format_date(app.registration_expiration_date),
-                "registration_renewal_date": format_date(app.registration_renewal_date),
-                "renewal_number": app.renewal_number,
-                "registration_renewal_expiration_date": format_date(app.registration_renewal_expiration_date),
-                "foreign_priority_claim_in": app.foreign_priority_claim_in or False
-            } for app in case.foreign_applications] if case.foreign_applications else None,
-            "international_registrations": [{
-                "international_registration_number": str(reg.international_registration_number) if reg.international_registration_number else None,
-                "international_registration_date": format_date(reg.international_registration_date),
-                "international_publication_date": format_date(reg.international_publication_date),
-                "auto_protection_date": format_date(reg.auto_protection_date),
-                "international_status_code": str(reg.international_status_code) if reg.international_status_code else None,
-                "international_status_date": format_date(reg.international_status_date),
-                "international_renewal_date": format_date(reg.international_renewal_date),
-                "international_death_date": format_date(reg.international_death_date),
-                "priority_claimed_in": reg.priority_claimed_in or False,
-                "priority_claimed_date": format_date(reg.priority_claimed_date),
-                "first_refusal_in": reg.first_refusal_in or False,
-                "notification_date": format_date(reg.notification_date)
-            } for reg in case.international_registrations] if case.international_registrations else None,
-            "prior_registrations": [{
-                "number": reg.number,
-                "other_related_in": reg.other_related_in or False,
-                "relationship_type": reg.relationship_type
-            } for reg in case.prior_registrations] if case.prior_registrations else None,
-            "classifications": [{
-                "international_code": cls.international_code,
-                "us_code": cls.us_code,
-                "primary_code": cls.primary_code,
-                "classification_status_code": cls.classification_status_code,
-                "classification_status_date": format_date(cls.classification_status_date),
-                "first_use_anywhere_date": format_date(cls.first_use_anywhere_date),
-                "first_use_in_commerce_date": format_date(cls.first_use_in_commerce_date)
-            } for cls in case.classifications] if case.classifications else None
+            'owners': [],
+            'classifications': [],
+            'prior_registrations': [],
+            'statements': [],
+            'design_searches': [],
+            'event_statements': [],
+            'correspondents': [],
+            'international_registrations': [],
+            'madrid_filings': []
         }
-        
-        return jsonify(response)
-        
+
+        # Fetch and append related data
+        owners = session.query(Owner).filter(Owner.serial_number == case.serial_number).all()
+        logger.info(f"Owners query executed. Owners found: {len(owners)}")
+        for owner in owners:
+            response['owners'].append({
+                'owner_entry_number': owner.owner_entry_number,
+                'party_type': owner.party_type,
+                'party_name': owner.party_name,
+                'owner_address_1': owner.owner_address_1,
+                'owner_address_2': owner.owner_address_2,
+                'city': owner.city,
+                'owner_state': owner.owner_state,
+                'postcode': owner.postcode,
+                'owner_country': owner.owner_country,
+                'owner_other': owner.owner_other,
+                'dba_aka_text': owner.dba_aka_text,
+                'entity_statement': owner.entity_statement,
+                'composed_of_statement': owner.composed_of_statement,
+                'name_change_explanation': owner.name_change_explanation,
+                'nationality_country': owner.nationality_country,
+                'nationality_state': owner.nationality_state,
+                'nationality_other': owner.nationality_other,
+                'legal_entity_type_code': owner.legal_entity_type_code
+            })
+
+        classifications = session.query(Classification).filter(Classification.serial_number == case.serial_number).all()
+        logger.info(f"Classifications query executed. Classifications found: {len(classifications)}")
+        for classification in classifications:
+            response['classifications'].append({
+                'classification_id': classification.classification_id,
+                'international_code': classification.international_code,
+                'us_code': classification.us_code,
+                'primary_code': classification.primary_code,
+                'classification_status_code': classification.classification_status_code,
+                'classification_status_date': classification.classification_status_date,
+                'first_use_anywhere_date': classification.first_use_anywhere_date,
+                'first_use_in_commerce_date': classification.first_use_in_commerce_date,
+                'international_code_total_no': classification.international_code_total_no,
+                'us_code_total_no': classification.us_code_total_no
+            })
+
+        prior_registrations = session.query(PriorRegistrationApplication).filter(PriorRegistrationApplication.serial_number == case.serial_number).all()
+        logger.info(f"Prior Registrations query executed. Prior Registrations found: {len(prior_registrations)}")
+        for prior_reg in prior_registrations:
+            response['prior_registrations'].append({
+                'prior_registration_application_id': prior_reg.prior_registration_application_id,
+                'relationship_type': prior_reg.relationship_type,
+                'number': prior_reg.number,
+                'other_related_in': prior_reg.other_related_in
+            })
+
+        statements = session.query(CaseFileStatement).filter(CaseFileStatement.serial_number == case.serial_number).all()
+        logger.info(f"Statements query executed. Statements found: {len(statements)}")
+        for statement in statements:
+            response['statements'].append({
+                'case_file_statement_id': statement.case_file_statement_id,
+                'type_code': statement.type_code,
+                'statement_text': statement.statement_text
+            })
+
+        design_searches = session.query(DesignSearch).filter(DesignSearch.serial_number == case.serial_number).all()
+        logger.info(f"Design Searches query executed. Design Searches found: {len(design_searches)}")
+        for design_search in design_searches:
+            response['design_searches'].append({
+                'design_search_code': design_search.design_search_code
+            })
+
+        event_statements = session.query(CaseFileEventStatement).filter(CaseFileEventStatement.serial_number == case.serial_number).all()
+        logger.info(f"Event Statements query executed. Event Statements found: {len(event_statements)}")
+        for event_statement in event_statements:
+            response['event_statements'].append({
+                'case_file_event_statement_id': event_statement.case_file_event_statement_id,
+                'event_code': event_statement.event_code,
+                'event_type': event_statement.event_type,
+                'description_text': event_statement.description_text,
+                'event_date': event_statement.event_date,
+                'event_number': event_statement.event_number
+            })
+
+        correspondents = session.query(Correspondent).filter(Correspondent.serial_number == case.serial_number).all()
+        logger.info(f"Correspondents query executed. Correspondents found: {len(correspondents)}")
+        for correspondent in correspondents:
+            response['correspondents'].append({
+                'address_1': correspondent.address_1,
+                'address_2': correspondent.address_2,
+                'address_3': correspondent.address_3,
+                'address_4': correspondent.address_4,
+                'address_5': correspondent.address_5
+            })
+
+        international_registrations = session.query(InternationalRegistration).filter(InternationalRegistration.serial_number == case.serial_number).all()
+        logger.info(f"International Registrations query executed. International Registrations found: {len(international_registrations)}")
+        for intl_reg in international_registrations:
+            response['international_registrations'].append({
+                'international_registration_number': intl_reg.international_registration_number,
+                'international_registration_date': intl_reg.international_registration_date,
+                'international_publication_date': intl_reg.international_publication_date,
+                'international_renewal_date': intl_reg.international_renewal_date,
+                'auto_protection_date': intl_reg.auto_protection_date,
+                'international_death_date': intl_reg.international_death_date,
+                'international_status_code': intl_reg.international_status_code,
+                'international_status_date': intl_reg.international_status_date,
+                'priority_claimed_in': intl_reg.priority_claimed_in,
+                'priority_claimed_date': intl_reg.priority_claimed_date,
+                'first_refusal_in': intl_reg.first_refusal_in,
+                'notification_date': intl_reg.notification_date
+            })
+
+        madrid_filings = session.query(MadridInternationalFilingRequest).filter(MadridInternationalFilingRequest.serial_number == case.serial_number).all()
+        logger.info(f"Madrid Filings query executed. Madrid Filings found: {len(madrid_filings)}")
+        for madrid_filing in madrid_filings:
+            response['madrid_filings'].append({
+                'madrid_filing_entry_number': madrid_filing.madrid_filing_entry_number,
+                'reference_number': madrid_filing.reference_number,
+                'original_filing_date_uspto': madrid_filing.original_filing_date_uspto,
+                'madrid_international_registration_number': madrid_filing.madrid_international_registration_number,
+                'madrid_international_registration_date': madrid_filing.madrid_international_registration_date,
+                'madrid_international_filing_status_code': madrid_filing.madrid_international_filing_status_code,
+                'madrid_international_filing_status_date': madrid_filing.madrid_international_filing_status_date,
+                'irregularity_reply_by_date': madrid_filing.irregularity_reply_by_date,
+                'madrid_international_filing_renewal_date': madrid_filing.madrid_international_filing_renewal_date
+            })
+
+        logger.info("Case details retrieval and formatting complete.")
+        # First convert to JSON string with our custom serializer
+        json_str = dumps(response, default=custom_serializer)
+        # Then return as response
+        return app.response_class(
+            response=json_str,
+            status=200,
+            mimetype='application/json'
+        )
+
     except Exception as e:
+        logger.error(f"Error fetching case details for serial number {serial_number}: {e}", exc_info=True)
         return jsonify({"error": "Internal server error"}), 500
+
     finally:
         session.close()
+        logger.info("Database session closed.")
 
 @app.route('/api/combined_search', methods=['POST'])
 def combined_search():
-    """API endpoint for multi-filter trademark search"""
+    """API endpoint for combined search using multiple filters"""
     try:
-        data = request.get_json(force=True)
-        
-        # Validate required fields
-        conditions = data.get('conditions', [])
-        if not conditions:
-            return jsonify({"error": "No search conditions provided"}), 400
-            
+        data = request.get_json()
+        logger.info(f"Received combined_search request: {data}")
+
+        # Get the filter tree from the request body
+        filter_tree = data.get('filter_tree')
+
+        # Handle empty filter tree case
+        if not filter_tree:
+            logger.warning("Received empty filter tree.")
+            return jsonify({
+                'results': [],
+                'pagination': {
+                    'current_page': 1,
+                    'total_pages': 0,
+                    'total_results': 0,
+                    'per_page': 10
+                }
+            })
+
         # Get optional parameters
         page = int(data.get('page', 1))
         per_page = int(data.get('per_page', 10))
-        logic_operator = data.get('logic_operator', 'OR').upper()
-        
-        # Validate logic operator
-        if logic_operator not in ['AND', 'OR']:
-            return jsonify({"error": "Invalid logic operator. Must be 'AND' or 'OR'"}), 400
-            
+
         # Execute multi-filter search
-        from multi_filter_search import multi_filter_search
         results = multi_filter_search(
-            conditions=conditions,
+            filter_tree=filter_tree,  # Pass the filter tree
             page=page,
-            per_page=per_page,
-            logic_operator=logic_operator
+            per_page=per_page
         )
-        
+
         return jsonify(results)
-        
+
     except ValueError as e:
+        logger.error(f"Invalid parameter in combined_search: {e}", exc_info=True)
         return jsonify({"error": f"Invalid parameter: {str(e)}"}), 400
     except Exception as e:
+        logger.error(f"Error in combined_search: {e}", exc_info=True)
         return jsonify({"error": "Internal server error"}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)  # Changed port to 5001 to avoid conflict with AirPlay 
+    app.run(debug=True, port=5001)  # Changed port to 5001 to avoid conflict with AirPlay

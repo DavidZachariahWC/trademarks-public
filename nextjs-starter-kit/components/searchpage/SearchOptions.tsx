@@ -6,10 +6,9 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface SearchOptionsProps {
-  selectedOptions: Set<string>
-  selectedBooleanOptions: Set<string>
-  onOptionChange: (option: string, checked: boolean) => void
-  onBooleanOptionChange: (option: string, checked: boolean) => void
+  onSelect: (strategy: string, group: string) => void;
+  onClose?: () => void;
+  booleanStrategies: Set<string>;
 }
 
 const GENERAL_OPTIONS = [
@@ -107,30 +106,22 @@ const ADDITIONAL_OPTIONS = [
   { id: 'assignment_recorded', label: 'Assignment Recorded' },
 ]
 
-export default function SearchOptions({
-  selectedOptions,
-  selectedBooleanOptions,
-  onOptionChange,
-  onBooleanOptionChange,
-}: SearchOptionsProps) {
-  const renderSection = (title: string, options: { id: string, label: string }[], isBoolean: boolean = false) => (
-    <div className="mb-8">
-      <h3 className="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">{title}</h3>
-      <div className="space-y-3">
+export default function SearchOptions({ onSelect, onClose, booleanStrategies }: SearchOptionsProps) {
+  const handleSelect = (id: string, group: string) => {
+    onSelect(id, group);
+  };
+
+  const renderSection = (title: string, options: { id: string, label: string }[]) => (
+    <div className="mb-6">
+      <h3 className="text-lg font-semibold mb-3 text-gray-800 border-b pb-2">{title}</h3>
+      <div className="space-y-1">
         {options.map(({ id, label }) => (
-          <div key={id} className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
-               onClick={() => isBoolean ? onBooleanOptionChange(id, !selectedBooleanOptions.has(id)) : onOptionChange(id, !selectedOptions.has(id))}>
-            <Checkbox
-              id={id}
-              checked={isBoolean ? selectedBooleanOptions.has(id) : selectedOptions.has(id)}
-              onCheckedChange={(checked) => 
-                isBoolean 
-                  ? onBooleanOptionChange(id, checked === true)
-                  : onOptionChange(id, checked === true)
-              }
-              className="h-5 w-5"
-            />
-            <Label htmlFor={id} className="text-base cursor-pointer flex-1">
+          <div 
+            key={id} 
+            className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer transition-colors"
+            onClick={() => handleSelect(id, title)}
+          >
+            <Label className="text-base cursor-pointer flex-1 hover:text-blue-600">
               {label}
             </Label>
           </div>
@@ -139,106 +130,16 @@ export default function SearchOptions({
     </div>
   )
 
-  const renderFilingStatusSection = () => (
-    <div className="mb-8">
-      <h3 className="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">Filing Status</h3>
-      
-      {/* Section 8 Group */}
-      <div className="mb-4">
-        <h4 className="text-sm font-medium text-gray-700 mb-2">Section 8</h4>
-        <div className="space-y-3 pl-2">
-          {SECTION_8_OPTIONS.map(({ id, label }) => (
-            <div key={id} className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
-                 onClick={() => onBooleanOptionChange(id, !selectedBooleanOptions.has(id))}>
-              <Checkbox
-                id={id}
-                checked={selectedBooleanOptions.has(id)}
-                onCheckedChange={(checked) => onBooleanOptionChange(id, checked === true)}
-                className="h-5 w-5"
-              />
-              <Label htmlFor={id} className="text-base cursor-pointer flex-1">
-                {label}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Section 15 Group */}
-      <div className="mb-4">
-        <h4 className="text-sm font-medium text-gray-700 mb-2">Section 15</h4>
-        <div className="space-y-3 pl-2">
-          {SECTION_15_OPTIONS.map(({ id, label }) => (
-            <div key={id} className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
-                 onClick={() => onBooleanOptionChange(id, !selectedBooleanOptions.has(id))}>
-              <Checkbox
-                id={id}
-                checked={selectedBooleanOptions.has(id)}
-                onCheckedChange={(checked) => onBooleanOptionChange(id, checked === true)}
-                className="h-5 w-5"
-              />
-              <Label htmlFor={id} className="text-base cursor-pointer flex-1">
-                {label}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Section 12(c) Group */}
-      <div className="mb-4">
-        <h4 className="text-sm font-medium text-gray-700 mb-2">Section 12(c)</h4>
-        <div className="space-y-3 pl-2">
-          {SECTION_12C_OPTIONS.map(({ id, label }) => (
-            <div key={id} className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
-                 onClick={() => onBooleanOptionChange(id, !selectedBooleanOptions.has(id))}>
-              <Checkbox
-                id={id}
-                checked={selectedBooleanOptions.has(id)}
-                onCheckedChange={(checked) => onBooleanOptionChange(id, checked === true)}
-                className="h-5 w-5"
-              />
-              <Label htmlFor={id} className="text-base cursor-pointer flex-1">
-                {label}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Other Filing Status Options */}
-      {FILING_STATUS_BOOLEAN_OPTIONS.length > 0 && (
-        <div className="space-y-3">
-          {FILING_STATUS_BOOLEAN_OPTIONS.map(({ id, label }) => (
-            <div key={id} className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer"
-                 onClick={() => onBooleanOptionChange(id, !selectedBooleanOptions.has(id))}>
-              <Checkbox
-                id={id}
-                checked={selectedBooleanOptions.has(id)}
-                onCheckedChange={(checked) => onBooleanOptionChange(id, checked === true)}
-                className="h-5 w-5"
-              />
-              <Label htmlFor={id} className="text-base cursor-pointer flex-1">
-                {label}
-              </Label>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-
   return (
-    <div className="py-6 px-2">
+    <div className="space-y-6">
       {renderSection('General Search', GENERAL_OPTIONS)}
       {renderSection('Date Filters', DATE_OPTIONS)}
-      {renderFilingStatusSection()}
       {renderSection('Filing Basis', FILING_BASIS_OPTIONS)}
       {renderSection('Classification', CLASSIFICATION_OPTIONS)}
       {renderSection('International Registration', INTERNATIONAL_REGISTRATION_OPTIONS)}
       {renderSection('Owner Information', OWNER_OPTIONS)}
       {renderSection('Visual Characteristics', VISUAL_CHARACTERISTICS_OPTIONS)}
-      {renderSection('Additional Filters', ADDITIONAL_OPTIONS, true)}
+      {renderSection('Additional Filters', ADDITIONAL_OPTIONS)}
     </div>
   )
 }

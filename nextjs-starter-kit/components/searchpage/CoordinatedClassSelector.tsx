@@ -197,10 +197,10 @@ const COORDINATED_CLASS_CONFIG: CoordinatedClassConfig = {
 }
 
 interface CoordinatedClassSelectorProps {
-  onClassSelect: (classes: string[]) => void
+  onSelect: (classes: string[]) => void;
 }
 
-export default function CoordinatedClassSelector({ onClassSelect }: CoordinatedClassSelectorProps) {
+export default function CoordinatedClassSelector({ onSelect }: CoordinatedClassSelectorProps) {
   const [selectedClass, setSelectedClass] = useState<string | null>(null)
 
   const isValidClass = (num: string) => {
@@ -217,7 +217,7 @@ export default function CoordinatedClassSelector({ onClassSelect }: CoordinatedC
   const handleClassSelect = (num: string) => {
     if (!isValidClass(num)) return
     setSelectedClass(num === selectedClass ? null : num)
-    onClassSelect(num === selectedClass ? [] : [num])
+    onSelect(num === selectedClass ? [] : [num])
   }
 
   const getButtonStyle = (num: string) => {
