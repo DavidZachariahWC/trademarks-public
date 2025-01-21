@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface SearchOptionsProps {
-  onSelect: (strategy: string, group: string) => void;
+  onSelect: (strategy: string, group: string, label: string) => void;
   onClose?: () => void;
   booleanStrategies: Set<string>;
 }
@@ -107,8 +107,8 @@ const ADDITIONAL_OPTIONS = [
 ]
 
 export default function SearchOptions({ onSelect, onClose, booleanStrategies }: SearchOptionsProps) {
-  const handleSelect = (id: string, group: string) => {
-    onSelect(id, group);
+  const handleSelect = (id: string, group: string, label: string) => {
+    onSelect(id, group, label);
   };
 
   const renderSection = (title: string, options: { id: string, label: string }[]) => (
@@ -119,7 +119,7 @@ export default function SearchOptions({ onSelect, onClose, booleanStrategies }: 
           <div 
             key={id} 
             className="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md cursor-pointer transition-colors"
-            onClick={() => handleSelect(id, title)}
+            onClick={() => handleSelect(id, title, label)}
           >
             <Label className="text-base cursor-pointer flex-1 hover:text-blue-600">
               {label}

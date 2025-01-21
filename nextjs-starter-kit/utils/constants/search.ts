@@ -1,3 +1,5 @@
+// search.ts
+
 export const DATE_STRATEGIES = new Set([
   "filing_date",
   "registration_date",
