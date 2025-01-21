@@ -18,6 +18,7 @@ interface SearchFilter {
   strategy: string;
   query: string;
   group?: string;
+  label?: string;
 }
 
 interface Group {
@@ -34,6 +35,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
   const [currentFilter, setCurrentFilter] = useState<SearchFilter>({
     strategy: "wordmark",
     query: "",
+    label: "Word Mark"
   });
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -41,6 +43,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
     setCurrentFilter({
       strategy: "wordmark",
       query: "",
+      label: "Word Mark"
     });
   };
 
@@ -51,9 +54,9 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
     }
   }, [currentFilter.strategy]);
 
-  const handleStrategySelect = (strategy: string, group: string) => {
+  const handleStrategySelect = (strategy: string, group: string, label: string) => {
     if (BOOLEAN_STRATEGIES.has(strategy)) {
-      onAddFilter({ strategy, query: "true", group });
+      onAddFilter({ strategy, query: "true", group, label });
       setIsSidebarOpen(false);
       resetCurrentFilter();
     } else {
@@ -61,6 +64,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
         strategy,
         query: "",
         group,
+        label
       });
       setIsSidebarOpen(false);
     }
@@ -96,7 +100,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
           <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" className="w-full justify-between h-12 text-base bg-gray-100 hover:bg-gray-200">
-                {currentFilter.strategy || "Select Filter"}
+                {currentFilter.label || "Select Filter"}
                 <ChevronDown className="h-4 w-4 ml-2" />
               </Button>
             </SheetTrigger>

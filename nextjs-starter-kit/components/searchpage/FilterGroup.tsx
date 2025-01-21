@@ -6,6 +6,7 @@ import { DATE_STRATEGIES, BOOLEAN_STRATEGIES } from "@/utils/constants/search";
 interface SearchFilter {
   strategy: string;
   query: string;
+  label?: string;
 }
 
 interface Group {
@@ -90,9 +91,9 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
 
   const renderFilterText = (filter: SearchFilter): string => {
     if (BOOLEAN_STRATEGIES.has(filter.strategy)) {
-      return `${filter.strategy} IS TRUE`;
+      return `${filter.label || filter.strategy} IS TRUE`;
     }
-    return `${filter.strategy} = "${filter.query}"`;
+    return `${filter.label || filter.strategy} = "${filter.query}"`;
   };
 
   const renderOperatorControls = (index: number) => {

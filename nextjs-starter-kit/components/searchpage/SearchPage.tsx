@@ -16,6 +16,7 @@ interface SearchFilter {
   strategy: string;
   query: string;
   group?: string;
+  label?: string;
 }
 
 interface Group {
@@ -115,8 +116,7 @@ export default function SearchPage() {
       </div>
 
       <div className="w-full max-w-6xl space-y-4">
-
-        <QueryBuilder onAddFilter={handleAddFilter} onAddGroup={handleAddGroup} />
+        <QueryBuilder onAddFilter={handleAddFilter} />
       </div>
 
       <div id="current-query" className="w-full max-w-6xl space-y-4">
