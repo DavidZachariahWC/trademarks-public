@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 import logging
 import time
-from sqlalchemy import union_all, intersect, text, select, distinct, func, or_
+from sqlalchemy import union_all, intersect, text, select, distinct, func, or_, and_
 from sqlalchemy.orm import Session, Query
 from models import CaseFile, CaseFileHeader
 from search_engine import SearchEngine
@@ -80,8 +80,14 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
                         combined_query = combined_query.filter(CaseFile.serial_number.in_(serial_number_subquery))
                     return combined_query
                 elif operator == 'OR':
-                    # Union subqueries directly
-                    return union_all(*subqueries)
+                    # Instead of joining, perform the filtering logic in a WHERE clause of a new query.
+                    # Create a list of conditions based on the serial numbers from each subquery
+                    or_conditions = [CaseFile.serial_number.in_(sq.with_entities(CaseFile.serial_number).subquery()) for sq in subqueries]
+
+                    # Use the base_query and filter it with the OR conditions
+                    combined_query = base_query(session).filter(or_(*or_conditions))
+
+                    return combined_query
                 else:
                     logger.warning(f"Unknown operator: {operator}")
                     return None
@@ -114,21 +120,17 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
                 }
             }
 
-        # Convert final_query to a subquery that only selects serial_number
-        final_subquery = final_query.with_entities(CaseFile.serial_number).subquery() # This line changed
-
         # Count total results for pagination (before applying limit and offset)
         query_start = time.time()
-        total_count = session.query(func.count(final_subquery.c.serial_number)).scalar() # This line changed
+        total_count = final_query.count()
         total_pages = (total_count + per_page - 1) // per_page
         logger.info(f"Total results before pagination: {total_count}")
 
         # Apply pagination
         offset = (page - 1) * per_page
-        final_results_query = session.query(CaseFile).join(CaseFileHeader).filter(CaseFile.serial_number.in_(final_subquery))
 
-        # Add the columns you want to select from CaseFile and CaseFileHeader
-        final_results_query = final_results_query.add_columns(
+        # Select the necessary columns and apply pagination directly
+        final_results_query = final_query.add_columns(
             CaseFile.serial_number,
             CaseFile.registration_number,
             CaseFileHeader.mark_identification,
@@ -136,10 +138,7 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
             CaseFileHeader.filing_date,
             CaseFileHeader.registration_date,
             CaseFileHeader.attorney_name
-        )
-
-        # Order by and apply pagination to final query
-        final_results_query = final_results_query.order_by(CaseFileHeader.filing_date.desc()).limit(per_page).offset(offset)
+        ).order_by(CaseFileHeader.filing_date.desc()).limit(per_page).offset(offset)
 
         # Print the final query SQL before execution
         logger.info(f"Final query SQL: {str(final_results_query.statement.compile(compile_kwargs={'literal_binds': True}))}")
