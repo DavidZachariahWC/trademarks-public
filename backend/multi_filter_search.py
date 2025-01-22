@@ -5,7 +5,7 @@ from sqlalchemy import union_all, intersect, text, select, distinct, func, or_
 from sqlalchemy.orm import Session, Query
 from models import CaseFile, CaseFileHeader
 from search_engine import SearchEngine
-from db_utils import get_db_session
+from db_utils import get_db_session, base_query
 
 # Configure logging
 logging.basicConfig(
@@ -46,9 +46,10 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
                 if not StrategyClass:
                     logger.warning(f"Unknown strategy: {strategy_name}")
                     return None  # Or handle unknown strategy appropriately
-                
+
                 strategy = StrategyClass(query_str, page=1, per_page=999999999)
                 query = strategy.build_query(session)
+
                 if query is not None:
                     logger.info(f"Generated query for strategy '{strategy_name}': {query.statement.compile(compile_kwargs={'literal_binds': True})}")
                 else:
@@ -69,19 +70,18 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
                 if not subqueries:
                     return None
 
-                # Convert Query objects to Subquery objects
-                subqueries = [sq.subquery() for sq in subqueries]
-
                 if operator == 'AND':
-                    combined_query = session.query(subqueries[0].c.serial_number)
-                    for sq in subqueries[1:]:
-                        combined_query = combined_query.intersect(session.query(sq.c.serial_number))
+                    # Use the base_query to maintain all original columns
+                    combined_query = base_query(session)
+                    # Filter the base query by serial numbers from each subquery
+                    for sq in subqueries:
+                        # Convert to subquery before using with_only_columns
+                        serial_number_subquery = sq.with_entities(CaseFile.serial_number).subquery()
+                        combined_query = combined_query.filter(CaseFile.serial_number.in_(serial_number_subquery))
                     return combined_query
                 elif operator == 'OR':
-                    combined_query = session.query(subqueries[0].c.serial_number)
-                    for sq in subqueries[1:]:
-                        combined_query = combined_query.union_all(session.query(sq.c.serial_number))
-                    return combined_query
+                    # Union subqueries directly
+                    return union_all(*subqueries)
                 else:
                     logger.warning(f"Unknown operator: {operator}")
                     return None
