@@ -103,8 +103,6 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
 
         # Start the recursive query building process
         final_query = build_query_recursive(filter_tree, session)
-
-        # Handle empty filter tree case
         if final_query is None:
             return {
                 'results': [],
@@ -116,15 +114,18 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
                 }
             }
 
+        # Convert final_query to a subquery that only selects serial_number
+        final_subquery = final_query.with_entities(CaseFile.serial_number).subquery() # This line changed
+
         # Count total results for pagination (before applying limit and offset)
         query_start = time.time()
-        total_count = final_query.count()
+        total_count = session.query(func.count(final_subquery.c.serial_number)).scalar() # This line changed
         total_pages = (total_count + per_page - 1) // per_page
         logger.info(f"Total results before pagination: {total_count}")
 
         # Apply pagination
         offset = (page - 1) * per_page
-        final_results_query = session.query(CaseFile).join(CaseFileHeader).filter(CaseFile.serial_number.in_(final_query))
+        final_results_query = session.query(CaseFile).join(CaseFileHeader).filter(CaseFile.serial_number.in_(final_subquery))
 
         # Add the columns you want to select from CaseFile and CaseFileHeader
         final_results_query = final_results_query.add_columns(
