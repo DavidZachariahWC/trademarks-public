@@ -4593,3 +4593,74 @@ Traceback (most recent call last):
     raise exc.InvalidRequestError(
 sqlalchemy.exc.InvalidRequestError: Label name similarity_score is being renamed to an anonymous label due to disambiguation which is not supported right now.  Please use unique names for explicit labels.
 2025-01-18 21:07:20,131 - werkzeug - INFO - 127.0.0.1 - - [18/Jan/2025 21:07:20] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-21 19:24:25,203 - werkzeug - WARNING -  * Debugger is active!
+2025-01-21 19:24:25,207 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-21 19:24:37,685 - werkzeug - INFO - 127.0.0.1 - - [21/Jan/2025 19:24:37] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-21 19:24:37,688 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-21 19:24:37,688 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-21 19:24:37,727 - multi_filter_search - INFO - Generated query for strategy 'attorney_name': SELECT casefile.serial_number, casefile.registration_number, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name, similarity(coalesce(casefileheader.attorney_name, ''), 'bob') * 100 AS similarity_score, CASE WHEN (similarity(coalesce(casefileheader.attorney_name, ''), 'bob') >= 0.8) THEN 'Very High' WHEN (similarity(coalesce(casefileheader.attorney_name, ''), 'bob') >= 0.6) THEN 'High' WHEN (similarity(coalesce(casefileheader.attorney_name, ''), 'bob') >= 0.4) THEN 'Medium' ELSE 'Low' END AS match_quality, similarity(coalesce(casefileheader.attorney_name, ''), 'bob') * 100 AS similarity_score, CASE WHEN (similarity(coalesce(casefileheader.attorney_name, ''), 'bob') >= 0.8) THEN 'Very High' WHEN (similarity(coalesce(casefileheader.attorney_name, ''), 'bob') >= 0.6) THEN 'High' WHEN (similarity(coalesce(casefileheader.attorney_name, ''), 'bob') >= 0.4) THEN 'Medium' ELSE 'Low' END AS match_quality 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.attorney_name IS NOT NULL AND (similarity(coalesce(casefileheader.attorney_name, ''), 'bob') > 0.3 OR lower(coalesce(casefileheader.attorney_name, '')) LIKE lower('%bob%'))
+2025-01-21 19:24:37,728 - multi_filter_search - ERROR - Error in multi_filter_search: Label name similarity_score is being renamed to an anonymous label due to disambiguation which is not supported right now.  Please use unique names for explicit labels.
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 105, in multi_filter_search
+    final_query = build_query_recursive(filter_tree, session)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 76, in build_query_recursive
+    combined_query = session.query(subqueries[0].c.serial_number)
+                                   ^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 1145, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/selectable.py", line 894, in c
+    self._populate_column_collection()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/selectable.py", line 1705, in _populate_column_collection
+    self.element._generate_fromclause_column_proxies(self)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/selectable.py", line 6468, in _generate_fromclause_column_proxies
+    c._make_proxy(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 4819, in _make_proxy
+    raise exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: Label name similarity_score is being renamed to an anonymous label due to disambiguation which is not supported right now.  Please use unique names for explicit labels.
+2025-01-21 19:24:37,733 - __main__ - ERROR - Error in combined_search: Label name similarity_score is being renamed to an anonymous label due to disambiguation which is not supported right now.  Please use unique names for explicit labels.
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 353, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 105, in multi_filter_search
+    final_query = build_query_recursive(filter_tree, session)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 76, in build_query_recursive
+    combined_query = session.query(subqueries[0].c.serial_number)
+                                   ^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 1145, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/selectable.py", line 894, in c
+    self._populate_column_collection()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/selectable.py", line 1705, in _populate_column_collection
+    self.element._generate_fromclause_column_proxies(self)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/selectable.py", line 6468, in _generate_fromclause_column_proxies
+    c._make_proxy(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 4819, in _make_proxy
+    raise exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: Label name similarity_score is being renamed to an anonymous label due to disambiguation which is not supported right now.  Please use unique names for explicit labels.
+2025-01-21 19:24:37,734 - werkzeug - INFO - 127.0.0.1 - - [21/Jan/2025 19:24:37] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-21 19:24:50,480 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py', reloading
+2025-01-21 19:24:50,848 - werkzeug - WARNING -  * Debugger is active!
+2025-01-21 19:24:50,853 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-21 19:24:52,369 - werkzeug - INFO - 127.0.0.1 - - [21/Jan/2025 19:24:52] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-21 19:24:52,372 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-21 19:24:52,373 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-21 19:24:52,411 - multi_filter_search - INFO - Generated query for strategy 'attorney_name': SELECT casefile.serial_number, casefile.registration_number, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name, similarity(casefileheader.attorney_name, 'bob') * 100 AS similarity_score, CASE WHEN (similarity(casefileheader.attorney_name, 'bob') >= 0.8) THEN 'Very High' WHEN (similarity(casefileheader.attorney_name, 'bob') >= 0.6) THEN 'High' WHEN (similarity(casefileheader.attorney_name, 'bob') >= 0.4) THEN 'Medium' ELSE 'Low' END AS match_quality 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')
+2025-01-21 19:24:54,145 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-21 19:24:54,153 - multi_filter_search - INFO - Final query SQL: SELECT casefile.serial_number, casefile.registration_number, casefile.transaction_date, casefile.application_information_id, casefile.serial_number AS serial_number__1, casefile.registration_number AS registration_number__1, casefileheader.mark_identification, casefileheader.status_code, casefileheader.filing_date, casefileheader.registration_date, casefileheader.attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, similarity(casefileheader.attorney_name, 'bob') * 100 AS similarity_score, CASE WHEN (similarity(casefileheader.attorney_name, 'bob') >= 0.8) THEN 'Very High' WHEN (similarity(casefileheader.attorney_name, 'bob') >= 0.6) THEN 'High' WHEN (similarity(casefileheader.attorney_name, 'bob') >= 0.4) THEN 'Medium' ELSE 'Low' END AS match_quality 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-21 19:24:54,474 - multi_filter_search - INFO - Query executed in 2.06s, total processing time: 2.10s
+2025-01-21 19:24:54,537 - werkzeug - INFO - 127.0.0.1 - - [21/Jan/2025 19:24:54] "POST /api/combined_search HTTP/1.1" 200 -

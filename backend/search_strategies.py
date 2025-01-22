@@ -255,24 +255,21 @@ class Section15AcknowledgedSearchStrategy(BaseSearchStrategy):
 
 class AttorneySearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # Handle potential special characters in the query
-        escaped_query = self.query_str.replace("'", "''")
-        
+        # Filters
         filters = [
-            CaseFileHeader.attorney_name.isnot(None),  # Ensure attorney_name is not null
             or_(
-                func.similarity(func.coalesce(CaseFileHeader.attorney_name, ''), escaped_query) > 0.3,
-                func.lower(func.coalesce(CaseFileHeader.attorney_name, '')).like(func.lower(f"%{escaped_query}%"))
+                func.similarity(CaseFileHeader.attorney_name, self.query_str) > 0.3,
+                func.lower(CaseFileHeader.attorney_name).like(func.lower(f"%{self.query_str}%"))
             )
         ]
         
-        # Calculate similarity score for attorney name matches
-        similarity_score = (func.similarity(func.coalesce(CaseFileHeader.attorney_name, ''), escaped_query) * 100).label('similarity_score')
+        # Scoring expressions
+        similarity_score = (func.similarity(CaseFileHeader.attorney_name, self.query_str) * 100).label('similarity_score')
         
         match_quality = case(
-            (func.similarity(func.coalesce(CaseFileHeader.attorney_name, ''), escaped_query) >= 0.8, 'Very High'),
-            (func.similarity(func.coalesce(CaseFileHeader.attorney_name, ''), escaped_query) >= 0.6, 'High'),
-            (func.similarity(func.coalesce(CaseFileHeader.attorney_name, ''), escaped_query) >= 0.4, 'Medium'),
+            (func.similarity(CaseFileHeader.attorney_name, self.query_str) >= 0.8, 'Very High'),
+            (func.similarity(CaseFileHeader.attorney_name, self.query_str) >= 0.6, 'High'),
+            (func.similarity(CaseFileHeader.attorney_name, self.query_str) >= 0.4, 'Medium'),
             else_='Low'
         ).label('match_quality')
         
@@ -281,8 +278,7 @@ class AttorneySearchStrategy(BaseSearchStrategy):
     def build_query(self, session: Session):
         query = super().build_query(session)
         _, scoring = self.get_filters_and_scoring()
-        for score_col in scoring:
-            query = query.add_columns(score_col)
+        similarity_score = scoring[0]  # First scoring expression is similarity_score
         return query
 
 class ForeignPriorityClaimSearchStrategy(BaseSearchStrategy):
