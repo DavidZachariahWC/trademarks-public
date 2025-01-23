@@ -390,12 +390,25 @@ class DesignSearchCodeStrategy(BaseSearchStrategy):
 # 7) DisclaimerStatementsSearchStrategy
 ##################################################
 
+from sqlalchemy.sql import text, and_, or_, select, case
+from sqlalchemy import func
+
 class DisclaimerStatementsSearchStrategy(BaseSearchStrategy):
+    """
+    Produces a filter that matches any CaseFileStatement with type_code 
+    starting 'D0' (use substring-inside-quotes logic) or 'D1' (entire text logic),
+    with a similarity > 30% or a LIKE match. 
+    Returns a 0-100 "score" for ranking.
+    """
     is_scoring_strategy = True  # we do text similarity => reordering
 
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # D00000 => substring inside quotes
-        d00000_similarity = (
+    def get_filters_and_scoring(self):
+
+        # First 2 chars of type_code
+        type_prefix = func.substr(CaseFileStatement.type_code, 1, 2)
+        
+        # 'D0' => treat like old "D00000"
+        d0_similarity = (
             func.similarity(
                 func.coalesce(
                     func.substring(CaseFileStatement.statement_text, text("'\"([^\"]+)\"'")),
@@ -404,11 +417,10 @@ class DisclaimerStatementsSearchStrategy(BaseSearchStrategy):
                 self.query_str
             ) * 100
         )
-
-        d00000_condition = and_(
-            CaseFileStatement.type_code == 'D00000',
+        d0_condition = and_(
+            type_prefix == 'D0',
             or_(
-                d00000_similarity > 30,
+                d0_similarity > 30,
                 func.lower(
                     func.coalesce(
                         func.substring(CaseFileStatement.statement_text, text("'\"([^\"]+)\"'")),
@@ -418,36 +430,55 @@ class DisclaimerStatementsSearchStrategy(BaseSearchStrategy):
             )
         )
 
-        # D10000 => entire statement_text
-        d10000_similarity = (
+        # 'D1' => treat like old "D10000"
+        d1_similarity = (
             func.similarity(
                 func.coalesce(CaseFileStatement.statement_text, ''),
                 self.query_str
             ) * 100
         )
-
-        d10000_condition = and_(
-            CaseFileStatement.type_code == 'D10000',
+        d1_condition = and_(
+            type_prefix == 'D1',
             or_(
-                d10000_similarity > 30,
-                func.lower(func.coalesce(CaseFileStatement.statement_text, '')).like(func.lower(f"%{self.query_str}%"))
+                d1_similarity > 30,
+                func.lower(
+                    func.coalesce(CaseFileStatement.statement_text, '')
+                ).like(func.lower(f"%{self.query_str}%"))
             )
         )
 
-        filters = [or_(d00000_condition, d10000_condition)]
+        # Combine them: any row with prefix 'D0' meeting the d0_condition 
+        # OR prefix 'D1' meeting the d1_condition
+        statement_filter = or_(d0_condition, d1_condition)
 
-        # single numeric "score"
-        score_col = func.greatest(d00000_similarity, d10000_similarity).label('score')
+        # We'll build a subquery returning (serial_number, greatest(d0_similarity, d1_similarity))
+        # so we don't cause a cartesian product in the main query.
+        # We just choose the maximum of both similarities for the final "score".
+        combined_similarity = func.greatest(d0_similarity, d1_similarity).label('score')
 
-        # optional second column for debugging
-        match_quality_col = case(
-            (score_col >= 80, 'Very High'),
-            (score_col >= 60, 'High'),
-            (score_col >= 40, 'Medium'),
+        subq = (
+            select(
+                CaseFileStatement.serial_number.label('sn'),
+                combined_similarity
+            )
+            .where(statement_filter)
+        ).subquery()
+
+        # Final filter: any CaseFile whose serial_number is in the subquery
+        filters = [CaseFile.serial_number.in_(select(subq.c.sn))]
+
+        # The aggregator logic in multi_filter_search needs a numeric "score" column.
+        score_col = subq.c.score  # subquery column
+
+        # Optionally define a textual match_quality for display
+        match_quality = case(
+            (subq.c.score >= 80, 'Very High'),
+            (subq.c.score >= 60, 'High'),
+            (subq.c.score >= 40, 'Medium'),
             else_='Low'
         ).label('match_quality')
 
-        return filters, [score_col, match_quality_col]
+        return filters, [score_col, match_quality]
 
 class DescriptionOfMarkSearchStrategy(BaseSearchStrategy):
     """
