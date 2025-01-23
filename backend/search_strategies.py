@@ -1,7 +1,7 @@
 # search_strategies.py
 from enum import Enum
 from typing import List, Tuple, Optional, Dict, Any, Type
-from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal, String, Text
+from sqlalchemy import func, case, and_, or_, text, cast, Boolean, literal, String, Text, select
 from sqlalchemy.orm import Session
 from models import CaseFile, CaseFileHeader, Classification, DesignSearch, CaseFileStatement, Owner, ForeignApplication, InternationalRegistration, PriorRegistrationApplication
 from db_utils import get_db_session, create_soundex_array, base_query
@@ -20,55 +20,59 @@ class SearchCondition:
         self.operator = operator
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        """Get filters and scoring expressions for this condition"""
+        """Get filters and scoring expressions for this condition."""
         return self.strategy.get_filters_and_scoring()
 
 class BaseSearchStrategy:
+    """
+    Base class for all search strategies.
+    - `get_filters_and_scoring` must return (filters, [score_column]) 
+      where `filters` is a list of WHERE conditions, and `score_column` is
+      either empty or a single ColumnElement representing a 0-100 score.
+    - If no scoring is intended (presence/absence strategy), return an empty list for scoring.
+    """
+    is_scoring_strategy = False  # By default, assume no scoring
+
     def __init__(self, query: str, page: int = 1, per_page: int = 10):
         self.query_str = query.strip()
         self.page = page
         self.per_page = per_page
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        """Returns ([filter conditions], [scoring columns])"""
         raise NotImplementedError
 
     def build_query(self, session: Session):
-        """Build the complete query with filters and scoring"""
-        filters, scoring = self.get_filters_and_scoring()
+        """
+        By default, build_query just applies the filter conditions. 
+        **Do not** add the score columns here; we'll unify them in multi_filter_search.
+        """
+        filters, _scoring = self.get_filters_and_scoring()
         query = base_query(session)
-        
+
         if filters:
             query = query.filter(*filters)
-        
-        for score_col in scoring:
-            query = query.add_columns(score_col)
-            
+
         return query
 
     def count_query(self, session: Session):
-        """Build query to count total matching rows"""
-        filters, _ = self.get_filters_and_scoring()
+        """
+        Counting how many rows match. No scoring columns needed here, just filters.
+        """
+        filters, _scoring = self.get_filters_and_scoring()
         return session.query(func.count(CaseFile.serial_number)).join(CaseFileHeader).filter(*filters)
 
     def execute(self) -> Dict[str, Any]:
-        """Execute the search and return results with pagination"""
+        """Simple helper if someone wants to run a single strategy. Not changed."""
         session = get_db_session()
         try:
-            # Get total count
             total_count = self.count_query(session).scalar()
-            
-            # Get paginated results
             query = self.build_query(session)
             offset = (self.page - 1) * self.per_page
             results = query.limit(self.per_page).offset(offset).all()
-            
-            # Calculate pagination info
+
             total_pages = (total_count + self.per_page - 1) // self.per_page
-            
-            # Convert results to dictionaries using _mapping
             result_dicts = [dict(r._mapping) for r in results]
-            
+
             return {
                 'results': result_dicts,
                 'pagination': {
@@ -81,208 +85,140 @@ class BaseSearchStrategy:
         finally:
             session.close()
 
+#
+# Scoring Strategies
+#
 class WordmarkSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = True  # This strategy produces a 0-100 similarity score
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # Filters
         filters = [
             or_(
                 func.similarity(CaseFileHeader.mark_identification, self.query_str) > 0.3,
-                func.lower(CaseFileHeader.mark_identification).like(func.lower(f"%{self.query_str}%"))
+                func.lower(CaseFileHeader.mark_identification).like(
+                    func.lower(f"%{self.query_str}%")
+                )
             )
         ]
-        
-        # Scoring expressions
-        similarity_score = (func.similarity(CaseFileHeader.mark_identification, self.query_str) * 100).label('similarity_score')
-        
-        match_quality = case(
-            (func.similarity(CaseFileHeader.mark_identification, self.query_str) >= 0.8, 'Very High'),
-            (func.similarity(CaseFileHeader.mark_identification, self.query_str) >= 0.6, 'High'),
-            (func.similarity(CaseFileHeader.mark_identification, self.query_str) >= 0.4, 'Medium'),
-            else_='Low'
-        ).label('match_quality')
-        
-        return filters, [similarity_score, match_quality]
-
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        _, scoring = self.get_filters_and_scoring()
-        similarity_score = scoring[0]  # First scoring expression is similarity_score
-        return query
+        score = (func.similarity(CaseFileHeader.mark_identification, self.query_str) * 100).label('score')
+        # "match_quality" is no longer used to unify scoring, so skip or keep it as a secondary column.
+        return filters, [score]
 
 class PhoneticSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = True  # This strategy produces a 0-100 phonetic score
+
     def __init__(self, query: str, page: int = 1, per_page: int = 10):
         super().__init__(query, page, per_page)
+        # For example, create_soundex_array might produce the tokens
         self.query_soundex = create_soundex_array(self.query_str)
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # Create the overlap condition
         overlap_condition = CaseFileHeader.mark_identification_soundex.overlap(self.query_soundex)
-        
-        # Create a subquery to calculate the match count
         subq = text("""
             (SELECT CAST(COUNT(*) AS FLOAT) 
-             FROM unnest(:query_soundex) q_soundex 
-             WHERE q_soundex = ANY(mark_identification_soundex)) / 
+               FROM unnest(:query_soundex) q_soundex 
+              WHERE q_soundex = ANY(mark_identification_soundex)) / 
             GREATEST(array_length(:query_soundex, 1), 
-                    array_length(mark_identification_soundex, 1))
+                     array_length(mark_identification_soundex, 1))
         """).bindparams(query_soundex=self.query_soundex)
-        
-        # Create the phonetic score expression
-        phonetic_score = (func.coalesce(subq, 0.0) * 100.0).label('phonetic_score')
-        
-        # Filters - only include results where arrays overlap
+
+        phonetic_score = (func.coalesce(subq, 0.0) * 100.0).label('score')
+
+        # Filter out items with no overlap at all
         filters = [overlap_condition]
-        
-        # Match quality based on the phonetic_score
-        match_quality = case(
-            (phonetic_score >= 80, 'Very High'),
-            (phonetic_score >= 60, 'High'),
-            (phonetic_score >= 40, 'Medium'),
-            else_='Low'
-        ).label('match_quality')
-        
-        return filters, [phonetic_score, match_quality]
+
+        return filters, [phonetic_score]
 
     def build_query(self, session: Session):
+        # We still filter results that would yield a score <= 35
         query = super().build_query(session)
-        _, scoring = self.get_filters_and_scoring()
-        phonetic_score = scoring[0]  # First scoring expression is phonetic_score
-        
-        # Filter results with score > 35%
+        # Because we want to enforce a minimum threshold for "relevance"
+        # We'll re-create the same subq for the "score"
+        subq = text("""
+            (SELECT CAST(COUNT(*) AS FLOAT) 
+               FROM unnest(:query_soundex) q_soundex 
+              WHERE q_soundex = ANY(mark_identification_soundex)) / 
+            GREATEST(array_length(:query_soundex, 1), 
+                     array_length(mark_identification_soundex, 1))
+        """).bindparams(query_soundex=self.query_soundex)
+        phonetic_score = func.coalesce(subq, 0.0) * 100.0
+
+        # Enforce a minimum 35% match
         query = query.filter(phonetic_score > 35)
         return query
 
-# class CombinedSearchStrategy(BaseSearchStrategy):
-#     def __init__(self, query: str, page: int = 1, per_page: int = 10):
-#         super().__init__(query, page, per_page)
-#         self.query_soundex = create_soundex_array(self.query_str)
-# 
-#     def get_filters_and_scoring(self) -> Tuple[List, List]:
-#         # Get individual strategy scores
-#         word_filters, word_scoring = WordmarkSearchStrategy(self.query_str).get_filters_and_scoring()
-#         phon_filters, phon_scoring = PhoneticSearchStrategy(self.query_str).get_filters_and_scoring()
-#         
-#         # Combine filters with OR
-#         filters = [or_(*word_filters, *phon_filters)]
-#         
-#         # Calculate combined score
-#         similarity_score = word_scoring[0]
-#         phonetic_score = phon_scoring[0]
-#         
-#         combined_score = ((func.coalesce(similarity_score, 0) + 
-#                           func.coalesce(phonetic_score, 0)) / 2).label('combined_score')
-#         
-#         match_quality = case(
-#             (combined_score >= 80, 'Very High'),
-#             (combined_score >= 60, 'High'),
-#             (combined_score >= 40, 'Medium'),
-#             else_='Low'
-#         ).label('match_quality')
-#         
-#         return filters, [similarity_score, phonetic_score, combined_score, match_quality]
-# 
-#     def build_query(self, session: Session):
-#         query = super().build_query(session)
-#         _, scoring = self.get_filters_and_scoring()
-#         combined_score = scoring[2]  # Third scoring expression is combined_score
-#         return query.order_by(combined_score.desc())
 
+#
+# Presence/Absence Strategies (no scoring).
+#
 class Section12cSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False  # purely filter, no numeric score
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.section_12c_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
-
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+        # No numeric score. Return empty list for scoring columns.
+        return filters, []
 
 class Section8FiledSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.section_8_filed_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
-
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+        return filters, []
 
 class Section8PartialAcceptSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.section_8_partial_accept_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
-
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+        return filters, []
 
 class Section8AcceptedSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [CaseFileHeader.section_8_accepted_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+    is_scoring_strategy = False
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+    def get_filters_and_scoring(self):
+        filters = [CaseFileHeader.section_8_accepted_in == True]
+        return filters, []
 
 class Section15FiledSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [CaseFileHeader.section_15_filed_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+    is_scoring_strategy = False
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+    def get_filters_and_scoring(self):
+        filters = [CaseFileHeader.section_15_filed_in == True]
+        return filters, []
 
 class Section15AcknowledgedSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [CaseFileHeader.section_15_acknowledged_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+    is_scoring_strategy = False
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+    def get_filters_and_scoring(self):
+        filters = [CaseFileHeader.section_15_acknowledged_in == True]
+        return filters, []
 
 class AttorneySearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # Filters
+    is_scoring_strategy = True  # text-based relevance => includes numeric score
+
+    def get_filters_and_scoring(self):
+        # Filter by similarity or LIKE on attorney_name
         filters = [
             or_(
                 func.similarity(CaseFileHeader.attorney_name, self.query_str) > 0.3,
                 func.lower(CaseFileHeader.attorney_name).like(func.lower(f"%{self.query_str}%"))
             )
         ]
-        
-        # Scoring expressions
-        similarity_score = (func.similarity(CaseFileHeader.attorney_name, self.query_str) * 100).label('similarity_score')
-        
-        match_quality = case(
-            (func.similarity(CaseFileHeader.attorney_name, self.query_str) >= 0.8, 'Very High'),
-            (func.similarity(CaseFileHeader.attorney_name, self.query_str) >= 0.6, 'High'),
-            (func.similarity(CaseFileHeader.attorney_name, self.query_str) >= 0.4, 'Medium'),
-            else_='Low'
-        ).label('match_quality')
-        
-        return filters, [similarity_score, match_quality]
+        # Return a single unified score column
+        score_col = (func.similarity(CaseFileHeader.attorney_name, self.query_str) * 100).label('score')
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        _, scoring = self.get_filters_and_scoring()
-        similarity_score = scoring[0]  # First scoring expression is similarity_score
-        return query
+        return filters, [score_col]
 
+#
+# 1) Presence/Absence Strategies
+#    They filter on certain columns == True, no numeric score.
+#
 class ForeignPriorityClaimSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
+    is_scoring_strategy = False
+
+    def get_filters_and_scoring(self):
+        # "Any of these columns == True" => pass
         filters = [
             or_(
                 CaseFileHeader.filing_basis_current_44d_in == True,
@@ -290,16 +226,13 @@ class ForeignPriorityClaimSearchStrategy(BaseSearchStrategy):
                 CaseFileHeader.filing_basis_filed_as_44d_in == True
             )
         ]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class ForeignRegistrationSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
+    is_scoring_strategy = False
+
+    def get_filters_and_scoring(self):
         filters = [
             or_(
                 CaseFileHeader.filing_basis_filed_as_44e_in == True,
@@ -307,1112 +240,729 @@ class ForeignRegistrationSearchStrategy(BaseSearchStrategy):
                 CaseFileHeader.filing_basis_current_44e_in == True
             )
         ]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class ExtensionProtectionSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
+    is_scoring_strategy = False
+
+    def get_filters_and_scoring(self):
         filters = [
             or_(
                 CaseFileHeader.filing_basis_filed_as_66a_in == True,
                 CaseFileHeader.filing_basis_current_66a_in == True
             )
         ]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class NoCurrentBasisSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [CaseFileHeader.filing_current_no_basis_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+    is_scoring_strategy = False
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+    def get_filters_and_scoring(self):
+        filters = [CaseFileHeader.filing_current_no_basis_in == True]
+        return filters, []
+
 
 class NoInitialBasisSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
+    is_scoring_strategy = False
+
+    def get_filters_and_scoring(self):
         filters = [CaseFileHeader.without_basis_currently_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
+#
+# 2) Classification-based Filters (no scoring).
+#    Use subquery on Classification to filter CaseFile.serial_number.
+#
 class InternationalClassSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [Classification.international_code == self.query_str]
-        return filters, []  # No scoring needed for exact matches
+    is_scoring_strategy = False
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            Classification.international_code
-        )
-        .join(CaseFileHeader)
-        .join(Classification))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-            
-        return query
+    def get_filters_and_scoring(self):
+        # We want all CaseFiles whose Classification.international_code == self.query_str
+        subq = select(Classification.serial_number).where(Classification.international_code == self.query_str)
+        filters = [CaseFile.serial_number.in_(subq)]
+        return filters, []
+
 
 class USClassSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [Classification.us_code == self.query_str]
-        return filters, []  # No scoring needed for exact matches
+    is_scoring_strategy = False
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            Classification.us_code
-        )
-        .join(CaseFileHeader)
-        .join(Classification))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-            
-        return query
+    def get_filters_and_scoring(self):
+        # We want all CaseFiles whose Classification.us_code == self.query_str
+        subq = select(Classification.serial_number).where(Classification.us_code == self.query_str)
+        filters = [CaseFile.serial_number.in_(subq)]
+        return filters, []
+
 
 class CoordinatedClassSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False  # purely filters
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # We'll handle filters differently in build_query, so just return empty here
-        return [], []
-
-    def build_query(self, session: Session):
-        # Get the config set
         config = COORDINATED_CLASS_CONFIG.get(self.query_str)
         if not config:
-            # Return zero results if invalid
-            return session.query(
-                CaseFile.serial_number,
-                CaseFile.registration_number,
-                CaseFileHeader.mark_identification,
-                CaseFileHeader.status_code,
-                CaseFileHeader.filing_date,
-                CaseFileHeader.registration_date,
-                CaseFileHeader.attorney_name,
-                Classification.international_code
-            ).filter(text('1=0'))
+            return [False], []
 
-        # Query for trademarks with matching international classes
-        query = (
-            session.query(
-                CaseFile.serial_number,
-                CaseFile.registration_number,
-                CaseFileHeader.mark_identification,
-                CaseFileHeader.status_code,
-                CaseFileHeader.filing_date,
-                CaseFileHeader.registration_date,
-                CaseFileHeader.attorney_name,
-                Classification.international_code
-            )
-            .join(CaseFileHeader)
-            .join(Classification)
-            .filter(Classification.international_code.in_(config['intl_classes']))
-            .distinct()
+        subq = select(Classification.serial_number).where(
+            Classification.international_code.in_(config['intl_classes'])
         )
-        return query
+        filters = [CaseFile.serial_number.in_(subq)]
+        return filters, []
 
-    def count_query(self, session: Session):
-        config = COORDINATED_CLASS_CONFIG.get(self.query_str)
-        if not config:
-            return session.query(func.count(CaseFile.serial_number)).filter(text('1=0'))
-        
-        return (
-            session.query(func.count(func.distinct(CaseFile.serial_number)))
-            .join(CaseFileHeader)
-            .join(Classification)
-            .filter(Classification.international_code.in_(config['intl_classes']))
-        )
+##################################################
+# 2) CancellationDateSearchStrategy
+##################################################
 
 class CancellationDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Convert string date to datetime
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
             filters = [CaseFileHeader.cancellation_date == search_date]
-            return filters, []  # No scoring needed for exact date match
+            return filters, []
         except ValueError:
-            # Return no results if date format is invalid
             return [False], []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+##################################################
+# 3) ChangeRegistrationSearchStrategy
+##################################################
 
 class ChangeRegistrationSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.change_registration_in == True]
-        return filters, []  # No scoring needed for exact match
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+##################################################
+# 4) ConcurrentUseSearchStrategy
+##################################################
 
 class ConcurrentUseSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.concurrent_use_in == True]
-        return filters, []  # No scoring needed for exact match
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+##################################################
+# 5) ConcurrentUseProceedingSearchStrategy
+##################################################
 
 class ConcurrentUseProceedingSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.concurrent_use_proceeding_in == True]
-        return filters, []  # No scoring needed for exact match
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+##################################################
+# 6) DesignSearchCodeStrategy
+##################################################
 
 class DesignSearchCodeStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False  # treat as presence filter, not reordering
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        try:
-            # Check if the query is in XXYYZZ format
-            if not len(self.query_str) == 6:
-                return [False], []
-
-            # Check if it's a wildcard search (ends with XX)
-            is_wildcard = self.query_str.endswith('XX')
-            
-            if is_wildcard:
-                # Extract the first four digits for pattern matching
-                pattern_prefix = self.query_str[:4]
-                
-                # Convert to database format (XX.YY) for pattern matching
-                db_pattern = f"{pattern_prefix[:2]}.{pattern_prefix[2:]}"
-                
-                # Create a LIKE pattern that matches any last two digits
-                filters = [
-                    text("LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE :pattern")
-                ]
-                
-                # Bind the pattern parameter with padded zeros
-                self._query_params = {"pattern": f"{pattern_prefix}%"}
-            else:
-                # Convert XXYYZZ to XX.YY.ZZ format for display
-                formatted_code = f"{self.query_str[:2]}.{self.query_str[2:4]}.{self.query_str[4:]}"
-                
-                # For exact matches, use the original 6-digit code
-                filters = [
-                    text("LPAD(CAST(design_search_code AS TEXT), 6, '0') = :code")
-                ]
-                self._query_params = {"code": self.query_str}
-
-            match_score = literal(100).label('match_score')
-            match_quality = literal('High').label('match_quality')
-            
-            return filters, [match_score, match_quality]
-        except ValueError:
+        if len(self.query_str) != 6:
             return [False], []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            DesignSearch.design_search_code
-        )
-        .join(CaseFileHeader)
-        .join(DesignSearch))
-        
-        filters, scoring = self.get_filters_and_scoring()
-        if filters:
-            if hasattr(self, '_query_params'):
-                # Apply filters with parameters for LIKE queries
-                query = query.filter(*[f.bindparams(**self._query_params) if isinstance(f, TextClause) else f for f in filters])
-            else:
-                query = query.filter(*filters)
-            
-        for score_col in scoring:
-            query = query.add_columns(score_col)
-            
-        return query
+        is_wildcard = self.query_str.endswith('XX')
+        if is_wildcard:
+            pattern_prefix = self.query_str[:4]
+            subq = select(DesignSearch.serial_number).where(
+                text("LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE :pattern")
+            ).bindparams(pattern=f"{pattern_prefix}%")
+
+            filters = [CaseFile.serial_number.in_(subq)]
+            return filters, []
+        else:
+            subq = select(DesignSearch.serial_number).where(
+                text("LPAD(CAST(design_search_code AS TEXT), 6, '0') = :code")
+            ).bindparams(code=self.query_str)
+
+            filters = [CaseFile.serial_number.in_(subq)]
+            return filters, []
+
+##################################################
+# 7) DisclaimerStatementsSearchStrategy
+##################################################
 
 class DisclaimerStatementsSearchStrategy(BaseSearchStrategy):
-    """
-    Implements a 'Disclaimer Statements' filter:
-     - For rows where type_code = 'D00000', only compare the substring inside double quotes.
-     - For rows where type_code = 'D10000', compare the entire statement_text.
-     - In both cases, we do similarity(...) and a LIKE check.
-    """
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # Extract text inside double quotes for D00000
-        extracted_text = func.substring(
-            CaseFileStatement.statement_text,
-            text("'\"([^\"]+)\"'")  # Properly quoted pattern for Postgres
-        )
+    is_scoring_strategy = True  # we do text similarity => reordering
 
-        # D00000 condition: use extracted text
-        d00000_similarity = (func.similarity(
-            func.coalesce(extracted_text, ''),
-            self.query_str
-        ) * 100)  # Multiply by 100 to get percentage
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # D00000 => substring inside quotes
+        d00000_similarity = (
+            func.similarity(
+                func.coalesce(
+                    func.substring(CaseFileStatement.statement_text, text("'\"([^\"]+)\"'")),
+                    ''
+                ),
+                self.query_str
+            ) * 100
+        )
 
         d00000_condition = and_(
             CaseFileStatement.type_code == 'D00000',
             or_(
-                d00000_similarity > 30,  # Changed from 0.3 to 30 since we're using percentage now
-                func.lower(func.coalesce(extracted_text, '')).like(func.lower(f"%{self.query_str}%"))
+                d00000_similarity > 30,
+                func.lower(
+                    func.coalesce(
+                        func.substring(CaseFileStatement.statement_text, text("'\"([^\"]+)\"'")),
+                        ''
+                    )
+                ).like(func.lower(f"%{self.query_str}%"))
             )
         )
 
-        # D10000 condition: use entire statement_text
-        d10000_similarity = (func.similarity(
-            func.coalesce(CaseFileStatement.statement_text, ''),
-            self.query_str
-        ) * 100)  # Multiply by 100 to get percentage
+        # D10000 => entire statement_text
+        d10000_similarity = (
+            func.similarity(
+                func.coalesce(CaseFileStatement.statement_text, ''),
+                self.query_str
+            ) * 100
+        )
 
         d10000_condition = and_(
             CaseFileStatement.type_code == 'D10000',
             or_(
-                d10000_similarity > 30,  # Changed from 0.3 to 30 since we're using percentage now
+                d10000_similarity > 30,
                 func.lower(func.coalesce(CaseFileStatement.statement_text, '')).like(func.lower(f"%{self.query_str}%"))
             )
         )
 
-        # Combine conditions
         filters = [or_(d00000_condition, d10000_condition)]
 
-        # Combined similarity score for ordering
-        combined_similarity = func.greatest(d00000_similarity, d10000_similarity).label('similarity_score')
+        # single numeric "score"
+        score_col = func.greatest(d00000_similarity, d10000_similarity).label('score')
 
-        match_quality = case(
-            (combined_similarity >= 80, 'Very High'),  # Changed thresholds to match percentage scale
-            (combined_similarity >= 60, 'High'),
-            (combined_similarity >= 40, 'Medium'),
+        # optional second column for debugging
+        match_quality_col = case(
+            (score_col >= 80, 'Very High'),
+            (score_col >= 60, 'High'),
+            (score_col >= 40, 'Medium'),
             else_='Low'
         ).label('match_quality')
 
-        return filters, [combined_similarity, match_quality]
-
-    def build_query(self, session: Session):
-        filters, scoring = self.get_filters_and_scoring()
-
-        query = (
-            session.query(
-                CaseFile.serial_number,
-                CaseFile.registration_number,
-                CaseFileHeader.mark_identification,
-                CaseFileHeader.status_code,
-                CaseFileHeader.filing_date,
-                CaseFileHeader.registration_date,
-                CaseFileHeader.attorney_name,
-                CaseFileStatement.type_code,
-                CaseFileStatement.statement_text
-            )
-            .join(CaseFileHeader)
-            .join(CaseFileStatement)
-        )
-
-        if filters:
-            query = query.filter(*filters)
-        
-        for score_col in scoring:
-            query = query.add_columns(score_col)
-
-        similarity_score = scoring[0]
-        return query
-
-    def count_query(self, session: Session):
-        filters, _ = self.get_filters_and_scoring()
-        return (
-            session.query(func.count(func.distinct(CaseFile.serial_number)))
-            .join(CaseFileHeader)
-            .join(CaseFileStatement)
-            .filter(*filters)
-        )
+        return filters, [score_col, match_quality_col]
 
 class DescriptionOfMarkSearchStrategy(BaseSearchStrategy):
     """
-    Implements a 'Description of Mark' filter:
-     - Searches statements where type_code = 'DM0000'
-     - Uses similarity scoring on the entire statement_text
+    'Description of Mark' filter:
+      - Table: CaseFileStatement
+      - type_code = 'DM0000'
+      - Similarity-based 0-100 score on statement_text
     """
+    is_scoring_strategy = True  # we produce a numeric score
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # Calculate similarity score for the entire statement text
-        similarity_score = (func.similarity(
+        # Local similarity expression (no .label yet)
+        similarity_value = func.similarity(
             func.coalesce(CaseFileStatement.statement_text, ''),
             self.query_str
-        ) * 100).label('similarity_score')  # Multiply by 100 for percentage
+        ) * 100
 
-        # Create the filter condition
-        filters = [
-            and_(
-                CaseFileStatement.type_code == 'DM0000',
+        # The condition: type_code == 'DM0000' and (similarity>30 or LIKE)
+        subq_for_filter = (
+            select(CaseFileStatement.serial_number)
+            .where(CaseFileStatement.type_code == 'DM0000')
+            .where(
                 or_(
-                    similarity_score > 30,  # 30% similarity threshold
+                    similarity_value > 30,
                     func.lower(CaseFileStatement.statement_text).like(func.lower(f"%{self.query_str}%"))
                 )
             )
-        ]
+        )
 
-        # Define match quality based on similarity score
+        # The filter references CaseFile via .in_(subq)
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
+
+        # Score column: label it 'score'
+        score_col = similarity_value.label('score')
+
+        # Optional debugging column for “High”/“Low”
         match_quality = case(
-            (similarity_score >= 80, 'Very High'),
-            (similarity_score >= 60, 'High'),
-            (similarity_score >= 40, 'Medium'),
+            (similarity_value >= 80, 'Very High'),
+            (similarity_value >= 60, 'High'),
+            (similarity_value >= 40, 'Medium'),
             else_='Low'
         ).label('match_quality')
 
-        return filters, [similarity_score, match_quality]
+        return filters, [score_col, match_quality]
 
-    def build_query(self, session: Session):
-        filters, scoring = self.get_filters_and_scoring()
-
-        query = (
-            session.query(
-                CaseFile.serial_number,
-                CaseFile.registration_number,
-                CaseFileHeader.mark_identification,
-                CaseFileHeader.status_code,
-                CaseFileHeader.filing_date,
-                CaseFileHeader.registration_date,
-                CaseFileHeader.attorney_name,
-                CaseFileStatement.type_code,
-                CaseFileStatement.statement_text
-            )
-            .join(CaseFileHeader)
-            .join(CaseFileStatement)
-        )
-
-        if filters:
-            query = query.filter(*filters)
-        
-        for score_col in scoring:
-            query = query.add_columns(score_col)
-
-        similarity_score = scoring[0]
-        return query
-
-    def count_query(self, session: Session):
-        filters, _ = self.get_filters_and_scoring()
-        return (
-            session.query(func.count(func.distinct(CaseFile.serial_number)))
-            .join(CaseFileHeader)
-            .join(CaseFileStatement)
-            .filter(*filters)
-        )
 
 class OwnerNameSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = True
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # Handle potential special characters in the query
         escaped_query = self.query_str.replace("'", "''")
-        
-        filters = [
-            Owner.party_name.isnot(None),  # Ensure party_name is not null
-            or_(
-                func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) > 0.3,
-                func.lower(func.coalesce(Owner.party_name, '')).like(func.lower(f"%{escaped_query}%"))
+
+        # Local similarity
+        similarity_value = func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) * 100
+
+        # Subquery returns matching serial_numbers from Owner
+        subq_for_filter = (
+            select(Owner.serial_number)
+            .where(Owner.party_name.isnot(None))
+            .where(
+                or_(
+                    similarity_value > 30, 
+                    func.lower(func.coalesce(Owner.party_name, '')).like(func.lower(f"%{escaped_query}%"))
+                )
             )
-        ]
-        
-        # Calculate similarity score for owner name matches
-        similarity_score = (func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) * 100).label('similarity_score')
-        
+        )
+
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
+        score_col = similarity_value.label("score")
+
         match_quality = case(
-            (func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) >= 0.8, 'Very High'),
-            (func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) >= 0.6, 'High'),
-            (func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) >= 0.4, 'Medium'),
+            (similarity_value >= 80, 'Very High'),
+            (similarity_value >= 60, 'High'),
+            (similarity_value >= 40, 'Medium'),
             else_='Low'
         ).label('match_quality')
-        
-        return filters, [similarity_score, match_quality]
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            Owner.party_name
-        )
-        .join(CaseFileHeader)
-        .join(Owner))
-        
-        filters, scoring = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-            
-        for score_col in scoring:
-            query = query.add_columns(score_col)
-            
-        return query
+        return filters, [score_col, match_quality]
+
 
 class DBASearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = True
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        # Handle potential special characters in the query
         escaped_query = self.query_str.replace("'", "''")
-        
-        filters = [
-            Owner.dba_aka_text.isnot(None),  # Ensure dba_aka_text is not null
-            or_(
-                func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) > 0.3,
-                func.lower(func.coalesce(Owner.dba_aka_text, '')).like(func.lower(f"%{escaped_query}%"))
+
+        similarity_value = func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) * 100
+
+        # Subquery for filter
+        subq_for_filter = (
+            select(Owner.serial_number)
+            .where(Owner.dba_aka_text.isnot(None))
+            .where(
+                or_(
+                    similarity_value > 30,
+                    func.lower(func.coalesce(Owner.dba_aka_text, '')).like(func.lower(f"%{escaped_query}%"))
+                )
             )
-        ]
-        
-        # Calculate similarity score for DBA matches
-        similarity_score = (func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) * 100).label('similarity_score')
-        
+        )
+
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
+        score_col = similarity_value.label("score")
+
         match_quality = case(
-            (func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) >= 0.8, 'Very High'),
-            (func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) >= 0.6, 'High'),
-            (func.similarity(func.coalesce(Owner.dba_aka_text, ''), escaped_query) >= 0.4, 'Medium'),
+            (similarity_value >= 80, 'Very High'),
+            (similarity_value >= 60, 'High'),
+            (similarity_value >= 40, 'Medium'),
             else_='Low'
         ).label('match_quality')
-        
-        return filters, [similarity_score, match_quality]
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            Owner.party_name,
-            Owner.dba_aka_text
-        )
-        .join(CaseFileHeader)
-        .join(Owner))
-        
-        filters, scoring = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-            
-        for score_col in scoring:
-            query = query.add_columns(score_col)
-            
-        return query
+        return filters, [score_col, match_quality]
+
 
 class NameChangeSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False  # purely presence/absence
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [
-            Owner.name_change_explanation.isnot(None),
-            Owner.name_change_explanation != ''
-        ]
+        # We want owners whose name_change_explanation is not null/empty
+        subq_for_filter = (
+            select(Owner.serial_number)
+            .where(Owner.name_change_explanation.isnot(None))
+            .where(Owner.name_change_explanation != '')
+        )
+
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
         return filters, []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            Owner.party_name,
-            Owner.name_change_explanation
-        )
-        .join(CaseFileHeader)
-        .join(Owner))
-        
-        filters, scoring = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-            
-        return query
 
 class FilingDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False  # date match => no numeric ranking
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Convert string date to datetime
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            # We can reference CaseFileHeader directly because base_query joins it
             filters = [CaseFileHeader.filing_date == search_date]
-            return filters, []  # No scoring needed for exact date match
+            return filters, []
         except ValueError:
-            # Return no results if date format is invalid
+            # Return no rows if invalid date
             return [False], []
 
-    def build_query(self, session: Session):
-        query = base_query(session)
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
 class ForeignFilingDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False  # date match => no numeric ranking
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Convert string date to datetime
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            filters = [ForeignApplication.foreign_filing_date == search_date]
-            return filters, []  # No scoring needed for exact date match
+
+            subq_for_filter = (
+                select(ForeignApplication.serial_number)
+                .where(ForeignApplication.foreign_filing_date == search_date)
+            )
+            filters = [CaseFile.serial_number.in_(subq_for_filter)]
+            return filters, []
         except ValueError:
-            # Return no results if date format is invalid
             return [False], []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            ForeignApplication.foreign_filing_date
-        )
-        .join(CaseFileHeader)
-        .join(ForeignApplication))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
 class InternationalRegistrationNumberSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False  # presence/absence, no numeric score
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Convert to integer for exact match
             reg_number = int(self.query_str)
-            filters = [InternationalRegistration.international_registration_number == reg_number]
+            # Create a subquery selecting the serial_number from IR table
+            subq_for_filter = (
+                select(InternationalRegistration.serial_number)
+                .where(InternationalRegistration.international_registration_number == reg_number)
+            )
+            filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
         except ValueError:
-            # Return no results if number format is invalid
+            # If query_str is not an integer => [False] => no results
             return [False], []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            InternationalRegistration.international_registration_number
-        )
-        .join(CaseFileHeader)
-        .join(InternationalRegistration))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
 class InternationalRegistrationDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Convert string date to datetime
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            filters = [InternationalRegistration.international_registration_date == search_date]
+            subq_for_filter = (
+                select(InternationalRegistration.serial_number)
+                .where(InternationalRegistration.international_registration_date == search_date)
+            )
+            filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
         except ValueError:
-            # Return no results if date format is invalid
             return [False], []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            InternationalRegistration.international_registration_date
-        )
-        .join(CaseFileHeader)
-        .join(InternationalRegistration))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
 class InternationalPublicationDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Convert string date to datetime
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            filters = [InternationalRegistration.international_publication_date == search_date]
+            subq_for_filter = (
+                select(InternationalRegistration.serial_number)
+                .where(InternationalRegistration.international_publication_date == search_date)
+            )
+            filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
         except ValueError:
-            # Return no results if date format is invalid
             return [False], []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            InternationalRegistration.international_publication_date
-        )
-        .join(CaseFileHeader)
-        .join(InternationalRegistration))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
 class AutoProtectionDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Convert string date to datetime
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            filters = [InternationalRegistration.auto_protection_date == search_date]
+            subq_for_filter = (
+                select(InternationalRegistration.serial_number)
+                .where(InternationalRegistration.auto_protection_date == search_date)
+            )
+            filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
         except ValueError:
-            # Return no results if date format is invalid
             return [False], []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            InternationalRegistration.auto_protection_date
-        )
-        .join(CaseFileHeader)
-        .join(InternationalRegistration))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
 class InternationalStatusCodeSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Convert to integer for exact match
             status_code = int(self.query_str)
-            filters = [InternationalRegistration.international_status_code == status_code]
+            subq_for_filter = (
+                select(InternationalRegistration.serial_number)
+                .where(InternationalRegistration.international_status_code == status_code)
+            )
+            filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
         except ValueError:
-            # Return no results if code format is invalid
             return [False], []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            InternationalRegistration.international_status_code
-        )
-        .join(CaseFileHeader)
-        .join(InternationalRegistration))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
 class PriorityClaimedSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [InternationalRegistration.priority_claimed_in == True]
+        # Simply check for IR rows with priority_claimed_in == True
+        subq_for_filter = (
+            select(InternationalRegistration.serial_number)
+            .where(InternationalRegistration.priority_claimed_in == True)
+        )
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
         return filters, []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            InternationalRegistration.priority_claimed_in
-        )
-        .join(CaseFileHeader)
-        .join(InternationalRegistration))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
+class PriorityClaimedSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # Simply check for IR rows with priority_claimed_in == True
+        subq_for_filter = (
+            select(InternationalRegistration.serial_number)
+            .where(InternationalRegistration.priority_claimed_in == True)
+        )
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
+        return filters, []
+    
 class FirstRefusalSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [InternationalRegistration.first_refusal_in == True]
+        subq_for_filter = (
+            select(InternationalRegistration.serial_number)
+            .where(InternationalRegistration.first_refusal_in == True)
+        )
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
         return filters, []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            InternationalRegistration.first_refusal_in
-        )
-        .join(CaseFileHeader)
-        .join(InternationalRegistration))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
 class DrawingCodeTypeSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
             drawing_code_type = int(self.query_str)
+            # valid range 0..6
             if drawing_code_type not in range(7):
                 return [False], []
-                
+
+            # We can reference mark_drawing_code directly since it's in base_query
             filters = [
-                func.substr(cast(CaseFileHeader.mark_drawing_code, String), 1, 1) == str(drawing_code_type)
+                func.substr(
+                    cast(CaseFileHeader.mark_drawing_code, String), 1, 1
+                ) == str(drawing_code_type)
             ]
             return filters, []
         except ValueError:
             return [False], []
 
-    def build_query(self, session: Session):
-        query = base_query(session)
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
-
 class ColorDrawingSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False  # presence check, no numeric ranking
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.color_drawing_current_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
-
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+        return filters, []
 
 class ThreeDDrawingSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.drawing_3d_current_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
-
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
+        return filters, []
 
 class PublishedOppositionDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False  # date range => no numeric ranking
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Query string should be in format "YYYY-MM-DD,YYYY-MM-DD"
+            # Expect "YYYY-MM-DD,YYYY-MM-DD"
             start_date_str, end_date_str = self.query_str.split(',')
             
-            # Convert dates from YYYY-MM-DD to datetime objects
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
             
             filters = [
                 CaseFileHeader.published_for_opposition_date.between(start_date, end_date)
             ]
-            return filters, []  # No scoring needed for date range
+            return filters, []
         except (ValueError, AttributeError):
-            return [False], []  # Return no results if date format is invalid
+            # On parse errors, return no results
+            return [False], []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class PriorRegistrationPresentSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [CaseFile.prior_registrations.any()]  # Using the relationship to check existence
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+    is_scoring_strategy = False  # presence only, no numeric score
 
-    def build_query(self, session: Session):
-        query = base_query(session)  # Using the standard base query
-        
-        # Add the prior registrations via the relationship
-        query = query.join(CaseFile.prior_registrations)
-        
-        filters, scoring = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-            
-        # Add the prior registration number to the results
-        query = query.add_columns(PriorRegistrationApplication.number.label('prior_reg_number'))
-            
-        for score_col in scoring:
-            query = query.add_columns(score_col)
-            
-        return query
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # Suppose PriorRegistrationApplication links to CaseFile by serial_number
+        # or some foreign key. We'll assume there's a column: .serial_number
+        subq_for_filter = (
+            select(PriorRegistrationApplication.serial_number).distinct()
+        )
+        # Means any CaseFile whose serial_number appears in PriorRegistrationApplication
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
+        return filters, []
+
 
 class RegistrationDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
+    # No subquery needed because registration_date is in base_query
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Convert string date to datetime
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
             filters = [CaseFileHeader.registration_date == search_date]
-            return filters, []  # No scoring needed for exact date match
+            return filters, []
         except ValueError:
-            # Return no results if date format is invalid
             return [False], []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class ForeignRegistrationDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Convert string date to datetime
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            filters = [ForeignApplication.foreign_registration_date == search_date]
-            return filters, []  # No scoring needed for exact date match
+            subq_for_filter = (
+                select(ForeignApplication.serial_number)
+                .where(ForeignApplication.foreign_registration_date == search_date)
+            )
+            filters = [CaseFile.serial_number.in_(subq_for_filter)]
+            return filters, []
         except ValueError:
-            # Return no results if date format is invalid
             return [False], []
 
-    def build_query(self, session: Session):
-        query = (session.query(
-            CaseFile.serial_number,
-            CaseFile.registration_number,
-            CaseFileHeader.mark_identification,
-            CaseFileHeader.status_code,
-            CaseFileHeader.filing_date,
-            CaseFileHeader.registration_date,
-            CaseFileHeader.attorney_name,
-            ForeignApplication.foreign_registration_date
-        )
-        .join(CaseFileHeader)
-        .join(ForeignApplication))
-        
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-            
-        return query
 
 class RenewalDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
             filters = [CaseFileHeader.renewal_date == search_date]
-            return filters, []  # No scoring needed for exact date match
+            return filters, []
         except ValueError:
             return [False], []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class InternationalRenewalDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            filters = [CaseFile.international_registrations.any(
-                InternationalRegistration.international_renewal_date == search_date
-            )]
+            subq_for_filter = (
+                select(InternationalRegistration.serial_number)
+                .where(InternationalRegistration.international_renewal_date == search_date)
+            )
+            filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
         except ValueError:
             return [False], []
 
-    def build_query(self, session: Session):
-        query = base_query(session)
-        query = query.join(CaseFile.international_registrations)
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
 class ForeignRenewalDateSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
             search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            filters = [CaseFile.foreign_applications.any(
-                ForeignApplication.registration_renewal_date == search_date
-            )]
+            subq_for_filter = (
+                select(ForeignApplication.serial_number)
+                .where(ForeignApplication.registration_renewal_date == search_date)
+            )
+            filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
         except ValueError:
             return [False], []
 
-    def build_query(self, session: Session):
-        query = base_query(session)
-        query = query.join(CaseFile.foreign_applications)
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
 
 class StandardCharacterClaimSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False  # presence check, no numeric scoring
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.standard_characters_claimed_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class AcquiredDistinctivenessWholeSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.section_2f_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class AcquiredDistinctivenessPartSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFileHeader.section_2f_in_part_in == True]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class SerialNumberSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFile.serial_number == self.query_str]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class RegistrationNumberSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         filters = [CaseFile.registration_number == self.query_str]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+        return filters, []
 
-    def build_query(self, session: Session):
-        query = super().build_query(session)
-        return query
 
 class AssignmentRecordedSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [CaseFile.statements.any(CaseFileStatement.type_code == '601')]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+    is_scoring_strategy = False  # presence check, no numeric scoring
 
-    def build_query(self, session: Session):
-        query = base_query(session)
-        query = query.join(CaseFile.statements)
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # If type_code = '601' => an assignment is recorded
+        subq_for_filter = (
+            select(CaseFileStatement.serial_number)
+            .where(CaseFileStatement.type_code == '601')
+        )
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
+        return filters, []
+
 
 class OwnerLegalEntitySearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        if len(self.query_str) != 2:  # Legal entity type code is always 2 digits
-            return [False], []
-            
-        filters = [CaseFile.owners.any(Owner.legal_entity_type_code == self.query_str)]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+    is_scoring_strategy = False
 
-    def build_query(self, session: Session):
-        query = base_query(session)
-        query = query.join(CaseFile.owners)
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        if len(self.query_str) != 2:
+            return [False], []
+
+        subq_for_filter = (
+            select(Owner.serial_number)
+            .where(Owner.legal_entity_type_code == self.query_str)
+        )
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
+        return filters, []
+
 
 class OwnerPartyTypeSearchStrategy(BaseSearchStrategy):
-    def get_filters_and_scoring(self) -> Tuple[List, List]:
-        filters = [CaseFile.owners.any(Owner.party_type == self.query_str)]
-        match_score = literal(100).label('match_score')
-        match_quality = literal('High').label('match_quality')
-        return filters, [match_score, match_quality]
+    is_scoring_strategy = False
 
-    def build_query(self, session: Session):
-        query = base_query(session)
-        query = query.join(CaseFile.owners)
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
+    def get_filters_and_scoring(self) -> Tuple[List, List]:
+        subq_for_filter = (
+            select(Owner.serial_number)
+            .where(Owner.party_type == self.query_str)
+        )
+        filters = [CaseFile.serial_number.in_(subq_for_filter)]
+        return filters, []
+
 
 class PriorityDateRangeSearchStrategy(BaseSearchStrategy):
+    is_scoring_strategy = False
+
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Query string should be in format "YYYY-MM-DD,YYYY-MM-DD"
             start_date_str, end_date_str = self.query_str.split(',')
-            
-            # Convert dates from YYYY-MM-DD to datetime objects
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
-            
-            filters = [CaseFile.foreign_applications.any(and_(
-                ForeignApplication.foreign_priority_claim_in == True,
-                ForeignApplication.foreign_filing_date.between(start_date, end_date)
-            ))]
+
+            subq_for_filter = (
+                select(ForeignApplication.serial_number)
+                .where(ForeignApplication.foreign_priority_claim_in == True)
+                .where(ForeignApplication.foreign_filing_date.between(start_date, end_date))
+            )
+            filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
         except (ValueError, AttributeError):
             return [False], []
 
-    def build_query(self, session: Session):
-        query = base_query(session)
-        query = query.join(CaseFile.foreign_applications)
-        filters, _ = self.get_filters_and_scoring()
-        if filters:
-            query = query.filter(*filters)
-        return query
