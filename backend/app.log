@@ -14268,3 +14268,495 @@ WHERE similarity(casefileheader.mark_identification, 'Moistureze') > 0.3 OR lowe
  LIMIT 10 OFFSET 0
 2025-01-23 13:56:12,979 - multi_filter_search - INFO - Query executed in 0.71s
 2025-01-23 13:56:13,041 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:56:13] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:57:48,880 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:57:48] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:57:48,883 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 13:57:48,883 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}]}, page=1, per_page=10
+2025-01-23 13:57:48,884 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 13:57:49,165 - multi_filter_search - INFO - Total results before pagination: 16
+2025-01-23 13:57:49,176 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 13:57:49,555 - multi_filter_search - INFO - Query executed in 0.67s
+2025-01-23 13:57:49,618 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:57:49] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:00,103 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:00] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:00,106 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 13:58:00,106 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=1, per_page=10
+2025-01-23 13:58:00,107 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 13:58:00,111 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 13:58:00,354 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 13:58:00,368 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) AND casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date = '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 13:58:00,690 - multi_filter_search - INFO - Query executed in 0.58s
+2025-01-23 13:58:00,751 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:00] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:03,740 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 13:58:03,740 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=1, per_page=10
+2025-01-23 13:58:03,741 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 13:58:03,742 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 13:58:04,142 - multi_filter_search - INFO - Total results before pagination: 26
+2025-01-23 13:58:04,154 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) OR casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date = '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 13:58:04,722 - multi_filter_search - INFO - Query executed in 0.98s
+2025-01-23 13:58:04,785 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:04] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:17,850 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:17] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:17,853 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'full dog', 'label': 'Word Mark'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 13:58:17,854 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'full dog', 'label': 'Word Mark'}]}, page=1, per_page=10
+2025-01-23 13:58:17,855 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 13:58:18,299 - multi_filter_search - INFO - Total results before pagination: 17
+2025-01-23 13:58:18,310 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'full dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'full dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%full dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'full dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%full dog%')) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 13:58:18,692 - multi_filter_search - INFO - Query executed in 0.84s
+2025-01-23 13:58:18,828 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:18] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:27,224 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:27] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:27,227 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'filing_date', 'query': '1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}, {'strategy': 'wordmark', 'query': 'full dog', 'label': 'Word Mark'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 13:58:27,227 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'filing_date', 'query': '1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}, {'strategy': 'wordmark', 'query': 'full dog', 'label': 'Word Mark'}]}, page=1, per_page=10
+2025-01-23 13:58:27,228 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 13:58:27,228 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 13:58:27,470 - multi_filter_search - INFO - Total results before pagination: 27
+2025-01-23 13:58:27,482 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'full dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'full dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%full dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date = '1979-01-05') AS anon_5) OR casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'full dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%full dog%')) AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 13:58:27,799 - multi_filter_search - INFO - Query executed in 0.57s
+2025-01-23 13:58:27,862 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:27] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:38,722 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:38] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:38,726 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'dull log', 'label': 'Word Mark'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 13:58:38,727 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'dull log', 'label': 'Word Mark'}]}, page=1, per_page=10
+2025-01-23 13:58:38,727 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 13:58:38,968 - multi_filter_search - INFO - Total results before pagination: 6
+2025-01-23 13:58:38,979 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'dull log') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'dull log') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%dull log%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'dull log') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%dull log%')) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 13:58:39,321 - multi_filter_search - INFO - Query executed in 0.59s
+2025-01-23 13:58:39,384 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:39] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:46,622 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:46] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:46,626 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'dull log', 'label': 'Word Mark'}, {'strategy': 'phonetic', 'query': 'dull log', 'group': 'General Search', 'label': 'Phonetic'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 13:58:46,627 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'dull log', 'label': 'Word Mark'}, {'strategy': 'phonetic', 'query': 'dull log', 'group': 'General Search', 'label': 'Phonetic'}]}, page=1, per_page=10
+2025-01-23 13:58:46,628 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 13:58:46,829 - multi_filter_search - INFO - Generated query for strategy 'phonetic'.
+2025-01-23 13:58:47,140 - multi_filter_search - INFO - Total results before pagination: 4
+2025-01-23 13:58:48,417 - multi_filter_search - INFO - Query executed in 1.79s
+2025-01-23 13:58:48,479 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:48] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:55,205 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:55] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 13:58:55,208 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'phonetic', 'query': 'dull log', 'group': 'General Search', 'label': 'Phonetic'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 13:58:55,208 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'phonetic', 'query': 'dull log', 'group': 'General Search', 'label': 'Phonetic'}]}, page=1, per_page=10
+2025-01-23 13:58:55,620 - multi_filter_search - INFO - Generated query for strategy 'phonetic'.
+2025-01-23 13:58:55,773 - multi_filter_search - INFO - Total results before pagination: 175
+2025-01-23 13:58:56,273 - multi_filter_search - INFO - Query executed in 1.06s
+2025-01-23 13:58:56,351 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 13:58:56] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 14:03:38,100 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 14:03:38] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 14:03:38,104 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'disclaimer_statements', 'query': 'auto', 'group': 'General Search', 'label': 'Disclaimer Statements'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 14:03:38,104 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'disclaimer_statements', 'query': 'auto', 'group': 'General Search', 'label': 'Disclaimer Statements'}]}, page=1, per_page=10
+2025-01-23 14:03:38,109 - multi_filter_search - INFO - Generated query for strategy 'disclaimer_statements'.
+2025-01-23 14:10:22,698 - multi_filter_search - INFO - Total results before pagination: 36945
+2025-01-23 14:10:22,716 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = 'D00000' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR casefilestatement.type_code = 'D10000' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = 'D00000' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR casefilestatement.type_code = 'D10000' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 14:27:30,314 - multi_filter_search - ERROR - Error in multi_filter_search: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, %(coalesce_1)s) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, greatest(similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_2)s), %(similarity_1)s) * %(similarity_2)s, similarity(coalesce(casefilestatement.statement_text, %(coalesce_3)s), %(similarity_3)s) * %(similarity_4)s) AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = %(type_code_1)s AND (similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_2)s), %(similarity_1)s) * %(similarity_2)s > %(param_1)s OR lower(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_4)s)) LIKE lower(%(lower_1)s)) OR casefilestatement.type_code = %(type_code_2)s AND (similarity(coalesce(casefilestatement.statement_text, %(coalesce_3)s), %(similarity_3)s) * %(similarity_4)s > %(param_2)s OR lower(coalesce(casefilestatement.statement_text, %(coalesce_5)s)) LIKE lower(%(lower_2)s))) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = %(type_code_3)s AND (similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_6)s), %(similarity_5)s) * %(similarity_6)s > %(param_3)s OR lower(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_7)s)) LIKE lower(%(lower_3)s)) OR casefilestatement.type_code = %(type_code_4)s AND (similarity(coalesce(casefilestatement.statement_text, %(coalesce_8)s), %(similarity_7)s) * %(similarity_8)s > %(param_4)s OR lower(coalesce(casefilestatement.statement_text, %(coalesce_9)s)) LIKE lower(%(lower_4)s))) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC 
+ LIMIT %(param_5)s OFFSET %(param_6)s]
+[parameters: {'coalesce_1': 0, 'coalesce_2': '', 'similarity_1': 'auto', 'similarity_2': 100, 'coalesce_3': '', 'similarity_3': 'auto', 'similarity_4': 100, 'type_code_1': 'D00000', 'param_1': 30, 'coalesce_4': '', 'lower_1': '%auto%', 'type_code_2': 'D10000', 'param_2': 30, 'coalesce_5': '', 'lower_2': '%auto%', 'type_code_3': 'D00000', 'coalesce_6': '', 'similarity_5': 'auto', 'similarity_6': 100, 'param_3': 30, 'coalesce_7': '', 'lower_3': '%auto%', 'type_code_4': 'D10000', 'coalesce_8': '', 'similarity_7': 'auto', 'similarity_8': 100, 'param_4': 30, 'coalesce_9': '', 'lower_4': '%auto%', 'param_5': 10, 'param_6': 0}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: SSL SYSCALL error: EOF detected
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 269, in multi_filter_search
+    rows = final_results_query.all()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2699, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, %(coalesce_1)s) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, greatest(similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_2)s), %(similarity_1)s) * %(similarity_2)s, similarity(coalesce(casefilestatement.statement_text, %(coalesce_3)s), %(similarity_3)s) * %(similarity_4)s) AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = %(type_code_1)s AND (similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_2)s), %(similarity_1)s) * %(similarity_2)s > %(param_1)s OR lower(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_4)s)) LIKE lower(%(lower_1)s)) OR casefilestatement.type_code = %(type_code_2)s AND (similarity(coalesce(casefilestatement.statement_text, %(coalesce_3)s), %(similarity_3)s) * %(similarity_4)s > %(param_2)s OR lower(coalesce(casefilestatement.statement_text, %(coalesce_5)s)) LIKE lower(%(lower_2)s))) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = %(type_code_3)s AND (similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_6)s), %(similarity_5)s) * %(similarity_6)s > %(param_3)s OR lower(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_7)s)) LIKE lower(%(lower_3)s)) OR casefilestatement.type_code = %(type_code_4)s AND (similarity(coalesce(casefilestatement.statement_text, %(coalesce_8)s), %(similarity_7)s) * %(similarity_8)s > %(param_4)s OR lower(coalesce(casefilestatement.statement_text, %(coalesce_9)s)) LIKE lower(%(lower_4)s))) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC 
+ LIMIT %(param_5)s OFFSET %(param_6)s]
+[parameters: {'coalesce_1': 0, 'coalesce_2': '', 'similarity_1': 'auto', 'similarity_2': 100, 'coalesce_3': '', 'similarity_3': 'auto', 'similarity_4': 100, 'type_code_1': 'D00000', 'param_1': 30, 'coalesce_4': '', 'lower_1': '%auto%', 'type_code_2': 'D10000', 'param_2': 30, 'coalesce_5': '', 'lower_2': '%auto%', 'type_code_3': 'D00000', 'coalesce_6': '', 'similarity_5': 'auto', 'similarity_6': 100, 'param_3': 30, 'coalesce_7': '', 'lower_3': '%auto%', 'type_code_4': 'D10000', 'coalesce_8': '', 'similarity_7': 'auto', 'similarity_8': 100, 'param_4': 30, 'coalesce_9': '', 'lower_4': '%auto%', 'param_5': 10, 'param_6': 0}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-23 14:27:30,336 - __main__ - ERROR - Error in combined_search: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, %(coalesce_1)s) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, greatest(similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_2)s), %(similarity_1)s) * %(similarity_2)s, similarity(coalesce(casefilestatement.statement_text, %(coalesce_3)s), %(similarity_3)s) * %(similarity_4)s) AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = %(type_code_1)s AND (similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_2)s), %(similarity_1)s) * %(similarity_2)s > %(param_1)s OR lower(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_4)s)) LIKE lower(%(lower_1)s)) OR casefilestatement.type_code = %(type_code_2)s AND (similarity(coalesce(casefilestatement.statement_text, %(coalesce_3)s), %(similarity_3)s) * %(similarity_4)s > %(param_2)s OR lower(coalesce(casefilestatement.statement_text, %(coalesce_5)s)) LIKE lower(%(lower_2)s))) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = %(type_code_3)s AND (similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_6)s), %(similarity_5)s) * %(similarity_6)s > %(param_3)s OR lower(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_7)s)) LIKE lower(%(lower_3)s)) OR casefilestatement.type_code = %(type_code_4)s AND (similarity(coalesce(casefilestatement.statement_text, %(coalesce_8)s), %(similarity_7)s) * %(similarity_8)s > %(param_4)s OR lower(coalesce(casefilestatement.statement_text, %(coalesce_9)s)) LIKE lower(%(lower_4)s))) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC 
+ LIMIT %(param_5)s OFFSET %(param_6)s]
+[parameters: {'coalesce_1': 0, 'coalesce_2': '', 'similarity_1': 'auto', 'similarity_2': 100, 'coalesce_3': '', 'similarity_3': 'auto', 'similarity_4': 100, 'type_code_1': 'D00000', 'param_1': 30, 'coalesce_4': '', 'lower_1': '%auto%', 'type_code_2': 'D10000', 'param_2': 30, 'coalesce_5': '', 'lower_2': '%auto%', 'type_code_3': 'D00000', 'coalesce_6': '', 'similarity_5': 'auto', 'similarity_6': 100, 'param_3': 30, 'coalesce_7': '', 'lower_3': '%auto%', 'type_code_4': 'D10000', 'coalesce_8': '', 'similarity_7': 'auto', 'similarity_8': 100, 'param_4': 30, 'coalesce_9': '', 'lower_4': '%auto%', 'param_5': 10, 'param_6': 0}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: SSL SYSCALL error: EOF detected
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 353, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 269, in multi_filter_search
+    rows = final_results_query.all()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2699, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, %(coalesce_1)s) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, greatest(similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_2)s), %(similarity_1)s) * %(similarity_2)s, similarity(coalesce(casefilestatement.statement_text, %(coalesce_3)s), %(similarity_3)s) * %(similarity_4)s) AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = %(type_code_1)s AND (similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_2)s), %(similarity_1)s) * %(similarity_2)s > %(param_1)s OR lower(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_4)s)) LIKE lower(%(lower_1)s)) OR casefilestatement.type_code = %(type_code_2)s AND (similarity(coalesce(casefilestatement.statement_text, %(coalesce_3)s), %(similarity_3)s) * %(similarity_4)s > %(param_2)s OR lower(coalesce(casefilestatement.statement_text, %(coalesce_5)s)) LIKE lower(%(lower_2)s))) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = %(type_code_3)s AND (similarity(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_6)s), %(similarity_5)s) * %(similarity_6)s > %(param_3)s OR lower(coalesce(SUBSTRING(casefilestatement.statement_text FROM '"([^"]+)"'), %(coalesce_7)s)) LIKE lower(%(lower_3)s)) OR casefilestatement.type_code = %(type_code_4)s AND (similarity(coalesce(casefilestatement.statement_text, %(coalesce_8)s), %(similarity_7)s) * %(similarity_8)s > %(param_4)s OR lower(coalesce(casefilestatement.statement_text, %(coalesce_9)s)) LIKE lower(%(lower_4)s))) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC 
+ LIMIT %(param_5)s OFFSET %(param_6)s]
+[parameters: {'coalesce_1': 0, 'coalesce_2': '', 'similarity_1': 'auto', 'similarity_2': 100, 'coalesce_3': '', 'similarity_3': 'auto', 'similarity_4': 100, 'type_code_1': 'D00000', 'param_1': 30, 'coalesce_4': '', 'lower_1': '%auto%', 'type_code_2': 'D10000', 'param_2': 30, 'coalesce_5': '', 'lower_2': '%auto%', 'type_code_3': 'D00000', 'coalesce_6': '', 'similarity_5': 'auto', 'similarity_6': 100, 'param_3': 30, 'coalesce_7': '', 'lower_3': '%auto%', 'type_code_4': 'D10000', 'coalesce_8': '', 'similarity_7': 'auto', 'similarity_8': 100, 'param_4': 30, 'coalesce_9': '', 'lower_4': '%auto%', 'param_5': 10, 'param_6': 0}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-23 14:27:30,340 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 14:27:30] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-23 15:54:40,506 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-01-23 15:54:40,506 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-01-23 15:54:40,507 - werkzeug - INFO -  * Restarting with stat
+2025-01-23 15:54:40,733 - werkzeug - WARNING -  * Debugger is active!
+2025-01-23 15:54:40,742 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-23 15:54:48,167 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 15:54:48] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 15:54:48,178 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'disclaimer_statements', 'query': 'auto', 'group': 'General Search', 'label': 'Disclaimer Statements'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 15:54:48,178 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'disclaimer_statements', 'query': 'auto', 'group': 'General Search', 'label': 'Disclaimer Statements'}]}, page=1, per_page=10
+2025-01-23 15:54:48,180 - multi_filter_search - INFO - Generated query for strategy 'disclaimer_statements'.
+2025-01-23 16:02:28,697 - multi_filter_search - INFO - Total results before pagination: 36945
+2025-01-23 16:02:28,712 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = 'D00000' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR casefilestatement.type_code = 'D10000' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, casefilestatement 
+WHERE casefilestatement.type_code = 'D00000' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR casefilestatement.type_code = 'D10000' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 16:10:32,898 - multi_filter_search - INFO - Query executed in 944.72s
+2025-01-23 16:10:32,962 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 16:10:32] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 16:17:29,953 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py', reloading
+2025-01-23 16:17:30,022 - werkzeug - INFO -  * Restarting with stat
+2025-01-23 16:17:30,330 - werkzeug - WARNING -  * Debugger is active!
+2025-01-23 16:17:30,334 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-23 16:17:32,776 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 16:17:32] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 16:17:32,779 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'disclaimer_statements', 'query': 'auto', 'group': 'General Search', 'label': 'Disclaimer Statements'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 16:17:32,779 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'disclaimer_statements', 'query': 'auto', 'group': 'General Search', 'label': 'Disclaimer Statements'}]}, page=1, per_page=10
+2025-01-23 16:17:32,786 - multi_filter_search - INFO - Generated query for strategy 'disclaimer_statements'.
+2025-01-23 16:17:34,072 - multi_filter_search - INFO - Total results before pagination: 12
+2025-01-23 16:17:34,089 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, anon_3.score AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, (SELECT casefilestatement.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefilestatement 
+WHERE casefilestatement.type_code = 'D00000' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR casefilestatement.type_code = 'D10000' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_3 
+WHERE casefile.serial_number IN (SELECT anon_3.sn 
+FROM (SELECT casefilestatement.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefilestatement 
+WHERE casefilestatement.type_code = 'D00000' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR casefilestatement.type_code = 'D10000' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_3)) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.sn 
+FROM (SELECT casefilestatement.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefilestatement 
+WHERE casefilestatement.type_code = 'D00000' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR casefilestatement.type_code = 'D10000' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_7)) AS anon_6)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 16:17:34,319 - multi_filter_search - INFO - Query executed in 1.54s
+2025-01-23 16:17:34,381 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 16:17:34] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 16:30:32,124 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 16:30:32] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 16:30:32,127 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'hello', 'label': 'Word Mark'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 16:30:32,127 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'hello', 'label': 'Word Mark'}]}, page=1, per_page=10
+2025-01-23 16:30:32,130 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 16:30:32,356 - multi_filter_search - INFO - Total results before pagination: 14
+2025-01-23 16:30:32,367 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'hello') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'hello') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%hello%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'hello') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%hello%')) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 16:30:32,624 - multi_filter_search - INFO - Query executed in 0.50s
+2025-01-23 16:30:32,686 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 16:30:32] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:23:47,040 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py', reloading
+2025-01-23 17:23:47,118 - werkzeug - INFO -  * Restarting with stat
+2025-01-23 17:23:47,441 - werkzeug - WARNING -  * Debugger is active!
+2025-01-23 17:23:47,446 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-23 17:23:56,887 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:23:56] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:23:56,890 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'hello', 'label': 'Word Mark'}, {'strategy': 'disclaimer_statements', 'query': 'auto', 'group': 'General Search', 'label': 'Disclaimer Statements'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:23:56,890 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'hello', 'label': 'Word Mark'}, {'strategy': 'disclaimer_statements', 'query': 'auto', 'group': 'General Search', 'label': 'Disclaimer Statements'}]}, page=1, per_page=10
+2025-01-23 17:23:56,894 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 17:23:56,897 - multi_filter_search - INFO - Generated query for strategy 'disclaimer_statements'.
+2025-01-23 17:23:58,270 - multi_filter_search - INFO - Total results before pagination: 26
+2025-01-23 17:23:58,287 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'hello') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'hello') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%hello%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, anon_4.score AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, (SELECT casefilestatement.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefilestatement 
+WHERE substr(casefilestatement.type_code, 1, 2) = 'D0' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR substr(casefilestatement.type_code, 1, 2) = 'D1' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_4 
+WHERE casefile.serial_number IN (SELECT anon_4.sn 
+FROM (SELECT casefilestatement.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefilestatement 
+WHERE substr(casefilestatement.type_code, 1, 2) = 'D0' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR substr(casefilestatement.type_code, 1, 2) = 'D1' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_4)) AS anon_3) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT anon_6.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'hello') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%hello%')) AS anon_7) OR casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.sn 
+FROM (SELECT casefilestatement.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefilestatement 
+WHERE substr(casefilestatement.type_code, 1, 2) = 'D0' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR substr(casefilestatement.type_code, 1, 2) = 'D1' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_9)) AS anon_8)) AS anon_6) AS anon_5) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 17:23:58,881 - multi_filter_search - INFO - Query executed in 1.99s
+2025-01-23 17:23:58,947 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:23:58] "POST /api/combined_search HTTP/1.1" 200 -
