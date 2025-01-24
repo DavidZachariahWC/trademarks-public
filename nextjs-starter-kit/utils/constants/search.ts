@@ -52,4 +52,5 @@ export const BOOLEAN_STRATEGIES = new Set([
   "current_66a",
   "current_no_basis",
   "without_basis_currently",
+  "foreign_priority",
 ]); 
