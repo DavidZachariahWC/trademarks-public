@@ -22,8 +22,8 @@ interface SearchFilter {
 }
 
 interface Group {
-  operator: "AND" | "OR";
   operands: (SearchFilter | Group)[];
+  adjacentOperators: ("AND" | "OR")[];
 }
 
 interface QueryBuilderProps {

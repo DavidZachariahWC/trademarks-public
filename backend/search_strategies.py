@@ -531,32 +531,47 @@ class OwnerNameSearchStrategy(BaseSearchStrategy):
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         escaped_query = self.query_str.replace("'", "''")
 
-        # Local similarity
-        similarity_value = func.similarity(func.coalesce(Owner.party_name, ''), escaped_query) * 100
+        # The local similarity expression:
+        similarity_value = (
+            func.similarity(
+                func.coalesce(Owner.party_name, ''),
+                escaped_query
+            ) * 100
+        )
 
-        # Subquery returns matching serial_numbers from Owner
-        subq_for_filter = (
-            select(Owner.serial_number)
+        # 1) Build a subquery referencing only the "owner" table. 
+        #    No mention of CaseFile => no cartesian product with CaseFileHeader.
+        subq = (
+            select(
+                Owner.serial_number.label('sn'),
+                similarity_value.label('score')
+            )
             .where(Owner.party_name.isnot(None))
             .where(
                 or_(
-                    similarity_value > 30, 
-                    func.lower(func.coalesce(Owner.party_name, '')).like(func.lower(f"%{escaped_query}%"))
+                    similarity_value > 30,
+                    func.lower(func.coalesce(Owner.party_name, ''))
+                       .like(func.lower(f"%{escaped_query}%"))
                 )
             )
-        )
+        ).subquery()
 
-        filters = [CaseFile.serial_number.in_(subq_for_filter)]
-        score_col = similarity_value.label("score")
+        # 2) The main filter: Only include CaseFiles whose serial_number is in subq
+        filters = [CaseFile.serial_number.in_(select(subq.c.sn))]
 
+        # 3) Return a single numeric score column from subq
+        score_col = subq.c.score
+
+        # Optional match_quality label for display (not used for ranking)
         match_quality = case(
-            (similarity_value >= 80, 'Very High'),
-            (similarity_value >= 60, 'High'),
-            (similarity_value >= 40, 'Medium'),
+            (subq.c.score >= 80, 'Very High'),
+            (subq.c.score >= 60, 'High'),
+            (subq.c.score >= 40, 'Medium'),
             else_='Low'
         ).label('match_quality')
 
         return filters, [score_col, match_quality]
+
 
 
 class DBASearchStrategy(BaseSearchStrategy):
