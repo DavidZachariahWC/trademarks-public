@@ -13,13 +13,19 @@ interface SearchOptionsProps {
 
 const GENERAL_OPTIONS = [
   { id: 'wordmark', label: 'Wordmark' },
+  { id: 'phonetic', label: 'Phonetic' },
+  { id: 'description_of_mark', label: 'Description of Mark' },
   { id: 'owner_name', label: "Owner's Name" },
   { id: 'attorney_name', label: 'Attorney Name' },
   { id: 'serial_number', label: 'Serial Number' },
   { id: 'registration_number', label: 'Registration Number' },
-  { id: 'phonetic', label: 'Phonetic' },
   { id: 'disclaimer_statements', label: 'Disclaimer Statements' },
-  { id: 'description_of_mark', label: 'Description of Mark' },
+]
+
+const CLASSIFICATION_OPTIONS = [
+  { id: 'international_class', label: 'International Class' },
+  { id: 'us_class', label: 'US Class' },
+  { id: 'coordinated_class', label: 'Coordinated Class' },
 ]
 
 const DATE_OPTIONS = [
@@ -75,12 +81,6 @@ const REGISTER_TYPE_OPTIONS = [
 const APPLICATION_STATUS_OPTIONS = [
   { id: 'no_current_basis', label: 'No Current Basis' },
   { id: 'no_initial_basis', label: 'No Initial Basis' },
-]
-
-const CLASSIFICATION_OPTIONS = [
-  { id: 'international_class', label: 'International Class' },
-  { id: 'us_class', label: 'US Class' },
-  { id: 'coordinated_class', label: 'Coordinated Class' },
 ]
 
 const INTERNATIONAL_REGISTRATION_OPTIONS = [
