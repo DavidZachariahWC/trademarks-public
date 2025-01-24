@@ -9,6 +9,7 @@ from sqlalchemy.dialects.postgresql import ARRAY, TEXT as PgText
 from coordinated_class_config import COORDINATED_CLASS_CONFIG
 from datetime import datetime
 from sqlalchemy.sql.elements import TextClause
+from sqlalchemy.sql import text, and_, or_, select, case # redundant imports?
 
 class LogicOperator(Enum):
     AND = 'AND'
@@ -319,10 +320,12 @@ class CancellationDateSearchStrategy(BaseSearchStrategy):
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            filters = [CaseFileHeader.cancellation_date == search_date]
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            filters = [CaseFileHeader.cancellation_date.between(start_date, end_date)]
             return filters, []
-        except ValueError:
+        except (ValueError, IndexError):
             return [False], []
 
 ##################################################
@@ -389,9 +392,6 @@ class DesignSearchCodeStrategy(BaseSearchStrategy):
 ##################################################
 # 7) DisclaimerStatementsSearchStrategy
 ##################################################
-
-from sqlalchemy.sql import text, and_, or_, select, case
-from sqlalchemy import func
 
 class DisclaimerStatementsSearchStrategy(BaseSearchStrategy):
     """
@@ -514,7 +514,7 @@ class DescriptionOfMarkSearchStrategy(BaseSearchStrategy):
         # Score column: label it 'score'
         score_col = similarity_value.label('score')
 
-        # Optional debugging column for “High”/“Low”
+        # Optional debugging column for "High"/"Low"
         match_quality = case(
             (similarity_value >= 80, 'Very High'),
             (similarity_value >= 60, 'High'),
@@ -608,17 +608,24 @@ class NameChangeSearchStrategy(BaseSearchStrategy):
 
 
 class FilingDateSearchStrategy(BaseSearchStrategy):
-    is_scoring_strategy = False  # date match => no numeric ranking
+    is_scoring_strategy = False  # purely date-range filter => no numeric ranking
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            # We can reference CaseFileHeader directly because base_query joins it
-            filters = [CaseFileHeader.filing_date == search_date]
+            # Expect the query string to look like: "YYYY-MM-DD - YYYY-MM-DD"
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            
+            # Filter for filing_date between start_date and end_date (inclusive)
+            filters = [CaseFileHeader.filing_date.between(start_date, end_date)]
             return filters, []
-        except ValueError:
-            # Return no rows if invalid date
+        except (ValueError, IndexError):
+            # If the string isn't formatted correctly or parsing fails,
+            # just return [False], meaning no matches
             return [False], []
+
 
 
 class ForeignFilingDateSearchStrategy(BaseSearchStrategy):
@@ -626,15 +633,16 @@ class ForeignFilingDateSearchStrategy(BaseSearchStrategy):
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
             subq_for_filter = (
                 select(ForeignApplication.serial_number)
-                .where(ForeignApplication.foreign_filing_date == search_date)
+                .where(ForeignApplication.foreign_filing_date.between(start_date, end_date))
             )
             filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
-        except ValueError:
+        except (ValueError, IndexError):
             return [False], []
 
 
@@ -661,14 +669,16 @@ class InternationalRegistrationDateSearchStrategy(BaseSearchStrategy):
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
             subq_for_filter = (
                 select(InternationalRegistration.serial_number)
-                .where(InternationalRegistration.international_registration_date == search_date)
+                .where(InternationalRegistration.international_registration_date.between(start_date, end_date))
             )
             filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
-        except ValueError:
+        except (ValueError, IndexError):
             return [False], []
 
 
@@ -677,14 +687,16 @@ class InternationalPublicationDateSearchStrategy(BaseSearchStrategy):
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
             subq_for_filter = (
                 select(InternationalRegistration.serial_number)
-                .where(InternationalRegistration.international_publication_date == search_date)
+                .where(InternationalRegistration.international_publication_date.between(start_date, end_date))
             )
             filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
-        except ValueError:
+        except (ValueError, IndexError):
             return [False], []
 
 
@@ -693,14 +705,16 @@ class AutoProtectionDateSearchStrategy(BaseSearchStrategy):
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
             subq_for_filter = (
                 select(InternationalRegistration.serial_number)
-                .where(InternationalRegistration.auto_protection_date == search_date)
+                .where(InternationalRegistration.auto_protection_date.between(start_date, end_date))
             )
             filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
-        except ValueError:
+        except (ValueError, IndexError):
             return [False], []
 
 
@@ -792,22 +806,18 @@ class ThreeDDrawingSearchStrategy(BaseSearchStrategy):
         return filters, []
 
 class PublishedOppositionDateSearchStrategy(BaseSearchStrategy):
-    is_scoring_strategy = False  # date range => no numeric ranking
+    is_scoring_strategy = False
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            # Expect "YYYY-MM-DD,YYYY-MM-DD"
-            start_date_str, end_date_str = self.query_str.split(',')
-            
+            start_date_str, end_date_str = self.query_str.split(' - ')
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
-            
             filters = [
                 CaseFileHeader.published_for_opposition_date.between(start_date, end_date)
             ]
             return filters, []
-        except (ValueError, AttributeError):
-            # On parse errors, return no results
+        except (ValueError, IndexError):
             return [False], []
 
 
@@ -828,13 +838,14 @@ class PriorRegistrationPresentSearchStrategy(BaseSearchStrategy):
 class RegistrationDateSearchStrategy(BaseSearchStrategy):
     is_scoring_strategy = False
 
-    # No subquery needed because registration_date is in base_query
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            filters = [CaseFileHeader.registration_date == search_date]
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            filters = [CaseFileHeader.registration_date.between(start_date, end_date)]
             return filters, []
-        except ValueError:
+        except (ValueError, IndexError):
             return [False], []
 
 
@@ -843,14 +854,16 @@ class ForeignRegistrationDateSearchStrategy(BaseSearchStrategy):
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
             subq_for_filter = (
                 select(ForeignApplication.serial_number)
-                .where(ForeignApplication.foreign_registration_date == search_date)
+                .where(ForeignApplication.foreign_registration_date.between(start_date, end_date))
             )
             filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
-        except ValueError:
+        except (ValueError, IndexError):
             return [False], []
 
 
@@ -859,10 +872,12 @@ class RenewalDateSearchStrategy(BaseSearchStrategy):
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
-            filters = [CaseFileHeader.renewal_date == search_date]
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            filters = [CaseFileHeader.renewal_date.between(start_date, end_date)]
             return filters, []
-        except ValueError:
+        except (ValueError, IndexError):
             return [False], []
 
 
@@ -871,14 +886,16 @@ class InternationalRenewalDateSearchStrategy(BaseSearchStrategy):
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
             subq_for_filter = (
                 select(InternationalRegistration.serial_number)
-                .where(InternationalRegistration.international_renewal_date == search_date)
+                .where(InternationalRegistration.international_renewal_date.between(start_date, end_date))
             )
             filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
-        except ValueError:
+        except (ValueError, IndexError):
             return [False], []
 
 
@@ -887,14 +904,16 @@ class ForeignRenewalDateSearchStrategy(BaseSearchStrategy):
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            search_date = datetime.strptime(self.query_str, '%Y-%m-%d').date()
+            start_date_str, end_date_str = self.query_str.split(' - ')
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
             subq_for_filter = (
                 select(ForeignApplication.serial_number)
-                .where(ForeignApplication.registration_renewal_date == search_date)
+                .where(ForeignApplication.registration_renewal_date.between(start_date, end_date))
             )
             filters = [CaseFile.serial_number.in_(subq_for_filter)]
             return filters, []
-        except ValueError:
+        except (ValueError, IndexError):
             return [False], []
 
 
@@ -983,7 +1002,7 @@ class PriorityDateRangeSearchStrategy(BaseSearchStrategy):
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
         try:
-            start_date_str, end_date_str = self.query_str.split(',')
+            start_date_str, end_date_str = self.query_str.split(' - ')
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
 

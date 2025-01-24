@@ -1,7 +1,7 @@
 // QueryBuilder.tsx
 
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Plus } from "lucide-react";
+import { ChevronDown, Plus, ChevronRight } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -100,11 +100,11 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
           <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" className="w-full justify-between h-12 text-base bg-gray-100 hover:bg-gray-200">
-                {currentFilter.label || "Select Filter"}
-                <ChevronDown className="h-4 w-4 ml-2" />
+                <span className="truncate">{currentFilter.label || "Select Filter"}</span>
+                <ChevronRight className="h-4 w-4 ml-2 flex-shrink-0" />
               </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent side="left">
               <SheetTitle className="mb-4">Select Filter</SheetTitle>
               <div className="h-[calc(100vh-8rem)] overflow-y-auto pr-4">
                 <SearchOptions
@@ -122,10 +122,41 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
           <div className="flex-1">
             {currentFilter.strategy === "coordinated_class" ? (
               <CoordinatedClassSelector onSelect={handleClassSelect} />
+            ) : DATE_STRATEGIES.has(currentFilter.strategy) ? (
+              <div className="flex items-center gap-2">
+                <Input
+                  ref={inputRef}
+                  type="date"
+                  placeholder="Start date..."
+                  value={currentFilter.query.split(' - ')[0] || ''}
+                  onChange={(e) => {
+                    const endDate = currentFilter.query.split(' - ')[1] || '';
+                    setCurrentFilter({ 
+                      ...currentFilter, 
+                      query: `${e.target.value}${endDate ? ' - ' + endDate : ''}`
+                    });
+                  }}
+                  className="h-12 text-base bg-gray-100"
+                />
+                <span className="text-gray-500">to</span>
+                <Input
+                  type="date"
+                  placeholder="End date..."
+                  value={currentFilter.query.split(' - ')[1] || ''}
+                  onChange={(e) => {
+                    const startDate = currentFilter.query.split(' - ')[0] || '';
+                    setCurrentFilter({ 
+                      ...currentFilter, 
+                      query: `${startDate ? startDate + ' - ' : ''}${e.target.value}`
+                    });
+                  }}
+                  className="h-12 text-base bg-gray-100"
+                />
+              </div>
             ) : (
               <Input
                 ref={inputRef}
-                type={DATE_STRATEGIES.has(currentFilter.strategy) ? "date" : "text"}
+                type="text"
                 placeholder="Enter value..."
                 value={currentFilter.query}
                 onChange={(e) =>
@@ -141,7 +172,14 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
         <Button
           size="lg"
           onClick={handleAddFilter}
-          disabled={!currentFilter.strategy || (!currentFilter.query && !BOOLEAN_STRATEGIES.has(currentFilter.strategy))}
+          disabled={
+            !currentFilter.strategy || 
+            (!currentFilter.query && !BOOLEAN_STRATEGIES.has(currentFilter.strategy)) ||
+            (DATE_STRATEGIES.has(currentFilter.strategy) && (
+              !currentFilter.query.includes(' - ') || 
+              new Date(currentFilter.query.split(' - ')[0]) > new Date(currentFilter.query.split(' - ')[1])
+            ))
+          }
           className="h-12 px-6 text-base flex items-center gap-2"
         >
           <Plus className="h-5 w-5" />
