@@ -20,8 +20,14 @@ interface SearchFilter {
 }
 
 interface Group {
-  operator: "AND" | "OR";
   operands: (SearchFilter | Group)[];
+  adjacentOperators: ("AND" | "OR")[];
+}
+
+// Backend expects this format
+interface BackendGroup {
+  operator: "AND" | "OR";
+  operands: (SearchFilter | BackendGroup)[];
 }
 
 export default function SearchPage() {
@@ -36,30 +42,82 @@ export default function SearchPage() {
     per_page: 10,
   });
 
+  // Transform our UI filter tree into the backend format
+  const transformForBackend = (group: Group): BackendGroup => {
+    // For a group with a single operand, just use AND (it doesn't matter)
+    if (group.operands.length <= 1) {
+      return {
+        operator: "AND",
+        operands: group.operands.map(op => 
+          "adjacentOperators" in op ? transformForBackend(op) : op
+        )
+      };
+    }
+
+    // For multiple operands, we need to preserve operator precedence
+    // We'll process pairs from left to right, creating nested groups as needed
+    let result: SearchFilter | BackendGroup = 
+      "adjacentOperators" in group.operands[0] 
+        ? transformForBackend(group.operands[0] as Group)
+        : group.operands[0];
+    
+    for (let i = 1; i < group.operands.length; i++) {
+      const operator = group.adjacentOperators[i - 1];
+      const nextOperand = group.operands[i];
+      
+      result = {
+        operator,
+        operands: [
+          result,
+          "adjacentOperators" in nextOperand 
+            ? transformForBackend(nextOperand as Group) 
+            : nextOperand
+        ]
+      };
+    }
+
+    return result as BackendGroup;
+  };
+
   const handleAddFilter = (filter: SearchFilter) => {
     if (filterTree) {
+      // Add the new filter and a default "AND" operator if there are existing operands
+      const newOperands = [...filterTree.operands, filter];
+      const newAdjOps = [...filterTree.adjacentOperators];
+      if (filterTree.operands.length > 0) {
+        newAdjOps.push("AND");  // Default to AND when adding new filters
+      }
+      
       setFilterTree({
-        ...filterTree,
-        operands: [...filterTree.operands, filter],
+        operands: newOperands,
+        adjacentOperators: newAdjOps,
       });
     } else {
+      // First filter - no adjacentOperators needed yet
       setFilterTree({
-        operator: "AND",
         operands: [filter],
+        adjacentOperators: [],
       });
     }
   };
 
   const handleAddGroup = () => {
     const newGroup: Group = {
-      operator: "AND",
       operands: [],
+      adjacentOperators: [],
     };
 
     if (filterTree) {
+      // Add the new group and a default "AND" operator if there are existing operands
+      const newOperands = [...filterTree.operands, newGroup];
+      const newAdjOps = [...filterTree.adjacentOperators];
+      if (filterTree.operands.length > 0) {
+        newAdjOps.push("AND");
+      }
+      
       setFilterTree({
-        ...filterTree,
-        operands: [...filterTree.operands, newGroup],
+        operands: newOperands,
+        adjacentOperators: newAdjOps,
       });
     } else {
       setFilterTree(newGroup);
@@ -85,7 +143,7 @@ export default function SearchPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          filter_tree: filterTree,
+          filter_tree: filterTree ? transformForBackend(filterTree) : null,
           page,
           per_page: pagination.per_page,
         }),

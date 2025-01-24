@@ -15238,3 +15238,1130 @@ WHERE casefileheader.filing_current_no_basis_in = true) AS anon_6)) AS anon_4) A
  LIMIT 10 OFFSET 0
 2025-01-23 20:17:43,568 - multi_filter_search - INFO - Query executed in 0.37s
 2025-01-23 20:17:43,630 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 20:17:43] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:38:47,120 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:38:47] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:38:47,124 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:38:47,124 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}]}, page=1, per_page=10
+2025-01-23 21:38:47,127 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:38:47,399 - multi_filter_search - INFO - Total results before pagination: 16
+2025-01-23 21:38:47,410 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:38:47,675 - multi_filter_search - INFO - Query executed in 0.55s
+2025-01-23 21:38:47,736 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:38:47] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:39:06,229 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:39:06] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:39:06,233 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:39:06,234 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=1, per_page=10
+2025-01-23 21:39:06,235 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:39:06,240 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:39:06,508 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 21:39:06,523 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) AND casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:39:07,025 - multi_filter_search - INFO - Query executed in 0.79s
+2025-01-23 21:39:07,088 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:39:07] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:39:13,132 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:39:13] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:39:13,135 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:39:13,135 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=1, per_page=10
+2025-01-23 21:39:13,136 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:39:13,136 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:39:13,383 - multi_filter_search - INFO - Total results before pagination: 26
+2025-01-23 21:39:13,394 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) OR casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:39:13,886 - multi_filter_search - INFO - Query executed in 0.75s
+2025-01-23 21:39:13,949 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:39:13] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:42:03,526 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:42:03] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:42:03,531 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:42:03,531 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}]}, page=1, per_page=10
+2025-01-23 21:42:03,534 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:42:03,534 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:42:03,782 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 21:42:03,793 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_6) AND casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_7)) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:42:04,179 - multi_filter_search - INFO - Query executed in 0.65s
+2025-01-23 21:42:04,241 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:42:04] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:42:16,217 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:42:16] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:42:16,221 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:42:16,221 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 21:42:16,222 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:42:16,223 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:42:16,224 - multi_filter_search - INFO - Generated query for strategy 'attorney_name'.
+2025-01-23 21:42:16,671 - multi_filter_search - INFO - Total results before pagination: 2
+2025-01-23 21:42:16,689 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.attorney_name, 'bob') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_3) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_7) AND casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_8)) AS anon_6) OR casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_9)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:42:17,389 - multi_filter_search - INFO - Query executed in 1.17s
+2025-01-23 21:42:17,450 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:42:17] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:42:35,396 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:42:35] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:42:35,401 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'mr auto', 'group': 'General Search', 'label': "Owner's Name"}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:42:35,401 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'mr auto', 'group': 'General Search', 'label': "Owner's Name"}]}, page=1, per_page=10
+2025-01-23 21:42:35,402 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:42:35,402 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:42:35,404 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 21:42:36,434 - multi_filter_search - INFO - Total results before pagination: 7
+2025-01-23 21:42:36,442 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'mr auto') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, owner 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'mr auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%mr auto%')))) AS anon_3) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_7) AND casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_8)) AS anon_6) OR casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'mr auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%mr auto%')))) AS anon_9)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:42:40,633 - multi_filter_search - INFO - Query executed in 5.23s
+2025-01-23 21:42:40,694 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:42:40] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:42:45,342 - __main__ - INFO - Fetching details for case: 71492700
+2025-01-23 21:42:45,343 - __main__ - INFO - Database session established.
+2025-01-23 21:42:45,467 - __main__ - INFO - Case query executed. Case found: True
+2025-01-23 21:42:45,532 - __main__ - INFO - Header query executed. Header found: True
+2025-01-23 21:42:45,608 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-23 21:42:45,688 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-23 21:42:45,754 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-23 21:42:45,826 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-23 21:42:45,887 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-23 21:42:46,085 - __main__ - INFO - Event Statements query executed. Event Statements found: 17
+2025-01-23 21:42:46,153 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-23 21:42:46,218 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-23 21:42:46,280 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-23 21:42:46,281 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-23 21:42:46,340 - __main__ - INFO - Database session closed.
+2025-01-23 21:42:46,341 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:42:46] "GET /api/case/71492700 HTTP/1.1" 200 -
+2025-01-23 21:43:05,142 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:43:05] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:43:05,147 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'mr auto', 'group': 'General Search', 'label': "Owner's Name"}]}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:43:05,147 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'mr auto', 'group': 'General Search', 'label': "Owner's Name"}]}]}, page=1, per_page=10
+2025-01-23 21:43:05,147 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:43:05,148 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:43:05,149 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 21:43:06,029 - multi_filter_search - INFO - Total results before pagination: 7
+2025-01-23 21:43:06,045 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'mr auto') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, owner 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'mr auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%mr auto%')))) AS anon_3) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_8) AND casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_9)) AS anon_7) OR casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'mr auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%mr auto%')))) AS anon_10)) AS anon_6)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:43:09,513 - multi_filter_search - INFO - Query executed in 4.37s
+2025-01-23 21:43:09,575 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:43:09] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:43:25,615 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:43:25] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:43:25,619 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'mr auto', 'group': 'General Search', 'label': "Owner's Name"}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:43:25,619 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'mr auto', 'group': 'General Search', 'label': "Owner's Name"}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 21:43:25,620 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:43:25,620 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:43:25,622 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 21:43:25,623 - multi_filter_search - INFO - Generated query for strategy 'attorney_name'.
+2025-01-23 21:43:26,611 - multi_filter_search - INFO - Total results before pagination: 0
+2025-01-23 21:43:26,616 - multi_filter_search - ERROR - Error in multi_filter_search: 'CompoundSelect' object has no attribute 'union_all'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 208, in multi_filter_search
+    unioned_select = unioned_select.union_all(selectable)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'CompoundSelect' object has no attribute 'union_all'
+2025-01-23 21:43:26,680 - __main__ - ERROR - Error in combined_search: 'CompoundSelect' object has no attribute 'union_all'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 353, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 208, in multi_filter_search
+    unioned_select = unioned_select.union_all(selectable)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'CompoundSelect' object has no attribute 'union_all'
+2025-01-23 21:43:26,684 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:43:26] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-23 21:43:38,493 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:43:38] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:43:38,497 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'mr auto', 'group': 'General Search', 'label': "Owner's Name"}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:43:38,498 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'mr auto', 'group': 'General Search', 'label': "Owner's Name"}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 21:43:38,499 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:43:38,499 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:43:38,500 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 21:43:38,501 - multi_filter_search - INFO - Generated query for strategy 'attorney_name'.
+2025-01-23 21:43:39,616 - multi_filter_search - INFO - Total results before pagination: 8
+2025-01-23 21:43:39,618 - multi_filter_search - ERROR - Error in multi_filter_search: 'CompoundSelect' object has no attribute 'union_all'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 208, in multi_filter_search
+    unioned_select = unioned_select.union_all(selectable)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'CompoundSelect' object has no attribute 'union_all'
+2025-01-23 21:43:39,681 - __main__ - ERROR - Error in combined_search: 'CompoundSelect' object has no attribute 'union_all'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 353, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 208, in multi_filter_search
+    unioned_select = unioned_select.union_all(selectable)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'CompoundSelect' object has no attribute 'union_all'
+2025-01-23 21:43:39,686 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:43:39] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-23 21:43:47,655 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:43:47] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:43:47,658 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'mr auto', 'group': 'General Search', 'label': "Owner's Name"}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:43:47,658 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'mr auto', 'group': 'General Search', 'label': "Owner's Name"}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 21:43:47,659 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:43:47,660 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:43:47,662 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 21:43:47,663 - multi_filter_search - INFO - Generated query for strategy 'attorney_name'.
+2025-01-23 21:43:48,729 - multi_filter_search - INFO - Total results before pagination: 8
+2025-01-23 21:43:48,734 - multi_filter_search - ERROR - Error in multi_filter_search: 'CompoundSelect' object has no attribute 'union_all'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 208, in multi_filter_search
+    unioned_select = unioned_select.union_all(selectable)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'CompoundSelect' object has no attribute 'union_all'
+2025-01-23 21:43:48,798 - __main__ - ERROR - Error in combined_search: 'CompoundSelect' object has no attribute 'union_all'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 353, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 208, in multi_filter_search
+    unioned_select = unioned_select.union_all(selectable)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'CompoundSelect' object has no attribute 'union_all'
+2025-01-23 21:43:48,805 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:43:48] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-23 21:43:50,520 - __main__ - INFO - Fetching details for case: 71235488
+2025-01-23 21:43:50,521 - __main__ - INFO - Database session established.
+2025-01-23 21:43:50,645 - __main__ - INFO - Case query executed. Case found: True
+2025-01-23 21:43:50,706 - __main__ - INFO - Header query executed. Header found: True
+2025-01-23 21:43:50,774 - __main__ - INFO - Owners query executed. Owners found: 7
+2025-01-23 21:43:50,840 - __main__ - INFO - Classifications query executed. Classifications found: 10
+2025-01-23 21:43:50,902 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 1
+2025-01-23 21:43:50,971 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-23 21:43:51,036 - __main__ - INFO - Design Searches query executed. Design Searches found: 6
+2025-01-23 21:43:51,209 - __main__ - INFO - Event Statements query executed. Event Statements found: 41
+2025-01-23 21:43:51,275 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-23 21:43:51,335 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-23 21:43:51,397 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-23 21:43:51,397 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-23 21:43:51,457 - __main__ - INFO - Database session closed.
+2025-01-23 21:43:51,458 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:43:51] "GET /api/case/71235488 HTTP/1.1" 200 -
+2025-01-23 21:44:03,927 - __main__ - INFO - Fetching details for case: 71235558
+2025-01-23 21:44:03,927 - __main__ - INFO - Database session established.
+2025-01-23 21:44:04,050 - __main__ - INFO - Case query executed. Case found: True
+2025-01-23 21:44:04,110 - __main__ - INFO - Header query executed. Header found: True
+2025-01-23 21:44:04,181 - __main__ - INFO - Owners query executed. Owners found: 7
+2025-01-23 21:44:04,250 - __main__ - INFO - Classifications query executed. Classifications found: 6
+2025-01-23 21:44:04,314 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 1
+2025-01-23 21:44:04,380 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-23 21:44:04,444 - __main__ - INFO - Design Searches query executed. Design Searches found: 7
+2025-01-23 21:44:04,604 - __main__ - INFO - Event Statements query executed. Event Statements found: 43
+2025-01-23 21:44:04,672 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-23 21:44:04,732 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-23 21:44:04,793 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-23 21:44:04,794 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-23 21:44:04,855 - __main__ - INFO - Database session closed.
+2025-01-23 21:44:04,856 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:44:04] "GET /api/case/71235558 HTTP/1.1" 200 -
+2025-01-23 21:44:12,269 - __main__ - INFO - Fetching details for case: 71492700
+2025-01-23 21:44:12,270 - __main__ - INFO - Database session established.
+2025-01-23 21:44:12,391 - __main__ - INFO - Case query executed. Case found: True
+2025-01-23 21:44:12,451 - __main__ - INFO - Header query executed. Header found: True
+2025-01-23 21:44:12,526 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-23 21:44:12,602 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-23 21:44:12,663 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-23 21:44:12,729 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-23 21:44:12,792 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-23 21:44:12,973 - __main__ - INFO - Event Statements query executed. Event Statements found: 17
+2025-01-23 21:44:13,039 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-23 21:44:13,101 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-23 21:44:13,162 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-23 21:44:13,162 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-23 21:44:13,222 - __main__ - INFO - Database session closed.
+2025-01-23 21:44:13,223 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:44:13] "GET /api/case/71492700 HTTP/1.1" 200 -
+2025-01-23 21:45:07,725 - __main__ - INFO - Fetching details for case: 73228852
+2025-01-23 21:45:07,726 - __main__ - INFO - Database session established.
+2025-01-23 21:45:07,851 - __main__ - INFO - Case query executed. Case found: True
+2025-01-23 21:45:07,918 - __main__ - INFO - Header query executed. Header found: True
+2025-01-23 21:45:07,996 - __main__ - INFO - Owners query executed. Owners found: 10
+2025-01-23 21:45:08,071 - __main__ - INFO - Classifications query executed. Classifications found: 37
+2025-01-23 21:45:08,133 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 5
+2025-01-23 21:45:08,199 - __main__ - INFO - Statements query executed. Statements found: 9
+2025-01-23 21:45:08,262 - __main__ - INFO - Design Searches query executed. Design Searches found: 3
+2025-01-23 21:45:08,425 - __main__ - INFO - Event Statements query executed. Event Statements found: 57
+2025-01-23 21:45:08,491 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-23 21:45:08,551 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-23 21:45:08,610 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-23 21:45:08,610 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-23 21:45:08,670 - __main__ - INFO - Database session closed.
+2025-01-23 21:45:08,671 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:45:08] "GET /api/case/73228852 HTTP/1.1" 200 -
+2025-01-23 21:46:50,735 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:46:50] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:46:50,738 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:46:50,738 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}]}, page=1, per_page=10
+2025-01-23 21:46:50,740 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:46:50,998 - multi_filter_search - INFO - Total results before pagination: 16
+2025-01-23 21:46:51,008 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:46:51,413 - multi_filter_search - INFO - Query executed in 0.68s
+2025-01-23 21:46:51,474 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:46:51] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:08,683 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:08] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:08,687 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:47:08,687 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=1, per_page=10
+2025-01-23 21:47:08,687 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:47:08,688 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:47:08,964 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 21:47:08,975 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) AND casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:47:09,436 - multi_filter_search - INFO - Query executed in 0.75s
+2025-01-23 21:47:09,500 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:09] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:11,572 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:47:11,572 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}]}, page=1, per_page=10
+2025-01-23 21:47:11,573 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:47:11,573 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:47:11,892 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 21:47:11,905 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_6) AND casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_7)) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:47:12,406 - multi_filter_search - INFO - Query executed in 0.83s
+2025-01-23 21:47:12,467 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:12] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:14,036 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:14] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:14,040 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:47:14,040 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=1, per_page=10
+2025-01-23 21:47:14,040 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:47:14,041 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:47:14,264 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 21:47:14,276 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) AND casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:47:14,658 - multi_filter_search - INFO - Query executed in 0.62s
+2025-01-23 21:47:14,718 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:14] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:15,734 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:47:15,734 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=1, per_page=10
+2025-01-23 21:47:15,735 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:47:15,735 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:47:15,968 - multi_filter_search - INFO - Total results before pagination: 26
+2025-01-23 21:47:15,980 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) OR casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:47:16,399 - multi_filter_search - INFO - Query executed in 0.67s
+2025-01-23 21:47:16,463 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:16] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:28,245 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:28] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:28,248 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 2, 'per_page': 10}
+2025-01-23 21:47:28,248 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=2, per_page=10
+2025-01-23 21:47:28,249 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:47:28,249 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:47:28,527 - multi_filter_search - INFO - Total results before pagination: 26
+2025-01-23 21:47:28,539 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) OR casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 10
+2025-01-23 21:47:28,892 - multi_filter_search - INFO - Query executed in 0.64s
+2025-01-23 21:47:28,953 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:28] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:33,066 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:47:33,066 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=1, per_page=10
+2025-01-23 21:47:33,067 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:47:33,067 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:47:33,315 - multi_filter_search - INFO - Total results before pagination: 26
+2025-01-23 21:47:33,325 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) OR casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:47:33,707 - multi_filter_search - INFO - Query executed in 0.64s
+2025-01-23 21:47:33,768 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:33] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:55,532 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:55] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:55,537 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:47:55,537 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, page=1, per_page=10
+2025-01-23 21:47:55,537 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:47:55,538 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:47:55,539 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 21:47:56,335 - multi_filter_search - INFO - Total results before pagination: 0
+2025-01-23 21:47:56,351 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, owner 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%')))) AS anon_3) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_7) AND casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_8)) AS anon_6) AND casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%')))) AS anon_9)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:47:57,155 - multi_filter_search - INFO - Query executed in 1.62s
+2025-01-23 21:47:57,216 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:47:57] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:47:58,993 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:47:58,993 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, page=1, per_page=10
+2025-01-23 21:47:58,994 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:47:58,994 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:47:58,995 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 21:47:59,715 - multi_filter_search - INFO - Total results before pagination: 345
+2025-01-23 21:47:59,731 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, owner 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%')))) AS anon_3) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_7) AND casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_8)) AS anon_6) OR casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%')))) AS anon_9)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:49:28,639 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:49:28] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:49:28,643 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:49:28,643 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}]}, page=1, per_page=10
+2025-01-23 21:49:28,645 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:49:28,645 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:49:29,473 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 21:49:29,486 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_6) AND casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_7)) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:49:30,032 - multi_filter_search - INFO - Query executed in 1.39s
+2025-01-23 21:49:30,097 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:49:30] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:49:40,273 - multi_filter_search - INFO - Query executed in 101.28s
+2025-01-23 21:49:40,335 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:49:40] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:49:50,256 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:49:50] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:49:50,259 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:49:50,260 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, page=1, per_page=10
+2025-01-23 21:49:50,260 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:49:50,260 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:49:50,261 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 21:49:51,126 - multi_filter_search - INFO - Total results before pagination: 345
+2025-01-23 21:49:51,141 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, owner 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%')))) AS anon_3) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_7) AND casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_8)) AS anon_6) OR casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%')))) AS anon_9)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:50:38,204 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:50:38] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:50:38,208 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:50:38,208 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, page=1, per_page=10
+2025-01-23 21:50:38,211 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 21:50:39,254 - multi_filter_search - INFO - Total results before pagination: 344
+2025-01-23 21:50:39,259 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, owner 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%')))) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%')))) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:51:02,397 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-01-23 21:51:02,397 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-01-23 21:51:02,397 - werkzeug - INFO -  * Restarting with stat
+2025-01-23 21:51:02,631 - werkzeug - WARNING -  * Debugger is active!
+2025-01-23 21:51:02,638 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-23 21:51:09,094 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:51:09] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:51:09,096 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:51:09,096 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, page=1, per_page=10
+2025-01-23 21:51:09,101 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 21:51:11,716 - multi_filter_search - INFO - Total results before pagination: 344
+2025-01-23 21:51:11,731 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, owner 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%')))) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT owner.serial_number 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%')))) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:51:24,163 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:51:24] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:51:24,169 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:51:24,169 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}]}, page=1, per_page=10
+2025-01-23 21:51:24,171 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:51:26,667 - multi_filter_search - INFO - Total results before pagination: 16
+2025-01-23 21:51:26,677 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:51:27,998 - multi_filter_search - INFO - Query executed in 3.83s
+2025-01-23 21:51:28,209 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:51:28] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:53:38,915 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:53:38] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:53:38,918 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:53:38,918 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=1, per_page=10
+2025-01-23 21:53:38,919 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:53:38,923 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:53:39,480 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 21:53:39,491 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) AND casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:53:40,095 - multi_filter_search - INFO - Query executed in 1.18s
+2025-01-23 21:53:40,159 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:53:40] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:53:41,941 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:53:41,941 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, page=1, per_page=10
+2025-01-23 21:53:41,942 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:53:41,942 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:53:42,757 - multi_filter_search - INFO - Total results before pagination: 26
+2025-01-23 21:53:42,769 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5) OR casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_6)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:53:43,374 - multi_filter_search - INFO - Query executed in 1.43s
+2025-01-23 21:53:43,447 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:53:43] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:53:56,037 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:53:56] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:53:56,040 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:53:56,040 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 21:53:56,041 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:53:56,042 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:53:56,043 - multi_filter_search - INFO - Generated query for strategy 'attorney_name'.
+2025-01-23 21:53:56,786 - multi_filter_search - INFO - Total results before pagination: 2
+2025-01-23 21:53:56,800 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.attorney_name, 'bob') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_3) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_7) AND casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_8)) AS anon_6) OR casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_9)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:53:57,913 - multi_filter_search - INFO - Query executed in 1.87s
+2025-01-23 21:53:57,979 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:53:57] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:54:04,875 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:54:04] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:54:04,878 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 21:54:04,878 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 21:54:04,879 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 21:54:04,879 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 21:54:04,880 - multi_filter_search - INFO - Generated query for strategy 'attorney_name'.
+2025-01-23 21:54:05,592 - multi_filter_search - INFO - Total results before pagination: 2
+2025-01-23 21:54:05,607 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.attorney_name, 'bob') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_3) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_7) AND casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_8)) AS anon_6) OR casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_9)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 21:54:06,822 - multi_filter_search - INFO - Query executed in 1.94s
+2025-01-23 21:54:06,887 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:54:06] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 21:57:30,604 - multi_filter_search - INFO - Query executed in 381.51s
+2025-01-23 21:57:30,671 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 21:57:30] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 22:12:30,470 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py', reloading
+2025-01-23 22:12:30,545 - werkzeug - INFO -  * Restarting with stat
+2025-01-23 22:12:30,894 - werkzeug - WARNING -  * Debugger is active!
+2025-01-23 22:12:30,899 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-23 22:12:33,155 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:12:33] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 22:12:33,159 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 22:12:33,159 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Word Mark'}, {'strategy': 'filing_date', 'query': '1979-01-05 - 1979-01-05', 'group': 'Date Filters', 'label': 'Filing Date'}]}, {'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 22:12:33,161 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-23 22:12:33,164 - multi_filter_search - INFO - Generated query for strategy 'filing_date'.
+2025-01-23 22:12:33,165 - multi_filter_search - INFO - Generated query for strategy 'attorney_name'.
+2025-01-23 22:12:34,591 - multi_filter_search - INFO - Total results before pagination: 2
+2025-01-23 22:12:34,608 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.attorney_name, 'bob') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_3) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_7) AND casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_date BETWEEN '1979-01-05' AND '1979-01-05') AS anon_8)) AS anon_6) OR casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_9)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 22:12:35,205 - multi_filter_search - INFO - Query executed in 2.05s
+2025-01-23 22:12:35,267 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:12:35] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 22:12:45,177 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:12:45] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 22:12:45,180 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, 'page': 1, 'per_page': 10}
+2025-01-23 22:12:45,180 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, page=1, per_page=10
+2025-01-23 22:12:45,182 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 22:12:46,060 - multi_filter_search - INFO - Total results before pagination: 344
+2025-01-23 22:12:46,073 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, anon_3.score AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, (SELECT owner.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%'))) AS anon_3 
+WHERE casefile.serial_number IN (SELECT anon_3.sn 
+FROM (SELECT owner.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%'))) AS anon_3)) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.sn 
+FROM (SELECT owner.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%'))) AS anon_7)) AS anon_6)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 22:12:49,439 - multi_filter_search - INFO - Query executed in 4.26s
+2025-01-23 22:12:49,501 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:12:49] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 22:13:00,325 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-01-23 22:13:00,325 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-01-23 22:13:00,326 - werkzeug - INFO -  * Restarting with stat
+2025-01-23 22:13:00,562 - werkzeug - WARNING -  * Debugger is active!
+2025-01-23 22:13:00,567 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-23 22:13:08,462 - __main__ - INFO - Fetching details for case: 73263776
+2025-01-23 22:13:08,462 - __main__ - INFO - Database session established.
+2025-01-23 22:13:09,599 - __main__ - INFO - Case query executed. Case found: True
+2025-01-23 22:13:09,686 - __main__ - INFO - Header query executed. Header found: True
+2025-01-23 22:13:09,770 - __main__ - INFO - Owners query executed. Owners found: 6
+2025-01-23 22:13:09,858 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-23 22:13:09,930 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 3
+2025-01-23 22:13:10,011 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-23 22:13:10,075 - __main__ - INFO - Design Searches query executed. Design Searches found: 1
+2025-01-23 22:13:10,242 - __main__ - INFO - Event Statements query executed. Event Statements found: 45
+2025-01-23 22:13:10,311 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-23 22:13:10,375 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-23 22:13:10,435 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-23 22:13:10,435 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-23 22:13:10,495 - __main__ - INFO - Database session closed.
+2025-01-23 22:13:10,496 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:13:10] "GET /api/case/73263776 HTTP/1.1" 200 -
+2025-01-23 22:13:17,647 - __main__ - INFO - Fetching details for case: 73263776
+2025-01-23 22:13:17,648 - __main__ - INFO - Database session established.
+2025-01-23 22:13:17,768 - __main__ - INFO - Case query executed. Case found: True
+2025-01-23 22:13:17,832 - __main__ - INFO - Header query executed. Header found: True
+2025-01-23 22:13:17,906 - __main__ - INFO - Owners query executed. Owners found: 6
+2025-01-23 22:13:17,974 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-23 22:13:18,037 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 3
+2025-01-23 22:13:18,107 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-23 22:13:18,171 - __main__ - INFO - Design Searches query executed. Design Searches found: 1
+2025-01-23 22:13:18,312 - __main__ - INFO - Event Statements query executed. Event Statements found: 45
+2025-01-23 22:13:18,376 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-23 22:13:18,436 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-23 22:13:18,497 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-23 22:13:18,497 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-23 22:13:18,558 - __main__ - INFO - Database session closed.
+2025-01-23 22:13:18,560 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:13:18] "GET /api/case/73263776 HTTP/1.1" 200 -
+2025-01-23 22:13:23,382 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:13:23] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 22:13:23,384 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, 'page': 1, 'per_page': 10}
+2025-01-23 22:13:23,385 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, page=1, per_page=10
+2025-01-23 22:13:23,386 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 22:13:24,357 - multi_filter_search - INFO - Total results before pagination: 344
+2025-01-23 22:13:24,372 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, anon_3.score AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, (SELECT owner.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%'))) AS anon_3 
+WHERE casefile.serial_number IN (SELECT anon_3.sn 
+FROM (SELECT owner.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%'))) AS anon_3)) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.sn 
+FROM (SELECT owner.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%'))) AS anon_7)) AS anon_6)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 22:13:27,840 - multi_filter_search - INFO - Query executed in 4.45s
+2025-01-23 22:13:27,901 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:13:27] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 22:14:58,521 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:14:58] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 22:14:58,524 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'disclaimer_statements', 'query': 'auto', 'group': 'General Search', 'label': 'Disclaimer Statements'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 22:14:58,524 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'disclaimer_statements', 'query': 'auto', 'group': 'General Search', 'label': 'Disclaimer Statements'}]}, page=1, per_page=10
+2025-01-23 22:14:58,526 - multi_filter_search - INFO - Generated query for strategy 'disclaimer_statements'.
+2025-01-23 22:14:58,733 - multi_filter_search - INFO - Total results before pagination: 12
+2025-01-23 22:14:58,747 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, anon_3.score AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, (SELECT casefilestatement.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefilestatement 
+WHERE substr(casefilestatement.type_code, 1, 2) = 'D0' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR substr(casefilestatement.type_code, 1, 2) = 'D1' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_3 
+WHERE casefile.serial_number IN (SELECT anon_3.sn 
+FROM (SELECT casefilestatement.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefilestatement 
+WHERE substr(casefilestatement.type_code, 1, 2) = 'D0' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR substr(casefilestatement.type_code, 1, 2) = 'D1' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_3)) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.sn 
+FROM (SELECT casefilestatement.serial_number AS sn, greatest(similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100, similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100) AS score 
+FROM casefilestatement 
+WHERE substr(casefilestatement.type_code, 1, 2) = 'D0' AND (similarity(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), ''), 'auto') * 100 > 30 OR lower(coalesce(substring(casefilestatement.statement_text, '"([^"]+)"'), '')) LIKE lower('%auto%')) OR substr(casefilestatement.type_code, 1, 2) = 'D1' AND (similarity(coalesce(casefilestatement.statement_text, ''), 'auto') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%auto%'))) AS anon_7)) AS anon_6)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 22:14:59,181 - multi_filter_search - INFO - Query executed in 0.66s
+2025-01-23 22:14:59,243 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:14:59] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 22:15:16,687 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:15:16] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 22:15:16,690 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, 'page': 1, 'per_page': 10}
+2025-01-23 22:15:16,690 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'owner_name', 'query': 'auto', 'group': 'General Search', 'label': "Owner's Name"}]}, page=1, per_page=10
+2025-01-23 22:15:16,692 - multi_filter_search - INFO - Generated query for strategy 'owner_name'.
+2025-01-23 22:15:17,445 - multi_filter_search - INFO - Total results before pagination: 344
+2025-01-23 22:15:17,457 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, anon_3.score AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, (SELECT owner.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%'))) AS anon_3 
+WHERE casefile.serial_number IN (SELECT anon_3.sn 
+FROM (SELECT owner.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%'))) AS anon_3)) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.sn 
+FROM (SELECT owner.serial_number AS sn, similarity(coalesce(owner.party_name, ''), 'auto') * 100 AS score 
+FROM owner 
+WHERE owner.party_name IS NOT NULL AND (similarity(coalesce(owner.party_name, ''), 'auto') * 100 > 30 OR lower(coalesce(owner.party_name, '')) LIKE lower('%auto%'))) AS anon_7)) AS anon_6)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 22:15:20,553 - multi_filter_search - INFO - Query executed in 3.86s
+2025-01-23 22:15:20,612 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 22:15:20] "POST /api/combined_search HTTP/1.1" 200 -
