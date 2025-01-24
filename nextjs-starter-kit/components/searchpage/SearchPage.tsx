@@ -5,12 +5,18 @@
 import { useState } from "react";
 import SearchResults from "./SearchResults";
 import { Button } from "@/components/ui/button";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, Download } from "lucide-react";
 import { API_ENDPOINTS } from "@/lib/api-config";
 import type { SearchResult } from "@/utils/types/case";
 import { Toaster } from "@/components/ui/toaster";
 import FilterGroup from "./FilterGroup";
 import QueryBuilder from "./QueryBuilder";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface SearchFilter {
   strategy: string;
@@ -164,6 +170,46 @@ export default function SearchPage() {
     }
   };
 
+  const handleExport = async (type: 'current_page' | 'full') => {
+    if (!filterTree) return;
+
+    try {
+      const response = await fetch(API_ENDPOINTS.exportSearch, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          filter_tree: filterTree ? transformForBackend(filterTree) : null,
+          export_type: type,
+          page: pagination.current_page,
+          per_page: pagination.per_page,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Export failed');
+
+      // Get the blob from the response
+      const blob = await response.blob();
+      
+      // Create a URL for the blob
+      const url = window.URL.createObjectURL(blob);
+      
+      // Create a temporary link and click it to download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = response.headers.get('content-disposition')?.split('filename=')[1] || 'export.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error("Export error:", err);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white p-6 md:p-10 flex flex-col items-center space-y-10">
       <Toaster />
@@ -195,7 +241,7 @@ export default function SearchPage() {
             />
           )}
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center gap-2">
           <Button
             onClick={() => handleSearch(1)}
             className="h-12 px-6 text-lg flex items-center gap-2"
@@ -204,6 +250,27 @@ export default function SearchPage() {
             <Search className="h-5 w-5" />
             Search
           </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="h-12 px-6 text-lg flex items-center gap-2"
+                disabled={!results.length}
+              >
+                <Download className="h-5 w-5" />
+                Export
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => handleExport('current_page')}>
+                Export Current Page
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleExport('full')}>
+                Export First 500 Results
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
