@@ -1,9 +1,10 @@
 // api-config.ts
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5001';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api'
 
 export const API_ENDPOINTS = {
-  search: `${API_BASE_URL}/api/search`,
-  autocomplete: `${API_BASE_URL}/api/autocomplete`,
-  caseDetails: (serialNumber: number) => `${API_BASE_URL}/api/case/${serialNumber}`,
-  combinedSearch: `${API_BASE_URL}/api/combined_search`
-}; 
+  search: `${API_BASE}/search`,
+  autocomplete: `${API_BASE}/autocomplete`,
+  caseDetails: (serialNumber: number) => `${API_BASE}/case/${serialNumber}`,
+  combinedSearch: `${API_BASE}/combined_search`,
+  exportSearch: `${API_BASE}/export_search`,
+} 

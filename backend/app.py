@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, request, jsonify, json
+from flask import Flask, request, jsonify, json, send_file
 from search_engine import SearchEngine
 from db_utils import get_autocomplete_suggestions, get_db_session
 from models import (
@@ -13,6 +13,10 @@ from multi_filter_search import multi_filter_search
 import logging
 import datetime
 from flask.json import dumps
+import pandas as pd
+from io import BytesIO
+import openpyxl
+from sqlalchemy import func
 
 # Configure logging
 logging.basicConfig(
@@ -363,6 +367,140 @@ def combined_search():
         return jsonify({"error": f"Invalid parameter: {str(e)}"}), 400
     except Exception as e:
         logger.error(f"Error in combined_search: {e}", exc_info=True)
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/api/export_search', methods=['POST'])
+def export_search():
+    """API endpoint for exporting search results to Excel"""
+    try:
+        data = request.get_json()
+        logger.info(f"Received export_search request: {data}")
+
+        filter_tree = data.get('filter_tree')
+        export_type = data.get('export_type')  # 'current_page' or 'full'
+        
+        if not filter_tree:
+            return jsonify({"error": "No filter tree provided"}), 400
+
+        if export_type == 'current_page':
+            page = int(data.get('page', 1))
+            per_page = int(data.get('per_page', 60))
+            results = multi_filter_search(filter_tree=filter_tree, page=page, per_page=per_page)
+        else:  # 'full' export
+            results = multi_filter_search(filter_tree=filter_tree, page=1, per_page=500)
+
+        # Convert results to DataFrame
+        df = pd.DataFrame(results['results'])
+        
+        # Get additional data from database for these serial numbers
+        session = get_db_session()
+        serial_numbers = df['serial_number'].tolist()
+        
+        # Query additional data
+        additional_data = (
+            session.query(
+                CaseFile.serial_number,
+                Owner.party_name.label('owner_name'),
+                Classification.international_code,
+                Classification.classification_status_code,
+                PriorRegistrationApplication.number.label('prior_registration')
+            )
+            .select_from(CaseFile)
+            .outerjoin(Owner, CaseFile.serial_number == Owner.serial_number)
+            .outerjoin(Classification, CaseFile.serial_number == Classification.serial_number)
+            .outerjoin(PriorRegistrationApplication, CaseFile.serial_number == PriorRegistrationApplication.serial_number)
+            .filter(CaseFile.serial_number.in_(serial_numbers))
+            .group_by(
+                CaseFile.serial_number,
+                Owner.party_name,
+                Classification.international_code,
+                Classification.classification_status_code,
+                PriorRegistrationApplication.number
+            )
+        ).all()
+        
+        # Convert to DataFrame and merge
+        additional_df = pd.DataFrame(additional_data)
+        if not additional_df.empty:
+            # Group by serial_number and aggregate the additional fields
+            additional_df = additional_df.groupby('serial_number').agg({
+                'owner_name': lambda x: '; '.join(filter(None, set(x))),
+                'international_code': lambda x: '; '.join(filter(None, set(x))),
+                'classification_status_code': lambda x: '; '.join(filter(None, set(x))),
+                'prior_registration': lambda x: '; '.join(filter(None, set(x)))
+            }).reset_index()
+            
+            # Merge with main DataFrame
+            df = df.merge(additional_df, on='serial_number', how='left')
+        
+        # Map the columns to their display names and set the order
+        columns = [
+            ('mark_identification', 'Mark'),
+            ('serial_number', 'Serial Number'),
+            ('registration_number', 'Registration Number'),
+            ('registration_date', 'Registration Date'),
+            ('international_code', 'International Class'),
+            ('owner_name', 'Owner'),
+            ('prior_registration', 'Prior Registrations'),
+            ('attorney_name', 'Attorney'),
+            ('filing_date', 'Filing Date'),
+            ('status_code', 'Status'),
+            ('classification_status_code', 'Classification Status'),
+            ('combined_score', 'Match Score')
+        ]
+        
+        # Rename columns for better readability in Excel
+        column_mapping = {old: new for old, new in columns if old in df.columns}
+        df = df.rename(columns=column_mapping)
+        
+        # Select columns in the specified order
+        final_columns = [new for _, new in columns]
+        df = df[final_columns]
+        
+        # Create Excel file in memory
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, index=False)
+            
+            # Get the worksheet to adjust column widths
+            worksheet = writer.sheets['Sheet1']
+            
+            # Set fixed column widths for better readability
+            for idx, col in enumerate(df.columns):
+                # Set a reasonable fixed width for each column type
+                if col in ['Mark', 'Owner', 'Prior Registrations']:
+                    width = 40  # Extra wide for text fields
+                elif col in ['Attorney']:
+                    width = 30  # Wide for names
+                elif col in ['Serial Number', 'Registration Number']:
+                    width = 15  # Medium for numbers
+                elif col in ['Registration Date', 'Filing Date']:
+                    width = 15  # Medium for dates
+                else:
+                    width = 20  # Default width for other columns
+                
+                worksheet.column_dimensions[chr(65 + idx)].width = width
+                
+                # Center-align all columns
+                for cell in worksheet[chr(65 + idx)]:
+                    cell.alignment = openpyxl.styles.Alignment(horizontal='center')
+            
+            # Make the header row bold
+            for cell in worksheet[1]:
+                cell.font = openpyxl.styles.Font(bold=True)
+        
+        output.seek(0)
+        
+        # Return the Excel file
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=f'trademark_search_results_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.xlsx'
+        )
+
+    except Exception as e:
+        logger.error(f"Error in export_search: {e}", exc_info=True)
         return jsonify({"error": "Internal server error"}), 500
 
 if __name__ == '__main__':
