@@ -5,6 +5,7 @@ import { SearchResult, Pagination } from '@/utils/types/case'
 import { formatDate } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
+import { statusCodes } from '@/utils/constants/statusCodes'
 
 interface SearchResultsProps {
   results: SearchResult[]
@@ -56,7 +57,14 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 {result.registration_number || 'N/A'}
               </div>
               <div>
-                <span className="font-medium">Status:</span> {result.status_code}
+                <span className="font-medium">Status:</span>{' '}
+                <span className={`inline-block rounded px-2 ${
+                  statusCodes[result.status_code]?.status === 'Live' ? 'bg-green-50' : 
+                  statusCodes[result.status_code]?.status === 'Dead' ? 'bg-red-50' : 
+                  'bg-gray-50'
+                }`}>
+                  {statusCodes[result.status_code]?.status || 'Unknown'}
+                </span>
               </div>
               <div>
                 <span className="font-medium">Filing Date:</span>{' '}

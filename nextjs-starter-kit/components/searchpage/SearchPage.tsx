@@ -39,7 +39,7 @@ export default function SearchPage() {
     current_page: 1,
     total_pages: 0,
     total_results: 0,
-    per_page: 10,
+    per_page: 60,
   });
 
   // Transform our UI filter tree into the backend format
