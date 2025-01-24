@@ -14760,3 +14760,321 @@ WHERE substr(casefilestatement.type_code, 1, 2) = 'D0' AND (similarity(coalesce(
  LIMIT 10 OFFSET 0
 2025-01-23 17:23:58,881 - multi_filter_search - INFO - Query executed in 1.99s
 2025-01-23 17:23:58,947 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:23:58] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:49:28,727 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-01-23 17:49:28,727 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-01-23 17:49:28,727 - werkzeug - INFO -  * Restarting with stat
+2025-01-23 17:49:28,960 - werkzeug - WARNING -  * Debugger is active!
+2025-01-23 17:49:28,965 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-23 17:49:30,177 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:49:30] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:49:30,183 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'attorney', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:49:30,184 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'attorney', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 17:49:30,184 - multi_filter_search - WARNING - Unknown strategy: attorney
+2025-01-23 17:49:30,186 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:49:30] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:49:31,597 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'attorney', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:49:31,598 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'attorney', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 17:49:31,598 - multi_filter_search - WARNING - Unknown strategy: attorney
+2025-01-23 17:49:31,598 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:49:31] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:49:41,337 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:49:41] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:49:41,340 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:49:41,340 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 17:49:41,344 - multi_filter_search - INFO - Generated query for strategy 'attorney_name'.
+2025-01-23 17:49:42,655 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 17:49:42,667 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.attorney_name, 'bob') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 17:49:42,992 - multi_filter_search - INFO - Query executed in 1.65s
+2025-01-23 17:49:43,052 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:49:43] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:50:17,790 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:50:17] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:50:17,793 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:50:17,793 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 17:50:17,795 - multi_filter_search - INFO - Generated query for strategy 'attorney_name'.
+2025-01-23 17:50:18,088 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 17:50:18,099 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.attorney_name, 'bob') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 17:50:18,502 - multi_filter_search - INFO - Query executed in 0.71s
+2025-01-23 17:50:18,563 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:50:18] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:54:08,117 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:54:08] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:54:08,122 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:54:08,122 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'attorney_name', 'query': 'bob', 'group': 'General Search', 'label': 'Attorney Name'}]}, page=1, per_page=10
+2025-01-23 17:54:08,126 - multi_filter_search - INFO - Generated query for strategy 'attorney_name'.
+2025-01-23 17:54:08,381 - multi_filter_search - INFO - Total results before pagination: 1
+2025-01-23 17:54:08,396 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.attorney_name, 'bob') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.attorney_name, 'bob') > 0.3 OR lower(casefileheader.attorney_name) LIKE lower('%bob%')) AS anon_5)) AS anon_4) AS anon_3) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 17:54:08,787 - multi_filter_search - INFO - Query executed in 0.66s
+2025-01-23 17:54:08,849 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:54:08] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:54:13,196 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:54:13] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:54:13,200 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'foreign_priority', 'query': 'huh', 'group': 'Filing Basis', 'label': 'Foreign Priority Claim (44(d))'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:54:13,200 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'foreign_priority', 'query': 'huh', 'group': 'Filing Basis', 'label': 'Foreign Priority Claim (44(d))'}]}, page=1, per_page=10
+2025-01-23 17:54:13,201 - multi_filter_search - INFO - Generated query for strategy 'foreign_priority'.
+2025-01-23 17:54:13,361 - multi_filter_search - INFO - Total results before pagination: 449
+2025-01-23 17:54:13,367 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_basis_current_44d_in = true OR casefileheader.amended_to_44d_application_in = true OR casefileheader.filing_basis_filed_as_44d_in = true) AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 17:54:13,472 - multi_filter_search - INFO - Query executed in 0.27s
+2025-01-23 17:54:13,531 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:54:13] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:54:33,641 - __main__ - INFO - Fetching details for case: 73266964
+2025-01-23 17:54:33,642 - __main__ - INFO - Database session established.
+2025-01-23 17:54:33,769 - __main__ - INFO - Case query executed. Case found: True
+2025-01-23 17:54:33,842 - __main__ - INFO - Header query executed. Header found: True
+2025-01-23 17:54:33,921 - __main__ - INFO - Owners query executed. Owners found: 4
+2025-01-23 17:54:34,007 - __main__ - INFO - Classifications query executed. Classifications found: 9
+2025-01-23 17:54:34,077 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-23 17:54:34,150 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-23 17:54:34,216 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-23 17:54:34,408 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-01-23 17:54:34,478 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-23 17:54:34,543 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-23 17:54:34,607 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-23 17:54:34,608 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-23 17:54:34,667 - __main__ - INFO - Database session closed.
+2025-01-23 17:54:34,669 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:54:34] "GET /api/case/73266964 HTTP/1.1" 200 -
+2025-01-23 17:54:44,580 - __main__ - INFO - Fetching details for case: 73266426
+2025-01-23 17:54:44,580 - __main__ - INFO - Database session established.
+2025-01-23 17:54:44,701 - __main__ - INFO - Case query executed. Case found: True
+2025-01-23 17:54:44,768 - __main__ - INFO - Header query executed. Header found: True
+2025-01-23 17:54:44,843 - __main__ - INFO - Owners query executed. Owners found: 6
+2025-01-23 17:54:44,914 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-23 17:54:44,975 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-23 17:54:45,072 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-23 17:54:45,155 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-23 17:54:45,395 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-23 17:54:45,465 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-23 17:54:45,526 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-23 17:54:45,587 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-23 17:54:45,587 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-23 17:54:45,647 - __main__ - INFO - Database session closed.
+2025-01-23 17:54:45,647 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:54:45] "GET /api/case/73266426 HTTP/1.1" 200 -
+2025-01-23 17:55:08,723 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:55:08] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:55:08,727 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'current_44d', 'query': 'true', 'group': 'Application Status', 'label': 'Current 44(d)'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:55:08,727 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'current_44d', 'query': 'true', 'group': 'Application Status', 'label': 'Current 44(d)'}]}, page=1, per_page=10
+2025-01-23 17:55:08,727 - multi_filter_search - WARNING - Unknown strategy: current_44d
+2025-01-23 17:55:08,728 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:55:08] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:55:50,157 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:55:50] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:55:50,160 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'amended_44e_application', 'query': 'true', 'group': 'Application Status', 'label': 'Amended 44(e) Application'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:55:50,160 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'amended_44e_application', 'query': 'true', 'group': 'Application Status', 'label': 'Amended 44(e) Application'}]}, page=1, per_page=10
+2025-01-23 17:55:50,160 - multi_filter_search - WARNING - Unknown strategy: amended_44e_application
+2025-01-23 17:55:50,160 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:55:50] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:55:51,885 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'amended_44e_application', 'query': 'true', 'group': 'Application Status', 'label': 'Amended 44(e) Application'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:55:51,885 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'amended_44e_application', 'query': 'true', 'group': 'Application Status', 'label': 'Amended 44(e) Application'}]}, page=1, per_page=10
+2025-01-23 17:55:51,885 - multi_filter_search - WARNING - Unknown strategy: amended_44e_application
+2025-01-23 17:55:51,886 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:55:51] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:56:03,461 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:56:03] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:56:03,465 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'amended_66a_application', 'query': 'true', 'group': 'Application Status', 'label': 'Amended 66(a) Application'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:56:03,465 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'amended_66a_application', 'query': 'true', 'group': 'Application Status', 'label': 'Amended 66(a) Application'}]}, page=1, per_page=10
+2025-01-23 17:56:03,465 - multi_filter_search - WARNING - Unknown strategy: amended_66a_application
+2025-01-23 17:56:03,465 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:56:03] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:56:19,063 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:56:19] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:56:19,066 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'current_66a', 'query': 'true', 'group': 'Application Status', 'label': 'Current 66(a)'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:56:19,067 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'current_66a', 'query': 'true', 'group': 'Application Status', 'label': 'Current 66(a)'}]}, page=1, per_page=10
+2025-01-23 17:56:19,067 - multi_filter_search - WARNING - Unknown strategy: current_66a
+2025-01-23 17:56:19,067 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:56:19] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:56:26,274 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:56:26] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:56:26,276 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'current_no_basis', 'query': 'true', 'group': 'Application Status', 'label': 'Current No Basis'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:56:26,277 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'current_no_basis', 'query': 'true', 'group': 'Application Status', 'label': 'Current No Basis'}]}, page=1, per_page=10
+2025-01-23 17:56:26,277 - multi_filter_search - WARNING - Unknown strategy: current_no_basis
+2025-01-23 17:56:26,277 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:56:26] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:57:37,774 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:57:37] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:57:37,778 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'current_no_basis', 'query': 'true', 'group': 'Application Status', 'label': 'Current No Basis'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:57:37,778 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'current_no_basis', 'query': 'true', 'group': 'Application Status', 'label': 'Current No Basis'}]}, page=1, per_page=10
+2025-01-23 17:57:37,779 - multi_filter_search - WARNING - Unknown strategy: current_no_basis
+2025-01-23 17:57:37,781 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:57:37] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:57:54,053 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:57:54] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:57:54,057 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'no_current_basis', 'query': 'true', 'group': 'Application Status', 'label': 'No Current Basis'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:57:54,057 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'no_current_basis', 'query': 'true', 'group': 'Application Status', 'label': 'No Current Basis'}]}, page=1, per_page=10
+2025-01-23 17:57:54,059 - multi_filter_search - INFO - Generated query for strategy 'no_current_basis'.
+2025-01-23 17:57:54,212 - multi_filter_search - INFO - Total results before pagination: 0
+2025-01-23 17:57:54,217 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_current_no_basis_in = true) AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 17:57:54,301 - multi_filter_search - INFO - Query executed in 0.24s
+2025-01-23 17:57:54,363 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:57:54] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:58:06,308 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:58:06] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 17:58:06,311 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'no_initial_basis', 'query': 'true', 'group': 'Application Status', 'label': 'No Initial Basis'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 17:58:06,311 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'no_initial_basis', 'query': 'true', 'group': 'Application Status', 'label': 'No Initial Basis'}]}, page=1, per_page=10
+2025-01-23 17:58:06,312 - multi_filter_search - INFO - Generated query for strategy 'no_initial_basis'.
+2025-01-23 17:58:06,517 - multi_filter_search - INFO - Total results before pagination: 0
+2025-01-23 17:58:06,523 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.without_basis_currently_in = true) AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 17:58:06,606 - multi_filter_search - INFO - Query executed in 0.30s
+2025-01-23 17:58:06,668 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 17:58:06] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 18:00:30,193 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:00:30] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 18:00:30,196 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'foreign_priority', 'query': 'j', 'group': 'Filing Basis', 'label': 'Foreign Priority Claim (44(d))'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 18:00:30,196 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'foreign_priority', 'query': 'j', 'group': 'Filing Basis', 'label': 'Foreign Priority Claim (44(d))'}]}, page=1, per_page=10
+2025-01-23 18:00:30,197 - multi_filter_search - INFO - Generated query for strategy 'foreign_priority'.
+2025-01-23 18:00:30,356 - multi_filter_search - INFO - Total results before pagination: 449
+2025-01-23 18:00:30,362 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_basis_current_44d_in = true OR casefileheader.amended_to_44d_application_in = true OR casefileheader.filing_basis_filed_as_44d_in = true) AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 18:00:30,457 - multi_filter_search - INFO - Query executed in 0.26s
+2025-01-23 18:00:30,520 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:00:30] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 18:00:54,153 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:00:54] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 18:00:54,156 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'foreign_registration', 'query': 'true', 'group': 'Filing Basis', 'label': 'Foreign Registration (44(e))'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 18:00:54,157 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'foreign_registration', 'query': 'true', 'group': 'Filing Basis', 'label': 'Foreign Registration (44(e))'}]}, page=1, per_page=10
+2025-01-23 18:00:54,157 - multi_filter_search - INFO - Generated query for strategy 'foreign_registration'.
+2025-01-23 18:00:54,325 - multi_filter_search - INFO - Total results before pagination: 2478
+2025-01-23 18:00:54,330 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_basis_filed_as_44e_in = true OR casefileheader.amended_to_44e_application_in = true OR casefileheader.filing_basis_current_44e_in = true) AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 18:00:54,447 - multi_filter_search - INFO - Query executed in 0.29s
+2025-01-23 18:00:54,507 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:00:54] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 18:00:56,157 - __main__ - INFO - Fetching details for case: 73266460
+2025-01-23 18:00:56,157 - __main__ - INFO - Database session established.
+2025-01-23 18:00:56,282 - __main__ - INFO - Case query executed. Case found: True
+2025-01-23 18:00:56,346 - __main__ - INFO - Header query executed. Header found: True
+2025-01-23 18:00:56,417 - __main__ - INFO - Owners query executed. Owners found: 6
+2025-01-23 18:00:56,488 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-23 18:00:56,550 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-23 18:00:56,615 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-23 18:00:56,677 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-23 18:00:56,842 - __main__ - INFO - Event Statements query executed. Event Statements found: 33
+2025-01-23 18:00:56,906 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-23 18:00:56,966 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-23 18:00:57,026 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-23 18:00:57,026 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-23 18:00:57,086 - __main__ - INFO - Database session closed.
+2025-01-23 18:00:57,087 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:00:57] "GET /api/case/73266460 HTTP/1.1" 200 -
+2025-01-23 18:01:31,275 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:01:31] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 18:01:31,279 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'extension_protection', 'query': 'true', 'group': 'Filing Basis', 'label': 'Extension of Protection (66(a))'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 18:01:31,279 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'extension_protection', 'query': 'true', 'group': 'Filing Basis', 'label': 'Extension of Protection (66(a))'}]}, page=1, per_page=10
+2025-01-23 18:01:31,280 - multi_filter_search - INFO - Generated query for strategy 'extension_protection'.
+2025-01-23 18:01:31,441 - multi_filter_search - INFO - Total results before pagination: 0
+2025-01-23 18:01:31,447 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_basis_filed_as_66a_in = true OR casefileheader.filing_basis_current_66a_in = true) AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 18:01:31,536 - multi_filter_search - INFO - Query executed in 0.26s
+2025-01-23 18:01:31,598 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:01:31] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 18:06:23,930 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:06:23] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 18:06:23,933 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'foreign_registration', 'query': 'true', 'group': 'Filing Basis', 'label': 'Foreign Registration (44(e))'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 18:06:23,933 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'foreign_registration', 'query': 'true', 'group': 'Filing Basis', 'label': 'Foreign Registration (44(e))'}]}, page=1, per_page=10
+2025-01-23 18:06:23,935 - multi_filter_search - INFO - Generated query for strategy 'foreign_registration'.
+2025-01-23 18:06:24,142 - multi_filter_search - INFO - Total results before pagination: 2478
+2025-01-23 18:06:24,149 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_basis_filed_as_44e_in = true OR casefileheader.amended_to_44e_application_in = true OR casefileheader.filing_basis_current_44e_in = true) AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 18:06:24,264 - multi_filter_search - INFO - Query executed in 0.33s
+2025-01-23 18:06:24,325 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:06:24] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-23 18:09:23,339 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:09:23] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-23 18:09:23,342 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'foreign_priority', 'query': 'true', 'group': 'Filing Basis', 'label': 'Foreign Priority Claim (44(d))'}]}, 'page': 1, 'per_page': 10}
+2025-01-23 18:09:23,342 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'foreign_priority', 'query': 'true', 'group': 'Filing Basis', 'label': 'Foreign Priority Claim (44(d))'}]}, page=1, per_page=10
+2025-01-23 18:09:23,344 - multi_filter_search - INFO - Generated query for strategy 'foreign_priority'.
+2025-01-23 18:09:23,512 - multi_filter_search - INFO - Total results before pagination: 449
+2025-01-23 18:09:23,519 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefileheader.filing_basis_current_44d_in = true OR casefileheader.amended_to_44d_application_in = true OR casefileheader.filing_basis_filed_as_44d_in = true) AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 10 OFFSET 0
+2025-01-23 18:09:23,625 - multi_filter_search - INFO - Query executed in 0.28s
+2025-01-23 18:09:23,687 - werkzeug - INFO - 127.0.0.1 - - [23/Jan/2025 18:09:23] "POST /api/combined_search HTTP/1.1" 200 -

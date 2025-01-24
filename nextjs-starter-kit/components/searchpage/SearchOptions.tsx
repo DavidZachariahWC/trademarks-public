@@ -37,27 +37,44 @@ const DATE_OPTIONS = [
   { id: 'foreign_renewal_date', label: 'Foreign Renewal Date' },
 ]
 
-const SECTION_8_OPTIONS = [
-  { id: 'section_8_filed', label: 'Filed' },
-  { id: 'section_8_partial_accept', label: 'Partially Accepted' },
-  { id: 'section_8_accepted', label: 'Accepted' },
+const FILING_STATUS_OPTIONS = [
+  { id: 'section_12c', label: 'Section 12c Filed' },
+  { id: 'section_8', label: 'Section 8 Filed' },
+  { id: 'section_15', label: 'Section 15 Filed' },
+  { id: 'change_registration', label: 'Changed Registration' },
+  { id: 'concurrent_use', label: 'Concurrent Use' },
+  { id: 'concurrent_use_proceeding', label: 'Concurrent Use Proceeding Pending' },
+  { id: 'assignment_recorded', label: 'Assignment Recorded' },
 ]
-
-const SECTION_15_OPTIONS = [
-  { id: 'section_15_filed', label: 'Filed' },
-  { id: 'section_15_acknowledged', label: 'Acknowledged' },
-]
-
-const SECTION_12C_OPTIONS = [
-  { id: 'section_12c', label: 'Filed' },
-]
-
-const FILING_STATUS_BOOLEAN_OPTIONS: { id: string, label: string }[] = []
 
 const FILING_BASIS_OPTIONS = [
   { id: 'foreign_priority', label: 'Foreign Priority Claim (44(d))' },
   { id: 'foreign_registration', label: 'Foreign Registration (44(e))' },
   { id: 'extension_protection', label: 'Extension of Protection (66(a))' },
+  { id: 'no_current_basis', label: 'No Current Basis' },
+  { id: 'no_initial_basis', label: 'No Initial Basis' },
+  { id: 'intent_to_use', label: 'Intent to Use' },
+  { id: 'actual_use', label: 'Actual Use' },
+  { id: 'foreign_application', label: 'Foreign Application' },
+]
+
+const REGISTRATION_TYPE_OPTIONS = [
+  { id: 'certification_mark', label: 'Certification Mark' },
+  { id: 'collective_membership_mark', label: 'Collective Membership Mark' },
+  { id: 'collective_trademark', label: 'Collective Trademark' },
+  { id: 'collective_service_mark', label: 'Collective Service Mark' },
+  { id: 'trademark', label: 'Trademark' },
+  { id: 'service_mark', label: 'Service Mark' },
+]
+
+const REGISTER_TYPE_OPTIONS = [
+  { id: 'supplemental_register', label: 'Supplemental Register' },
+  { id: 'principal_register', label: 'Principal Register' },
+]
+
+const APPLICATION_STATUS_OPTIONS = [
+  { id: 'no_current_basis', label: 'No Current Basis' },
+  { id: 'no_initial_basis', label: 'No Initial Basis' },
 ]
 
 const CLASSIFICATION_OPTIONS = [
@@ -89,21 +106,9 @@ const VISUAL_CHARACTERISTICS_OPTIONS = [
   { id: 'standard_character_claim', label: 'Standard Character Claim' },
 ]
 
-const DRAWING_CODE_OPTIONS = [
-  { value: '0', label: '0 - Not yet assigned' },
-  { value: '1', label: '1 - Typeset word(s)/letter(s)/number(s)' },
-  { value: '2', label: '2 - Design without text' },
-  { value: '3', label: '3 - Design with text' },
-  { value: '4', label: '4 - Standard character mark' },
-  { value: '5', label: '5 - Stylized text with design' },
-  { value: '6', label: '6 - No drawing (e.g., sound)' },
-]
-
-const ADDITIONAL_OPTIONS = [
-  { id: 'prior_registration_present', label: 'Prior Registration Present' },
+const ACQUIRED_DISTINCTIVENESS_OPTIONS = [
   { id: 'acquired_distinctiveness_whole', label: 'Acquired Distinctiveness (Whole)' },
   { id: 'acquired_distinctiveness_part', label: 'Acquired Distinctiveness (Part)' },
-  { id: 'assignment_recorded', label: 'Assignment Recorded' },
 ]
 
 export default function SearchOptions({ onSelect, onClose, booleanStrategies }: SearchOptionsProps) {
@@ -131,15 +136,19 @@ export default function SearchOptions({ onSelect, onClose, booleanStrategies }: 
   )
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-h-[80vh] overflow-y-auto p-4">
       {renderSection('General Search', GENERAL_OPTIONS)}
       {renderSection('Date Filters', DATE_OPTIONS)}
+      {renderSection('Filing Status', FILING_STATUS_OPTIONS)}
       {renderSection('Filing Basis', FILING_BASIS_OPTIONS)}
+      {renderSection('Registration Type', REGISTRATION_TYPE_OPTIONS)}
+      {renderSection('Register Type', REGISTER_TYPE_OPTIONS)}
+      {renderSection('Application Status', APPLICATION_STATUS_OPTIONS)}
       {renderSection('Classification', CLASSIFICATION_OPTIONS)}
       {renderSection('International Registration', INTERNATIONAL_REGISTRATION_OPTIONS)}
       {renderSection('Owner Information', OWNER_OPTIONS)}
       {renderSection('Visual Characteristics', VISUAL_CHARACTERISTICS_OPTIONS)}
-      {renderSection('Additional Filters', ADDITIONAL_OPTIONS)}
+      {renderSection('Acquired Distinctiveness', ACQUIRED_DISTINCTIVENESS_OPTIONS)}
     </div>
   )
 }
