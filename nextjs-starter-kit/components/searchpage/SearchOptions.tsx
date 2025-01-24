@@ -12,7 +12,7 @@ interface SearchOptionsProps {
 }
 
 const GENERAL_OPTIONS = [
-  { id: 'wordmark', label: 'Word Mark' },
+  { id: 'wordmark', label: 'Wordmark' },
   { id: 'owner_name', label: "Owner's Name" },
   { id: 'attorney_name', label: 'Attorney Name' },
   { id: 'serial_number', label: 'Serial Number' },

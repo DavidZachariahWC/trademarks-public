@@ -35,7 +35,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
   const [currentFilter, setCurrentFilter] = useState<SearchFilter>({
     strategy: "wordmark",
     query: "",
-    label: "Word Mark"
+    label: "Wordmark"
   });
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -43,7 +43,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
     setCurrentFilter({
       strategy: "wordmark",
       query: "",
-      label: "Word Mark"
+      label: "Wordmark"
     });
   };
 
