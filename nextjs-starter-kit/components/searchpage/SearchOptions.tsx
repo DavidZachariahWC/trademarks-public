@@ -13,7 +13,7 @@ interface SearchOptionsProps {
 
 const GENERAL_OPTIONS = [
   { id: 'wordmark', label: 'Wordmark' },
-  { id: 'phonetic', label: 'Phonetic' },
+  // { id: 'phonetic', label: 'Phonetic' },  // Temporarily disabled
   { id: 'description_of_mark', label: 'Description of Mark' },
   { id: 'owner_name', label: "Owner's Name" },
   { id: 'attorney_name', label: 'Attorney Name' },

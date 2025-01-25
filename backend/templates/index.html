@@ -699,7 +699,7 @@
                 }
 
                 const searchParams = new URLSearchParams();
-                const textSearchTypes = ['wordmark', 'phonetic', 'attorney'];
+                const textSearchTypes = ['wordmark', /* 'phonetic', */ 'attorney'];
                 const hasTextSearch = selectedTypes.some(type => textSearchTypes.includes(type));
                 
                 if (hasTextSearch && !query.trim()) {
@@ -928,7 +928,7 @@
             checkbox.addEventListener('change', () => {
                 const selectedTypes = Array.from(document.querySelectorAll('input[name="searchType"]:checked'))
                     .map(cb => cb.value);
-                const textSearchTypes = ['wordmark', 'phonetic', 'attorney'];
+                const textSearchTypes = ['wordmark', /* 'phonetic', */ 'attorney'];
                 const hasOnlyFilters = selectedTypes.every(type => !textSearchTypes.includes(type));
                 
                 // If only filters are selected, or if there's a search term, perform the search
