@@ -124,21 +124,28 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
                 return
 
             strategy = StrategyClass(query_str, page=1, per_page=999999999)
-            filters, scoring_cols = strategy.get_filters_and_scoring()
-
-            if getattr(strategy, 'is_scoring_strategy', False) and scoring_cols:
-                score_col = scoring_cols[0]
-                # Convert to subquery of (sn, score)
-                subq = (
-                    base_query(session)
-                    .filter(*filters)
-                    .with_entities(
-                        CaseFile.serial_number.label('sn'),
-                        score_col.label('score')
-                    )
-                    .subquery()
-                )
-                scoring_subqueries.append(subq)
+            if getattr(strategy, 'is_scoring_strategy', False):
+                # Check if strategy has optimized scoring method
+                if hasattr(strategy, 'get_subquery_for_scoring'):
+                    sub_scoring_q = strategy.get_subquery_for_scoring(session)
+                    if sub_scoring_q is not None:
+                        subq = sub_scoring_q.subquery()
+                        scoring_subqueries.append(subq)
+                else:
+                    # Fallback to original method for other strategies
+                    filters, scoring_cols = strategy.get_filters_and_scoring()
+                    if scoring_cols:
+                        score_col = scoring_cols[0]
+                        subq = (
+                            base_query(session)
+                            .filter(*filters)
+                            .with_entities(
+                                CaseFile.serial_number.label('sn'),
+                                score_col.label('score')
+                            )
+                            .subquery()
+                        )
+                        scoring_subqueries.append(subq)
 
         elif 'operator' in node and 'operands' in node:
             for op in node['operands']:
