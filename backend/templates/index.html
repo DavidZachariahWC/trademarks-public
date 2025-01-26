@@ -361,54 +361,7 @@
             <label class="search-type" title="Search by latest renewal date (YYYY-MM-DD)">
                 <input type="checkbox" name="searchType" value="renewal_date"> Renewal Date
             </label>
-            <div class="filing-status-filters">
-                <label class="search-type">
-                    <input type="checkbox" name="searchType" value="section_12c"> Section 12c Filed
-                </label>
-                <label class="search-type">
-                    <input type="checkbox" name="searchType" value="section_8"> Section 8 Filed
-                </label>
-                <label class="search-type">
-                    <input type="checkbox" name="searchType" value="section_15"> Section 15 Filed
-                </label>
-                <label class="search-type" title="Search by Cancellation Date (YYYY-MM-DD)">
-                    <input type="checkbox" name="searchType" value="cancellation_date"> Cancellation Date
-                </label>
-                <label class="search-type" title="Search for cases with changed registration">
-                    <input type="checkbox" name="searchType" value="change_registration"> Changed Registration
-                </label>
-                <label class="search-type" title="Search for cases with concurrent use">
-                    <input type="checkbox" name="searchType" value="concurrent_use"> Concurrent Use
-                </label>
-                <label class="search-type" title="Search for cases with pending concurrent use proceeding">
-                    <input type="checkbox" name="searchType" value="concurrent_use_proceeding"> Concurrent Use Proceeding Pending
-                </label>
-                <label class="search-type" title="Find cases with recorded assignments">
-                    <input type="checkbox" name="searchType" value="assignment_recorded"> Assignment Recorded
-                </label>
-            </div>
-            <div class="filing-basis-filters">
-                <h4>Filing Basis</h4>
-                
-                <label class="search-type" title="Applications or registrations claiming priority based on a foreign application filing under Section 44(d)">
-                    <input type="checkbox" name="searchType" value="foreign_priority"> Foreign Priority Claim (44(d))
-                </label>
-                <label class="search-type" title="Applications or registrations based on a live foreign registration under Section 44(e)">
-                    <input type="checkbox" name="searchType" value="foreign_registration"> Foreign Registration (44(e))
-                </label>
-                <label class="search-type" title="Applications or registrations based on a request for extension of protection to the U.S. under Section 66(a) (Madrid Protocol)">
-                    <input type="checkbox" name="searchType" value="extension_protection"> Extension of Protection (66(a))
-                </label>
-                <div class="basis-issues">
-                    <h5>Basis Issues</h5>
-                    <label class="search-type" title="Applications or registrations that currently lack a valid filing basis">
-                        <input type="checkbox" name="searchType" value="no_current_basis"> No Current Basis
-                    </label>
-                    <label class="search-type" title="Applications or registrations that lacked a filing basis at the time of initial filing">
-                        <input type="checkbox" name="searchType" value="no_initial_basis"> No Initial Basis
-                    </label>
-                </div>
-            </div>
+
             <div class="classification-filters">
                 <h4>Classification Search</h4>
                 
@@ -421,6 +374,7 @@
                     </label>
                 </div>
             </div>
+
             <div class="coordinated-class-filters">
                 <h4>Coordinated Class Search</h4>
                 <div class="search-type-group">
@@ -477,79 +431,7 @@
                     </select>
                 </div>
             </div>
-            <div class="international-registration-filters">
-                <div class="section-header">
-                    <h4>International Registration</h4>
-                </div>
-                <div class="search-type-group">
-                    <label class="search-type" title="Search by International Registration Number">
-                        <input type="checkbox" name="searchType" value="int_reg_number"> Registration Number
-                    </label>
-                    <label class="search-type" title="Search by International Registration Date (YYYY-MM-DD)">
-                        <input type="checkbox" name="searchType" value="int_reg_date"> Registration Date
-                    </label>
-                    <label class="search-type" title="Search by International Publication Date (YYYY-MM-DD)">
-                        <input type="checkbox" name="searchType" value="int_pub_date"> Publication Date
-                    </label>
-                    <label class="search-type" title="Search by Auto Protection Date (YYYY-MM-DD)">
-                        <input type="checkbox" name="searchType" value="auto_protection_date"> Auto Protection Date
-                    </label>
-                    <label class="search-type" title="Search by International Status Code">
-                        <input type="checkbox" name="searchType" value="int_status_code"> Status Code
-                    </label>
-                    <label class="search-type" title="Find cases with Priority Claimed">
-                        <input type="checkbox" name="searchType" value="priority_claimed"> Priority Claimed
-                    </label>
-                    <label class="search-type" title="Find cases with First Refusal">
-                        <input type="checkbox" name="searchType" value="first_refusal"> First Refusal
-                    </label>
-                    <label class="search-type" title="Search by latest international renewal date (YYYY-MM-DD)">
-                        <input type="checkbox" name="searchType" value="international_renewal_date"> Renewal Date
-                    </label>
-                </div>
-            </div>
-            <div class="filing-date-filters">
-                <div class="section-header">
-                    <h4>Filing Date Search</h4>
-                </div>
-                <div class="search-type-group">
-                    <label class="search-type" title="Search by exact filing date (YYYY-MM-DD)">
-                        <input type="checkbox" name="searchType" value="filing_date"> Filing Date
-                    </label>
-                    <label class="search-type" title="Search by foreign filing date (YYYY-MM-DD)">
-                        <input type="checkbox" name="searchType" value="foreign_filing_date"> Foreign Filing Date
-                    </label>
-                    <label class="search-type" title="Search by Published Opposition Date Range (YYYY-MM-DD)">
-                        <input type="checkbox" name="searchType" value="published_opposition_date"> Published Opposition Date
-                    </label>
-                    <div id="oppositionDateInputs" style="display: none; margin-left: 20px; margin-top: 5px;">
-                        <input type="date" id="oppositionStartDate" placeholder="Start Date">
-                        <input type="date" id="oppositionEndDate" placeholder="End Date">
-                    </div>
-                </div>
-            </div>
-            <div class="owner-filters">
-                <div class="section-header">
-                    <h4>Owner Information</h4>
-                </div>
-                <div class="search-type-group">
-                    <label class="search-type" title="Search by trademark owner's name">
-                        <input type="checkbox" name="searchType" value="owner_name"> Owner's Name
-                    </label>
-                    <label class="search-type" title="Search by DBA/AKA (Doing Business As) name">
-                        <input type="checkbox" name="searchType" value="dba_name"> DBA/AKA Name
-                    </label>
-                    <label class="search-type" title="Find cases where the owner's name has changed">
-                        <input type="checkbox" name="searchType" value="name_change"> Name Change
-                    </label>
-                    <label class="search-type" title="Search by owner's legal entity type code (2 digits)">
-                        <input type="checkbox" name="searchType" value="owner_legal_entity"> Legal Entity Type
-                    </label>
-                    <label class="search-type" title="Search by owner's party type">
-                        <input type="checkbox" name="searchType" value="owner_party_type"> Party Type
-                    </label>
-                </div>
-            </div>
+
             <div class="visual-characteristics-filters">
                 <div class="section-header">
                     <h4>Visual Characteristics</h4>
@@ -588,6 +470,133 @@
                     </label>
                 </div>
             </div>
+
+            <div class="filing-status-filters">
+                <label class="search-type">
+                    <input type="checkbox" name="searchType" value="section_12c"> Section 12c Filed
+                </label>
+                <label class="search-type">
+                    <input type="checkbox" name="searchType" value="section_8"> Section 8 Filed
+                </label>
+                <label class="search-type">
+                    <input type="checkbox" name="searchType" value="section_15"> Section 15 Filed
+                </label>
+                <label class="search-type" title="Search by Cancellation Date (YYYY-MM-DD)">
+                    <input type="checkbox" name="searchType" value="cancellation_date"> Cancellation Date
+                </label>
+                <label class="search-type" title="Search for cases with changed registration">
+                    <input type="checkbox" name="searchType" value="change_registration"> Changed Registration
+                </label>
+                <label class="search-type" title="Search for cases with concurrent use">
+                    <input type="checkbox" name="searchType" value="concurrent_use"> Concurrent Use
+                </label>
+                <label class="search-type" title="Search for cases with pending concurrent use proceeding">
+                    <input type="checkbox" name="searchType" value="concurrent_use_proceeding"> Concurrent Use Proceeding Pending
+                </label>
+                <label class="search-type" title="Find cases with recorded assignments">
+                    <input type="checkbox" name="searchType" value="assignment_recorded"> Assignment Recorded
+                </label>
+            </div>
+
+            <div class="filing-basis-filters">
+                <h4>Filing Basis</h4>
+                
+                <label class="search-type" title="Applications or registrations claiming priority based on a foreign application filing under Section 44(d)">
+                    <input type="checkbox" name="searchType" value="foreign_priority"> Foreign Priority Claim (44(d))
+                </label>
+                <label class="search-type" title="Applications or registrations based on a live foreign registration under Section 44(e)">
+                    <input type="checkbox" name="searchType" value="foreign_registration"> Foreign Registration (44(e))
+                </label>
+                <label class="search-type" title="Applications or registrations based on a request for extension of protection to the U.S. under Section 66(a) (Madrid Protocol)">
+                    <input type="checkbox" name="searchType" value="extension_protection"> Extension of Protection (66(a))
+                </label>
+                <div class="basis-issues">
+                    <h5>Basis Issues</h5>
+                    <label class="search-type" title="Applications or registrations that currently lack a valid filing basis">
+                        <input type="checkbox" name="searchType" value="no_current_basis"> No Current Basis
+                    </label>
+                    <label class="search-type" title="Applications or registrations that lacked a filing basis at the time of initial filing">
+                        <input type="checkbox" name="searchType" value="no_initial_basis"> No Initial Basis
+                    </label>
+                </div>
+            </div>
+
+            <div class="filing-date-filters">
+                <div class="section-header">
+                    <h4>Filing Date Search</h4>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Search by exact filing date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="filing_date"> Filing Date
+                    </label>
+                    <label class="search-type" title="Search by foreign filing date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="foreign_filing_date"> Foreign Filing Date
+                    </label>
+                    <label class="search-type" title="Search by Published Opposition Date Range (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="published_opposition_date"> Published Opposition Date
+                    </label>
+                    <div id="oppositionDateInputs" style="display: none; margin-left: 20px; margin-top: 5px;">
+                        <input type="date" id="oppositionStartDate" placeholder="Start Date">
+                        <input type="date" id="oppositionEndDate" placeholder="End Date">
+                    </div>
+                </div>
+            </div>
+
+            <div class="owner-filters">
+                <div class="section-header">
+                    <h4>Owner Information</h4>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Search by trademark owner's name">
+                        <input type="checkbox" name="searchType" value="owner_name"> Owner's Name
+                    </label>
+                    <label class="search-type" title="Search by DBA/AKA (Doing Business As) name">
+                        <input type="checkbox" name="searchType" value="dba_name"> DBA/AKA Name
+                    </label>
+                    <label class="search-type" title="Find cases where the owner's name has changed">
+                        <input type="checkbox" name="searchType" value="name_change"> Name Change
+                    </label>
+                    <label class="search-type" title="Search by owner's legal entity type code (2 digits)">
+                        <input type="checkbox" name="searchType" value="owner_legal_entity"> Legal Entity Type
+                    </label>
+                    <label class="search-type" title="Search by owner's party type">
+                        <input type="checkbox" name="searchType" value="owner_party_type"> Party Type
+                    </label>
+                </div>
+            </div>
+
+            <div class="international-registration-filters">
+                <div class="section-header">
+                    <h4>International Registration</h4>
+                </div>
+                <div class="search-type-group">
+                    <label class="search-type" title="Search by International Registration Number">
+                        <input type="checkbox" name="searchType" value="int_reg_number"> Registration Number
+                    </label>
+                    <label class="search-type" title="Search by International Registration Date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="int_reg_date"> Registration Date
+                    </label>
+                    <label class="search-type" title="Search by International Publication Date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="int_pub_date"> Publication Date
+                    </label>
+                    <label class="search-type" title="Search by Auto Protection Date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="auto_protection_date"> Auto Protection Date
+                    </label>
+                    <label class="search-type" title="Search by International Status Code">
+                        <input type="checkbox" name="searchType" value="int_status_code"> Status Code
+                    </label>
+                    <label class="search-type" title="Find cases with Priority Claimed">
+                        <input type="checkbox" name="searchType" value="priority_claimed"> Priority Claimed
+                    </label>
+                    <label class="search-type" title="Find cases with First Refusal">
+                        <input type="checkbox" name="searchType" value="first_refusal"> First Refusal
+                    </label>
+                    <label class="search-type" title="Search by latest international renewal date (YYYY-MM-DD)">
+                        <input type="checkbox" name="searchType" value="international_renewal_date"> Renewal Date
+                    </label>
+                </div>
+            </div>
+
             <div class="prior-registration-filters">
                 <div class="section-header">
                     <h4>Prior Registration</h4>
@@ -598,6 +607,7 @@
                     </label>
                 </div>
             </div>
+
             <div class="foreign-application-filters">
                 <div class="section-header">
                     <h4>Foreign Application</h4>
@@ -618,6 +628,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="acquired-distinctiveness-filters">
                 <div class="section-header">
                     <h4>Acquired Distinctiveness Claim</h4>

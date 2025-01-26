@@ -28,6 +28,14 @@ const CLASSIFICATION_OPTIONS = [
   { id: 'coordinated_class', label: 'Coordinated Class' },
 ]
 
+const VISUAL_CHARACTERISTICS_OPTIONS = [
+  { id: 'drawing_code_type', label: 'Drawing Code' },
+  { id: 'design_code', label: 'Design Code' },
+  { id: 'color_drawing', label: 'Color Drawing' },
+  { id: 'three_d_drawing', label: '3-D Drawing' },
+  { id: 'standard_character_claim', label: 'Standard Character Claim' },
+]
+
 const DATE_OPTIONS = [
   { id: 'filing_date', label: 'Filing Date' },
   { id: 'registration_date', label: 'Registration Date' },
@@ -41,6 +49,14 @@ const DATE_OPTIONS = [
   { id: 'renewal_date', label: 'Renewal Date' },
   { id: 'international_renewal_date', label: 'International Renewal Date' },
   { id: 'foreign_renewal_date', label: 'Foreign Renewal Date' },
+]
+
+const OWNER_OPTIONS = [
+  { id: 'owner_name', label: "Owner's Name" },
+  { id: 'dba_name', label: 'DBA/AKA Name' },
+  { id: 'name_change', label: 'Name Change' },
+  { id: 'owner_legal_entity', label: 'Legal Entity Type' },
+  { id: 'owner_party_type', label: 'Party Type' },
 ]
 
 const FILING_STATUS_OPTIONS = [
@@ -90,22 +106,6 @@ const INTERNATIONAL_REGISTRATION_OPTIONS = [
   { id: 'first_refusal', label: 'First Refusal' },
 ]
 
-const OWNER_OPTIONS = [
-  { id: 'owner_name', label: "Owner's Name" },
-  { id: 'dba_name', label: 'DBA/AKA Name' },
-  { id: 'name_change', label: 'Name Change' },
-  { id: 'owner_legal_entity', label: 'Legal Entity Type' },
-  { id: 'owner_party_type', label: 'Party Type' },
-]
-
-const VISUAL_CHARACTERISTICS_OPTIONS = [
-  { id: 'drawing_code_type', label: 'Drawing Code' },
-  { id: 'design_code', label: 'Design Code' },
-  { id: 'color_drawing', label: 'Color Drawing' },
-  { id: 'three_d_drawing', label: '3D Drawing' },
-  { id: 'standard_character_claim', label: 'Standard Character Claim' },
-]
-
 const ACQUIRED_DISTINCTIVENESS_OPTIONS = [
   { id: 'acquired_distinctiveness_whole', label: 'Acquired Distinctiveness (Whole)' },
   { id: 'acquired_distinctiveness_part', label: 'Acquired Distinctiveness (Part)' },
@@ -138,16 +138,16 @@ export default function SearchOptions({ onSelect, onClose, booleanStrategies }: 
   return (
     <div className="space-y-6 max-h-[80vh] overflow-y-auto p-4">
       {renderSection('General Search', GENERAL_OPTIONS)}
-      {renderSection('Date Filters', DATE_OPTIONS)}
+      {renderSection('Classification', CLASSIFICATION_OPTIONS)}
+      {renderSection('Visual Characteristics', VISUAL_CHARACTERISTICS_OPTIONS)}
       {renderSection('Filing Status', FILING_STATUS_OPTIONS)}
       {renderSection('Filing Basis', FILING_BASIS_OPTIONS)}
+      {renderSection('Date Filters', DATE_OPTIONS)}
+      {renderSection('Owner Information', OWNER_OPTIONS)}
+      {renderSection('International Registration', INTERNATIONAL_REGISTRATION_OPTIONS)}
       {renderSection('Registration Type', REGISTRATION_TYPE_OPTIONS)}
       {renderSection('Register Type', REGISTER_TYPE_OPTIONS)}
       {renderSection('Application Status', APPLICATION_STATUS_OPTIONS)}
-      {renderSection('Classification', CLASSIFICATION_OPTIONS)}
-      {renderSection('International Registration', INTERNATIONAL_REGISTRATION_OPTIONS)}
-      {renderSection('Owner Information', OWNER_OPTIONS)}
-      {renderSection('Visual Characteristics', VISUAL_CHARACTERISTICS_OPTIONS)}
       {renderSection('Acquired Distinctiveness', ACQUIRED_DISTINCTIVENESS_OPTIONS)}
     </div>
   )
