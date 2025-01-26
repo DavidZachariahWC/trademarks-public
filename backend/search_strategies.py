@@ -480,6 +480,72 @@ class DisclaimerStatementsSearchStrategy(BaseSearchStrategy):
 
         return filters, [score_col, match_quality]
 
+##################################################
+# Pseudo Mark Search Strategies
+##################################################
+
+class PseudoMarkSearchStrategy(BaseSearchStrategy):
+    """
+    Produces a filter that matches any CaseFileStatement with type_code 
+    starting 'PM' with a similarity > 30% or a LIKE match. 
+    Returns a 0-100 "score" for ranking.
+    """
+    is_scoring_strategy = True  # we do text similarity => reordering
+
+    def get_filters_and_scoring(self):
+
+        # First 2 chars of type_code
+        type_prefix = func.substr(CaseFileStatement.type_code, 1, 2)
+
+        # 'PM' 000"
+        pm_similarity = (
+            func.similarity(
+                func.coalesce(CaseFileStatement.statement_text, ''),
+                self.query_str
+            ) * 100
+        )
+        pm_condition = and_(
+            type_prefix == 'PM',
+            or_(
+                pm_similarity > 30,
+                func.lower(
+                    func.coalesce(CaseFileStatement.statement_text, '')
+                ).like(func.lower(f"%{self.query_str}%"))
+            )
+        )
+
+        # Combine them: any row with prefix 'PM' meeting the pm_condition
+        statement_filter = pm_condition
+
+        # We'll build a subquery returning (serial_number, pm_similarity)
+        # so we don't cause a cartesian product in the main query.
+        # We just choose the maximum of both similarities for the final "score".
+        combined_similarity = pm_similarity.label('score')
+
+        subq = (
+            select(
+                CaseFileStatement.serial_number.label('sn'),
+                combined_similarity
+            )
+            .where(statement_filter)
+        ).subquery()
+
+        # Final filter: any CaseFile whose serial_number is in the subquery
+        filters = [CaseFile.serial_number.in_(select(subq.c.sn))]
+
+        # The aggregator logic in multi_filter_search needs a numeric "score" column.
+        score_col = subq.c.score  # subquery column
+
+        # Optionally define a textual match_quality for display
+        match_quality = case(
+            (subq.c.score >= 80, 'Very High'),
+            (subq.c.score >= 60, 'High'),
+            (subq.c.score >= 40, 'Medium'),
+            else_='Low'
+        ).label('match_quality')
+
+        return filters, [score_col, match_quality]
+
 class DescriptionOfMarkSearchStrategy(BaseSearchStrategy):
     """
     'Description of Mark' filter:
