@@ -96,6 +96,17 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
         {caseData.event_statements && caseData.event_statements.length > 0 && (
           <EventStatements eventStatements={caseData.event_statements} />
         )}
+
+        <div className="flex justify-center">
+          <a 
+            href={`https://tsdr.uspto.gov/#caseNumber=${caseData.serial_number}&caseSearchType=US_APPLICATION&caseType=DEFAULT&searchType=statusSearch`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            View on USPTO TSDR
+          </a>
+        </div>
       </div>
     </div>
   )
