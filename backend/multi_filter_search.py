@@ -172,11 +172,6 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
                 }
             }
 
-        # Count total before we do the final select
-        total_count = final_query.count()
-        total_pages = (total_count + per_page - 1) // per_page
-        logger.info(f"Total results before pagination: {total_count}")
-
         # Gather scoring subqueries
         gather_scoring_subqueries(filter_tree)
 
@@ -237,23 +232,23 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
         )
 
         if scoring_agg is not None:
-            final_results_query = final_results_query.add_columns(
-                func.coalesce(scoring_agg.c.combined_score, 0).label('combined_score')
-            ).outerjoin(
-                scoring_agg,
-                scoring_agg.c.sn == CaseFile.serial_number
-            )
-
-            # Order by combined_score DESC, then filing_date DESC
-            final_results_query = final_results_query.order_by(
-                desc('combined_score'),
-                desc(CaseFileHeader.filing_date)
+            final_results_query = (
+                final_results_query
+                .add_columns(func.coalesce(scoring_agg.c.combined_score, 0).label('combined_score'))
+                .outerjoin(scoring_agg, scoring_agg.c.sn == CaseFile.serial_number)
+                .filter(func.coalesce(scoring_agg.c.combined_score, 0) >= 15)
+                .order_by(
+                    desc('combined_score'),
+                    desc(CaseFileHeader.filing_date)
+                )
             )
         else:
-            # No scoring => order by filing_date DESC
-            final_results_query = final_results_query.order_by(
-                desc(CaseFileHeader.filing_date)
-            )
+            final_results_query = final_results_query.order_by(desc(CaseFileHeader.filing_date))
+
+        # Get the true count after all filters including score threshold
+        filtered_count_query = final_results_query.with_entities(func.count()).order_by(None)
+        total_count = filtered_count_query.scalar()
+        total_pages = (total_count + per_page - 1) // per_page
 
         # D. Apply pagination
         offset = (page - 1) * per_page
