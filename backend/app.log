@@ -18066,3 +18066,50 @@ WHERE casefile.serial_number = '73170333') AS anon_10)) AS anon_2) AS anon_1) OR
 2025-01-25 22:39:51,195 - __main__ - INFO - Case details retrieval and formatting complete.
 2025-01-25 22:39:51,254 - __main__ - INFO - Database session closed.
 2025-01-25 22:39:51,255 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:39:51] "GET /api/case/73170333 HTTP/1.1" 200 -
+2025-01-25 23:07:45,178 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py', reloading
+2025-01-25 23:07:45,281 - werkzeug - INFO -  * Restarting with stat
+2025-01-25 23:07:45,886 - werkzeug - WARNING -  * Debugger is active!
+2025-01-25 23:07:45,892 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-25 23:07:53,012 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_engine.py', reloading
+2025-01-25 23:07:53,101 - werkzeug - INFO -  * Restarting with stat
+2025-01-25 23:07:53,520 - werkzeug - WARNING -  * Debugger is active!
+2025-01-25 23:07:53,524 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-25 23:09:50,766 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_engine.py', reloading
+2025-01-25 23:09:50,843 - werkzeug - INFO -  * Restarting with stat
+2025-01-25 23:09:51,387 - werkzeug - WARNING -  * Debugger is active!
+2025-01-25 23:09:51,391 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-25 23:10:03,274 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 23:10:03] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-25 23:10:03,278 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'pseudo_mark', 'query': '14', 'group': 'General Search', 'label': 'Pseudo Mark'}]}, 'page': 1, 'per_page': 60}
+2025-01-25 23:10:03,278 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'pseudo_mark', 'query': '14', 'group': 'General Search', 'label': 'Pseudo Mark'}]}, page=1, per_page=60
+2025-01-25 23:10:03,283 - multi_filter_search - INFO - Generated query for strategy 'pseudo_mark'.
+2025-01-25 23:10:04,580 - multi_filter_search - INFO - Total results before pagination: 5
+2025-01-25 23:10:04,594 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, anon_3.score AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number, (SELECT casefilestatement.serial_number AS sn, similarity(coalesce(casefilestatement.statement_text, ''), '14') * 100 AS score 
+FROM casefilestatement 
+WHERE substr(casefilestatement.type_code, 1, 2) = 'PM' AND (similarity(coalesce(casefilestatement.statement_text, ''), '14') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%14%'))) AS anon_3 
+WHERE casefile.serial_number IN (SELECT anon_3.sn 
+FROM (SELECT casefilestatement.serial_number AS sn, similarity(coalesce(casefilestatement.statement_text, ''), '14') * 100 AS score 
+FROM casefilestatement 
+WHERE substr(casefilestatement.type_code, 1, 2) = 'PM' AND (similarity(coalesce(casefilestatement.statement_text, ''), '14') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%14%'))) AS anon_3)) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT anon_5.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.sn 
+FROM (SELECT casefilestatement.serial_number AS sn, similarity(coalesce(casefilestatement.statement_text, ''), '14') * 100 AS score 
+FROM casefilestatement 
+WHERE substr(casefilestatement.type_code, 1, 2) = 'PM' AND (similarity(coalesce(casefilestatement.statement_text, ''), '14') * 100 > 30 OR lower(coalesce(casefilestatement.statement_text, '')) LIKE lower('%14%'))) AS anon_7)) AS anon_6)) AS anon_5) AS anon_4) ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-25 23:10:04,764 - multi_filter_search - INFO - Query executed in 1.49s
+2025-01-25 23:10:04,823 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 23:10:04] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-25 23:11:37,671 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/search_engine.py', reloading
+2025-01-25 23:11:37,797 - werkzeug - INFO -  * Restarting with stat
+2025-01-25 23:11:38,405 - werkzeug - WARNING -  * Debugger is active!
+2025-01-25 23:11:38,412 - werkzeug - INFO -  * Debugger PIN: 132-265-624

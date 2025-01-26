@@ -25,6 +25,7 @@ from search_strategies import (
     ConcurrentUseProceedingSearchStrategy,
     DesignSearchCodeStrategy,
     DisclaimerStatementsSearchStrategy,
+    PseudoMarkSearchStrategy,
     DescriptionOfMarkSearchStrategy,
     OwnerNameSearchStrategy,
     DBASearchStrategy,
@@ -119,6 +120,7 @@ class SearchEngine:
         'owner_legal_entity': OwnerLegalEntitySearchStrategy,
         'owner_party_type': OwnerPartyTypeSearchStrategy,
         'priority_date_range': PriorityDateRangeSearchStrategy,
+        'pseudo_mark': PseudoMarkSearchStrategy,
     }
     
     @classmethod
