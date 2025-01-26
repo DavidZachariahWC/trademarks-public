@@ -595,50 +595,62 @@ class OwnerNameSearchStrategy(BaseSearchStrategy):
     is_scoring_strategy = True
 
     def get_filters_and_scoring(self) -> Tuple[List, List]:
+        # Return empty lists since we'll handle filtering and scoring differently
+        return [], []
+
+    def build_query(self, session: Session):
+        """
+        Build a query that avoids cartesian products by using a subquery
+        from the Owner table only.
+        """
+        # Escape single quotes in the query string
         escaped_query = self.query_str.replace("'", "''")
 
-        # The local similarity expression:
-        similarity_value = (
-            func.similarity(
-                func.coalesce(Owner.party_name, ''),
-                escaped_query
-            ) * 100
-        )
-
-        # 1) Build a subquery referencing only the "owner" table. 
-        #    No mention of CaseFile => no cartesian product with CaseFileHeader.
-        subq = (
-            select(
+        # Build subquery that only queries the Owner table
+        name_expr = func.coalesce(Owner.party_name, '')
+        matching_owners_subq = (
+            session.query(
                 Owner.serial_number.label('sn'),
-                similarity_value.label('score')
+                (func.similarity(name_expr, escaped_query) * 100).label('score')
             )
-            .where(Owner.party_name.isnot(None))
-            .where(
+            .filter(Owner.party_name.isnot(None))
+            .filter(
                 or_(
-                    similarity_value > 30,
-                    func.lower(func.coalesce(Owner.party_name, ''))
-                       .like(func.lower(f"%{escaped_query}%"))
+                    func.similarity(name_expr, escaped_query) > 0.3,
+                    func.lower(name_expr).like(func.lower(f"%{escaped_query}%"))
                 )
             )
-        ).subquery()
+            .subquery()
+        )
 
-        # 2) The main filter: Only include CaseFiles whose serial_number is in subq
-        filters = [CaseFile.serial_number.in_(select(subq.c.sn))]
+        # Filter the main query using the subquery
+        query = base_query(session)
+        query = query.filter(CaseFile.serial_number.in_(
+            select(matching_owners_subq.c.sn)
+        ))
+        return query
 
-        # 3) Return a single numeric score column from subq
-        score_col = subq.c.score
-
-        # Optional match_quality label for display (not used for ranking)
-        match_quality = case(
-            (subq.c.score >= 80, 'Very High'),
-            (subq.c.score >= 60, 'High'),
-            (subq.c.score >= 40, 'Medium'),
-            else_='Low'
-        ).label('match_quality')
-
-        return filters, [score_col, match_quality]
-
-
+    def get_subquery_for_scoring(self, session: Session):
+        """
+        Return a subquery that produces (serial_number AS sn, score)
+        from matching owners, for use in the scoring aggregation step.
+        """
+        escaped_query = self.query_str.replace("'", "''")
+        name_expr = func.coalesce(Owner.party_name, '')
+        
+        return (
+            session.query(
+                Owner.serial_number.label('sn'),
+                (func.similarity(name_expr, escaped_query) * 100).label('score')
+            )
+            .filter(Owner.party_name.isnot(None))
+            .filter(
+                or_(
+                    func.similarity(name_expr, escaped_query) > 0.3,
+                    func.lower(name_expr).like(func.lower(f"%{escaped_query}%"))
+                )
+            )
+        )
 
 class DBASearchStrategy(BaseSearchStrategy):
     is_scoring_strategy = True
