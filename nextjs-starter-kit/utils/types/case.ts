@@ -7,6 +7,8 @@ export interface CaseHeader {
   cancellation_date: string | null
   published_for_opposition_date: string | null
   attorney_name: string | null
+  attorney_docket_number: string | null
+  domestic_representative_name: string | null
   republished_12c_date: string | null
   section_8_partial_accept_in: boolean
   section_8_accepted_in: boolean
@@ -71,6 +73,8 @@ export interface DesignSearch {
 }
 
 export interface Owner {
+  owner_entry_number: number
+  party_type: number
   party_name: string
   owner_address_1: string
   owner_address_2?: string
@@ -85,8 +89,7 @@ export interface Owner {
   nationality_country?: string
   nationality_state?: string
   nationality_other?: string
-  legal_entity_type_code?: string
-  party_type?: string
+  legal_entity_type_code: number
 }
 
 export interface Correspondent {

@@ -14,6 +14,10 @@ import ForeignApplications from './ForeignApplications'
 import CorrespondentInfo from './CorrespondentInfo'
 import EventStatements from './EventStatements'
 import SectionStatus from './SectionStatus'
+import MiscellaneousStatements from './MiscellaneousStatements'
+import AttorneyOfRecord from './AttorneyOfRecord'
+import RestrictionOnScope from './RestrictionOnScope'
+import PseudoMarks from './PseudoMarks'
 
 interface CaseDetailsProps {
   case: Case
@@ -36,11 +40,21 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
           />
         )}
 
+        {caseData.statements && (
+          <RestrictionOnScope statements={caseData.statements} />
+        )}
+
         <MarkDesignInfo caseData={caseData} />
                 
         {caseData.owners && caseData.owners.length > 0 && (
           <OwnerInfo owners={caseData.owners} />
         )}
+
+        <AttorneyOfRecord 
+          attorney_name={caseData.header.attorney_name}
+          attorney_docket_number={caseData.header.attorney_docket_number}
+          domestic_representative_name={caseData.header.domestic_representative_name}
+        />
         
         {caseData.correspondents && caseData.correspondents.length > 0 && (
           <CorrespondentInfo correspondents={caseData.correspondents} />
@@ -59,13 +73,24 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
         )}
         
         <PriorRegistrations priorRegistrations={caseData.prior_registrations} />
+
+        {caseData.statements && (
+          <PseudoMarks statements={caseData.statements} />
+        )}
+
+        {caseData.statements && (
+          <MiscellaneousStatements statements={caseData.statements} />
+        )}
         
         {caseData.statements && caseData.statements.length > 0 && (
           <AllStatements statements={caseData.statements} />
         )}
         
         {caseData.foreign_applications && caseData.foreign_applications.length > 0 && (
-          <ForeignApplications foreignApplications={caseData.foreign_applications} />
+          <ForeignApplications 
+            foreignApplications={caseData.foreign_applications}
+            statements={caseData.statements}
+          />
         )}
         
         {caseData.event_statements && caseData.event_statements.length > 0 && (
