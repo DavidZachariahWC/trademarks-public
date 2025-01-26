@@ -1,4 +1,5 @@
 import React from 'react'
+import { Statement } from '@/utils/types/case'
 
 interface ForeignApplication {
   foreign_country: string
@@ -16,9 +17,15 @@ interface ForeignApplication {
 
 interface ForeignApplicationsProps {
   foreignApplications: ForeignApplication[]
+  statements?: Statement[]
 }
 
-export default function ForeignApplications({ foreignApplications }: ForeignApplicationsProps) {
+export default function ForeignApplications({ foreignApplications, statements = [] }: ForeignApplicationsProps) {
+  // Filter for FN statements
+  const foreignNotes = statements.filter(stmt => 
+    stmt.type_code && stmt.type_code.startsWith('FN')
+  );
+
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
       <h2 className="text-2xl font-bold mb-4">Foreign Applications</h2>
@@ -48,6 +55,21 @@ export default function ForeignApplications({ foreignApplications }: ForeignAppl
               {index < foreignApplications.length - 1 && <hr className="my-4 border-gray-300" />}
             </div>
           ))}
+
+          {foreignNotes.length > 0 && (
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold mb-4">Additional Foreign Notes</h3>
+              <div className="space-y-4">
+                {foreignNotes.map((note, index) => (
+                  <div key={index} className="bg-gray-50 p-4 rounded-md">
+                    <div className="text-gray-600 whitespace-pre-wrap">
+                      {note.statement_text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <p>No foreign applications found.</p>

@@ -17814,3 +17814,255 @@ WHERE casefile.serial_number = '73086231') AS anon_3)) AS anon_2) AS anon_1) ORD
 2025-01-25 20:52:32,467 - __main__ - INFO - Case details retrieval and formatting complete.
 2025-01-25 20:52:32,527 - __main__ - INFO - Database session closed.
 2025-01-25 20:52:32,528 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 20:52:32] "GET /api/case/73086231 HTTP/1.1" 200 -
+2025-01-25 21:20:21,023 - __main__ - INFO - Fetching details for case: 73086231
+2025-01-25 21:20:21,024 - __main__ - INFO - Database session established.
+2025-01-25 21:20:21,166 - __main__ - INFO - Case query executed. Case found: True
+2025-01-25 21:20:21,231 - __main__ - INFO - Header query executed. Header found: True
+2025-01-25 21:20:21,304 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-25 21:20:21,374 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-25 21:20:21,436 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-25 21:20:21,503 - __main__ - INFO - Statements query executed. Statements found: 7
+2025-01-25 21:20:21,564 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-25 21:20:21,743 - __main__ - INFO - Event Statements query executed. Event Statements found: 23
+2025-01-25 21:20:21,808 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-25 21:20:21,871 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-25 21:20:21,930 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-25 21:20:21,930 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-25 21:20:21,989 - __main__ - INFO - Database session closed.
+2025-01-25 21:20:21,990 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 21:20:21] "GET /api/case/73086231 HTTP/1.1" 200 -
+2025-01-25 21:43:17,943 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-01-25 21:43:17,943 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-01-25 21:43:17,944 - werkzeug - INFO -  * Restarting with stat
+2025-01-25 21:43:18,374 - werkzeug - WARNING -  * Debugger is active!
+2025-01-25 21:43:18,389 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-25 21:43:24,687 - __main__ - INFO - Fetching details for case: 73086231
+2025-01-25 21:43:24,688 - __main__ - INFO - Database session established.
+2025-01-25 21:43:27,843 - __main__ - INFO - Case query executed. Case found: True
+2025-01-25 21:43:27,979 - __main__ - INFO - Header query executed. Header found: True
+2025-01-25 21:43:28,055 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-25 21:43:28,423 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-25 21:43:28,783 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-25 21:43:28,856 - __main__ - INFO - Statements query executed. Statements found: 7
+2025-01-25 21:43:29,191 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-25 21:43:30,434 - __main__ - INFO - Event Statements query executed. Event Statements found: 23
+2025-01-25 21:43:30,899 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-25 21:43:30,962 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-25 21:43:31,023 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-25 21:43:31,024 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-25 21:43:31,060 - __main__ - INFO - Fetching details for case: 73086231
+2025-01-25 21:43:31,060 - __main__ - INFO - Database session established.
+2025-01-25 21:43:31,082 - __main__ - INFO - Database session closed.
+2025-01-25 21:43:31,083 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 21:43:31] "GET /api/case/73086231 HTTP/1.1" 200 -
+2025-01-25 21:43:33,473 - __main__ - INFO - Case query executed. Case found: True
+2025-01-25 21:43:38,580 - __main__ - INFO - Header query executed. Header found: True
+2025-01-25 21:43:38,952 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-25 21:43:39,033 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-25 21:43:40,320 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-25 21:43:40,967 - __main__ - INFO - Statements query executed. Statements found: 7
+2025-01-25 21:43:42,268 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-25 21:43:42,882 - __main__ - INFO - Event Statements query executed. Event Statements found: 23
+2025-01-25 21:43:42,948 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-25 21:43:43,010 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-25 21:43:43,072 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-25 21:43:43,072 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-25 21:43:43,133 - __main__ - INFO - Database session closed.
+2025-01-25 21:43:43,136 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 21:43:43] "GET /api/case/73086231 HTTP/1.1" 200 -
+2025-01-25 22:13:54,847 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:13:54] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-25 22:13:54,852 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'strategy': 'serial_number', 'query': '73086231', 'group': 'General Search', 'label': 'Serial Number'}, {'strategy': 'serial_number', 'query': '73092348', 'group': 'General Search', 'label': 'Serial Number'}]}, 'page': 1, 'per_page': 60}
+2025-01-25 22:13:54,852 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'strategy': 'serial_number', 'query': '73086231', 'group': 'General Search', 'label': 'Serial Number'}, {'strategy': 'serial_number', 'query': '73092348', 'group': 'General Search', 'label': 'Serial Number'}]}, page=1, per_page=60
+2025-01-25 22:13:54,855 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:13:54,855 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:13:55,047 - multi_filter_search - INFO - Total results before pagination: 2
+2025-01-25 22:13:55,049 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73086231') AS anon_3) OR casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73092348') AS anon_4)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-25 22:13:55,199 - multi_filter_search - INFO - Query executed in 0.35s
+2025-01-25 22:13:55,260 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:13:55] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-25 22:13:56,964 - __main__ - INFO - Fetching details for case: 73092348
+2025-01-25 22:13:56,964 - __main__ - INFO - Database session established.
+2025-01-25 22:13:57,086 - __main__ - INFO - Case query executed. Case found: True
+2025-01-25 22:13:57,209 - __main__ - INFO - Header query executed. Header found: True
+2025-01-25 22:13:57,297 - __main__ - INFO - Owners query executed. Owners found: 5
+2025-01-25 22:13:57,371 - __main__ - INFO - Classifications query executed. Classifications found: 4
+2025-01-25 22:13:57,435 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-25 22:13:57,504 - __main__ - INFO - Statements query executed. Statements found: 3
+2025-01-25 22:13:57,566 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-25 22:13:57,775 - __main__ - INFO - Event Statements query executed. Event Statements found: 57
+2025-01-25 22:13:57,840 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-25 22:13:57,900 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-25 22:13:57,960 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-25 22:13:57,961 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-25 22:13:58,022 - __main__ - INFO - Database session closed.
+2025-01-25 22:13:58,024 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:13:58] "GET /api/case/73092348 HTTP/1.1" 200 -
+2025-01-25 22:27:19,593 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:27:19] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-25 22:27:19,598 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'serial_number', 'query': '73086231', 'group': 'General Search', 'label': 'Serial Number'}, {'strategy': 'serial_number', 'query': '73092348', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73054795', 'group': 'General Search', 'label': 'Serial Number'}]}, 'page': 1, 'per_page': 60}
+2025-01-25 22:27:19,598 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'serial_number', 'query': '73086231', 'group': 'General Search', 'label': 'Serial Number'}, {'strategy': 'serial_number', 'query': '73092348', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73054795', 'group': 'General Search', 'label': 'Serial Number'}]}, page=1, per_page=60
+2025-01-25 22:27:19,600 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:27:19,600 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:27:19,601 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:27:19,813 - multi_filter_search - INFO - Total results before pagination: 3
+2025-01-25 22:27:19,821 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73086231') AS anon_4) OR casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73092348') AS anon_5)) AS anon_3) OR casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73054795') AS anon_6)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-25 22:27:20,026 - multi_filter_search - INFO - Query executed in 0.43s
+2025-01-25 22:27:20,089 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:27:20] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-25 22:27:21,768 - __main__ - INFO - Fetching details for case: 73054795
+2025-01-25 22:27:21,768 - __main__ - INFO - Database session established.
+2025-01-25 22:27:21,892 - __main__ - INFO - Case query executed. Case found: True
+2025-01-25 22:27:21,956 - __main__ - INFO - Header query executed. Header found: True
+2025-01-25 22:27:22,030 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-25 22:27:22,098 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-25 22:27:22,160 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-25 22:27:22,226 - __main__ - INFO - Statements query executed. Statements found: 3
+2025-01-25 22:27:22,288 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-25 22:27:22,441 - __main__ - INFO - Event Statements query executed. Event Statements found: 20
+2025-01-25 22:27:22,508 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-25 22:27:22,570 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-25 22:27:22,630 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-25 22:27:22,630 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-25 22:27:22,690 - __main__ - INFO - Database session closed.
+2025-01-25 22:27:22,691 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:27:22] "GET /api/case/73054795 HTTP/1.1" 200 -
+2025-01-25 22:36:55,612 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:36:55] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-25 22:36:55,615 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'serial_number', 'query': '73086231', 'group': 'General Search', 'label': 'Serial Number'}, {'strategy': 'serial_number', 'query': '73092348', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73054795', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73169531', 'group': 'General Search', 'label': 'Serial Number'}]}, 'page': 1, 'per_page': 60}
+2025-01-25 22:36:55,615 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'serial_number', 'query': '73086231', 'group': 'General Search', 'label': 'Serial Number'}, {'strategy': 'serial_number', 'query': '73092348', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73054795', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73169531', 'group': 'General Search', 'label': 'Serial Number'}]}, page=1, per_page=60
+2025-01-25 22:36:55,616 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:36:55,617 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:36:55,618 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:36:55,619 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:36:55,822 - multi_filter_search - INFO - Total results before pagination: 4
+2025-01-25 22:36:55,826 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73086231') AS anon_5) OR casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73092348') AS anon_6)) AS anon_4) OR casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73054795') AS anon_7)) AS anon_3) OR casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73169531') AS anon_8)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-25 22:36:56,020 - multi_filter_search - INFO - Query executed in 0.41s
+2025-01-25 22:36:56,082 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:36:56] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-25 22:36:58,353 - __main__ - INFO - Fetching details for case: 73169531
+2025-01-25 22:36:58,353 - __main__ - INFO - Database session established.
+2025-01-25 22:36:58,476 - __main__ - INFO - Case query executed. Case found: True
+2025-01-25 22:36:58,540 - __main__ - INFO - Header query executed. Header found: True
+2025-01-25 22:36:58,610 - __main__ - INFO - Owners query executed. Owners found: 5
+2025-01-25 22:36:58,682 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-25 22:36:58,744 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-25 22:36:58,809 - __main__ - INFO - Statements query executed. Statements found: 3
+2025-01-25 22:36:58,899 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-25 22:36:59,115 - __main__ - INFO - Event Statements query executed. Event Statements found: 24
+2025-01-25 22:36:59,238 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-25 22:36:59,298 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-25 22:36:59,357 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-25 22:36:59,357 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-25 22:36:59,417 - __main__ - INFO - Database session closed.
+2025-01-25 22:36:59,418 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:36:59] "GET /api/case/73169531 HTTP/1.1" 200 -
+2025-01-25 22:39:47,828 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:39:47] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-25 22:39:47,832 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'serial_number', 'query': '73086231', 'group': 'General Search', 'label': 'Serial Number'}, {'strategy': 'serial_number', 'query': '73092348', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73054795', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73169531', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73170333', 'group': 'General Search', 'label': 'Serial Number'}]}, 'page': 1, 'per_page': 60}
+2025-01-25 22:39:47,832 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'serial_number', 'query': '73086231', 'group': 'General Search', 'label': 'Serial Number'}, {'strategy': 'serial_number', 'query': '73092348', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73054795', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73169531', 'group': 'General Search', 'label': 'Serial Number'}]}, {'strategy': 'serial_number', 'query': '73170333', 'group': 'General Search', 'label': 'Serial Number'}]}, page=1, per_page=60
+2025-01-25 22:39:47,834 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:39:47,834 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:39:47,836 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:39:47,836 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:39:47,837 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-25 22:39:48,134 - multi_filter_search - INFO - Total results before pagination: 5
+2025-01-25 22:39:48,141 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_4.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73086231') AS anon_6) OR casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73092348') AS anon_7)) AS anon_5) OR casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73054795') AS anon_8)) AS anon_4) OR casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73169531') AS anon_9)) AS anon_3) OR casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73170333') AS anon_10)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-25 22:39:48,325 - multi_filter_search - INFO - Query executed in 0.49s
+2025-01-25 22:39:48,387 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:39:48] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-25 22:39:50,307 - __main__ - INFO - Fetching details for case: 73170333
+2025-01-25 22:39:50,309 - __main__ - INFO - Database session established.
+2025-01-25 22:39:50,435 - __main__ - INFO - Case query executed. Case found: True
+2025-01-25 22:39:50,503 - __main__ - INFO - Header query executed. Header found: True
+2025-01-25 22:39:50,581 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-25 22:39:50,654 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-25 22:39:50,715 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-25 22:39:50,779 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-25 22:39:50,841 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-25 22:39:51,010 - __main__ - INFO - Event Statements query executed. Event Statements found: 20
+2025-01-25 22:39:51,075 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-25 22:39:51,134 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-25 22:39:51,195 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-25 22:39:51,195 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-25 22:39:51,254 - __main__ - INFO - Database session closed.
+2025-01-25 22:39:51,255 - werkzeug - INFO - 127.0.0.1 - - [25/Jan/2025 22:39:51] "GET /api/case/73170333 HTTP/1.1" 200 -
