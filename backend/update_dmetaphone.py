@@ -1,4 +1,4 @@
-"""Script to update existing records with Double Metaphone codes"""
+"""Script to update existing records with Double Metaphone codes. This file is useless."""
 from db_utils import get_db_session
 from models import CaseFileHeader
 from sqlalchemy import text

@@ -140,13 +140,9 @@ export default function BasicInfo({ caseData }: BasicInfoProps) {
         <div>
           <span className="font-semibold text-gray-700">Attorney of Record:</span>{' '}
           {header.attorney_name ? (
-            <Link 
-              href={`/attorney-lookup?q=${encodeURIComponent(header.attorney_name)}`}
-              className="text-blue-600 hover:underline cursor-help"
-              title="Click to see all cases by this attorney"
-            >
+            <span className="text-gray-900">
               {formatAttorneys(header.attorney_name)}
-            </Link>
+            </span>
           ) : (
             <span className="text-gray-900">N/A</span>
           )}
