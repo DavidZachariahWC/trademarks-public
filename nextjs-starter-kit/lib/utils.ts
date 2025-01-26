@@ -1,6 +1,7 @@
 // format.ts
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { relationshipTypes } from '@/utils/constants/relationshipTypes'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -65,12 +66,7 @@ export function getDrawingCodeDescription(code: string): string {
 }
 
 export function getRelationshipTypeDescription(type: string): string {
-  switch (type) {
-    case '1': return 'Child Case'
-    case '2': return 'Parent Case'
-    case '3': return 'Cross Reference'
-    default: return type
-  }
+  return relationshipTypes[type] || type
 }
 
 export function getAcquiredDistinctiveness(section2f: boolean, section2fInPart: boolean): string {
