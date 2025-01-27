@@ -19261,3 +19261,406 @@ WHERE substr(casefilestatement.type_code, 1, 2) = 'PM' AND (similarity(coalesce(
  LIMIT 60 OFFSET 0
 2025-01-26 13:49:36,111 - multi_filter_search - INFO - Query executed in 1.51s
 2025-01-26 13:49:36,172 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 13:49:36] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-26 19:55:34,538 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-01-26 19:55:34,538 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-01-26 19:55:34,539 - werkzeug - INFO -  * Restarting with stat
+2025-01-26 19:55:35,350 - werkzeug - WARNING -  * Debugger is active!
+2025-01-26 19:55:35,362 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-26 19:55:40,839 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 19:55:40,839 - __main__ - INFO - Database session established.
+2025-01-26 19:55:42,660 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 19:55:42,751 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 19:55:42,795 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 19:55:42,796 - __main__ - INFO - Database session established.
+2025-01-26 19:55:42,984 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 19:55:43,055 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 19:55:43,127 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 19:55:43,195 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 19:55:43,260 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 19:55:43,509 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 19:55:43,581 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 19:55:43,666 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 19:55:43,790 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 19:55:43,791 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 19:55:43,797 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 19:55:43,858 - __main__ - INFO - Database session closed.
+2025-01-26 19:55:43,860 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 19:55:43] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 19:55:43,935 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 19:55:44,035 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 19:55:44,115 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 19:55:44,188 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 19:55:44,256 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 19:55:44,319 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 19:55:44,558 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 19:55:44,626 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 19:55:44,691 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 19:55:44,751 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 19:55:44,751 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 19:55:44,812 - __main__ - INFO - Database session closed.
+2025-01-26 19:55:44,812 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 19:55:44] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 19:56:17,606 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 19:56:17] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-26 19:56:17,609 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, 'page': 1, 'per_page': 60}
+2025-01-26 19:56:17,610 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, page=1, per_page=60
+2025-01-26 19:56:17,613 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-26 19:56:18,122 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5)) AS anon_4) AS anon_3) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-26 19:56:18,379 - multi_filter_search - INFO - Query executed in 0.77s
+2025-01-26 19:56:18,638 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 19:56:18] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-26 19:58:11,234 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 19:58:11] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-26 19:58:11,238 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, 'page': 1, 'per_page': 60}
+2025-01-26 19:58:11,238 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, page=1, per_page=60
+2025-01-26 19:58:11,241 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-26 19:58:11,884 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5)) AS anon_4) AS anon_3) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-26 19:58:12,222 - multi_filter_search - INFO - Query executed in 0.98s
+2025-01-26 19:58:12,400 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 19:58:12] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-26 20:00:37,656 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:00:37,657 - __main__ - INFO - Database session established.
+2025-01-26 20:00:37,824 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:00:37,896 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:00:37,970 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:00:38,049 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:00:38,150 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:00:38,215 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:00:38,275 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:00:38,446 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:00:38,509 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:00:38,571 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:00:38,675 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:00:38,675 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:00:38,762 - __main__ - INFO - Database session closed.
+2025-01-26 20:00:38,762 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:00:38] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:01:11,645 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:01:11] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:02:43,356 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:02:43,359 - __main__ - INFO - Database session established.
+2025-01-26 20:02:43,584 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:02:43,645 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:02:43,717 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:02:43,790 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:02:44,065 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:02:44,195 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:02:44,259 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:02:44,498 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:02:44,565 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:02:44,631 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:02:44,712 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:02:44,712 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:02:44,776 - __main__ - INFO - Database session closed.
+2025-01-26 20:02:44,778 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:02:44] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:03:45,038 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:03:45] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:04:18,910 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:04:18,911 - __main__ - INFO - Database session established.
+2025-01-26 20:04:19,036 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:04:19,104 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:04:19,178 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:04:19,247 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:04:19,392 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:04:19,462 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:04:19,525 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:04:19,660 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:04:19,725 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:04:19,784 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:04:19,916 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:04:19,916 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:04:19,975 - __main__ - INFO - Database session closed.
+2025-01-26 20:04:19,976 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:04:19] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:04:48,270 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:04:48,270 - __main__ - INFO - Database session established.
+2025-01-26 20:04:48,396 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:04:48,465 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:04:48,537 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:04:48,617 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:04:48,751 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:04:48,819 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:04:48,895 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:04:49,068 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:04:49,154 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:04:49,280 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:04:49,340 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:04:49,340 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:04:49,404 - __main__ - INFO - Database session closed.
+2025-01-26 20:04:49,404 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:04:49] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:05:47,936 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:05:47,936 - __main__ - INFO - Database session established.
+2025-01-26 20:05:48,111 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:05:48,175 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:05:48,244 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:05:48,326 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:05:48,516 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:05:48,588 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:05:48,650 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:05:48,860 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:05:48,924 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:05:49,047 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:05:49,107 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:05:49,107 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:05:49,172 - __main__ - INFO - Database session closed.
+2025-01-26 20:05:49,173 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:05:49] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:05:57,193 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:05:57] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:07:24,608 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:07:24,609 - __main__ - INFO - Database session established.
+2025-01-26 20:07:24,741 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:07:24,807 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:07:24,879 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:07:24,984 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:07:25,331 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:07:25,397 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:07:25,509 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:07:25,659 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:07:25,731 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:07:25,795 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:07:25,858 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:07:25,858 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:07:25,926 - __main__ - INFO - Database session closed.
+2025-01-26 20:07:25,927 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:07:25] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:07:46,271 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:07:46,273 - __main__ - INFO - Database session established.
+2025-01-26 20:07:46,480 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:07:46,546 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:07:46,616 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:07:46,688 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:07:46,753 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:07:46,826 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:07:46,889 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:07:47,037 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:07:47,101 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:07:47,165 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:07:47,231 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:07:47,231 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:07:47,291 - __main__ - INFO - Database session closed.
+2025-01-26 20:07:47,291 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:07:47] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:07:49,338 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:07:49] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:11:58,116 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:11:58,117 - __main__ - INFO - Database session established.
+2025-01-26 20:11:58,256 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:11:58,319 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:11:58,390 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:11:58,459 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:11:58,523 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:11:58,655 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:11:58,717 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:11:58,949 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:11:59,013 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:11:59,073 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:11:59,180 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:11:59,180 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:11:59,241 - __main__ - INFO - Database session closed.
+2025-01-26 20:11:59,242 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:11:59] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:12:01,824 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:12:01] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:20:56,391 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:20:56] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:20:58,393 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:20:58,394 - __main__ - INFO - Database session established.
+2025-01-26 20:20:58,527 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:20:58,729 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:20:58,799 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:20:58,869 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:20:58,934 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:20:59,003 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:20:59,068 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:20:59,284 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:20:59,350 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:20:59,414 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:20:59,475 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:20:59,475 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:20:59,536 - __main__ - INFO - Database session closed.
+2025-01-26 20:20:59,537 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:20:59] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:21:01,848 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:21:01] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:22:45,193 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:22:45,195 - __main__ - INFO - Database session established.
+2025-01-26 20:22:45,354 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:22:45,415 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:22:45,485 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:22:45,683 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:22:46,052 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:22:46,203 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:22:46,268 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:22:46,434 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:22:46,504 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:22:46,566 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:22:46,626 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:22:46,626 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:22:46,727 - __main__ - INFO - Database session closed.
+2025-01-26 20:22:46,728 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:22:46] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:22:48,812 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:22:48] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:25:26,818 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:25:26,819 - __main__ - INFO - Database session established.
+2025-01-26 20:25:26,945 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:25:27,156 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:25:27,233 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:25:27,307 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:25:27,370 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:25:27,439 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:25:27,681 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:25:27,920 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:25:28,326 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:25:28,388 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:25:28,450 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:25:28,450 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:25:28,727 - __main__ - INFO - Database session closed.
+2025-01-26 20:25:28,729 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:25:28] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:25:31,889 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:25:31] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:33:48,563 - __main__ - INFO - Fetching details for case: 72055975
+2025-01-26 20:33:48,565 - __main__ - INFO - Database session established.
+2025-01-26 20:33:48,709 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:33:48,889 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:33:48,960 - __main__ - INFO - Owners query executed. Owners found: 2
+2025-01-26 20:33:49,028 - __main__ - INFO - Classifications query executed. Classifications found: 3
+2025-01-26 20:33:49,089 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 0
+2025-01-26 20:33:49,155 - __main__ - INFO - Statements query executed. Statements found: 2
+2025-01-26 20:33:49,221 - __main__ - INFO - Design Searches query executed. Design Searches found: 2
+2025-01-26 20:33:49,502 - __main__ - INFO - Event Statements query executed. Event Statements found: 32
+2025-01-26 20:33:49,565 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:33:49,623 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:33:49,681 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:33:49,681 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:33:49,741 - __main__ - INFO - Database session closed.
+2025-01-26 20:33:49,742 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:33:49] "GET /api/case/72055975 HTTP/1.1" 200 -
+2025-01-26 20:33:51,481 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:33:51] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:34:50,610 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:34:50] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-26 20:34:50,614 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, 'page': 1, 'per_page': 60}
+2025-01-26 20:34:50,614 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, page=1, per_page=60
+2025-01-26 20:34:50,616 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-01-26 20:34:51,151 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5)) AS anon_4) AS anon_3) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-26 20:34:51,445 - multi_filter_search - INFO - Query executed in 0.83s
+2025-01-26 20:34:51,507 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:34:51] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-26 20:34:54,221 - __main__ - INFO - Fetching details for case: 73199066
+2025-01-26 20:34:54,222 - __main__ - INFO - Database session established.
+2025-01-26 20:34:54,422 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:34:54,486 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:34:54,556 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-26 20:34:55,004 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-01-26 20:34:55,067 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-26 20:34:55,135 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-26 20:34:55,200 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-26 20:34:55,498 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-01-26 20:34:55,564 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:34:55,724 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:34:55,997 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:34:55,998 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:34:56,078 - __main__ - INFO - Database session closed.
+2025-01-26 20:34:56,079 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:34:56] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-01-26 20:35:00,139 - __main__ - INFO - Fetching details for case: 73199066
+2025-01-26 20:35:00,139 - __main__ - INFO - Database session established.
+2025-01-26 20:35:00,307 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:35:00,431 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:35:00,507 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-26 20:35:00,581 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-01-26 20:35:00,713 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-26 20:35:00,783 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-26 20:35:00,847 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-26 20:35:01,026 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-01-26 20:35:01,098 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:35:01,238 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:35:01,299 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:35:01,300 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:35:01,359 - __main__ - INFO - Database session closed.
+2025-01-26 20:35:01,361 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:35:01] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-01-26 20:35:07,626 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:35:07] "[33mOPTIONS /api/ai-chat HTTP/1.1[0m" 404 -
+2025-01-26 20:40:05,721 - __main__ - INFO - Fetching details for case: 73199066
+2025-01-26 20:40:05,722 - __main__ - INFO - Database session established.
+2025-01-26 20:40:05,943 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:40:06,080 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:40:06,158 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-26 20:40:06,232 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-01-26 20:40:06,342 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-26 20:40:06,409 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-26 20:40:06,471 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-26 20:40:06,625 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-01-26 20:40:06,767 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:40:06,866 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:40:06,926 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:40:06,927 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:40:06,989 - __main__ - INFO - Database session closed.
+2025-01-26 20:40:06,990 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:40:06] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-01-26 20:40:09,548 - __main__ - INFO - Fetching details for case: 73199066
+2025-01-26 20:40:09,548 - __main__ - INFO - Database session established.
+2025-01-26 20:40:09,667 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:40:09,731 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:40:09,810 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-26 20:40:09,880 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-01-26 20:40:10,011 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-26 20:40:10,078 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-26 20:40:10,140 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-26 20:40:10,284 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-01-26 20:40:10,349 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:40:10,411 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:40:10,535 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:40:10,536 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:40:10,596 - __main__ - INFO - Database session closed.
+2025-01-26 20:40:10,596 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:40:10] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-01-26 20:40:12,425 - __main__ - INFO - Fetching details for case: 73199066
+2025-01-26 20:40:12,425 - __main__ - INFO - Database session established.
+2025-01-26 20:40:12,691 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:40:12,936 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:40:13,156 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-26 20:40:13,249 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-01-26 20:40:13,314 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-26 20:40:13,381 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-26 20:40:13,448 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-26 20:40:13,689 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-01-26 20:40:13,753 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:40:13,820 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:40:13,881 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:40:13,882 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:40:14,002 - __main__ - INFO - Database session closed.
+2025-01-26 20:40:14,004 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:40:14] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-01-26 20:52:42,417 - __main__ - INFO - Fetching details for case: 73199066
+2025-01-26 20:52:42,418 - __main__ - INFO - Database session established.
+2025-01-26 20:52:42,641 - __main__ - INFO - Case query executed. Case found: True
+2025-01-26 20:52:42,709 - __main__ - INFO - Header query executed. Header found: True
+2025-01-26 20:52:42,779 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-26 20:52:42,849 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-01-26 20:52:42,912 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-26 20:52:42,979 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-26 20:52:43,041 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-01-26 20:52:43,173 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-01-26 20:52:43,530 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-26 20:52:43,590 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-26 20:52:43,690 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-26 20:52:43,690 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-26 20:52:43,748 - __main__ - INFO - Database session closed.
+2025-01-26 20:52:43,752 - werkzeug - INFO - 127.0.0.1 - - [26/Jan/2025 20:52:43] "GET /api/case/73199066 HTTP/1.1" 200 -

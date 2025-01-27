@@ -6,6 +6,7 @@ import { formatDate } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import { statusCodes } from '@/utils/constants/statusCodes'
+import { AIChatButton } from './AIChatButton'
 
 interface SearchResultsProps {
   results: SearchResult[]
@@ -40,50 +41,55 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     <div className="w-full max-w-6xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {results.map((result) => (
-          <Link
-            key={result.serial_number}
-            href={`/case/${result.serial_number}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block p-6 border rounded-lg hover:bg-gray-50 transition-colors h-full"
-          >
-            <h3 className="text-lg font-semibold line-clamp-2 mb-3">{result.mark_identification}</h3>
-            <div className="space-y-2 text-sm">
-              <div>
-                <span className="font-medium">Serial Number:</span> {result.serial_number}
-              </div>
-              <div>
-                <span className="font-medium">Registration Number:</span>{' '}
-                {result.registration_number || 'N/A'}
-              </div>
-              <div>
-                <span className="font-medium">Status:</span>{' '}
-                <span className={`inline-block rounded px-2 ${
-                  statusCodes[result.status_code]?.status === 'Live' ? 'bg-green-50' : 
-                  statusCodes[result.status_code]?.status === 'Dead' ? 'bg-red-50' : 
-                  'bg-gray-50'
-                }`}>
-                  {statusCodes[result.status_code]?.status || 'Unknown'}
-                </span>
-              </div>
-              <div>
-                <span className="font-medium">Filing Date:</span>{' '}
-                {formatDate(result.filing_date)}
-              </div>
-              {result.similarity_score && (
+          <div key={result.serial_number} className="border rounded-lg p-6 hover:bg-gray-50 transition-colors">
+            <Link
+              href={`/case/${result.serial_number}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-full"
+            >
+              <h3 className="text-lg font-semibold line-clamp-2 mb-3">{result.mark_identification}</h3>
+              <div className="space-y-2 text-sm">
                 <div>
-                  <span className="font-medium">Match Score:</span>{' '}
-                  {Math.round(result.similarity_score)}%
+                  <span className="font-medium">Serial Number:</span> {result.serial_number}
                 </div>
-              )}
-              {result.match_quality && (
                 <div>
-                  <span className="font-medium">Match Quality:</span>{' '}
-                  {result.match_quality}
+                  <span className="font-medium">Registration Number:</span>{' '}
+                  {result.registration_number || 'N/A'}
                 </div>
-              )}
-            </div>
-          </Link>
+                <div>
+                  <span className="font-medium">Status:</span>{' '}
+                  <span className={`inline-block rounded px-2 ${
+                    statusCodes[result.status_code]?.status === 'Live' ? 'bg-green-50' : 
+                    statusCodes[result.status_code]?.status === 'Dead' ? 'bg-red-50' : 
+                    'bg-gray-50'
+                  }`}>
+                    {statusCodes[result.status_code]?.status || 'Unknown'}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-medium">Filing Date:</span>{' '}
+                  {formatDate(result.filing_date)}
+                </div>
+                {result.similarity_score && (
+                  <div>
+                    <span className="font-medium">Match Score:</span>{' '}
+                    {Math.round(result.similarity_score)}%
+                  </div>
+                )}
+                {result.match_quality && (
+                  <div>
+                    <span className="font-medium">Match Quality:</span>{' '}
+                    {result.match_quality}
+                  </div>
+                )}
+              </div>
+            </Link>
+            <AIChatButton 
+              serialNumber={result.serial_number.toString()} 
+              markIdentification={result.mark_identification} 
+            />
+          </div>
         ))}
       </div>
 
