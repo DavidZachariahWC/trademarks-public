@@ -9,8 +9,6 @@ import { API_ENDPOINTS } from '@/lib/api-config'
 import { Loader2 } from 'lucide-react'
 import { Case } from '@/utils/types/case'
 import Link from 'next/link'
-import { Button } from "@/components/ui/button"
-import { MessageSquare } from "lucide-react"
 
 export default function CasePage() {
   const params = useParams()
@@ -66,20 +64,5 @@ export default function CasePage() {
     return null
   }
 
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex justify-between items-start mb-6">
-        <Link href="/" className="text-blue-600 hover:underline">← Back to Search</Link>
-        <Button
-          onClick={() => window.open(`/ai-chat/${params.serialNumber}`, '_blank')}
-          className="flex items-center gap-2"
-          variant="outline"
-        >
-          <MessageSquare className="h-4 w-4" />
-          Chat with AI about this case
-        </Button>
-      </div>
-      <CaseDetails case={caseData} />
-    </div>
-  )
+  return <CaseDetails case={caseData} />
 } 

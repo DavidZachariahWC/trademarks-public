@@ -18,6 +18,9 @@ import MiscellaneousStatements from './MiscellaneousStatements'
 import AttorneyOfRecord from './AttorneyOfRecord'
 import RestrictionOnScope from './RestrictionOnScope'
 import PseudoMarks from './PseudoMarks'
+import Link from 'next/link'
+import { Button } from "@/components/ui/button"
+import { MessageSquare } from "lucide-react"
 
 interface CaseDetailsProps {
   case: Case
@@ -26,7 +29,17 @@ interface CaseDetailsProps {
 export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <a href="/" className="inline-block mb-6 text-blue-600 hover:underline">← Back to Search</a>
+      <div className="flex justify-between items-center mb-6">
+        <Link href="/" className="text-blue-600 hover:underline">← Back to Search</Link>
+        <Button
+          onClick={() => window.open(`/ai-chat/${caseData.serial_number}`, '_blank')}
+          className="flex items-center gap-2"
+          variant="outline"
+        >
+          <MessageSquare className="h-4 w-4" />
+          Chat with AI about this case
+        </Button>
+      </div>
       
       <div className="space-y-6">
         <BasicInfo caseData={caseData} />
