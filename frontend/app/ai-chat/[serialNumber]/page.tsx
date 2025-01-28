@@ -2,17 +2,16 @@
 
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Loader2, Send } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Loader2 } from "lucide-react"
 import { API_ENDPOINTS } from "@/lib/api-config"
 import { useParams } from "next/navigation"
-import Link from "next/link"
+import { ChatHeader } from "../newComponents/chat-header"
+import { MessagesContainer } from "../newComponents/messages-container"
+import { ChatInput } from "../newComponents/chat-input"
 
 interface Message {
+  id?: string
   role: "user" | "assistant"
   content: string
   isStreaming?: boolean
@@ -32,7 +31,6 @@ export default function AIChatPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [caseData, setCaseData] = useState<CaseData | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const scrollRef = useRef<HTMLDivElement>(null)
 
   // Fetch case data and initialize chat
   useEffect(() => {
@@ -46,22 +44,16 @@ export default function AIChatPage() {
         }
         
         const data = await response.json()
-        console.log("Case data received:", {
-          serialNumber: data.serial_number,
-          mark: data.mark_identification
-        })
+        console.log("Case data received:", data)
         
         setCaseData(data)
         
-        // Only set initial message if we have valid case data
-        if (data.mark_identification) {
-          setMessages([
-            {
-              role: "assistant",
-              content: `Hello! I'm here to help you with information about trademark case ${serialNumber} - "${data.mark_identification}". What would you like to know?`
-            }
-          ])
-        }
+        // Always show some initial message:
+        setMessages([{
+          id: "initial",
+          role: "assistant",
+          content: "Hi there! This is your trademark case assistant. I have access to the case details, and I'm here to answer any questions you have about it!"
+        }])
       } catch (error) {
         console.error("Error fetching case data:", error)
         setError("Failed to load case data. Please try refreshing the page.")
@@ -72,13 +64,6 @@ export default function AIChatPage() {
       fetchCaseData()
     }
   }, [serialNumber])
-
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" })
-    }
-  }, [messages])
 
   const handleSendMessage = async () => {
     if (!input.trim() || !caseData) return
@@ -97,12 +82,24 @@ export default function AIChatPage() {
     })
     
     // Add user's message to chat
-    setMessages(prev => [...prev, { role: "user", content: userMessage }])
+    setMessages(prev => [...prev, { 
+      id: `user-${Date.now()}`,
+      role: "user", 
+      content: userMessage 
+    }])
+    
+    // Add a small delay of value 100 before showing the thinking message
+    await new Promise(resolve => setTimeout(resolve, 100))
     
     // Add a placeholder for the assistant's response
     setMessages(prev => [
       ...prev,
-      { role: "assistant", content: "", isStreaming: true }
+      { 
+        id: `assistant-${Date.now()}`,
+        role: "assistant", 
+        content: "", 
+        isStreaming: true 
+      }
     ])
     
     setIsLoading(true)
@@ -138,7 +135,11 @@ export default function AIChatPage() {
         setMessages(prev => 
           prev.map((msg, i) => 
             i === prev.length - 1 
-              ? { role: "assistant", content: data.response }
+              ? { 
+                  id: `assistant-${Date.now()}`,
+                  role: "assistant", 
+                  content: data.response 
+                }
               : msg
           )
         )
@@ -169,74 +170,26 @@ export default function AIChatPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-4xl p-4 h-screen flex flex-col">
-      <Card className="mb-4 p-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold mb-2">{caseData.mark_identification}</h1>
-            <p className="text-gray-600">Serial Number: {caseData.serial_number}</p>
-          </div>
-          <Link 
-            href={`/case/${caseData.serial_number}`}
-            className="text-blue-600 hover:underline"
-          >
-            View Case Details →
-          </Link>
-        </div>
-      </Card>
-
-      <Card className="flex-1 p-4 mb-4 overflow-hidden">
-        <ScrollArea className="h-[calc(100vh-300px)]">
-          <div className="space-y-4">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex ${
-                  message.role === "assistant" ? "justify-start" : "justify-end"
-                }`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
-                    message.role === "assistant"
-                      ? "bg-gray-100"
-                      : "bg-blue-500 text-white"
-                  }`}
-                >
-                  {message.content}
-                  {message.isStreaming && (
-                    <span className="inline-block w-2 h-4 ml-1 bg-gray-400 animate-pulse" />
-                  )}
-                </div>
-              </div>
-            ))}
-            <div ref={scrollRef} />
-          </div>
-        </ScrollArea>
-      </Card>
-
-      {error && (
-        <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg">
-          {error}
-        </div>
-      )}
-
-      <div className="flex gap-2">
-        <Input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey && !isLoading) {
-              e.preventDefault()
-              handleSendMessage()
-            }
-          }}
-          placeholder="Type your message..."
-          disabled={isLoading}
+    <>
+      <div className="flex-1 w-full flex flex-col gap-4">
+        <MessagesContainer 
+          messages={messages}
+          chatId={serialNumber}
         />
-        <Button onClick={handleSendMessage} disabled={isLoading || !input.trim()}>
-          <Send className="h-4 w-4" />
-        </Button>
+
+        {error && (
+          <div className="w-full max-w-2xl mx-auto px-4 py-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
       </div>
-    </div>
+
+      <ChatInput
+        input={input}
+        isLoading={isLoading}
+        onInputChange={setInput}
+        onSubmit={handleSendMessage}
+      />
+    </>
   )
 }
