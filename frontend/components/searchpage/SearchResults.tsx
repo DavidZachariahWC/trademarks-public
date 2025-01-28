@@ -6,7 +6,6 @@ import { formatDate } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import { statusCodes } from '@/utils/constants/statusCodes'
-import { AIChatButton } from './AIChatButton'
 
 interface SearchResultsProps {
   results: SearchResult[]
@@ -85,10 +84,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 )}
               </div>
             </Link>
-            <AIChatButton 
-              serialNumber={result.serial_number.toString()} 
-              markIdentification={result.mark_identification} 
-            />
           </div>
         ))}
       </div>
