@@ -375,16 +375,14 @@ class DesignSearchCodeStrategy(BaseSearchStrategy):
         is_wildcard = self.query_str.endswith('XX')
         if is_wildcard:
             pattern_prefix = self.query_str[:4]
-            subq = select(DesignSearch.serial_number).where(
-                text("LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE :pattern")
-            ).bindparams(pattern=f"{pattern_prefix}%")
+            stmt = text("LPAD(CAST(design_search_code AS TEXT), 6, '0') LIKE :pattern").bindparams(pattern=f"{pattern_prefix}%")
+            subq = select(DesignSearch.serial_number).where(stmt)
 
             filters = [CaseFile.serial_number.in_(subq)]
             return filters, []
         else:
-            subq = select(DesignSearch.serial_number).where(
-                text("LPAD(CAST(design_search_code AS TEXT), 6, '0') = :code")
-            ).bindparams(code=self.query_str)
+            stmt = text("LPAD(CAST(design_search_code AS TEXT), 6, '0') = :code").bindparams(code=self.query_str)
+            subq = select(DesignSearch.serial_number).where(stmt)
 
             filters = [CaseFile.serial_number.in_(subq)]
             return filters, []
