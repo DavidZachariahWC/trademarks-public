@@ -30,7 +30,7 @@ export function ChatInput({ input, isLoading, onInputChange, onSubmit }: ChatInp
         }}
         placeholder="Type your message..."
         disabled={isLoading}
-        className="flex-1 bg-zinc-50 border-zinc-200 text-zinc-900 placeholder:text-zinc-500 focus:ring-2 focus:ring-zinc-500 h-12 py-2"
+        className="flex-1 bg-zinc-200 border-zinc-300 text-zinc-900 placeholder:text-zinc-500 focus:ring-2 focus:ring-zinc-500 h-12 py-2"
       />
       <SubmitButton
         disabled={isLoading || !input.trim()}
