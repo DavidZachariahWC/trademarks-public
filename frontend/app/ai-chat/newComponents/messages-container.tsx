@@ -2,8 +2,8 @@
 
 "use client"
 
+import { useEffect, useRef } from "react"
 import { Message as MessageComponent } from "./message"
-import { useScrollToBottom } from "./use-scroll-to-bottom"
 
 interface Message {
   id?: string
@@ -18,35 +18,46 @@ interface MessagesContainerProps {
 }
 
 export function MessagesContainer({ messages, chatId }: MessagesContainerProps) {
-  const [containerRef, endRef] = useScrollToBottom<HTMLDivElement>()
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ 
+        behavior: "smooth",
+        block: "end"
+      })
+    }
+  }
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   return (
-    <div
+    <div 
       ref={containerRef}
-      className="flex-1 flex flex-col gap-6 w-[calc(100%-2rem)] max-w-2xl mx-auto overflow-y-auto px-4 md:px-0 pb-4 pt-6 scrollbar-thin scrollbar-thumb-zinc-300 bg-zinc-50 rounded-lg scroll-smooth"
+      className="flex-1 overflow-y-auto scrollbar-none"
     >
-      <div className="flex-1 flex flex-col gap-6 min-h-0">
-        {messages.map((message, index) => (
+      <div className="flex flex-col gap-6 min-h-full p-6">
+        {messages.map((message) => (
           <MessageComponent
             key={message.id}
             chatId={chatId}
             role={message.role}
-            content={message.isStreaming ? 
+            content={message.isStreaming ? (
               <div className="flex gap-1 items-center text-zinc-600">
                 <span>Thinking</span>
                 <span className="inline-block w-1.5 h-4 bg-zinc-400 animate-pulse" />
                 <span className="inline-block w-1.5 h-4 bg-zinc-400 animate-pulse delay-150" />
                 <span className="inline-block w-1.5 h-4 bg-zinc-400 animate-pulse delay-300" />
-              </div> 
-              : message.content
-            }
+              </div>
+            ) : message.content}
           />
         ))}
-        <div
-          ref={endRef}
-          className="shrink-0 min-w-[24px] min-h-[24px]"
-        />
+        <div ref={messagesEndRef} />
       </div>
     </div>
   )
-} 
+}

@@ -6,9 +6,7 @@ import { useState, useEffect } from "react"
 import { Loader2 } from "lucide-react"
 import { API_ENDPOINTS } from "@/lib/api-config"
 import { useParams } from "next/navigation"
-import { ChatHeader } from "../newComponents/chat-header"
-import { MessagesContainer } from "../newComponents/messages-container"
-import { ChatInput } from "../newComponents/chat-input"
+import { Chat } from "../newComponents/chat"
 
 interface Message {
   id?: string
@@ -170,26 +168,14 @@ export default function AIChatPage() {
   }
 
   return (
-    <>
-      <div className="flex-1 w-full flex flex-col gap-4">
-        <MessagesContainer 
-          messages={messages}
-          chatId={serialNumber}
-        />
-
-        {error && (
-          <div className="w-full max-w-2xl mx-auto px-4 py-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg text-sm">
-            {error}
-          </div>
-        )}
-      </div>
-
-      <ChatInput
-        input={input}
-        isLoading={isLoading}
-        onInputChange={setInput}
-        onSubmit={handleSendMessage}
-      />
-    </>
+    <Chat
+      messages={messages}
+      input={input}
+      isLoading={isLoading}
+      error={error}
+      chatId={serialNumber}
+      onInputChange={setInput}
+      onSubmit={handleSendMessage}
+    />
   )
 }

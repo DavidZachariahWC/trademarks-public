@@ -26,11 +26,11 @@ export const Message = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <div className="size-[36px] border rounded-sm p-2 flex flex-col justify-center items-center shrink-0 text-zinc-500">
+      <div className="size-[36px] border rounded-sm p-2 flex flex-col justify-start items-center shrink-0 text-zinc-500 mt-1">
         {role === "assistant" ? <BotIcon /> : <UserIcon />}
       </div>
 
-      <div className="flex flex-col w-full -mt-[8px]">
+      <div className="flex flex-col w-full justify-center min-h-[36px]">
         {content && typeof content === "string" ? (
           <div className="text-zinc-900">
             <Markdown>{content}</Markdown>
