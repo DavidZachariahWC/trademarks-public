@@ -21968,3 +21968,162 @@ WHERE LPAD(CAST(design_search_code AS TEXT), 6, '0') = '020101')) AS anon_3)) AS
 2025-01-28 19:13:17,468 - __main__ - INFO - Case details retrieval and formatting complete.
 2025-01-28 19:13:17,529 - __main__ - INFO - Database session closed.
 2025-01-28 19:13:17,531 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:13:17] "GET /api/case/73233289 HTTP/1.1" 200 -
+2025-01-28 19:16:41,828 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:16:41] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:16:41,832 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '1', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 19:16:41,832 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '1', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, page=1, per_page=60
+2025-01-28 19:16:41,834 - multi_filter_search - INFO - Generated query for strategy 'drawing_code_type'.
+2025-01-28 19:16:42,326 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE substr(CAST(casefileheader.mark_drawing_code AS VARCHAR), 1, 1) = '1') AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-28 19:16:42,592 - multi_filter_search - INFO - Query executed in 0.76s
+2025-01-28 19:16:42,653 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:16:42] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:16:46,790 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '2', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 19:16:46,790 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '2', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, page=1, per_page=60
+2025-01-28 19:16:46,790 - multi_filter_search - INFO - Generated query for strategy 'drawing_code_type'.
+2025-01-28 19:16:46,950 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE substr(CAST(casefileheader.mark_drawing_code AS VARCHAR), 1, 1) = '2') AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-28 19:16:47,044 - multi_filter_search - INFO - Query executed in 0.25s
+2025-01-28 19:16:47,108 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:16:47] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:16:50,429 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:16:50] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:16:50,432 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '3', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 19:16:50,432 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '3', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, page=1, per_page=60
+2025-01-28 19:16:50,433 - multi_filter_search - INFO - Generated query for strategy 'drawing_code_type'.
+2025-01-28 19:16:50,626 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE substr(CAST(casefileheader.mark_drawing_code AS VARCHAR), 1, 1) = '3') AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-28 19:16:50,750 - multi_filter_search - INFO - Query executed in 0.32s
+2025-01-28 19:16:50,813 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:16:50] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:16:54,334 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '4', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 19:16:54,334 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '4', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, page=1, per_page=60
+2025-01-28 19:16:54,334 - multi_filter_search - INFO - Generated query for strategy 'drawing_code_type'.
+2025-01-28 19:16:54,490 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE substr(CAST(casefileheader.mark_drawing_code AS VARCHAR), 1, 1) = '4') AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-28 19:16:54,597 - multi_filter_search - INFO - Query executed in 0.26s
+2025-01-28 19:16:54,659 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:16:54] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:16:59,237 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:16:59] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:16:59,241 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '5', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 19:16:59,241 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '5', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, page=1, per_page=60
+2025-01-28 19:16:59,242 - multi_filter_search - INFO - Generated query for strategy 'drawing_code_type'.
+2025-01-28 19:16:59,476 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE substr(CAST(casefileheader.mark_drawing_code AS VARCHAR), 1, 1) = '5') AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-28 19:16:59,599 - multi_filter_search - INFO - Query executed in 0.36s
+2025-01-28 19:16:59,661 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:16:59] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:17:03,363 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '6', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 19:17:03,363 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '6', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, page=1, per_page=60
+2025-01-28 19:17:03,364 - multi_filter_search - INFO - Generated query for strategy 'drawing_code_type'.
+2025-01-28 19:17:03,516 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE substr(CAST(casefileheader.mark_drawing_code AS VARCHAR), 1, 1) = '6') AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-28 19:17:03,614 - multi_filter_search - INFO - Query executed in 0.25s
+2025-01-28 19:17:03,675 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:17:03] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:17:08,442 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:17:08] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:17:08,445 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '1000', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 19:17:08,445 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '1000', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, page=1, per_page=60
+2025-01-28 19:17:08,445 - multi_filter_search - INFO - Generated query for strategy 'drawing_code_type'.
+2025-01-28 19:17:08,576 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE false) AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-28 19:17:08,641 - multi_filter_search - INFO - Query executed in 0.20s
+2025-01-28 19:17:08,701 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:17:08] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:21:56,263 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:21:56] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:21:56,267 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '0', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 19:21:56,267 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '0', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, page=1, per_page=60
+2025-01-28 19:21:56,269 - multi_filter_search - INFO - Generated query for strategy 'drawing_code_type'.
+2025-01-28 19:21:56,420 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE substr(CAST(casefileheader.mark_drawing_code AS VARCHAR), 1, 1) = '0') AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-28 19:21:56,494 - multi_filter_search - INFO - Query executed in 0.23s
+2025-01-28 19:21:56,553 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:21:56] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:22:12,927 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:22:12] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-28 19:22:12,931 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '2', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 19:22:12,931 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'drawing_code_type', 'query': '2', 'group': 'Visual Characteristics', 'label': 'Drawing Code'}]}, page=1, per_page=60
+2025-01-28 19:22:12,931 - multi_filter_search - INFO - Generated query for strategy 'drawing_code_type'.
+2025-01-28 19:22:13,096 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE substr(CAST(casefileheader.mark_drawing_code AS VARCHAR), 1, 1) = '2') AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-28 19:22:13,199 - multi_filter_search - INFO - Query executed in 0.27s
+2025-01-28 19:22:13,261 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 19:22:13] "POST /api/combined_search HTTP/1.1" 200 -
