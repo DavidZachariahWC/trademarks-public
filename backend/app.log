@@ -21655,3 +21655,89 @@ WHERE similarity(casefileheader.mark_identification, 'wrapper company') > 0.3 OR
 2025-01-28 18:22:25,117 - __main__ - INFO - Case details retrieval and formatting complete.
 2025-01-28 18:22:25,177 - __main__ - INFO - Database session closed.
 2025-01-28 18:22:25,178 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 18:22:25] "GET /api/case/71676215 HTTP/1.1" 200 -
+2025-01-28 18:54:15,747 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 18:54:15] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-28 18:54:15,751 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'design_code', 'query': '241714', 'group': 'Visual Characteristics', 'label': 'Design Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 18:54:15,751 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'design_code', 'query': '241714', 'group': 'Visual Characteristics', 'label': 'Design Code'}]}, page=1, per_page=60
+2025-01-28 18:54:15,752 - multi_filter_search - ERROR - Error in multi_filter_search: 'Select' object has no attribute 'bindparams'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 170, in multi_filter_search
+    final_query = build_query_recursive(filter_tree, session)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 75, in build_query_recursive
+    subqueries = [build_query_recursive(op, session) for op in operands]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 62, in build_query_recursive
+    query = strategy.build_query(session)  # applies .filter(*filters)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py", line 50, in build_query
+    filters, _scoring = self.get_filters_and_scoring()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py", line 387, in get_filters_and_scoring
+    ).bindparams(code=self.query_str)
+      ^^^^^^^^^^
+AttributeError: 'Select' object has no attribute 'bindparams'
+2025-01-28 18:54:15,762 - __main__ - ERROR - Error in combined_search: 'Select' object has no attribute 'bindparams'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 357, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 170, in multi_filter_search
+    final_query = build_query_recursive(filter_tree, session)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 75, in build_query_recursive
+    subqueries = [build_query_recursive(op, session) for op in operands]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 62, in build_query_recursive
+    query = strategy.build_query(session)  # applies .filter(*filters)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py", line 50, in build_query
+    filters, _scoring = self.get_filters_and_scoring()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py", line 387, in get_filters_and_scoring
+    ).bindparams(code=self.query_str)
+      ^^^^^^^^^^
+AttributeError: 'Select' object has no attribute 'bindparams'
+2025-01-28 18:54:15,765 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 18:54:15] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-01-28 18:54:35,235 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 18:54:35] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-28 18:54:35,239 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'design_code', 'query': '241714', 'group': 'Visual Characteristics', 'label': 'Design Code'}]}, 'page': 1, 'per_page': 60}
+2025-01-28 18:54:35,239 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'design_code', 'query': '241714', 'group': 'Visual Characteristics', 'label': 'Design Code'}]}, page=1, per_page=60
+2025-01-28 18:54:35,239 - multi_filter_search - ERROR - Error in multi_filter_search: 'Select' object has no attribute 'bindparams'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 170, in multi_filter_search
+    final_query = build_query_recursive(filter_tree, session)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 75, in build_query_recursive
+    subqueries = [build_query_recursive(op, session) for op in operands]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 62, in build_query_recursive
+    query = strategy.build_query(session)  # applies .filter(*filters)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py", line 50, in build_query
+    filters, _scoring = self.get_filters_and_scoring()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py", line 387, in get_filters_and_scoring
+    ).bindparams(code=self.query_str)
+      ^^^^^^^^^^
+AttributeError: 'Select' object has no attribute 'bindparams'
+2025-01-28 18:54:35,245 - __main__ - ERROR - Error in combined_search: 'Select' object has no attribute 'bindparams'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 357, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 170, in multi_filter_search
+    final_query = build_query_recursive(filter_tree, session)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 75, in build_query_recursive
+    subqueries = [build_query_recursive(op, session) for op in operands]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 62, in build_query_recursive
+    query = strategy.build_query(session)  # applies .filter(*filters)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py", line 50, in build_query
+    filters, _scoring = self.get_filters_and_scoring()
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/search_strategies.py", line 387, in get_filters_and_scoring
+    ).bindparams(code=self.query_str)
+      ^^^^^^^^^^
+AttributeError: 'Select' object has no attribute 'bindparams'
+2025-01-28 18:54:35,251 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 18:54:35] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
