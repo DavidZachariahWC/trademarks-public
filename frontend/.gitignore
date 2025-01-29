@@ -79,3 +79,6 @@ next-env.d.ts
 
 # env.local
 .env.local
+
+#other
+app.log
