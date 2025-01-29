@@ -80,6 +80,17 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
     setIsSidebarOpen(false);
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && currentFilter.strategy && 
+        (currentFilter.query || BOOLEAN_STRATEGIES.has(currentFilter.strategy)) &&
+        !(DATE_STRATEGIES.has(currentFilter.strategy) && (
+          !currentFilter.query.includes(' - ') || 
+          new Date(currentFilter.query.split(' - ')[0]) > new Date(currentFilter.query.split(' - ')[1])
+        ))) {
+      handleAddFilter();
+    }
+  };
+
   const handleClassSelect = (classes: string[]) => {
     if (classes.length > 0) {
       setCurrentFilter({
@@ -135,6 +146,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
                       query: `${e.target.value}${endDate ? ' - ' + endDate : ''}`
                     });
                   }}
+                  onKeyPress={handleKeyPress}
                   className="h-12 text-base bg-gray-100"
                 />
                 <span className="text-gray-500">to</span>
@@ -149,6 +161,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
                       query: `${startDate ? startDate + ' - ' : ''}${e.target.value}`
                     });
                   }}
+                  onKeyPress={handleKeyPress}
                   className="h-12 text-base bg-gray-100"
                 />
               </div>
@@ -177,6 +190,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
                         query: value.replace(/\./g, '')
                       });
                     }}
+                    onKeyPress={handleKeyPress}
                     className="h-12 text-base bg-gray-100"
                   />
                 </div>
@@ -201,6 +215,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
                         query: value
                       });
                     }}
+                    onKeyPress={handleKeyPress}
                     className="h-12 text-base bg-gray-100"
                   />
                 </div>
@@ -246,6 +261,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
                 onChange={(e) =>
                   setCurrentFilter({ ...currentFilter, query: e.target.value })
                 }
+                onKeyPress={handleKeyPress}
                 className="h-12 text-base bg-gray-100"
               />
             )}
