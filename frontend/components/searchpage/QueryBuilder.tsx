@@ -41,9 +41,8 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
 
   const resetCurrentFilter = () => {
     setCurrentFilter({
-      strategy: "wordmark",
-      query: "",
-      label: "Wordmark"
+      ...currentFilter,
+      query: ""
     });
   };
 
@@ -152,6 +151,39 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
                   }}
                   className="h-12 text-base bg-gray-100"
                 />
+              </div>
+            ) : currentFilter.strategy === "design_code" ? (
+              <div className="flex-1 space-y-2">
+                <div className="flex items-center gap-2">
+                  <Input
+                    ref={inputRef}
+                    type="text"
+                    placeholder="Enter 6-digit design code (e.g. 020101)"
+                    value={currentFilter.query}
+                    maxLength={8}
+                    onChange={(e) => {
+                      // Remove any non-digit and non-X characters
+                      let value = e.target.value.replace(/[^0-9X]/g, '');
+                      
+                      // Format with dots (but not if it ends with XX)
+                      if (!value.endsWith('XX')) {
+                        if (value.length > 2) value = value.slice(0, 2) + '.' + value.slice(2);
+                        if (value.length > 5) value = value.slice(0, 5) + '.' + value.slice(5);
+                      }
+                      
+                      // Store without dots
+                      setCurrentFilter({ 
+                        ...currentFilter, 
+                        query: value.replace(/\./g, '')
+                      });
+                    }}
+                    className="h-12 text-base bg-gray-100"
+                  />
+                </div>
+                <div className="text-sm text-gray-500">
+                  <p>Format: XXXXXX (e.g. 020101)</p>
+                  <p>For wildcard search, use ####XX where #### is your prefix (e.g., 0201XX)</p>
+                </div>
               </div>
             ) : (
               <Input
