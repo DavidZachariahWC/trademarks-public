@@ -70,13 +70,13 @@ export default function DesignCodePage() {
       let aiResponse = ""
       if (data.status === "need_more_info") {
         const questions = data.questions.join("\n")
-        aiResponse = `I need some more information to determine the ${data.level}. Please answer these questions:\n\n${questions}`
+        aiResponse = `${questions}`
       } else if (data.status === "complete") {
         const { classification } = data
-        aiResponse = `I've determined the design code: ${classification.fullCode}\n\n` +
-          `Category (${classification.categoryCode}): ${classification.categoryReasoning}\n\n` +
-          `Division (${classification.divisionCode}): ${classification.divisionReasoning}\n\n` +
-          `Section (${classification.sectionCode}): ${classification.sectionReasoning}`
+        aiResponse = `I believe I've determined the design codes: \n\n` +
+          ` ${classification.categoryReasoning}\n\n` +
+          ` ${classification.divisionReasoning}\n\n` +
+          ` ${classification.sectionReasoning}`
       }
       
       // Replace the streaming placeholder with the full response
