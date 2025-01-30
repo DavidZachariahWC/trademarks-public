@@ -22229,3 +22229,1772 @@ WHERE similarity(casefileheader.mark_identification, 'the wrapper company') > 0.
 2025-01-28 20:54:28,746 - __main__ - INFO - Case details retrieval and formatting complete.
 2025-01-28 20:54:28,806 - __main__ - INFO - Database session closed.
 2025-01-28 20:54:28,806 - werkzeug - INFO - 127.0.0.1 - - [28/Jan/2025 20:54:28] "GET /api/case/73144836 HTTP/1.1" 200 -
+2025-01-29 11:10:57,354 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-01-29 11:10:57,355 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-01-29 11:10:57,355 - werkzeug - INFO -  * Restarting with stat
+2025-01-29 11:10:58,158 - werkzeug - WARNING -  * Debugger is active!
+2025-01-29 11:10:58,178 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-01-29 11:16:13,513 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 11:16:13] "[33mGET /api/case/design-code HTTP/1.1[0m" 404 -
+2025-01-29 11:45:45,133 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 11:45:45] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-01-29 11:45:45,137 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'serial_number', 'query': '73170697', 'group': 'General Search', 'label': 'Serial Number'}]}, 'page': 1, 'per_page': 60}
+2025-01-29 11:45:45,137 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'serial_number', 'query': '73170697', 'group': 'General Search', 'label': 'Serial Number'}]}, page=1, per_page=60
+2025-01-29 11:45:45,141 - multi_filter_search - INFO - Generated query for strategy 'serial_number'.
+2025-01-29 11:45:46,485 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_1.serial_number 
+FROM (SELECT anon_2.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number = '73170697') AS anon_3)) AS anon_2) AS anon_1) ORDER BY casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-01-29 11:45:46,569 - multi_filter_search - INFO - Query executed in 1.43s
+2025-01-29 11:45:46,636 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 11:45:46] "POST /api/combined_search HTTP/1.1" 200 -
+2025-01-29 11:45:48,420 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 11:45:48,420 - __main__ - INFO - Database session established.
+2025-01-29 11:45:48,545 - __main__ - INFO - Case query executed. Case found: True
+2025-01-29 11:45:48,625 - __main__ - INFO - Header query executed. Header found: True
+2025-01-29 11:45:48,766 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-29 11:45:48,873 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-29 11:45:48,966 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-29 11:45:49,047 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-29 11:45:49,126 - __main__ - INFO - Design Searches query executed. Design Searches found: 4
+2025-01-29 11:45:49,427 - __main__ - INFO - Event Statements query executed. Event Statements found: 36
+2025-01-29 11:45:49,523 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-29 11:45:49,597 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-29 11:45:49,661 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-29 11:45:49,661 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-29 11:45:49,724 - __main__ - INFO - Database session closed.
+2025-01-29 11:45:49,725 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 11:45:49] "GET /api/case/73170697 HTTP/1.1" 200 -
+2025-01-29 12:00:11,051 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 12:00:11,052 - __main__ - INFO - Database session established.
+2025-01-29 12:00:11,189 - __main__ - INFO - Case query executed. Case found: True
+2025-01-29 12:00:11,273 - __main__ - INFO - Header query executed. Header found: True
+2025-01-29 12:00:11,346 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-29 12:00:11,421 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-29 12:00:11,521 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-29 12:00:11,679 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-29 12:00:11,743 - __main__ - INFO - Design Searches query executed. Design Searches found: 4
+2025-01-29 12:00:11,897 - __main__ - INFO - Event Statements query executed. Event Statements found: 36
+2025-01-29 12:00:12,045 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-29 12:00:12,106 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-29 12:00:12,166 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-29 12:00:12,166 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-29 12:00:12,234 - __main__ - INFO - Database session closed.
+2025-01-29 12:00:12,236 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 12:00:12] "GET /api/case/73170697 HTTP/1.1" 200 -
+2025-01-29 12:02:41,325 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 12:02:41,326 - __main__ - INFO - Database session established.
+2025-01-29 12:02:41,487 - __main__ - INFO - Case query executed. Case found: True
+2025-01-29 12:02:41,551 - __main__ - INFO - Header query executed. Header found: True
+2025-01-29 12:02:41,619 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-29 12:02:41,689 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-29 12:02:41,750 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-29 12:02:41,813 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-29 12:02:41,874 - __main__ - INFO - Design Searches query executed. Design Searches found: 4
+2025-01-29 12:02:42,054 - __main__ - INFO - Event Statements query executed. Event Statements found: 36
+2025-01-29 12:02:42,121 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-29 12:02:42,188 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-29 12:02:42,250 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-29 12:02:42,251 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-29 12:02:42,315 - __main__ - INFO - Database session closed.
+2025-01-29 12:02:42,318 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 12:02:42] "GET /api/case/73170697 HTTP/1.1" 200 -
+2025-01-29 12:16:26,262 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 12:16:26,263 - __main__ - INFO - Database session established.
+2025-01-29 12:16:26,505 - __main__ - INFO - Case query executed. Case found: True
+2025-01-29 12:16:26,573 - __main__ - INFO - Header query executed. Header found: True
+2025-01-29 12:16:26,659 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-01-29 12:16:26,729 - __main__ - INFO - Classifications query executed. Classifications found: 2
+2025-01-29 12:16:26,906 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-01-29 12:16:26,970 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-01-29 12:16:27,033 - __main__ - INFO - Design Searches query executed. Design Searches found: 4
+2025-01-29 12:16:27,196 - __main__ - INFO - Event Statements query executed. Event Statements found: 36
+2025-01-29 12:16:27,259 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-01-29 12:16:27,322 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-01-29 12:16:27,432 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-01-29 12:16:27,432 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-01-29 12:16:27,493 - __main__ - INFO - Database session closed.
+2025-01-29 12:16:27,494 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 12:16:27] "GET /api/case/73170697 HTTP/1.1" 200 -
+2025-01-29 14:43:34,972 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 14:43:34,974 - __main__ - INFO - Database session established.
+2025-01-29 14:43:34,985 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 14:43:34,986 - __main__ - INFO - Database session established.
+2025-01-29 14:43:34,992 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 14:43:35,002 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[SQL: SELECT casefile.serial_number AS casefile_serial_number, casefile.registration_number AS casefile_registration_number, casefile.transaction_date AS casefile_transaction_date, casefile.application_information_id AS casefile_application_information_id 
+FROM casefile 
+WHERE casefile.serial_number = %(serial_number_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'serial_number_1': 73170697, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[SQL: SELECT casefile.serial_number AS casefile_serial_number, casefile.registration_number AS casefile_registration_number, casefile.transaction_date AS casefile_transaction_date, casefile.application_information_id AS casefile_application_information_id 
+FROM casefile 
+WHERE casefile.serial_number = %(serial_number_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'serial_number_1': 73170697, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 14:43:35,015 - __main__ - INFO - Database session closed.
+2025-01-29 14:43:35,018 - __main__ - INFO - Database session closed.
+2025-01-29 14:43:35,018 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 14:43:35] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 14:43:35,019 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 14:43:35] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 14:44:26,706 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 14:44:26,707 - __main__ - INFO - Database session established.
+2025-01-29 14:44:26,711 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 14:44:26,722 - __main__ - INFO - Database session closed.
+2025-01-29 14:44:26,723 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 14:44:26] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 16:56:20,875 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 16:56:20,878 - __main__ - INFO - Database session established.
+2025-01-29 16:56:20,889 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 16:56:20,897 - __main__ - INFO - Database session closed.
+2025-01-29 16:56:20,898 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 16:56:20] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 17:57:48,787 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 17:57:48,789 - __main__ - INFO - Database session established.
+2025-01-29 17:57:48,793 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 17:57:48,797 - __main__ - INFO - Database session closed.
+2025-01-29 17:57:48,798 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 17:57:48] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 17:57:48,833 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 17:57:48,833 - __main__ - INFO - Database session established.
+2025-01-29 17:57:48,835 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 17:57:48,838 - __main__ - INFO - Database session closed.
+2025-01-29 17:57:48,838 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 17:57:48] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 18:07:35,840 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 18:07:35,840 - __main__ - INFO - Database session established.
+2025-01-29 18:07:35,844 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 18:07:35,847 - __main__ - INFO - Database session closed.
+2025-01-29 18:07:35,848 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 18:07:35] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 18:07:59,654 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 18:07:59,655 - __main__ - INFO - Database session established.
+2025-01-29 18:07:59,656 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 18:07:59,657 - __main__ - INFO - Database session closed.
+2025-01-29 18:07:59,658 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 18:07:59] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 18:45:07,308 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 18:45:07,309 - __main__ - INFO - Database session established.
+2025-01-29 18:45:07,311 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 18:45:07,314 - __main__ - INFO - Database session closed.
+2025-01-29 18:45:07,314 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 18:45:07] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 19:00:02,830 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 19:00:02,831 - __main__ - INFO - Database session established.
+2025-01-29 19:00:02,834 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 19:00:02,836 - __main__ - INFO - Database session closed.
+2025-01-29 19:00:02,837 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 19:00:02] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 19:02:38,693 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 19:02:38,693 - __main__ - INFO - Database session established.
+2025-01-29 19:02:38,694 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 19:02:38,697 - __main__ - INFO - Database session closed.
+2025-01-29 19:02:38,697 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 19:02:38] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 19:04:01,771 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 19:04:01,771 - __main__ - INFO - Database session established.
+2025-01-29 19:04:01,773 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 19:04:01,775 - __main__ - INFO - Database session closed.
+2025-01-29 19:04:01,776 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 19:04:01] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
+2025-01-29 19:59:05,200 - __main__ - INFO - Fetching details for case: 73170697
+2025-01-29 19:59:05,201 - __main__ - INFO - Database session established.
+2025-01-29 19:59:05,204 - __main__ - ERROR - Error fetching case details for serial number 73170697: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 717, in checkout
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 715, in checkout
+    dbapi_connection = rec.get_connection()
+                       ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 837, in get_connection
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 15432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-29 19:59:05,207 - __main__ - INFO - Database session closed.
+2025-01-29 19:59:05,207 - werkzeug - INFO - 127.0.0.1 - - [29/Jan/2025 19:59:05] "[35m[1mGET /api/case/73170697 HTTP/1.1[0m" 500 -
