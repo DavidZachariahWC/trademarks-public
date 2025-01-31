@@ -18,11 +18,11 @@ export default function ChatLayout({ children }: ChatLayoutProps) {
       <header className="w-full bg-white border-b border-zinc-200 flex-none">
         <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
           <h1 className="text-lg font-semibold text-zinc-900">
-            Case Summary for {serialNumber}
+            Design Code Assistant
           </h1>
-          <Link href={`/case/${serialNumber}`}>
+          <Link href="/">
             <Button className="text-sm bg-zinc-900 hover:bg-zinc-800 text-white">
-              Return to Case Details →
+              Return to Search Page →
             </Button>
           </Link>
         </div>
