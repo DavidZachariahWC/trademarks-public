@@ -11,6 +11,11 @@ export default function TopBar() {
         <nav>
           <ul className="flex space-x-4">
             <li><Button variant="ghost">Home</Button></li>
+            <li>
+              <Link href="/design-code">
+                <Button variant="ghost">Design Code Assistant</Button>
+              </Link>
+            </li>
             <li><Button variant="ghost">About</Button></li>
             <li><Button variant="ghost">Contact</Button></li>
           </ul>
