@@ -40,7 +40,7 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
       }
 
       const data = await response.json()
-      setSuggestions(data.suggestions)
+      setSuggestions(data.suggestions.slice(1))
     } catch (err) {
       setError('Failed to generate suggestions. Please try again.')
       console.error(err)
@@ -52,7 +52,7 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
   const handleAddAll = async () => {
     setIsAddingAll(true)
     try {
-      await onAddAllSuggestions?.(suggestions)
+      await onAddAllSuggestions?.([term.trim(), ...suggestions])
     } finally {
       setIsAddingAll(false)
     }

@@ -24937,3 +24937,111 @@ WHERE similarity(casefileheader.mark_identification, 'third search') > 0.3 OR lo
 2025-02-02 18:40:06,084 - werkzeug - INFO -  * Detected change in '/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py', reloading
 2025-02-02 18:40:06,790 - werkzeug - WARNING -  * Debugger is active!
 2025-02-02 18:40:06,795 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-02-02 18:42:08,627 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 18:42:08] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-02 18:42:08,631 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'extreme'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'xxtreme'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'exxtreme'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'extreem'}]}, 'page': 1, 'per_page': 60}
+2025-02-02 18:42:08,631 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'extreme'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'xxtreme'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'exxtreme'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'extreem'}]}, page=1, per_page=60
+2025-02-02 18:42:08,633 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:42:08,633 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:42:08,635 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:42:08,636 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:42:10,960 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'extreme') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'extreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%extreme%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'xxtreme') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'xxtreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%xxtreme%')) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'exxtreme') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'exxtreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%exxtreme%')) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'extreem') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'extreem') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%extreem%')) AS anon_5) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT anon_7.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'extreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%extreme%')) AS anon_10) OR casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'xxtreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%xxtreme%')) AS anon_11)) AS anon_9) OR casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'exxtreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%exxtreme%')) AS anon_12)) AS anon_8) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'extreem') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%extreem%')) AS anon_13)) AS anon_7) AS anon_6) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-02-02 18:42:12,117 - multi_filter_search - INFO - Query executed in 3.49s
+2025-02-02 18:42:12,177 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 18:42:12] "POST /api/combined_search HTTP/1.1" 200 -
+2025-02-02 18:42:31,686 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 18:42:31] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-02 18:42:31,690 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'extreme'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'xxtreme'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'exxtreme'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'extreem'}]}, {'strategy': 'wordmark', 'query': 'xtreme', 'label': 'Wordmark'}]}, 'page': 1, 'per_page': 60}
+2025-02-02 18:42:31,691 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'extreme'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'xxtreme'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'exxtreme'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'extreem'}]}, {'strategy': 'wordmark', 'query': 'xtreme', 'label': 'Wordmark'}]}, page=1, per_page=60
+2025-02-02 18:42:31,691 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:42:31,692 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:42:31,693 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:42:31,695 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:42:31,696 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:42:33,186 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'extreme') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'extreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%extreme%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'xxtreme') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'xxtreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%xxtreme%')) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'exxtreme') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'exxtreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%exxtreme%')) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'extreem') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'extreem') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%extreem%')) AS anon_5 UNION ALL SELECT anon_6.sn AS sn, anon_6.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'xtreme') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'xtreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%xtreme%')) AS anon_6) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT anon_8.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'extreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%extreme%')) AS anon_12) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'xxtreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%xxtreme%')) AS anon_13)) AS anon_11) OR casefile.serial_number IN (SELECT anon_14.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'exxtreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%exxtreme%')) AS anon_14)) AS anon_10) OR casefile.serial_number IN (SELECT anon_15.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'extreem') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%extreem%')) AS anon_15)) AS anon_9) OR casefile.serial_number IN (SELECT anon_16.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'xtreme') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%xtreme%')) AS anon_16)) AS anon_8) AS anon_7) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-02-02 18:42:34,809 - multi_filter_search - INFO - Query executed in 3.12s
+2025-02-02 18:42:34,895 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 18:42:34] "POST /api/combined_search HTTP/1.1" 200 -
