@@ -195,27 +195,21 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
 
         # B. union scoring subqueries => group by => max(score)
         if scoring_subqueries:
-            # Create a "SELECT sn, score" from the first subquery
-            first_sub = session.query(
-                scoring_subqueries[0].c.sn.label("sn"),
-                scoring_subqueries[0].c.score.label("score")
-            ).statement
-
-            unioned_select = first_sub
-            for s in scoring_subqueries[1:]:
-                selectable = session.query(
+            # Create a union of all scoring subqueries using union_all function
+            unioned_select = union_all(*[
+                session.query(
                     s.c.sn.label("sn"),
                     s.c.score.label("score")
                 ).statement
-                unioned_select = unioned_select.union_all(selectable)
+                for s in scoring_subqueries
+            ]).alias("unioned_scores")
 
-            unioned_alias = unioned_select.alias("unioned_scores")
             scoring_agg = (
                 session.query(
-                    unioned_alias.c.sn.label('sn'),
-                    func.max(unioned_alias.c.score).label('combined_score')
+                    unioned_select.c.sn.label('sn'),
+                    func.max(unioned_select.c.score).label('combined_score')
                 )
-                .group_by(unioned_alias.c.sn)
+                .group_by(unioned_select.c.sn)
             ).subquery()
         else:
             scoring_agg = None
