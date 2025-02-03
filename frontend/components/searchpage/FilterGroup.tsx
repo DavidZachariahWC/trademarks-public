@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { X, ChevronRight } from "lucide-react";
+import { X, ChevronRight, Link } from "lucide-react";
 import { DATE_STRATEGIES, BOOLEAN_STRATEGIES } from "@/utils/constants/search";
 
 interface SearchFilter {
@@ -207,9 +207,10 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                 variant="outline"
                 size="sm"
                 onClick={() => handleGroupQueries(idx)}
-                className="h-auto px-2 py-1"
+                className="h-auto p-1"
+                title="Group filters"
               >
-                Group
+                <Link className="h-4 w-4" />
               </Button>
             )}
           </span>
