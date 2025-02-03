@@ -25391,3 +25391,138 @@ WHERE similarity(casefileheader.mark_identification, 'xtreem') > 0.3 OR lower(ca
  LIMIT 60 OFFSET 0
 2025-02-02 20:24:43,908 - multi_filter_search - INFO - Query executed in 2.74s
 2025-02-02 20:24:43,973 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 20:24:43] "POST /api/combined_search HTTP/1.1" 200 -
+2025-02-03 11:32:24,943 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-02-03 11:32:24,944 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-02-03 11:32:24,944 - werkzeug - INFO -  * Restarting with stat
+2025-02-03 11:32:25,937 - werkzeug - WARNING -  * Debugger is active!
+2025-02-03 11:32:25,953 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-02-03 11:33:12,886 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 11:33:12] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-03 11:33:12,889 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'bull dog'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'bulldog'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'buldog'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'bull dogge'}]}, 'page': 1, 'per_page': 60}
+2025-02-03 11:33:12,889 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'bull dog'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'bulldog'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'buldog'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'bull dogge'}]}, page=1, per_page=60
+2025-02-03 11:33:12,891 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 11:33:12,891 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 11:33:12,893 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 11:33:12,894 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 11:33:15,813 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bulldog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bulldog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bulldog%')) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'buldog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'buldog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%buldog%')) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dogge') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dogge') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dogge%')) AS anon_5) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_6.serial_number 
+FROM (SELECT anon_7.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_8.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_10) OR casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bulldog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bulldog%')) AS anon_11)) AS anon_9) OR casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'buldog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%buldog%')) AS anon_12)) AS anon_8) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dogge') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dogge%')) AS anon_13)) AS anon_7) AS anon_6) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-02-03 11:33:17,089 - multi_filter_search - INFO - Query executed in 4.20s
+2025-02-03 11:33:17,203 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 11:33:17] "POST /api/combined_search HTTP/1.1" 200 -
+2025-02-03 11:33:28,220 - __main__ - INFO - Fetching details for case: 73220202
+2025-02-03 11:33:28,220 - __main__ - INFO - Database session established.
+2025-02-03 11:33:28,475 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 11:33:28,548 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 11:33:28,866 - __main__ - INFO - Owners query executed. Owners found: 7
+2025-02-03 11:33:29,189 - __main__ - INFO - Classifications query executed. Classifications found: 4
+2025-02-03 11:33:29,389 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 1
+2025-02-03 11:33:29,529 - __main__ - INFO - Statements query executed. Statements found: 3
+2025-02-03 11:33:29,598 - __main__ - INFO - Design Searches query executed. Design Searches found: 4
+2025-02-03 11:33:29,920 - __main__ - INFO - Event Statements query executed. Event Statements found: 40
+2025-02-03 11:33:29,997 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 11:33:30,062 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 11:33:30,128 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 11:33:30,128 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 11:33:30,216 - __main__ - INFO - Database session closed.
+2025-02-03 11:33:30,216 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 11:33:30] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-02-03 11:50:37,489 - __main__ - INFO - Fetching details for case: 73220202
+2025-02-03 11:50:37,490 - __main__ - INFO - Database session established.
+2025-02-03 11:50:37,688 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 11:50:37,755 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 11:50:37,871 - __main__ - INFO - Owners query executed. Owners found: 7
+2025-02-03 11:50:37,941 - __main__ - INFO - Classifications query executed. Classifications found: 4
+2025-02-03 11:50:38,004 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 1
+2025-02-03 11:50:38,076 - __main__ - INFO - Statements query executed. Statements found: 3
+2025-02-03 11:50:38,197 - __main__ - INFO - Design Searches query executed. Design Searches found: 4
+2025-02-03 11:50:38,426 - __main__ - INFO - Event Statements query executed. Event Statements found: 40
+2025-02-03 11:50:38,493 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 11:50:38,556 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 11:50:38,617 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 11:50:38,617 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 11:50:38,723 - __main__ - INFO - Database session closed.
+2025-02-03 11:50:38,724 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 11:50:38] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-02-03 11:55:22,892 - __main__ - INFO - Fetching details for case: 73220202
+2025-02-03 11:55:22,894 - __main__ - INFO - Database session established.
+2025-02-03 11:55:23,179 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 11:55:23,246 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 11:55:23,341 - __main__ - INFO - Owners query executed. Owners found: 7
+2025-02-03 11:55:23,575 - __main__ - INFO - Classifications query executed. Classifications found: 4
+2025-02-03 11:55:23,641 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 1
+2025-02-03 11:55:23,721 - __main__ - INFO - Statements query executed. Statements found: 3
+2025-02-03 11:55:23,786 - __main__ - INFO - Design Searches query executed. Design Searches found: 4
+2025-02-03 11:55:24,104 - __main__ - INFO - Event Statements query executed. Event Statements found: 40
+2025-02-03 11:55:24,170 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 11:55:24,233 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 11:55:24,295 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 11:55:24,295 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 11:55:24,365 - __main__ - INFO - Database session closed.
+2025-02-03 11:55:24,367 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 11:55:24] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-02-03 12:07:52,635 - __main__ - INFO - Fetching details for case: 73220202
+2025-02-03 12:07:52,636 - __main__ - INFO - Database session established.
+2025-02-03 12:07:52,892 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 12:07:52,960 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 12:07:53,039 - __main__ - INFO - Owners query executed. Owners found: 7
+2025-02-03 12:07:53,113 - __main__ - INFO - Classifications query executed. Classifications found: 4
+2025-02-03 12:07:53,349 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 1
+2025-02-03 12:07:53,442 - __main__ - INFO - Statements query executed. Statements found: 3
+2025-02-03 12:07:53,505 - __main__ - INFO - Design Searches query executed. Design Searches found: 4
+2025-02-03 12:07:53,644 - __main__ - INFO - Event Statements query executed. Event Statements found: 40
+2025-02-03 12:07:53,708 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 12:07:53,815 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 12:07:53,876 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 12:07:53,876 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 12:07:53,939 - __main__ - INFO - Database session closed.
+2025-02-03 12:07:53,940 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 12:07:53] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-02-03 12:12:56,475 - __main__ - INFO - Fetching details for case: 73220202
+2025-02-03 12:12:56,475 - __main__ - INFO - Database session established.
+2025-02-03 12:12:56,705 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 12:12:56,769 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 12:12:56,868 - __main__ - INFO - Owners query executed. Owners found: 7
+2025-02-03 12:12:56,938 - __main__ - INFO - Classifications query executed. Classifications found: 4
+2025-02-03 12:12:57,173 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 1
+2025-02-03 12:12:57,239 - __main__ - INFO - Statements query executed. Statements found: 3
+2025-02-03 12:12:57,302 - __main__ - INFO - Design Searches query executed. Design Searches found: 4
+2025-02-03 12:12:57,499 - __main__ - INFO - Event Statements query executed. Event Statements found: 40
+2025-02-03 12:12:57,571 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 12:12:57,651 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 12:12:57,714 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 12:12:57,714 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 12:12:57,789 - __main__ - INFO - Database session closed.
+2025-02-03 12:12:57,791 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 12:12:57] "GET /api/case/73220202 HTTP/1.1" 200 -

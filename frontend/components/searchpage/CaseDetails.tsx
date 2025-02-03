@@ -21,6 +21,7 @@ import PseudoMarks from './PseudoMarks'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { MessageSquare } from "lucide-react"
+import { USPTODocuments } from './USPTODocuments'
 
 interface CaseDetailsProps {
   case: Case
@@ -31,14 +32,21 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <Link href="/" className="text-blue-600 hover:underline">← Back to Search</Link>
-        <Button
-          onClick={() => window.open(`/ai-chat/${caseData.serial_number}`, '_blank')}
-          className="flex items-center gap-2"
-          variant="outline"
-        >
-          <MessageSquare className="h-4 w-4" />
-          Chat with AI about this case
-        </Button>
+        <div className="flex gap-4">
+          <USPTODocuments
+            registrationNumber={caseData.registration_number || undefined}
+            serialNumber={caseData.serial_number}
+            applicationDate={caseData.header.filing_date || undefined}
+          />
+          <Button
+            onClick={() => window.open(`/ai-chat/${caseData.serial_number}`, '_blank')}
+            className="flex items-center gap-2"
+            variant="outline"
+          >
+            <MessageSquare className="h-4 w-4" />
+            Chat with AI about this case
+          </Button>
+        </div>
       </div>
       
       <div className="space-y-6">
