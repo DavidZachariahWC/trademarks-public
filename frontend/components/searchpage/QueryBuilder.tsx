@@ -13,6 +13,7 @@ import SearchOptions from "./SearchOptions";
 import { Input } from "@/components/ui/input";
 import CoordinatedClassSelector from "./CoordinatedClassSelector";
 import { DATE_STRATEGIES, BOOLEAN_STRATEGIES } from "@/utils/constants/search";
+import WordmarkSuggestions from "./WordmarkSuggestions";
 
 interface SearchFilter {
   strategy: string;
@@ -99,6 +100,42 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
       });
     } else {
       setCurrentFilter({ ...currentFilter, query: "" });
+    }
+  };
+
+  const showWordmarkSuggestions = currentFilter.strategy === "wordmark" || currentFilter.strategy === "pseudo_mark";
+
+  const handleSuggestionSelect = (suggestion: string) => {
+    setCurrentFilter(prev => ({
+      ...prev,
+      query: suggestion
+    }));
+    inputRef.current?.focus();
+  };
+
+  const handleAddAllSuggestions = async (suggestions: string[]) => {
+    if (suggestions.length > 0) {
+      // Capture the current filter properties in local variables
+      const { strategy, label, group } = currentFilter;
+      
+      // Loop over suggestions and create a new filter for each
+      for (let i = 0; i < suggestions.length; i++) {
+        const newFilter = {
+          strategy,
+          label,
+          group,
+          query: suggestions[i],
+        };
+
+        // Add the new filter (each filter is its own object)
+        onAddFilter(newFilter);
+
+        // Small delay to see the UI update between additions
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+
+      // Reset the input after adding all suggestions
+      resetCurrentFilter();
     }
   };
 
@@ -250,17 +287,23 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
                 </div>
               </div>
             ) : (
-              <Input
-                ref={inputRef}
-                type="text"
-                placeholder="Enter value..."
-                value={currentFilter.query}
-                onChange={(e) =>
-                  setCurrentFilter({ ...currentFilter, query: e.target.value })
-                }
-                onKeyPress={handleKeyPress}
-                className="h-12 text-base bg-gray-100"
-              />
+              <div className="space-y-4">
+                <Input
+                  ref={inputRef}
+                  type="text"
+                  placeholder={`Enter ${currentFilter.label?.toLowerCase()}...`}
+                  value={currentFilter.query}
+                  onChange={(e) => setCurrentFilter({ ...currentFilter, query: e.target.value })}
+                  onKeyPress={handleKeyPress}
+                  className="h-12 text-base bg-gray-100"
+                />
+                {showWordmarkSuggestions && (
+                  <WordmarkSuggestions 
+                    onSuggestionSelect={handleSuggestionSelect}
+                    onAddAllSuggestions={handleAddAllSuggestions}
+                  />
+                )}
+              </div>
             )}
           </div>
         )}

@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchResults from "./SearchResults";
 import { Button } from "@/components/ui/button";
 import { Search, Plus, Download } from "lucide-react";
@@ -48,6 +48,25 @@ export default function SearchPage() {
     per_page: 60,
   });
 
+  // Add event listener for setting OR operators
+  useEffect(() => {
+    const handleSetNextOperatorOR = (event: CustomEvent<{ index: number }>) => {
+      if (filterTree) {
+        const newTree = { ...filterTree };
+        if (event.detail.index < newTree.adjacentOperators.length) {
+          newTree.adjacentOperators[event.detail.index] = "OR";
+          setFilterTree(newTree);
+        }
+      }
+    };
+
+    window.addEventListener('setNextOperatorOR', handleSetNextOperatorOR as EventListener);
+    
+    return () => {
+      window.removeEventListener('setNextOperatorOR', handleSetNextOperatorOR as EventListener);
+    };
+  }, [filterTree]);
+
   // Transform our UI filter tree into the backend format
   const transformForBackend = (group: Group): BackendGroup => {
     // For a group with a single operand, just use AND (it doesn't matter)
@@ -86,25 +105,24 @@ export default function SearchPage() {
   };
 
   const handleAddFilter = (filter: SearchFilter) => {
-    if (filterTree) {
-      // Add the new filter and a default "AND" operator if there are existing operands
-      const newOperands = [...filterTree.operands, filter];
-      const newAdjOps = [...filterTree.adjacentOperators];
-      if (filterTree.operands.length > 0) {
-        newAdjOps.push("AND");  // Default to AND when adding new filters
+    setFilterTree(prevTree => {
+      if (prevTree) {
+        const newOperands = [...prevTree.operands, filter];
+        // Only add an operator if there is already at least one operand
+        const newAdjOps: ("AND" | "OR")[] = prevTree.operands.length > 0
+          ? [...prevTree.adjacentOperators, "OR"]
+          : [];
+        return {
+          operands: newOperands,
+          adjacentOperators: newAdjOps,
+        };
+      } else {
+        return {
+          operands: [filter],
+          adjacentOperators: [],
+        };
       }
-      
-      setFilterTree({
-        operands: newOperands,
-        adjacentOperators: newAdjOps,
-      });
-    } else {
-      // First filter - no adjacentOperators needed yet
-      setFilterTree({
-        operands: [filter],
-        adjacentOperators: [],
-      });
-    }
+    });
   };
 
   const handleAddGroup = () => {

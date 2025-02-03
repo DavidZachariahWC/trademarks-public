@@ -24284,3 +24284,498 @@ WHERE similarity(casefileheader.mark_identification, 'exfinity') > 0.3 OR lower(
 2025-02-02 16:57:26,278 - __main__ - INFO - Case details retrieval and formatting complete.
 2025-02-02 16:57:26,339 - __main__ - INFO - Database session closed.
 2025-02-02 16:57:26,340 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 16:57:26] "GET /api/case/73134034 HTTP/1.1" 200 -
+2025-02-02 18:05:03,176 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 18:05:03] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-02 18:05:03,180 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'xtreme'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'exxtreme'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'extreem'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'exstreem'}]}, 'page': 1, 'per_page': 60}
+2025-02-02 18:05:03,180 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'xtreme'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'exxtreme'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'extreem'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'exstreem'}]}, page=1, per_page=60
+2025-02-02 18:05:03,183 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:05:03,183 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:05:03,186 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:05:03,186 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:05:03,189 - multi_filter_search - ERROR - Error in multi_filter_search: 'CompoundSelect' object has no attribute 'union_all'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 210, in multi_filter_search
+    unioned_select = unioned_select.union_all(selectable)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'CompoundSelect' object has no attribute 'union_all'
+2025-02-02 18:05:03,194 - __main__ - ERROR - Error in combined_search: 'CompoundSelect' object has no attribute 'union_all'
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 357, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 210, in multi_filter_search
+    unioned_select = unioned_select.union_all(selectable)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'CompoundSelect' object has no attribute 'union_all'
+2025-02-02 18:05:03,198 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 18:05:03] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-02-02 18:05:22,003 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 18:05:22] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-02 18:05:22,015 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'xtreme'}]}, 'page': 1, 'per_page': 60}
+2025-02-02 18:05:22,016 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'xtreme'}]}, page=1, per_page=60
+2025-02-02 18:05:22,016 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:05:44,531 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 18:05:44] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-02 18:05:44,535 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'extreme', 'label': 'Wordmark'}]}, 'page': 1, 'per_page': 60}
+2025-02-02 18:05:44,535 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'extreme', 'label': 'Wordmark'}]}, page=1, per_page=60
+2025-02-02 18:05:44,536 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-02 18:06:39,353 - multi_filter_search - ERROR - Error in multi_filter_search: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 257, in multi_filter_search
+    total_count = filtered_count_query.scalar()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2831, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2804, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-02-02 18:06:39,356 - multi_filter_search - ERROR - Error in multi_filter_search: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT count(*) AS count_1 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_1)s) * %(similarity_2)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_3)s) > %(similarity_4)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_1)s)) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_5)s) > %(similarity_6)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_2)s)) AS anon_5)) AS anon_4) AS anon_3) AND coalesce(anon_1.combined_score, %(coalesce_1)s) >= %(coalesce_2)s]
+[parameters: {'similarity_1': 'xtreme', 'similarity_2': 100, 'similarity_3': 'xtreme', 'similarity_4': 0.3, 'lower_1': '%xtreme%', 'similarity_5': 'xtreme', 'similarity_6': 0.3, 'lower_2': '%xtreme%', 'coalesce_1': 0, 'coalesce_2': 15}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: SSL SYSCALL error: EOF detected
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 257, in multi_filter_search
+    total_count = filtered_count_query.scalar()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2831, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2804, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT count(*) AS count_1 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_1)s) * %(similarity_2)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_3)s) > %(similarity_4)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_1)s)) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_5)s) > %(similarity_6)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_2)s)) AS anon_5)) AS anon_4) AS anon_3) AND coalesce(anon_1.combined_score, %(coalesce_1)s) >= %(coalesce_2)s]
+[parameters: {'similarity_1': 'xtreme', 'similarity_2': 100, 'similarity_3': 'xtreme', 'similarity_4': 0.3, 'lower_1': '%xtreme%', 'similarity_5': 'xtreme', 'similarity_6': 0.3, 'lower_2': '%xtreme%', 'coalesce_1': 0, 'coalesce_2': 15}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-02-02 18:06:39,369 - __main__ - ERROR - Error in combined_search: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 357, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 257, in multi_filter_search
+    total_count = filtered_count_query.scalar()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2831, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2804, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-02-02 18:06:39,373 - __main__ - ERROR - Error in combined_search: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT count(*) AS count_1 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_1)s) * %(similarity_2)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_3)s) > %(similarity_4)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_1)s)) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_5)s) > %(similarity_6)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_2)s)) AS anon_5)) AS anon_4) AS anon_3) AND coalesce(anon_1.combined_score, %(coalesce_1)s) >= %(coalesce_2)s]
+[parameters: {'similarity_1': 'xtreme', 'similarity_2': 100, 'similarity_3': 'xtreme', 'similarity_4': 0.3, 'lower_1': '%xtreme%', 'similarity_5': 'xtreme', 'similarity_6': 0.3, 'lower_2': '%xtreme%', 'coalesce_1': 0, 'coalesce_2': 15}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: SSL SYSCALL error: EOF detected
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 357, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 257, in multi_filter_search
+    total_count = filtered_count_query.scalar()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2831, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2804, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT count(*) AS count_1 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_1)s) * %(similarity_2)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_3)s) > %(similarity_4)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_1)s)) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_5)s) > %(similarity_6)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_2)s)) AS anon_5)) AS anon_4) AS anon_3) AND coalesce(anon_1.combined_score, %(coalesce_1)s) >= %(coalesce_2)s]
+[parameters: {'similarity_1': 'xtreme', 'similarity_2': 100, 'similarity_3': 'xtreme', 'similarity_4': 0.3, 'lower_1': '%xtreme%', 'similarity_5': 'xtreme', 'similarity_6': 0.3, 'lower_2': '%xtreme%', 'coalesce_1': 0, 'coalesce_2': 15}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-02-02 18:06:39,377 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 18:06:39] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-02-02 18:06:39,378 - werkzeug - INFO - 127.0.0.1 - - [02/Feb/2025 18:06:39] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
