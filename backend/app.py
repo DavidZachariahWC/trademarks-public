@@ -17,6 +17,7 @@ import pandas as pd
 from io import BytesIO
 import openpyxl
 from sqlalchemy import func
+from sqlalchemy.sql import text
 
 # Configure logging
 logging.basicConfig(
@@ -31,6 +32,10 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
+
+# Production configuration
+app.config['ENV'] = 'production'
+app.config['DEBUG'] = False
 
 @app.route('/api/search')
 def search():
@@ -503,5 +508,15 @@ def export_search():
         logger.error(f"Error in export_search: {e}", exc_info=True)
         return jsonify({"error": "Internal server error"}), 500
 
+@app.route('/api/health')
+def health_check():
+    """Health check endpoint for AWS ELB"""
+    try:
+        return jsonify({"status": "healthy"}), 200
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        return jsonify({"status": "unhealthy"}), 500
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)  # Changed port to 5001 to avoid conflict with AirPlay
+    # Only used for local development
+    app.run(host='0.0.0.0', port=5001)
