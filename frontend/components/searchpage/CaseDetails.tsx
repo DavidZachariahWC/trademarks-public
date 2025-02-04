@@ -20,7 +20,7 @@ import RestrictionOnScope from './RestrictionOnScope'
 import PseudoMarks from './PseudoMarks'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import { MessageSquare } from "lucide-react"
+import { MessageSquare, Sparkles } from "lucide-react"
 import { USPTODocuments } from './USPTODocuments'
 
 interface CaseDetailsProps {
@@ -40,11 +40,12 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
           />
           <Button
             onClick={() => window.open(`/ai-chat/${caseData.serial_number}`, '_blank')}
-            className="flex items-center gap-2"
-            variant="outline"
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200 relative overflow-hidden group w-36"
           >
-            <MessageSquare className="h-4 w-4" />
-            Chat with AI about this case
+            <div className="absolute inset-0 bg-white/20 group-hover:bg-white/30 transition-opacity duration-200" />
+            <MessageSquare className="h-4 w-4 relative z-10" />
+            <span className="relative z-10">Chat with AI</span>
+            <Sparkles className="h-3 w-3 absolute top-1 right-1 text-yellow-300 animate-pulse" />
           </Button>
         </div>
       </div>

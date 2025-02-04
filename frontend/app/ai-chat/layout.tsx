@@ -28,7 +28,7 @@ export default function ChatLayout({ children }: ChatLayoutProps) {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center overflow-hidden">
+      <main className="flex-1 flex items-center justify-center overflow-hidden">
         <div className="w-full max-w-3xl h-full px-4 md:px-8">
           {children}
         </div>

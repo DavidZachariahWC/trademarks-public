@@ -184,7 +184,10 @@ export default function SearchPage() {
       setError("Search failed. Please try again.");
       console.error("Search error:", err);
     } finally {
-      setIsLoading(false);
+      // Ensure loading state is cleared
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 0);
     }
   };
 
@@ -300,7 +303,13 @@ export default function SearchPage() {
       />
 
       {isLoading && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center"
+          style={{ 
+            zIndex: 40,
+            pointerEvents: isLoading ? 'auto' : 'none'
+          }}
+        >
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
         </div>
       )}

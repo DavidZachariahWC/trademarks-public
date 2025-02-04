@@ -16,10 +16,10 @@ export function AIChatButton({ serialNumber, markIdentification }: AIChatButtonP
       onClick={handleClick}
       variant="outline"
       size="sm"
-      className="mt-2 w-full"
+      className="mt-2 w-full flex items-center justify-center space-x-2 min-h-[32px] min-w-[200px] px-5"
     >
-      <MessageSquare className="w-4 h-4 mr-2" />
-      Chat with AI about this case
+      <MessageSquare className="w-4 h-4 flex-shrink-0" />
+      <span className="whitespace-nowrap">Chat with AI about this case</span>
     </Button>
   )
 } 
