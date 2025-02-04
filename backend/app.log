@@ -26851,3 +26851,121 @@ WHERE similarity(casefileheader.mark_identification, 'wrappers company') > 0.3 O
  LIMIT 60 OFFSET 0
 2025-02-03 18:07:26,673 - multi_filter_search - INFO - Query executed in 2.80s
 2025-02-03 18:07:26,735 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 18:07:26] "POST /api/combined_search HTTP/1.1" 200 -
+2025-02-03 18:18:30,297 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 18:18:30] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-03 18:18:30,303 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper llc'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper co'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrappers'}]}, 'page': 1, 'per_page': 60}
+2025-02-03 18:18:30,304 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper llc'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper co'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrappers'}]}, page=1, per_page=60
+2025-02-03 18:18:30,312 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:18:30,312 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:18:30,313 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:18:30,314 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:18:30,314 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:18:32,004 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'the wrapper company') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper company%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrapper company') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper company%')) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrapper llc') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper llc') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper llc%')) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrapper co') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper co') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper co%')) AS anon_5 UNION ALL SELECT anon_6.sn AS sn, anon_6.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrappers') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrappers') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrappers%')) AS anon_6) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT anon_8.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper company%')) AS anon_12) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper company%')) AS anon_13)) AS anon_11) OR casefile.serial_number IN (SELECT anon_14.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper llc') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper llc%')) AS anon_14)) AS anon_10) OR casefile.serial_number IN (SELECT anon_15.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper co') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper co%')) AS anon_15)) AS anon_9) OR casefile.serial_number IN (SELECT anon_16.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrappers') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrappers%')) AS anon_16)) AS anon_8) AS anon_7) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-02-03 18:18:33,108 - multi_filter_search - INFO - Query executed in 2.80s
+2025-02-03 18:18:33,186 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 18:18:33] "POST /api/combined_search HTTP/1.1" 200 -
+2025-02-03 18:24:57,413 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 18:24:57] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-03 18:24:57,418 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper llc'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper co'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrappers'}]}, 'page': 1, 'per_page': 60}
+2025-02-03 18:24:57,418 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper llc'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper co'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrappers'}]}, page=1, per_page=60
+2025-02-03 18:24:57,420 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:24:57,421 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:24:57,422 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:24:57,423 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:24:57,423 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:24:58,548 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'the wrapper company') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper company%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrapper company') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper company%')) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrapper llc') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper llc') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper llc%')) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrapper co') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper co') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper co%')) AS anon_5 UNION ALL SELECT anon_6.sn AS sn, anon_6.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrappers') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrappers') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrappers%')) AS anon_6) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT anon_8.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper company%')) AS anon_12) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper company%')) AS anon_13)) AS anon_11) OR casefile.serial_number IN (SELECT anon_14.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper llc') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper llc%')) AS anon_14)) AS anon_10) OR casefile.serial_number IN (SELECT anon_15.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper co') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper co%')) AS anon_15)) AS anon_9) OR casefile.serial_number IN (SELECT anon_16.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrappers') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrappers%')) AS anon_16)) AS anon_8) AS anon_7) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-02-03 18:24:59,549 - multi_filter_search - INFO - Query executed in 2.13s
+2025-02-03 18:24:59,612 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 18:24:59] "POST /api/combined_search HTTP/1.1" 200 -
