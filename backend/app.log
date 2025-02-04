@@ -25526,3 +25526,1328 @@ WHERE similarity(casefileheader.mark_identification, 'bull dogge') > 0.3 OR lowe
 2025-02-03 12:12:57,714 - __main__ - INFO - Case details retrieval and formatting complete.
 2025-02-03 12:12:57,789 - __main__ - INFO - Database session closed.
 2025-02-03 12:12:57,791 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 12:12:57] "GET /api/case/73220202 HTTP/1.1" 200 -
+2025-02-03 14:02:58,189 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-02-03 14:02:58,189 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-02-03 14:02:58,190 - werkzeug - INFO -  * Restarting with stat
+2025-02-03 14:02:58,588 - werkzeug - WARNING -  * Debugger is active!
+2025-02-03 14:02:58,594 - werkzeug - INFO -  * Debugger PIN: 132-265-624
+2025-02-03 14:03:15,216 - __main__ - INFO - Fetching details for case: 73220202
+2025-02-03 14:03:15,217 - __main__ - INFO - Database session established.
+2025-02-03 14:03:51,883 - __main__ - INFO - Fetching details for case: 73220202
+2025-02-03 14:03:51,883 - __main__ - INFO - Database session established.
+2025-02-03 14:04:02,574 - __main__ - ERROR - Error fetching case details for serial number 73220202: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-02-03 14:04:02,575 - __main__ - ERROR - Error fetching case details for serial number 73220202: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2241, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2110, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1189, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3274, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 148, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2439, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3298, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 622, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 15432 failed: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-02-03 14:04:02,592 - __main__ - INFO - Database session closed.
+2025-02-03 14:04:02,593 - __main__ - INFO - Database session closed.
+2025-02-03 14:04:02,594 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:04:02] "[35m[1mGET /api/case/73220202 HTTP/1.1[0m" 500 -
+2025-02-03 14:04:02,594 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:04:02] "[35m[1mGET /api/case/73220202 HTTP/1.1[0m" 500 -
+2025-02-03 14:04:11,987 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:04:11] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-03 14:04:11,991 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, 'page': 1, 'per_page': 60}
+2025-02-03 14:04:11,991 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, page=1, per_page=60
+2025-02-03 14:04:11,993 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 14:04:13,878 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5)) AS anon_4) AS anon_3) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-02-03 14:04:14,180 - multi_filter_search - INFO - Query executed in 2.19s
+2025-02-03 14:04:14,242 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:04:14] "POST /api/combined_search HTTP/1.1" 200 -
+2025-02-03 14:05:59,886 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:05:59] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-03 14:05:59,890 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, 'page': 1, 'per_page': 60}
+2025-02-03 14:05:59,890 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, page=1, per_page=60
+2025-02-03 14:05:59,892 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 14:06:00,647 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5)) AS anon_4) AS anon_3) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-02-03 14:06:01,067 - multi_filter_search - INFO - Query executed in 1.18s
+2025-02-03 14:06:01,128 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:06:01] "POST /api/combined_search HTTP/1.1" 200 -
+2025-02-03 14:06:25,589 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:06:25] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-03 14:06:25,592 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, 'page': 1, 'per_page': 60}
+2025-02-03 14:06:25,592 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'AND', 'operands': [{'strategy': 'wordmark', 'query': 'bull dog', 'label': 'Wordmark'}]}, page=1, per_page=60
+2025-02-03 14:06:25,593 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 14:06:26,253 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'bull dog') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_2) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_3.serial_number 
+FROM (SELECT anon_4.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_5.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'bull dog') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%bull dog%')) AS anon_5)) AS anon_4) AS anon_3) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-02-03 14:06:26,581 - multi_filter_search - INFO - Query executed in 0.99s
+2025-02-03 14:06:26,778 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:06:26] "POST /api/combined_search HTTP/1.1" 200 -
+2025-02-03 14:08:58,118 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 14:08:58,119 - __main__ - INFO - Database session established.
+2025-02-03 14:08:58,248 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 14:08:58,318 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 14:08:58,561 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 14:08:58,636 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 14:08:58,700 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 14:08:58,769 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 14:08:58,857 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 14:08:59,088 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 14:08:59,160 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 14:08:59,225 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 14:08:59,290 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 14:08:59,290 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 14:08:59,352 - __main__ - INFO - Database session closed.
+2025-02-03 14:08:59,354 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:08:59] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 14:09:02,249 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 14:09:02,250 - __main__ - INFO - Database session established.
+2025-02-03 14:09:02,387 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 14:09:02,455 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 14:09:02,534 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 14:09:02,751 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 14:09:02,817 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 14:09:02,903 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 14:09:02,977 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 14:09:03,168 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 14:09:03,277 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 14:09:03,339 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 14:09:03,414 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 14:09:03,414 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 14:09:03,479 - __main__ - INFO - Database session closed.
+2025-02-03 14:09:03,480 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:09:03] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 14:21:00,214 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 14:21:00,217 - __main__ - INFO - Database session established.
+2025-02-03 14:21:00,372 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 14:21:00,483 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 14:21:00,554 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 14:21:00,627 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 14:21:00,693 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 14:21:00,765 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 14:21:00,828 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 14:21:01,033 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 14:21:01,106 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 14:21:01,165 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 14:21:01,227 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 14:21:01,227 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 14:21:01,290 - __main__ - INFO - Database session closed.
+2025-02-03 14:21:01,290 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:21:01] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 14:21:57,675 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 14:21:57,676 - __main__ - INFO - Database session established.
+2025-02-03 14:21:57,796 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 14:21:57,861 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 14:21:57,927 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 14:21:57,995 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 14:21:58,057 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 14:21:58,197 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 14:21:58,260 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 14:21:58,406 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 14:21:58,471 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 14:21:58,531 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 14:21:58,592 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 14:21:58,592 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 14:21:58,721 - __main__ - INFO - Database session closed.
+2025-02-03 14:21:58,722 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:21:58] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 14:26:36,102 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 14:26:36,103 - __main__ - INFO - Database session established.
+2025-02-03 14:26:36,271 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 14:26:36,336 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 14:26:36,407 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 14:26:36,486 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 14:26:36,669 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 14:26:36,739 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 14:26:36,799 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 14:26:36,948 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 14:26:37,062 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 14:26:37,191 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 14:26:37,253 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 14:26:37,253 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 14:26:37,318 - __main__ - INFO - Database session closed.
+2025-02-03 14:26:37,319 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:26:37] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 14:28:01,229 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 14:28:01,231 - __main__ - INFO - Database session established.
+2025-02-03 14:28:01,358 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 14:28:01,422 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 14:28:01,565 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 14:28:01,642 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 14:28:01,706 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 14:28:01,799 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 14:28:01,862 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 14:28:02,116 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 14:28:02,181 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 14:28:02,243 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 14:28:02,303 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 14:28:02,303 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 14:28:02,363 - __main__ - INFO - Database session closed.
+2025-02-03 14:28:02,364 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:28:02] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 14:40:00,836 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 14:40:00,838 - __main__ - INFO - Database session established.
+2025-02-03 14:40:00,849 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 14:40:00,849 - __main__ - INFO - Database session established.
+2025-02-03 14:40:00,975 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 14:40:01,126 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 14:40:01,202 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 14:40:01,324 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 14:40:01,389 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 14:40:01,486 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 14:40:01,555 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 14:40:01,651 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 14:40:01,850 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 14:40:01,906 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 14:40:01,959 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 14:40:01,979 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 14:40:02,044 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 14:40:02,045 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 14:40:02,176 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 14:40:02,177 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 14:40:02,177 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 14:40:02,248 - __main__ - INFO - Database session closed.
+2025-02-03 14:40:02,251 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:40:02] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 14:40:02,266 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 14:40:02,369 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 14:40:02,703 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 14:40:02,773 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 14:40:02,898 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 14:40:02,958 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 14:40:02,959 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 14:40:03,021 - __main__ - INFO - Database session closed.
+2025-02-03 14:40:03,023 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:40:03] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 14:45:42,435 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 14:45:42,435 - __main__ - INFO - Database session established.
+2025-02-03 14:45:42,562 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 14:45:42,665 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 14:45:42,733 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 14:45:42,860 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 14:45:42,921 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 14:45:42,987 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 14:45:43,049 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 14:45:43,219 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 14:45:43,283 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 14:45:43,388 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 14:45:43,455 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 14:45:43,456 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 14:45:43,518 - __main__ - INFO - Database session closed.
+2025-02-03 14:45:43,519 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 14:45:43] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 15:58:52,595 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 15:58:52,598 - __main__ - INFO - Database session established.
+2025-02-03 15:59:03,553 - __main__ - ERROR - Error fetching case details for serial number 73199066: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT casefile.serial_number AS casefile_serial_number, casefile.registration_number AS casefile_registration_number, casefile.transaction_date AS casefile_transaction_date, casefile.application_information_id AS casefile_application_information_id 
+FROM casefile 
+WHERE casefile.serial_number = %(serial_number_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'serial_number_1': 73199066, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: SSL SYSCALL error: EOF detected
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 86, in case_details
+    case = session.query(CaseFile).filter(CaseFile.serial_number == serial_number).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2754, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT casefile.serial_number AS casefile_serial_number, casefile.registration_number AS casefile_registration_number, casefile.transaction_date AS casefile_transaction_date, casefile.application_information_id AS casefile_application_information_id 
+FROM casefile 
+WHERE casefile.serial_number = %(serial_number_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'serial_number_1': 73199066, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-02-03 15:59:03,564 - __main__ - INFO - Database session closed.
+2025-02-03 15:59:03,565 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 15:59:03] "[35m[1mGET /api/case/73199066 HTTP/1.1[0m" 500 -
+2025-02-03 15:59:09,734 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 15:59:09,734 - __main__ - INFO - Database session established.
+2025-02-03 15:59:10,627 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 15:59:10,694 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 15:59:10,949 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 15:59:11,019 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 15:59:11,089 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 15:59:11,155 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 15:59:11,217 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 15:59:11,474 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 15:59:11,543 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 15:59:11,604 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 15:59:11,692 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 15:59:11,692 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 15:59:11,753 - __main__ - INFO - Database session closed.
+2025-02-03 15:59:11,754 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 15:59:11] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 15:59:37,021 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 15:59:37,021 - __main__ - INFO - Database session established.
+2025-02-03 15:59:37,916 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 15:59:37,981 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 15:59:38,055 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 15:59:38,297 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 15:59:38,369 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 15:59:38,437 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 15:59:38,519 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 15:59:38,990 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 15:59:39,053 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 15:59:39,414 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 15:59:39,476 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 15:59:39,476 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 15:59:39,543 - __main__ - INFO - Database session closed.
+2025-02-03 15:59:39,544 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 15:59:39] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:12:41,263 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:12:41,264 - __main__ - INFO - Database session established.
+2025-02-03 16:12:41,416 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:12:41,479 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:12:41,646 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:12:41,715 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:12:41,787 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:12:41,869 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:12:42,234 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:12:42,373 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:12:42,437 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:12:42,497 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:12:42,556 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:12:42,556 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:12:42,689 - __main__ - INFO - Database session closed.
+2025-02-03 16:12:42,690 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:12:42] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:24:21,070 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:24:21,071 - __main__ - INFO - Database session established.
+2025-02-03 16:24:21,272 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:24:21,394 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:24:21,463 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:24:21,536 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:24:21,598 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:24:21,672 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:24:21,797 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:24:21,951 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:24:22,014 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:24:22,074 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:24:22,133 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:24:22,133 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:24:22,197 - __main__ - INFO - Database session closed.
+2025-02-03 16:24:22,198 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:24:22] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:24:50,182 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:24:50,182 - __main__ - INFO - Database session established.
+2025-02-03 16:24:50,325 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:24:50,472 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:24:50,714 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:24:50,788 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:24:50,850 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:24:51,024 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:24:51,154 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:24:51,294 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:24:51,356 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:24:51,417 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:24:51,495 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:24:51,495 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:24:51,679 - __main__ - INFO - Database session closed.
+2025-02-03 16:24:51,680 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:24:51] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:24:55,130 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:24:55,130 - __main__ - INFO - Database session established.
+2025-02-03 16:24:55,348 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:24:55,416 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:24:55,494 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:24:55,582 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:24:55,646 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:24:55,713 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:24:55,774 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:24:55,916 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:24:55,983 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:24:56,063 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:24:56,205 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:24:56,205 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:24:56,487 - __main__ - INFO - Database session closed.
+2025-02-03 16:24:56,488 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:24:56] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:25:02,439 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:25:02,440 - __main__ - INFO - Database session established.
+2025-02-03 16:25:02,797 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:25:02,924 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:25:03,001 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:25:03,227 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:25:03,294 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:25:03,358 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:25:03,419 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:25:03,558 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:25:03,628 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:25:03,736 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:25:03,795 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:25:03,795 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:25:03,855 - __main__ - INFO - Database session closed.
+2025-02-03 16:25:03,855 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:25:03] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:25:44,312 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:25:44,313 - __main__ - INFO - Database session established.
+2025-02-03 16:25:44,630 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:25:44,767 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:25:44,887 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:25:44,973 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:25:45,154 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:25:45,232 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:25:45,295 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:25:45,428 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:25:45,680 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:25:45,739 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:25:45,800 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:25:45,800 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:25:45,866 - __main__ - INFO - Database session closed.
+2025-02-03 16:25:45,867 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:25:45] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:27:38,582 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:27:38,582 - __main__ - INFO - Database session established.
+2025-02-03 16:27:38,922 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:27:38,990 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:27:39,060 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:27:39,129 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:27:39,191 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:27:39,444 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:27:39,504 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:27:39,647 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:27:39,731 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:27:39,791 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:27:39,851 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:27:39,852 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:27:39,969 - __main__ - INFO - Database session closed.
+2025-02-03 16:27:39,971 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:27:39] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:27:41,512 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:27:41,512 - __main__ - INFO - Database session established.
+2025-02-03 16:27:41,675 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:27:41,783 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:27:41,951 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:27:42,071 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:27:42,150 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:27:42,216 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:27:42,286 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:27:42,479 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:27:42,590 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:27:42,649 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:27:42,708 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:27:42,709 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:27:42,767 - __main__ - INFO - Database session closed.
+2025-02-03 16:27:42,767 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:27:42] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:29:13,815 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:29:13,816 - __main__ - INFO - Database session established.
+2025-02-03 16:29:13,942 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:29:14,008 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:29:14,083 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:29:14,155 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:29:14,216 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:29:14,332 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:29:14,394 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:29:14,573 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:29:14,639 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:29:14,703 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:29:14,763 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:29:14,764 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:29:14,857 - __main__ - INFO - Database session closed.
+2025-02-03 16:29:14,858 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:29:14] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:37:50,057 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:37:50,059 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:37:50,060 - __main__ - INFO - Database session established.
+2025-02-03 16:37:50,060 - __main__ - INFO - Database session established.
+2025-02-03 16:37:50,214 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:37:50,214 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:37:50,285 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:37:50,286 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:37:50,528 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:37:50,528 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:37:50,624 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:37:50,625 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:37:50,690 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:37:50,726 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:37:50,789 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:37:50,804 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:37:50,851 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:37:50,870 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:37:51,031 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:37:51,067 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:37:51,095 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:37:51,131 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:37:51,153 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:37:51,190 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:37:51,212 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:37:51,212 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:37:51,249 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:37:51,249 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:37:51,271 - __main__ - INFO - Database session closed.
+2025-02-03 16:37:51,271 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:37:51] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:37:51,310 - __main__ - INFO - Database session closed.
+2025-02-03 16:37:51,310 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:37:51] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:41:08,775 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:41:08,775 - __main__ - INFO - Database session established.
+2025-02-03 16:41:08,908 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:41:08,973 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:41:09,051 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:41:09,151 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:41:09,213 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:41:09,280 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:41:09,341 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:41:09,676 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:41:09,739 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:41:09,798 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:41:09,856 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:41:09,857 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:41:10,250 - __main__ - INFO - Database session closed.
+2025-02-03 16:41:10,251 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:41:10] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:41:17,966 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:41:17,966 - __main__ - INFO - Database session established.
+2025-02-03 16:41:18,175 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:41:18,240 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:41:18,310 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:41:18,384 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:41:18,587 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:41:18,652 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:41:18,725 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:41:19,111 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:41:19,175 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:41:19,236 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:41:19,306 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:41:19,306 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:41:19,365 - __main__ - INFO - Database session closed.
+2025-02-03 16:41:19,366 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:41:19] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:51:56,572 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:51:56,573 - __main__ - INFO - Database session established.
+2025-02-03 16:51:56,725 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:51:56,788 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:51:56,859 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:51:56,928 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:51:57,123 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:51:57,190 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:51:57,276 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:51:57,462 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:51:57,526 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:51:57,648 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:51:57,706 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:51:57,706 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:51:57,765 - __main__ - INFO - Database session closed.
+2025-02-03 16:51:57,767 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:51:57] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 16:53:20,571 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 16:53:20,572 - __main__ - INFO - Database session established.
+2025-02-03 16:53:20,699 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 16:53:20,789 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 16:53:21,007 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 16:53:21,102 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 16:53:21,163 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 16:53:21,229 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 16:53:21,290 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 16:53:21,532 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 16:53:21,595 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 16:53:21,654 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 16:53:21,712 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 16:53:21,712 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 16:53:21,772 - __main__ - INFO - Database session closed.
+2025-02-03 16:53:21,773 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 16:53:21] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 17:58:01,549 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 17:58:01] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-03 17:58:01,553 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the rapper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wraper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper co'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company llc'}]}, 'page': 1, 'per_page': 60}
+2025-02-03 17:58:01,553 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the rapper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wraper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper co'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company llc'}]}, page=1, per_page=60
+2025-02-03 17:58:01,563 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 17:58:01,563 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 17:58:01,566 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 17:58:01,566 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 17:58:01,567 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 17:58:15,058 - multi_filter_search - ERROR - Error in multi_filter_search: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT count(*) AS count_1 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_1)s) * %(similarity_2)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_3)s) > %(similarity_4)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_1)s)) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_5)s) * %(similarity_6)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_7)s) > %(similarity_8)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_2)s)) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_9)s) * %(similarity_10)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_11)s) > %(similarity_12)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_3)s)) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_13)s) * %(similarity_14)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_15)s) > %(similarity_16)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_4)s)) AS anon_5 UNION ALL SELECT anon_6.sn AS sn, anon_6.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_17)s) * %(similarity_18)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_19)s) > %(similarity_20)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_5)s)) AS anon_6) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT anon_8.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_21)s) > %(similarity_22)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_6)s)) AS anon_12) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_23)s) > %(similarity_24)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_7)s)) AS anon_13)) AS anon_11) OR casefile.serial_number IN (SELECT anon_14.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_25)s) > %(similarity_26)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_8)s)) AS anon_14)) AS anon_10) OR casefile.serial_number IN (SELECT anon_15.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_27)s) > %(similarity_28)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_9)s)) AS anon_15)) AS anon_9) OR casefile.serial_number IN (SELECT anon_16.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_29)s) > %(similarity_30)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_10)s)) AS anon_16)) AS anon_8) AS anon_7) AND coalesce(anon_1.combined_score, %(coalesce_1)s) >= %(coalesce_2)s]
+[parameters: {'similarity_1': 'the wrapper company', 'similarity_2': 100, 'similarity_3': 'the wrapper company', 'similarity_4': 0.3, 'lower_1': '%the wrapper company%', 'similarity_5': 'the rapper company', 'similarity_6': 100, 'similarity_7': 'the rapper company', 'similarity_8': 0.3, 'lower_2': '%the rapper company%', 'similarity_9': 'the wraper company', 'similarity_10': 100, 'similarity_11': 'the wraper company', 'similarity_12': 0.3, 'lower_3': '%the wraper company%', 'similarity_13': 'the wrapper co', 'similarity_14': 100, 'similarity_15': 'the wrapper co', 'similarity_16': 0.3, 'lower_4': '%the wrapper co%', 'similarity_17': 'the wrapper company llc', 'similarity_18': 100, 'similarity_19': 'the wrapper company llc', 'similarity_20': 0.3, 'lower_5': '%the wrapper company llc%', 'similarity_21': 'the wrapper company', 'similarity_22': 0.3, 'lower_6': '%the wrapper company%', 'similarity_23': 'the rapper company', 'similarity_24': 0.3, 'lower_7': '%the rapper company%', 'similarity_25': 'the wraper company', 'similarity_26': 0.3, 'lower_8': '%the wraper company%', 'similarity_27': 'the wrapper co', 'similarity_28': 0.3, 'lower_9': '%the wrapper co%', 'similarity_29': 'the wrapper company llc', 'similarity_30': 0.3, 'lower_10': '%the wrapper company llc%', 'coalesce_1': 0, 'coalesce_2': 15}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: SSL SYSCALL error: EOF detected
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 251, in multi_filter_search
+    total_count = filtered_count_query.scalar()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2831, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2804, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT count(*) AS count_1 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_1)s) * %(similarity_2)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_3)s) > %(similarity_4)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_1)s)) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_5)s) * %(similarity_6)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_7)s) > %(similarity_8)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_2)s)) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_9)s) * %(similarity_10)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_11)s) > %(similarity_12)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_3)s)) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_13)s) * %(similarity_14)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_15)s) > %(similarity_16)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_4)s)) AS anon_5 UNION ALL SELECT anon_6.sn AS sn, anon_6.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_17)s) * %(similarity_18)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_19)s) > %(similarity_20)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_5)s)) AS anon_6) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT anon_8.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_21)s) > %(similarity_22)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_6)s)) AS anon_12) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_23)s) > %(similarity_24)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_7)s)) AS anon_13)) AS anon_11) OR casefile.serial_number IN (SELECT anon_14.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_25)s) > %(similarity_26)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_8)s)) AS anon_14)) AS anon_10) OR casefile.serial_number IN (SELECT anon_15.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_27)s) > %(similarity_28)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_9)s)) AS anon_15)) AS anon_9) OR casefile.serial_number IN (SELECT anon_16.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_29)s) > %(similarity_30)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_10)s)) AS anon_16)) AS anon_8) AS anon_7) AND coalesce(anon_1.combined_score, %(coalesce_1)s) >= %(coalesce_2)s]
+[parameters: {'similarity_1': 'the wrapper company', 'similarity_2': 100, 'similarity_3': 'the wrapper company', 'similarity_4': 0.3, 'lower_1': '%the wrapper company%', 'similarity_5': 'the rapper company', 'similarity_6': 100, 'similarity_7': 'the rapper company', 'similarity_8': 0.3, 'lower_2': '%the rapper company%', 'similarity_9': 'the wraper company', 'similarity_10': 100, 'similarity_11': 'the wraper company', 'similarity_12': 0.3, 'lower_3': '%the wraper company%', 'similarity_13': 'the wrapper co', 'similarity_14': 100, 'similarity_15': 'the wrapper co', 'similarity_16': 0.3, 'lower_4': '%the wrapper co%', 'similarity_17': 'the wrapper company llc', 'similarity_18': 100, 'similarity_19': 'the wrapper company llc', 'similarity_20': 0.3, 'lower_5': '%the wrapper company llc%', 'similarity_21': 'the wrapper company', 'similarity_22': 0.3, 'lower_6': '%the wrapper company%', 'similarity_23': 'the rapper company', 'similarity_24': 0.3, 'lower_7': '%the rapper company%', 'similarity_25': 'the wraper company', 'similarity_26': 0.3, 'lower_8': '%the wraper company%', 'similarity_27': 'the wrapper co', 'similarity_28': 0.3, 'lower_9': '%the wrapper co%', 'similarity_29': 'the wrapper company llc', 'similarity_30': 0.3, 'lower_10': '%the wrapper company llc%', 'coalesce_1': 0, 'coalesce_2': 15}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-02-03 17:58:15,068 - __main__ - ERROR - Error in combined_search: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT count(*) AS count_1 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_1)s) * %(similarity_2)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_3)s) > %(similarity_4)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_1)s)) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_5)s) * %(similarity_6)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_7)s) > %(similarity_8)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_2)s)) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_9)s) * %(similarity_10)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_11)s) > %(similarity_12)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_3)s)) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_13)s) * %(similarity_14)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_15)s) > %(similarity_16)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_4)s)) AS anon_5 UNION ALL SELECT anon_6.sn AS sn, anon_6.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_17)s) * %(similarity_18)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_19)s) > %(similarity_20)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_5)s)) AS anon_6) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT anon_8.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_21)s) > %(similarity_22)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_6)s)) AS anon_12) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_23)s) > %(similarity_24)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_7)s)) AS anon_13)) AS anon_11) OR casefile.serial_number IN (SELECT anon_14.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_25)s) > %(similarity_26)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_8)s)) AS anon_14)) AS anon_10) OR casefile.serial_number IN (SELECT anon_15.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_27)s) > %(similarity_28)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_9)s)) AS anon_15)) AS anon_9) OR casefile.serial_number IN (SELECT anon_16.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_29)s) > %(similarity_30)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_10)s)) AS anon_16)) AS anon_8) AS anon_7) AND coalesce(anon_1.combined_score, %(coalesce_1)s) >= %(coalesce_2)s]
+[parameters: {'similarity_1': 'the wrapper company', 'similarity_2': 100, 'similarity_3': 'the wrapper company', 'similarity_4': 0.3, 'lower_1': '%the wrapper company%', 'similarity_5': 'the rapper company', 'similarity_6': 100, 'similarity_7': 'the rapper company', 'similarity_8': 0.3, 'lower_2': '%the rapper company%', 'similarity_9': 'the wraper company', 'similarity_10': 100, 'similarity_11': 'the wraper company', 'similarity_12': 0.3, 'lower_3': '%the wraper company%', 'similarity_13': 'the wrapper co', 'similarity_14': 100, 'similarity_15': 'the wrapper co', 'similarity_16': 0.3, 'lower_4': '%the wrapper co%', 'similarity_17': 'the wrapper company llc', 'similarity_18': 100, 'similarity_19': 'the wrapper company llc', 'similarity_20': 0.3, 'lower_5': '%the wrapper company llc%', 'similarity_21': 'the wrapper company', 'similarity_22': 0.3, 'lower_6': '%the wrapper company%', 'similarity_23': 'the rapper company', 'similarity_24': 0.3, 'lower_7': '%the rapper company%', 'similarity_25': 'the wraper company', 'similarity_26': 0.3, 'lower_8': '%the wraper company%', 'similarity_27': 'the wrapper co', 'similarity_28': 0.3, 'lower_9': '%the wrapper co%', 'similarity_29': 'the wrapper company llc', 'similarity_30': 0.3, 'lower_10': '%the wrapper company llc%', 'coalesce_1': 0, 'coalesce_2': 15}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: SSL SYSCALL error: EOF detected
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/davidzachariah/Desktop/trademarks/backend/app.py", line 357, in combined_search
+    results = multi_filter_search(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/multi_filter_search.py", line 251, in multi_filter_search
+    total_count = filtered_count_query.scalar()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2831, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2804, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2853, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/davidzachariah/Desktop/trademarks/backend/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+
+[SQL: SELECT count(*) AS count_1 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_1)s) * %(similarity_2)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_3)s) > %(similarity_4)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_1)s)) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_5)s) * %(similarity_6)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_7)s) > %(similarity_8)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_2)s)) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_9)s) * %(similarity_10)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_11)s) > %(similarity_12)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_3)s)) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_13)s) * %(similarity_14)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_15)s) > %(similarity_16)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_4)s)) AS anon_5 UNION ALL SELECT anon_6.sn AS sn, anon_6.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, %(similarity_17)s) * %(similarity_18)s AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_19)s) > %(similarity_20)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_5)s)) AS anon_6) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT anon_8.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_21)s) > %(similarity_22)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_6)s)) AS anon_12) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_23)s) > %(similarity_24)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_7)s)) AS anon_13)) AS anon_11) OR casefile.serial_number IN (SELECT anon_14.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_25)s) > %(similarity_26)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_8)s)) AS anon_14)) AS anon_10) OR casefile.serial_number IN (SELECT anon_15.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_27)s) > %(similarity_28)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_9)s)) AS anon_15)) AS anon_9) OR casefile.serial_number IN (SELECT anon_16.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, %(similarity_29)s) > %(similarity_30)s OR lower(casefileheader.mark_identification) LIKE lower(%(lower_10)s)) AS anon_16)) AS anon_8) AS anon_7) AND coalesce(anon_1.combined_score, %(coalesce_1)s) >= %(coalesce_2)s]
+[parameters: {'similarity_1': 'the wrapper company', 'similarity_2': 100, 'similarity_3': 'the wrapper company', 'similarity_4': 0.3, 'lower_1': '%the wrapper company%', 'similarity_5': 'the rapper company', 'similarity_6': 100, 'similarity_7': 'the rapper company', 'similarity_8': 0.3, 'lower_2': '%the rapper company%', 'similarity_9': 'the wraper company', 'similarity_10': 100, 'similarity_11': 'the wraper company', 'similarity_12': 0.3, 'lower_3': '%the wraper company%', 'similarity_13': 'the wrapper co', 'similarity_14': 100, 'similarity_15': 'the wrapper co', 'similarity_16': 0.3, 'lower_4': '%the wrapper co%', 'similarity_17': 'the wrapper company llc', 'similarity_18': 100, 'similarity_19': 'the wrapper company llc', 'similarity_20': 0.3, 'lower_5': '%the wrapper company llc%', 'similarity_21': 'the wrapper company', 'similarity_22': 0.3, 'lower_6': '%the wrapper company%', 'similarity_23': 'the rapper company', 'similarity_24': 0.3, 'lower_7': '%the rapper company%', 'similarity_25': 'the wraper company', 'similarity_26': 0.3, 'lower_8': '%the wraper company%', 'similarity_27': 'the wrapper co', 'similarity_28': 0.3, 'lower_9': '%the wrapper co%', 'similarity_29': 'the wrapper company llc', 'similarity_30': 0.3, 'lower_10': '%the wrapper company llc%', 'coalesce_1': 0, 'coalesce_2': 15}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-02-03 17:58:15,070 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 17:58:15] "[35m[1mPOST /api/combined_search HTTP/1.1[0m" 500 -
+2025-02-03 17:58:19,843 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 17:58:19] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-03 17:58:19,846 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the rapper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wraper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper co'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company llc'}]}, 'page': 1, 'per_page': 60}
+2025-02-03 17:58:19,846 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the rapper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wraper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper co'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company llc'}]}, page=1, per_page=60
+2025-02-03 17:58:19,847 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 17:58:19,847 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 17:58:19,847 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 17:58:19,848 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 17:58:19,848 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 17:58:21,959 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'the wrapper company') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper company%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'the rapper company') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the rapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the rapper company%')) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'the wraper company') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wraper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wraper company%')) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'the wrapper co') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper co') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper co%')) AS anon_5 UNION ALL SELECT anon_6.sn AS sn, anon_6.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'the wrapper company llc') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper company llc') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper company llc%')) AS anon_6) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT anon_8.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper company%')) AS anon_12) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the rapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the rapper company%')) AS anon_13)) AS anon_11) OR casefile.serial_number IN (SELECT anon_14.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wraper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wraper company%')) AS anon_14)) AS anon_10) OR casefile.serial_number IN (SELECT anon_15.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper co') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper co%')) AS anon_15)) AS anon_9) OR casefile.serial_number IN (SELECT anon_16.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper company llc') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper company llc%')) AS anon_16)) AS anon_8) AS anon_7) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-02-03 17:58:23,309 - multi_filter_search - INFO - Query executed in 3.46s
+2025-02-03 17:58:23,370 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 17:58:23] "POST /api/combined_search HTTP/1.1" 200 -
+2025-02-03 18:04:52,311 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 18:04:52,312 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 18:04:52,313 - __main__ - INFO - Database session established.
+2025-02-03 18:04:52,313 - __main__ - INFO - Database session established.
+2025-02-03 18:04:52,527 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 18:04:52,591 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 18:04:52,664 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 18:04:52,731 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 18:04:52,792 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 18:04:52,856 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 18:04:52,928 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 18:04:53,047 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 18:04:53,118 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 18:04:53,183 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 18:04:53,191 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 18:04:53,246 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 18:04:53,258 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 18:04:53,307 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 18:04:53,319 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 18:04:53,368 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 18:04:53,368 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 18:04:53,384 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 18:04:53,426 - __main__ - INFO - Database session closed.
+2025-02-03 18:04:53,427 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 18:04:53] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 18:04:53,444 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 18:04:53,588 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 18:04:53,666 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 18:04:53,761 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 18:04:53,823 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 18:04:53,823 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 18:04:53,882 - __main__ - INFO - Database session closed.
+2025-02-03 18:04:53,882 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 18:04:53] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 18:04:55,061 - __main__ - INFO - Fetching details for case: 73199066
+2025-02-03 18:04:55,062 - __main__ - INFO - Database session established.
+2025-02-03 18:04:55,260 - __main__ - INFO - Case query executed. Case found: True
+2025-02-03 18:04:55,326 - __main__ - INFO - Header query executed. Header found: True
+2025-02-03 18:04:55,398 - __main__ - INFO - Owners query executed. Owners found: 3
+2025-02-03 18:04:55,468 - __main__ - INFO - Classifications query executed. Classifications found: 7
+2025-02-03 18:04:55,529 - __main__ - INFO - Prior Registrations query executed. Prior Registrations found: 2
+2025-02-03 18:04:55,668 - __main__ - INFO - Statements query executed. Statements found: 1
+2025-02-03 18:04:55,730 - __main__ - INFO - Design Searches query executed. Design Searches found: 0
+2025-02-03 18:04:55,899 - __main__ - INFO - Event Statements query executed. Event Statements found: 29
+2025-02-03 18:04:55,962 - __main__ - INFO - Correspondents query executed. Correspondents found: 1
+2025-02-03 18:04:56,021 - __main__ - INFO - International Registrations query executed. International Registrations found: 0
+2025-02-03 18:04:56,080 - __main__ - INFO - Madrid Filings query executed. Madrid Filings found: 0
+2025-02-03 18:04:56,080 - __main__ - INFO - Case details retrieval and formatting complete.
+2025-02-03 18:04:56,194 - __main__ - INFO - Database session closed.
+2025-02-03 18:04:56,196 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 18:04:56] "GET /api/case/73199066 HTTP/1.1" 200 -
+2025-02-03 18:07:23,872 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 18:07:23] "OPTIONS /api/combined_search HTTP/1.1" 200 -
+2025-02-03 18:07:23,877 - __main__ - INFO - Received combined_search request: {'filter_tree': {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper co'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper llc'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrappers company'}]}, 'page': 1, 'per_page': 60}
+2025-02-03 18:07:23,877 - multi_filter_search - INFO - Starting search with filter tree: {'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'operator': 'OR', 'operands': [{'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper company'}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper company'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'the wrapper co'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrapper llc'}]}, {'strategy': 'wordmark', 'label': 'Wordmark', 'query': 'wrappers company'}]}, page=1, per_page=60
+2025-02-03 18:07:23,879 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:07:23,879 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:07:23,881 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:07:23,882 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:07:23,883 - multi_filter_search - INFO - Generated query for strategy 'wordmark'.
+2025-02-03 18:07:25,286 - multi_filter_search - INFO - Final query SQL:
+SELECT casefile.serial_number AS serial_number, casefile.registration_number AS registration_number, casefileheader.mark_identification AS mark_identification, casefileheader.status_code AS status_code, casefileheader.filing_date AS filing_date, casefileheader.registration_date AS registration_date, casefileheader.attorney_name AS attorney_name, coalesce(anon_1.combined_score, 0) AS combined_score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number LEFT OUTER JOIN (SELECT unioned_scores.sn AS sn, max(unioned_scores.score) AS combined_score 
+FROM (SELECT anon_2.sn AS sn, anon_2.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'the wrapper company') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper company%')) AS anon_2 UNION ALL SELECT anon_3.sn AS sn, anon_3.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrapper company') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper company%')) AS anon_3 UNION ALL SELECT anon_4.sn AS sn, anon_4.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'the wrapper co') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper co') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper co%')) AS anon_4 UNION ALL SELECT anon_5.sn AS sn, anon_5.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrapper llc') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper llc') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper llc%')) AS anon_5 UNION ALL SELECT anon_6.sn AS sn, anon_6.score AS score 
+FROM (SELECT casefile.serial_number AS sn, similarity(casefileheader.mark_identification, 'wrappers company') * 100 AS score 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrappers company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrappers company%')) AS anon_6) AS unioned_scores GROUP BY unioned_scores.sn) AS anon_1 ON anon_1.sn = casefile.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_7.serial_number 
+FROM (SELECT anon_8.serial_number AS serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_9.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_10.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_11.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE casefile.serial_number IN (SELECT anon_12.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper company%')) AS anon_12) OR casefile.serial_number IN (SELECT anon_13.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper company%')) AS anon_13)) AS anon_11) OR casefile.serial_number IN (SELECT anon_14.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'the wrapper co') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%the wrapper co%')) AS anon_14)) AS anon_10) OR casefile.serial_number IN (SELECT anon_15.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrapper llc') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrapper llc%')) AS anon_15)) AS anon_9) OR casefile.serial_number IN (SELECT anon_16.serial_number 
+FROM (SELECT casefile.serial_number AS serial_number 
+FROM casefile JOIN casefileheader ON casefile.serial_number = casefileheader.serial_number 
+WHERE similarity(casefileheader.mark_identification, 'wrappers company') > 0.3 OR lower(casefileheader.mark_identification) LIKE lower('%wrappers company%')) AS anon_16)) AS anon_8) AS anon_7) AND coalesce(anon_1.combined_score, 0) >= 15 ORDER BY combined_score DESC, casefileheader.filing_date DESC
+ LIMIT 60 OFFSET 0
+2025-02-03 18:07:26,673 - multi_filter_search - INFO - Query executed in 2.80s
+2025-02-03 18:07:26,735 - werkzeug - INFO - 127.0.0.1 - - [03/Feb/2025 18:07:26] "POST /api/combined_search HTTP/1.1" 200 -

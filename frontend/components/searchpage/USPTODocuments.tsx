@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Download, Loader2, AlertCircle } from 'lucide-react';
+import { Download, Loader2, AlertCircle, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Dialog,
@@ -9,9 +9,17 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface USPTODocumentsProps {
   registrationNumber?: string;
+  serialNumber: string;
+  applicationDate?: string;
 }
 
 interface ErrorState {
@@ -90,19 +98,33 @@ export function USPTODocuments({
   return (
     <>
       {registrationNumber && (
-        <Button
-          variant="outline"
-          className="flex items-center gap-2 whitespace-nowrap"
-          onClick={downloadDocuments}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Download className="h-4 w-4" />
-          )}
-          Download Registration Documents
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            className="flex items-center gap-2 whitespace-nowrap"
+            onClick={downloadDocuments}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
+            Download Registration Documents
+          </Button>
+          <TooltipProvider>
+            <Tooltip delayDuration={50}>
+              <TooltipTrigger asChild>
+                <Info className="h-4 w-4 text-blue-500 cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent className="max-w-[250px] p-3">
+                <p className="text-sm">
+                  These documents will be automatically available to the AI chat assistant when you start a conversation.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       )}
 
       {/* Error Dialog */}
