@@ -241,7 +241,7 @@ export default function SearchPage() {
       </div>
 
       <div className="w-full max-w-6xl space-y-4">
-        <QueryBuilder onAddFilter={handleAddFilter} />
+        <QueryBuilder onAddFilter={handleAddFilter} onSearch={() => handleSearch(1)} />
       </div>
 
       <div id="current-query" className="w-full max-w-6xl space-y-4">

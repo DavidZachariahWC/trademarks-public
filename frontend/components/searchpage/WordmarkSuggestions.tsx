@@ -7,18 +7,21 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Loader2 } from 'lucide-react'
 import { API_ENDPOINTS } from '@/lib/api-config'
+import HelpText from './HelpText'
 
 interface WordmarkSuggestionsProps {
   onSuggestionSelect: (suggestion: string) => void;
   onAddAllSuggestions?: (suggestions: string[]) => void;
+  onSearch?: () => void;
 }
 
-export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSuggestions }: WordmarkSuggestionsProps) {
+export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSuggestions, onSearch }: WordmarkSuggestionsProps) {
   const [term, setTerm] = useState('')
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isAddingAll, setIsAddingAll] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [enterPressCount, setEnterPressCount] = useState(0)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -41,6 +44,7 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
 
       const data = await response.json()
       setSuggestions(data.suggestions.slice(1))
+      setEnterPressCount(1) // Set to 1 after generating suggestions
     } catch (err) {
       setError('Failed to generate suggestions. Please try again.')
       console.error(err)
@@ -53,8 +57,27 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
     setIsAddingAll(true)
     try {
       await onAddAllSuggestions?.([term.trim(), ...suggestions])
+      setEnterPressCount(2) // Set to 2 after adding all suggestions
     } finally {
       setIsAddingAll(false)
+    }
+  }
+
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      
+      if (enterPressCount === 0) {
+        // First Enter: Generate suggestions
+        handleSubmit(e as unknown as React.FormEvent)
+      } else if (enterPressCount === 1 && suggestions.length > 0) {
+        // Second Enter: Add all suggestions
+        await handleAddAll()
+      } else if (enterPressCount === 2) {
+        // Third Enter: Trigger search
+        onSearch?.()
+        setEnterPressCount(0) // Reset counter after search
+      }
     }
   }
 
@@ -64,13 +87,22 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
       
       <form onSubmit={handleSubmit} className="space-y-3">
         <div className="flex gap-2">
-          <Input
-            type="text"
-            value={term}
-            onChange={(e) => setTerm(e.target.value)}
-            placeholder="Enter your term to get suggested queries..."
-            className="flex-1"
-          />
+          <div className="flex-1 relative">
+            <Input
+              type="text"
+              value={term}
+              onChange={(e) => {
+                setTerm(e.target.value)
+                setEnterPressCount(0) // Reset counter when input changes
+              }}
+              onKeyPress={handleKeyPress}
+              placeholder="Enter your term to get suggested queries..."
+              className="flex-1"
+            />
+            <div className="absolute right-2 top-1/2 -translate-y-1/2">
+              <HelpText text="Pressing Enter ↵ three times will: First, generate suggestions; Second, add all suggestions; Third, search" />
+            </div>
+          </div>
           <Button 
             type="submit" 
             disabled={isLoading || !term.trim()}

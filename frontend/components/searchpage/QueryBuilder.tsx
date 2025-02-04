@@ -29,9 +29,10 @@ interface Group {
 
 interface QueryBuilderProps {
   onAddFilter: (filter: SearchFilter) => void;
+  onSearch: () => void;
 }
 
-const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
+const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter, onSearch }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentFilter, setCurrentFilter] = useState<SearchFilter>({
     strategy: "wordmark",
@@ -301,6 +302,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter }) => {
                   <WordmarkSuggestions 
                     onSuggestionSelect={handleSuggestionSelect}
                     onAddAllSuggestions={handleAddAllSuggestions}
+                    onSearch={onSearch}
                   />
                 )}
               </div>
