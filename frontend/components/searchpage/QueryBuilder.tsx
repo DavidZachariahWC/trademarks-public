@@ -270,20 +270,20 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter, onSearch }) =>
                         >
                           {num}
                           <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-64 z-50">
-                            {num === 0 && "Mark drawing code not yet assigned."}
-                            {num === 1 && "Typeset: Word(s)/letter(s)/number(s). (The mark consists only of words, letters, or numbers in a standard, non-stylized font)."}
-                            {num === 2 && "Illustration: Drawing or design without any word(s)/letter(s)/number(s). (The mark is purely a design or image with no text)."}
-                            {num === 3 && "Illustration: Drawing or design which also includes word(s)/letter(s)/number(s). (The mark is a combination of a design/image and text)."}
-                            {num === 4 && "Illustration: Drawing with word(s)/letter(s)/number(s) in Block form. (The mark includes a design and text, where the text is in a standard, block-like font)."}
-                            {num === 5 && "Illustration: Drawing with word(s)/letter(s)/number(s) in Stylized form. (The mark includes a design and text, where the text is in a stylized font or presentation)."}
-                            {num === 6 && "Where no drawing is possible, such as for sound. (The mark is not visually perceptible, such as a sound mark or a scent mark)."}
+                            {num === 0 && `Mark drawing code not yet assigned.`}
+                            {num === 1 && `Typeset: Word(s)/letter(s)/number(s). (The mark consists only of words, letters, or numbers in a standard, non-stylized font).`}
+                            {num === 2 && `Illustration: Drawing or design without any word(s)/letter(s)/number(s). (The mark is purely a design or image with no text).`}
+                            {num === 3 && `Illustration: Drawing or design which also includes word(s)/letter(s)/number(s). (The mark is a combination of a design/image and text).`}
+                            {num === 4 && `Illustration: Drawing with word(s)/letter(s)/number(s) in Block form. (The mark includes a design and text, where the text is in a standard, block-like font).`}
+                            {num === 5 && `Illustration: Drawing with word(s)/letter(s)/number(s) in Stylized form. (The mark includes a design and text, where the text is in a stylized font or presentation).`}
+                            {num === 6 && `Where no drawing is possible, such as for sound. (The mark is not visually perceptible, such as a sound mark or a scent mark).`}
                           </div>
                         </button>
                       </div>
                     ))}
                   </div>
                   <div className="text-xs text-amber-600 mt-2">
-                    Note: Type 4 marks represent "Block letter drawing" if filed before Nov 2, 2003, or "Standard Character Mark" if filed after.
+                    Note: Type 4 marks represent `Block letter drawing` if filed before Nov 2, 2003, or `Standard Character Mark` if filed after.
                   </div>
                 </div>
               </div>
