@@ -5,7 +5,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import CaseDetails from '@/components/searchpage/CaseDetails'
-import { API_ENDPOINTS } from '@/lib/api-config'
 import { Loader2 } from 'lucide-react'
 import { Case } from '@/utils/types/case'
 import Link from 'next/link'
@@ -19,7 +18,7 @@ export default function CasePage() {
   useEffect(() => {
     const fetchCaseDetails = async () => {
       try {
-        const response = await fetch(API_ENDPOINTS.caseDetails(Number(params.serialNumber)))
+        const response = await fetch(`/api/case/${params.serialNumber}`)
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('Case not found')

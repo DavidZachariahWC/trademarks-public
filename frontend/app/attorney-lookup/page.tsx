@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { formatDate } from '@/lib/utils'
@@ -16,7 +16,7 @@ interface SearchResult {
   attorney_name: string
 }
 
-export default function AttorneyLookup() {
+function AttorneyLookupContent() {
   const searchParams = useSearchParams()
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
@@ -138,5 +138,13 @@ export default function AttorneyLookup() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function AttorneyLookup() {
+  return (
+    <Suspense fallback={<div className="p-6">Loading...</div>}>
+      <AttorneyLookupContent />
+    </Suspense>
   )
 } 

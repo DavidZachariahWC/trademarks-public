@@ -76,8 +76,8 @@ export default function MarkDesignInfo({ caseData }: MarkDesignInfoProps) {
           </div>
           {header.mark_drawing_code[0] === '4' && (
             <div className="md:col-span-2 mt-2 text-sm text-gray-600">
-              <span className="font-semibold">Note:</span> Type 4 marks represent "Block letter drawing" if filed before Nov 2, 2003, 
-              or "Standard Character Mark" if filed after.
+              <span className="font-semibold">Note:</span> Type 4 marks represent &quot;Block letter drawing&quot; if filed before Nov 2, 2003, 
+              or &quot;Standard Character Mark&quot; if filed after.
               <div className="mt-1">
                 This application filed: {header.filing_date ? formatDate(header.filing_date, { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A'}
               </div>

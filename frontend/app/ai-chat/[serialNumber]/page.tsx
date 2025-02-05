@@ -133,7 +133,7 @@ export default function AIChatPage() {
                 role: "assistant",
                 content: "⚠️ Note: I don't have access to the USPTO registration documents for this case. " + 
                   "This could be because the documents are not yet available or there was an issue retrieving them. " +
-                  "I'll still help you based on the case details, but you may need to manually upload any relevant documents you'd like me to analyze."
+                  "I can still help you based on a more limited understanding of the case details."
               }]);
               console.warn("USPTO documents not available:", errorData);
               setIsInitializing(false);
@@ -180,7 +180,7 @@ export default function AIChatPage() {
               id: `system-${Date.now()}`,
               role: "assistant",
               content: "⚠️ I encountered an issue while processing the USPTO registration documents. " +
-                "I'll still help you based on the case details, but you may need to manually upload any relevant documents you'd like me to analyze."
+                "I can still help you based on a more limited understanding of the case details."
             }]);
           } finally {
             setIsInitializing(false);
@@ -190,7 +190,7 @@ export default function AIChatPage() {
             id: `system-${Date.now()}`,
             role: "assistant",
             content: "ℹ️ This case doesn't have a registration number yet, so there are no USPTO registration documents available. " +
-              "I'll help you based on the case details, and you can manually upload any relevant documents you'd like me to analyze."
+              "I can still help you based on a more limited understanding of the case details."
           }]);
           setIsInitializing(false);
         }

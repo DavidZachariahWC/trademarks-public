@@ -14,7 +14,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "../ui/tooltip"
 
 interface USPTODocumentsProps {
   registrationNumber?: string;

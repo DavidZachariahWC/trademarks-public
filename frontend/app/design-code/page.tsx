@@ -110,6 +110,7 @@ export default function DesignCodePage() {
       chatId="design-code"
       onInputChange={setInput}
       onSubmit={handleSendMessage}
+      onFileSelect={async () => {}}
     />
   )
 }

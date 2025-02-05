@@ -1,5 +1,5 @@
 import React from 'react'
-import { Correspondent } from '../types/case'
+import { Correspondent } from '@/utils/types/case'
 
 interface CorrespondentInfoProps {
   correspondents: Correspondent[]
