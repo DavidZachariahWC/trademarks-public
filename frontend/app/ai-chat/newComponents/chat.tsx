@@ -54,10 +54,10 @@ export function Chat({
         </div>
       )}
 
-      <div className="p-4 border-t">
+      <div className="p-4">
         {isFirstLoad && isLoading ? (
-          <div className="flex items-center justify-center p-4 text-sm text-zinc-600">
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          <div className="flex items-center justify-center p-4 text-md text-zinc-600">
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
             The AI is synthesizing your summary. Please wait.
           </div>
         ) : (
