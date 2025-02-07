@@ -1,4 +1,13 @@
 {
   "buildCommand": "next build",
-  "installCommand": "npm install --legacy-peer-deps"
-} 
+  "installCommand": "npm install --legacy-peer-deps",
+
+  "functions": {
+    "app/api/case/[serialNumber]/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/ai-chat/route.ts": {
+      "maxDuration": 60
+    }
+  }
+}

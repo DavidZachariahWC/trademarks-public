@@ -15,9 +15,10 @@ interface Message {
 interface MessagesContainerProps {
   messages: Message[]
   chatId: string
+  showThinking: boolean
 }
 
-export function MessagesContainer({ messages, chatId }: MessagesContainerProps) {
+export function MessagesContainer({ messages, chatId, showThinking }: MessagesContainerProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -30,10 +31,10 @@ export function MessagesContainer({ messages, chatId }: MessagesContainerProps) 
     }
   }
 
-  // Scroll to bottom when messages change
+  // Scroll to bottom when messages change or thinking state changes
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+  }, [messages, showThinking])
 
   return (
     <div 
@@ -56,6 +57,20 @@ export function MessagesContainer({ messages, chatId }: MessagesContainerProps) 
             ) : message.content}
           />
         ))}
+        {showThinking && (
+          <MessageComponent
+            chatId={chatId}
+            role="assistant"
+            content={
+              <div className="flex gap-1 items-center text-zinc-600">
+                <span>Thinking</span>
+                <span className="inline-block w-1.5 h-4 bg-zinc-400 animate-pulse" />
+                <span className="inline-block w-1.5 h-4 bg-zinc-400 animate-pulse delay-150" />
+                <span className="inline-block w-1.5 h-4 bg-zinc-400 animate-pulse delay-300" />
+              </div>
+            }
+          />
+        )}
         <div ref={messagesEndRef} />
       </div>
     </div>
