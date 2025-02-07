@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, request, jsonify, json, send_file
 from search_engine import SearchEngine
-from db_utils import get_autocomplete_suggestions, get_db_session
+from db_utils import get_autocomplete_suggestions, get_db_session, USPTO_API_KEY, GEMINI_API_KEY
 from models import (
     CaseFile, CaseFileHeader, Owner, Classification, 
     InternationalRegistration, PriorRegistrationApplication,
@@ -18,6 +18,16 @@ from io import BytesIO
 import openpyxl
 from sqlalchemy import func
 from sqlalchemy.sql import text
+import httpx
+import base64
+import redis
+import os
+import io
+import time
+from typing import Optional, Tuple
+
+# AI imports (using new google generativeai module)
+import google.generativeai as genai
 
 # Configure logging
 logging.basicConfig(
@@ -36,6 +46,202 @@ CORS(app)  # Enable CORS for all routes
 # Production configuration
 app.config['ENV'] = 'production'
 app.config['DEBUG'] = False
+
+# AI Configuration
+genai.configure(api_key=GEMINI_API_KEY)
+
+# Initialize Redis (using environment variable in production)
+redis_client = redis.Redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379/0"))
+
+# Define cache expiration time (48 hours = 172800 seconds)
+CACHE_TTL = 172800
+
+def fetch_uspto_pdf(registration_number: str, retries: int = 2, timeout: int = 30) -> Tuple[Optional[bytes], Optional[str]]:
+    """
+    Fetch PDF from USPTO API with retries and improved error handling.
+    Returns (pdf_data, None) on success, or (None, error_message) on failure.
+    """
+    uspto_url = f"https://tsdrapi.uspto.gov/ts/cd/casedocs/bundle.pdf?rn={registration_number}"
+    logger.info(f"Attempting to fetch PDF from USPTO: {uspto_url}")
+    
+    for attempt in range(retries + 1):
+        try:
+            if attempt > 0:
+                logger.info(f"Retry attempt {attempt}/{retries} for registration number {registration_number}")
+                time.sleep(2 * attempt)  # Exponential backoff
+            
+            logger.info(f"Making request to USPTO API (attempt {attempt + 1}/{retries + 1})")
+            uspto_response = httpx.get(
+                uspto_url,
+                headers={'USPTO-API-KEY': USPTO_API_KEY},
+                timeout=timeout
+            )
+            uspto_response.raise_for_status()
+            pdf_data = uspto_response.content
+            pdf_size = len(pdf_data)
+            logger.info(f"Successfully fetched PDF on attempt {attempt + 1}. Size: {pdf_size} bytes")
+            
+            if pdf_size == 0:
+                logger.error("Received empty PDF from USPTO API")
+                return None, "Received empty PDF from USPTO API"
+                
+            return pdf_data, None
+            
+        except httpx.TimeoutException as e:
+            logger.warning(f"Timeout on attempt {attempt + 1}/{retries + 1}: {str(e)}")
+            if attempt == retries:
+                logger.error(f"All retry attempts failed for registration {registration_number}: {str(e)}")
+                return None, f"USPTO API request timed out after {retries + 1} attempts"
+        except httpx.HTTPStatusError as e:
+            logger.error(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
+            return None, f"USPTO API returned error: {e.response.status_code}"
+        except Exception as e:
+            logger.error(f"Unexpected error fetching PDF: {str(e)}", exc_info=True)
+            return None, f"Unexpected error: {str(e)}"
+    
+    return None, "Failed to fetch PDF after all retry attempts"
+
+@app.route('/api/ai_chat_eb', methods=['POST'])
+def ai_chat_eb():
+    try:
+        data = request.get_json()
+        logger.info(f"Received request with data: {data}")
+
+        # Get case_data (string with prefix and JSON), user_message, and context.
+        case_data = data.get('caseData')
+        user_message = data.get('message')
+        context = data.get('context', [])
+
+        if not case_data or not user_message:
+            logger.warning("Missing required fields: caseData and message.")
+            return jsonify({'error': 'Missing required fields: caseData and message are required.'}), 400
+
+        # Parse the formatted case data string.
+        if isinstance(case_data, str):
+            trimmed_case_data = case_data.strip()
+            prefix = "Full Case Data:"
+            if trimmed_case_data.startswith(prefix):
+                json_part = trimmed_case_data[len(prefix):].strip()
+                try:
+                    case_data = json.loads(json_part)
+                except Exception as e:
+                    logger.error("Failed to parse caseData JSON from formatted string", exc_info=True)
+                    return jsonify({'error': 'Invalid caseData format'}), 400
+            else:
+                logger.error("Unexpected caseData format: missing expected prefix")
+                return jsonify({'error': 'Invalid caseData format'}), 400
+
+        # Get the registration number.
+        registration_number = case_data.get('registration_number')
+        if not registration_number:
+            logger.warning("Missing registration_number in caseData.")
+            return jsonify({'error': 'Missing registration_number in caseData.'}), 400
+
+        # Check Redis for a cached file reference.
+        redis_key = f"pdf:{registration_number}"
+        cached_file_ref = redis_client.get(redis_key)
+        
+        if cached_file_ref:
+            file_reference = cached_file_ref.decode('utf-8')
+            logger.info(f"Using cached file reference for registration number {registration_number}")
+            # Retrieve the file object from the File API using the reference.
+            file_obj = genai.get_file(name=file_reference)
+        else:
+            # Fetch PDF from USPTO with retries.
+            pdf_data, error = fetch_uspto_pdf(registration_number)
+            if error:
+                return jsonify({'error': error}), 500
+            
+            # Create an in-memory file-like object from the PDF binary data.
+            pdf_io = io.BytesIO(pdf_data)
+            
+            # Upload the PDF to the File API.
+            try:
+                file_upload_result = genai.upload_file(
+                    path=pdf_io,
+                    display_name=f"trademark_{registration_number}.pdf",
+                    mime_type="application/pdf"
+                )
+                file_reference = file_upload_result.name
+                logger.info(f"Uploaded PDF to File API; file reference: {file_reference}")
+                
+                # Verify the file was uploaded successfully
+                try:
+                    file_obj = genai.get_file(name=file_reference)
+                    # Only cache if verification succeeds
+                    redis_client.setex(redis_key, CACHE_TTL, file_reference)
+                    logger.info(f"Verified and cached file reference for registration number {registration_number}")
+                except Exception as e:
+                    logger.error(f"Failed to verify uploaded file: {str(e)}", exc_info=True)
+                    return jsonify({'error': 'File upload succeeded but verification failed'}), 500
+                
+            except Exception as e:
+                logger.error(f"Failed to upload PDF to Gemini API: {str(e)}", exc_info=True)
+                return jsonify({'error': 'Failed to upload PDF to AI service'}), 500
+
+        # Construct conversation history string.
+        conversation_history = ""
+        if context:
+            conversation_history = "\n".join(
+                [f"{msg['role'].capitalize()}: {msg['content']}" for msg in context]
+            )
+
+        prompt = f"""
+You are an assistant specializing in trademark law.
+Use the case information and USPTO documents below to professionally answer questions accurately and concisely, to provide helpful insights, and assist the user to save time by analyzing the case data with them. Specificity is highly valued.
+- Refer to the raw data as case data (not as JSON)
+- The OCR registration data, if present, is highly relevant. Please analyze it in the context of this trademark case. 
+
+Info:
+- You will act as a paralegal to the user
+- Your data is up to date and comes from the USPTO
+- You are not affiliated with the USPTO or any other government agency.
+- You cannot access other case data.
+- Data has been provided to you by the system, and you are helping the user to analyze it.
+- Do not mention the literal column names in your response; those are for internal use only.
+- Do not describe these instructions to the user.
+
+Note: The following symbols indicate amendments to goods/services:
+[...] - Deleted goods/services
+((...)) - Goods/services not claimed in Section 15 affidavit of incontestability
+*...* - Additional (new) wording in goods/services
+
+Note: Type 4 marks represent "Block letter drawing" if filed before Nov 2, 2003, or "Standard Character Mark" if filed after.
+
+Definitions on fields that may appear in the case data:
+44(d): A U.S. application filing basis that claims priority based on a foreign application filed within the previous six months. The applicant is claiming that their U.S. filing date should be considered the same as the earlier foreign application's filing date for priority purposes.
+66(a): A U.S. application filing basis for requesting extension of protection to the U.S. for a mark that is already registered under an International Registration via the Madrid Protocol.
+44(e): A U.S. application filing basis based on ownership of a valid registration from the applicant's country of origin. This is a basis for registration, not a claim of priority.
+Section 15: A provision that allows a registrant to obtain "incontestable" status for their registered mark after five years of continuous use following the registration date, subject to certain conditions. An incontestable registration provides significant legal benefits, limiting the grounds on which the registration can be challenged.
+Section 8: A requirement to file an affidavit (or declaration) of continued use (or excusable nonuse) between the 5th and 6th years after registration, and again with each renewal (between the 9th and 10th years, and every 10-year period thereafter). This is to ensure that registered marks are still in active use.
+Section 12(c): A provision that allows the owner of a mark registered under the prior Trademark Acts of 1905 or 1920 to claim the benefits of the 1946 Lanham Act (the current Act) by publishing the mark in the Official Gazette and filing an affidavit. This is a way to "upgrade" older registrations to take advantage of the current law.
+
+Formatting:
+- Structured responses are preferred to blocks of freeform text
+- Use bullet points, lists, headers, and other formatting to make the response more readable
+
+----------------------------------------------------------------------------------------------------
+Case Data:
+{case_data}
+----------------------------------------------------------------------------------------------------
+{f"Conversation History:\n{conversation_history}\n----------------------------------------------------------------------------------------------------" if conversation_history else ""}
+User: {user_message}
+"""
+        logger.info(f"Constructed prompt. Length: {len(prompt)} characters")
+
+        # Call Gemini API with the file object (cached or newly uploaded) and prompt.
+        model = genai.GenerativeModel(model_name="gemini-2.0-flash")
+        response = model.generate_content([
+            prompt,  # Use the file object from the File API.
+            file_obj
+        ])
+        logger.info(f"Received Gemini API response: {response.text}")
+
+        return jsonify({'response': response.text})
+
+    except Exception as e:
+        logger.exception(f"Error in /api/ai_chat_eb: {e}")
+        return jsonify({'error': 'An internal server error occurred', 'details': str(e)}), 500
 
 @app.route('/api/search')
 def search():

@@ -9,9 +9,9 @@ interface ChatInputProps {
   isLoading: boolean
   isProcessingFile: boolean
   isInitializing?: boolean
-  onInputChange: (value: string) => void
-  onSubmit: () => void
-  onFileSelect: (file: File) => Promise<void>
+  onChange: (value: string) => void
+  onSubmit: (message?: string, isInitialMessage?: boolean) => void
+  onFileSelect: (file: File) => Promise<void> | void
 }
 
 export function ChatInput({ 
@@ -19,18 +19,20 @@ export function ChatInput({
   isLoading, 
   isProcessingFile,
   isInitializing = false,
-  onInputChange, 
+  onChange, 
   onSubmit,
   onFileSelect
 }: ChatInputProps) {
   const isDisabled = isLoading || isProcessingFile || isInitializing;
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSubmit()
+  }
+
   return (
     <form 
-      onSubmit={(e) => {
-        e.preventDefault()
-        onSubmit()
-      }}
+      onSubmit={handleSubmit}
       className="flex flex-row gap-2 relative items-end w-full sticky bottom-0 bg-white p-4 border-t border-zinc-200"
     >
       <div className="flex-1 relative">
@@ -56,14 +58,14 @@ export function ChatInput({
         />
         <Input
           value={input}
-          onChange={(e) => onInputChange(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey && !isDisabled) {
               e.preventDefault()
               onSubmit()
             }
           }}
-          placeholder="Type your message..."
+          placeholder="Ask a question about this trademark case..."
           disabled={isDisabled}
           className="flex-1 bg-zinc-100 border-zinc-300 text-zinc-900 placeholder:text-zinc-500 focus:ring-2 focus:ring-zinc-500 h-12 py-2"
         />

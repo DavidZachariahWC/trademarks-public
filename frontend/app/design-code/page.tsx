@@ -106,11 +106,14 @@ export default function DesignCodePage() {
       messages={messages}
       input={input}
       isLoading={isLoading}
+      isInitializing={false}
       error={error}
       chatId="design-code"
       onInputChange={setInput}
       onSubmit={handleSendMessage}
-      onFileSelect={async () => {}}
+      onFileSelect={async (file: File) => Promise.resolve()}
+      showThinking={isLoading}
+      isFirstLoad={false}
     />
   )
 }

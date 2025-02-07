@@ -2,7 +2,7 @@
 
 import { MessagesContainer } from "./messages-container";
 import { ChatInput } from "./chat-input";
-import { Info } from "lucide-react";
+import { Info, Loader2 } from "lucide-react";
 
 interface Message {
   id?: string;
@@ -15,34 +15,37 @@ interface ChatProps {
   messages: Message[];
   input: string;
   isLoading: boolean;
-  isInitializing?: boolean;
-  error: string | null;
+  isInitializing: boolean;
+  error: any;
   chatId: string;
   onInputChange: (value: string) => void;
-  onSubmit: () => void;
-  onFileSelect: (file: File) => Promise<void>;
-  isProcessingFile?: boolean;
+  onSubmit: (message?: string, isInitialMessage?: boolean) => void;
+  onFileSelect: (file: File) => Promise<void> | void;
+  showThinking: boolean;
+  isFirstLoad: boolean;
 }
 
 export function Chat({
   messages,
   input,
   isLoading,
-  isInitializing = false,
+  isInitializing,
   error,
   chatId,
   onInputChange,
   onSubmit,
   onFileSelect,
-  isProcessingFile = false
+  showThinking,
+  isFirstLoad
 }: ChatProps) {
   const isDesignCodeChat = chatId === "design-code";
 
   return (
-    <div className="flex flex-col h-full bg-zinc-50 rounded-lg">
+    <div className="flex flex-col w-full h-full">
       <MessagesContainer
         messages={messages}
         chatId={chatId}
+        showThinking={showThinking}
       />
 
       {error && (
@@ -51,26 +54,22 @@ export function Chat({
         </div>
       )}
 
-      <div className="flex-none bg-white border-t border-zinc-200">
-        <div className="space-y-4">
+      <div className="p-4 border-t">
+        {isFirstLoad && isLoading ? (
+          <div className="flex items-center justify-center p-4 text-sm text-zinc-600">
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            The AI is synthesizing your summary. Please wait.
+          </div>
+        ) : (
           <ChatInput
             input={input}
             isLoading={isLoading}
-            isProcessingFile={isProcessingFile}
-            isInitializing={isInitializing}
-            onInputChange={onInputChange}
+            isProcessingFile={false}
             onSubmit={onSubmit}
+            onChange={onInputChange}
             onFileSelect={onFileSelect}
           />
-          {!isDesignCodeChat && (
-            <div className="px-6 pb-4 flex items-center justify-center gap-2 text-xs text-zinc-500">
-              <Info className="h-3 w-3" />
-              <span>
-                The AI has access to registration documents when available through the USPTO TSDR system.
-              </span>
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );
