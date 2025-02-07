@@ -41,7 +41,7 @@ export default function ChatPage() {
     ? params.serialNumber[0] 
     : (params.serialNumber || '') // Provide empty string as fallback
 
-  // Fetch case data and trigger initial AI message
+  // Fetch case data
   useEffect(() => {
     const fetchData = async () => {
       if (!serialNumber) return
@@ -57,11 +57,6 @@ export default function ChatPage() {
         const data = await response.json()
         console.log("Successfully retrieved case data:", data)
         setCaseData(data)
-        
-        // After case data is loaded, immediately send empty message for initial summary
-        if (isFirstLoad) {
-          handleSendMessage("", true)
-        }
       } catch (error: any) {
         console.error("Error fetching case data:", error)
         setError(error)
@@ -73,6 +68,19 @@ export default function ChatPage() {
     fetchData()
   }, [serialNumber])
 
+  // Handle initial summary request separately
+  useEffect(() => {
+    const requestInitialSummary = async () => {
+      if (caseData && isFirstLoad && !isInitializing && !isLoading) {
+        console.log("Requesting initial case summary...")
+        await handleSendMessage("Please provide a summary of this trademark case.", true)
+        setIsFirstLoad(false)
+      }
+    }
+
+    requestInitialSummary()
+  }, [caseData, isFirstLoad, isInitializing, isLoading])
+
   // Empty file handler since we don't need it anymore
   const handleFileSelect = async (file: File) => {
     // No-op as file handling is not needed
@@ -82,9 +90,13 @@ export default function ChatPage() {
     const messageToSend = customInput !== undefined ? customInput : input;
     if ((!messageToSend.trim() && !isInitialMessage) || !caseData || isLoading) return;
 
-    // Only add user message if it's not the initial auto-message
+    // Only add user message to chat history if it's not the initial message
     if (!isInitialMessage) {
-      const newUserMessage: Message = { role: "user", content: messageToSend };
+      const newUserMessage: Message = { 
+        id: `user-${Date.now()}`,
+        role: "user", 
+        content: messageToSend 
+      };
       setMessages(prev => [...prev, newUserMessage]);
       setInput("");
     }

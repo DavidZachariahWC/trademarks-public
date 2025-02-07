@@ -39,7 +39,7 @@ export function MessagesContainer({ messages, chatId, showThinking }: MessagesCo
   return (
     <div 
       ref={containerRef}
-      className="flex-1 overflow-y-auto scrollbar-none"
+      className="flex-1 overflow-y-auto scrollbar-none bg-zinc-50"
     >
       <div className="flex flex-col gap-6 min-h-full p-6">
         {messages.map((message) => (
