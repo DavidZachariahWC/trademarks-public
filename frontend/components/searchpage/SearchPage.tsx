@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 import SearchResults from "./SearchResults";
 import { Button } from "@/components/ui/button";
-import { Search, Plus, Download } from "lucide-react";
+import { Search, Plus, Download, X } from "lucide-react";
 import { API_ENDPOINTS } from "@/lib/api-config";
 import type { SearchResult } from "@/utils/types/case";
 import { Toaster } from "@/components/ui/toaster";
@@ -245,9 +245,22 @@ export default function SearchPage() {
       </div>
 
       <div id="current-query" className="w-full max-w-6xl space-y-4">
-        <h2 className="text-2xl font-semibold text-center text-gray-800">
-          Current Query
-        </h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-semibold text-gray-800">
+            Current Query
+          </h2>
+          {filterTree && filterTree.operands.length > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setFilterTree(null)}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+            >
+              <X className="h-4 w-4 mr-2" />
+              Clear All
+            </Button>
+          )}
+        </div>
         <div className="bg-gray-100 p-6 rounded-lg min-h-[100px] border border-gray-300 shadow-sm">
           {filterTree === null ? (
             <div className="text-center text-gray-500">

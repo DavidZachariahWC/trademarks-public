@@ -1,7 +1,7 @@
 // QueryBuilder.tsx
 
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Plus, ChevronRight } from "lucide-react";
+import { ChevronDown, Plus, ChevronRight, X } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -30,9 +30,16 @@ interface Group {
 interface QueryBuilderProps {
   onAddFilter: (filter: SearchFilter) => void;
   onSearch: () => void;
+  onClearAll?: () => void;
+  filters?: (SearchFilter | Group)[];
 }
 
-const QueryBuilder: React.FC<QueryBuilderProps> = ({ onAddFilter, onSearch }) => {
+const QueryBuilder: React.FC<QueryBuilderProps> = ({ 
+  onAddFilter, 
+  onSearch, 
+  onClearAll,
+  filters = [] 
+}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentFilter, setCurrentFilter] = useState<SearchFilter>({
     strategy: "wordmark",
