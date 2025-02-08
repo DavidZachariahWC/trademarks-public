@@ -5,23 +5,33 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Loader2 } from 'lucide-react'
+import { Loader2, CornerDownLeft, X } from 'lucide-react'
 import { API_ENDPOINTS } from '@/lib/api-config'
 import HelpText from './HelpText'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface WordmarkSuggestionsProps {
   onSuggestionSelect: (suggestion: string) => void;
   onAddAllSuggestions?: (suggestions: string[]) => void;
   onSearch?: () => void;
+  onClearQuery?: () => void;
 }
 
-export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSuggestions, onSearch }: WordmarkSuggestionsProps) {
+export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSuggestions, onSearch, onClearQuery }: WordmarkSuggestionsProps) {
   const [term, setTerm] = useState('')
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isAddingAll, setIsAddingAll] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [enterPressCount, setEnterPressCount] = useState(0)
+  const [optionsCount, setOptionsCount] = useState('12')
+  const [showSuggestions, setShowSuggestions] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,12 +40,16 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
     setIsLoading(true)
     setError(null)
     setSuggestions([])
+    setShowSuggestions(false)
 
     try {
       const response = await fetch(API_ENDPOINTS.wordmarkGenerator, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ term: term.trim() })
+        body: JSON.stringify({ 
+          term: term.trim(),
+          optionsCount: parseInt(optionsCount)
+        })
       })
 
       if (!response.ok) {
@@ -44,7 +58,8 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
 
       const data = await response.json()
       setSuggestions(data.suggestions.slice(1))
-      setEnterPressCount(1) // Set to 1 after generating suggestions
+      setShowSuggestions(true)
+      setEnterPressCount(1)
     } catch (err) {
       setError('Failed to produce suggestions. Please try again.')
       console.error(err)
@@ -57,7 +72,7 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
     setIsAddingAll(true)
     try {
       await onAddAllSuggestions?.([term.trim(), ...suggestions])
-      setEnterPressCount(2) // Set to 2 after adding all suggestions
+      setEnterPressCount(2)
     } finally {
       setIsAddingAll(false)
     }
@@ -68,15 +83,12 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
       e.preventDefault()
       
       if (enterPressCount === 0) {
-        // First Enter: Generate suggestions
         handleSubmit(e as unknown as React.FormEvent)
       } else if (enterPressCount === 1 && suggestions.length > 0) {
-        // Second Enter: Add all suggestions
         await handleAddAll()
       } else if (enterPressCount === 2) {
-        // Third Enter: Trigger search
         onSearch?.()
-        setEnterPressCount(0) // Reset counter after search
+        setEnterPressCount(0)
       }
     }
   }
@@ -93,25 +105,56 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
               value={term}
               onChange={(e) => {
                 setTerm(e.target.value)
-                setEnterPressCount(0) // Reset counter when input changes
+                setEnterPressCount(0)
               }}
               onKeyPress={handleKeyPress}
               placeholder="Enter your term to get suggested queries..."
               className="flex-1"
             />
+            {onClearQuery && term && (
+              <button
+                type="button"
+                onClick={() => {
+                  setTerm('')
+                  onClearQuery()
+                }}
+                className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
             <div className="absolute right-2 top-1/2 -translate-y-1/2">
               <HelpText text="Pressing Enter ↵ three times will: First, generate suggestions; Second, add all suggestions; Third, search" />
             </div>
           </div>
+          <Select
+            value={optionsCount}
+            onValueChange={setOptionsCount}
+          >
+            <SelectTrigger className="w-[100px]">
+              <SelectValue placeholder="Options" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="6">6 options</SelectItem>
+              <SelectItem value="12">12 options</SelectItem>
+              <SelectItem value="18">18 options</SelectItem>
+              <SelectItem value="24">24 options</SelectItem>
+            </SelectContent>
+          </Select>
           <Button 
             type="submit" 
             disabled={isLoading || !term.trim()}
-            className="whitespace-nowrap bg-black hover:bg-gray-800 text-white"
+            className="whitespace-nowrap bg-black hover:bg-gray-800 text-white relative"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              'Get Suggestions'
+              <>
+                Get Suggestions
+                {enterPressCount === 0 && (
+                  <CornerDownLeft className="h-4 w-4 ml-2 animate-pulse" />
+                )}
+              </>
             )}
           </Button>
         </div>
@@ -127,7 +170,14 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
                 key={index}
                 variant="outline"
                 size="sm"
-                className="bg-white hover:bg-gray-50"
+                className={`bg-white hover:bg-gray-50 transition-all duration-300 ${
+                  showSuggestions 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-4'
+                }`}
+                style={{ 
+                  transitionDelay: `${index * 50}ms`
+                }}
                 onClick={() => onSuggestionSelect(suggestion)}
               >
                 {suggestion}
@@ -138,12 +188,17 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
               size="sm"
               onClick={handleAddAll}
               disabled={isAddingAll}
-              className="bg-black hover:bg-gray-800 text-white"
+              className="bg-black hover:bg-gray-800 text-white relative"
             >
               {isAddingAll ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
-                'Add All'
+                <>
+                  Add All
+                  {enterPressCount === 1 && (
+                    <CornerDownLeft className="h-4 w-4 ml-2 animate-pulse" />
+                  )}
+                </>
               )}
             </Button>
           </div>
