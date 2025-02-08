@@ -39,14 +39,14 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
       })
 
       if (!response.ok) {
-        throw new Error('Failed to generate suggestions')
+        throw new Error('Failed to produce suggestions')
       }
 
       const data = await response.json()
       setSuggestions(data.suggestions.slice(1))
       setEnterPressCount(1) // Set to 1 after generating suggestions
     } catch (err) {
-      setError('Failed to generate suggestions. Please try again.')
+      setError('Failed to produce suggestions. Please try again.')
       console.error(err)
     } finally {
       setIsLoading(false)
