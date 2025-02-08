@@ -5,25 +5,17 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Loader2, CornerDownLeft, X } from 'lucide-react'
+import { Loader2, CornerDownLeft } from 'lucide-react'
 import { API_ENDPOINTS } from '@/lib/api-config'
 import HelpText from './HelpText'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
 interface WordmarkSuggestionsProps {
   onSuggestionSelect: (suggestion: string) => void;
   onAddAllSuggestions?: (suggestions: string[]) => void;
   onSearch?: () => void;
-  onClearQuery?: () => void;
 }
 
-export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSuggestions, onSearch, onClearQuery }: WordmarkSuggestionsProps) {
+export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSuggestions, onSearch }: WordmarkSuggestionsProps) {
   const [term, setTerm] = useState('')
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -93,6 +85,13 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
     }
   }
 
+  const handleOptionsChange = (value: string) => {
+    const numValue = value.replace(/\D/g, '')
+    if (numValue.length <= 2) {
+      setOptionsCount(numValue || '12')
+    }
+  }
+
   return (
     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
       <h3 className="text-sm font-medium text-gray-700 mb-3">Provide your term here to get the adjacent spellings necessary for a more comprehensive result</h3>
@@ -109,38 +108,20 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
               }}
               onKeyPress={handleKeyPress}
               placeholder="Enter your term to get suggested queries..."
-              className="flex-1"
+              className="flex-1 pr-10"
             />
-            {onClearQuery && term && (
-              <button
-                type="button"
-                onClick={() => {
-                  setTerm('')
-                  onClearQuery()
-                }}
-                className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
             <div className="absolute right-2 top-1/2 -translate-y-1/2">
               <HelpText text="Pressing Enter ↵ three times will: First, generate suggestions; Second, add all suggestions; Third, search" />
             </div>
           </div>
-          <Select
+          <Input
+            type="text"
+            inputMode="numeric"
             value={optionsCount}
-            onValueChange={setOptionsCount}
-          >
-            <SelectTrigger className="w-[100px]">
-              <SelectValue placeholder="Options" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="6">6 options</SelectItem>
-              <SelectItem value="12">12 options</SelectItem>
-              <SelectItem value="18">18 options</SelectItem>
-              <SelectItem value="24">24 options</SelectItem>
-            </SelectContent>
-          </Select>
+            onChange={(e) => handleOptionsChange(e.target.value)}
+            className="w-16 text-center"
+            placeholder="12"
+          />
           <Button 
             type="submit" 
             disabled={isLoading || !term.trim()}
@@ -163,46 +144,56 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
           <div className="text-red-500 text-sm">{error}</div>
         )}
 
-        {suggestions.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {suggestions.map((suggestion, index) => (
-              <Button
+        <div className="flex flex-wrap gap-2">
+          {isLoading ? (
+            // Skeleton loader
+            Array.from({ length: parseInt(optionsCount) }).map((_, index) => (
+              <div
                 key={index}
+                className="h-9 w-24 bg-gray-200 rounded animate-pulse"
+              />
+            ))
+          ) : suggestions.length > 0 && (
+            <>
+              {suggestions.map((suggestion, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  className={`bg-white hover:bg-gray-50 transition-all duration-300 ${
+                    showSuggestions 
+                      ? 'opacity-100 translate-y-0' 
+                      : 'opacity-0 translate-y-4'
+                  }`}
+                  style={{ 
+                    transitionDelay: `${index * 50}ms`
+                  }}
+                  onClick={() => onSuggestionSelect(suggestion)}
+                >
+                  {suggestion}
+                </Button>
+              ))}
+              <Button
                 variant="outline"
                 size="sm"
-                className={`bg-white hover:bg-gray-50 transition-all duration-300 ${
-                  showSuggestions 
-                    ? 'opacity-100 translate-y-0' 
-                    : 'opacity-0 translate-y-4'
-                }`}
-                style={{ 
-                  transitionDelay: `${index * 50}ms`
-                }}
-                onClick={() => onSuggestionSelect(suggestion)}
+                onClick={handleAddAll}
+                disabled={isAddingAll}
+                className="bg-black hover:bg-gray-800 text-white relative"
               >
-                {suggestion}
+                {isAddingAll ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    Add All
+                    {enterPressCount === 1 && (
+                      <CornerDownLeft className="h-4 w-4 ml-2 animate-pulse" />
+                    )}
+                  </>
+                )}
               </Button>
-            ))}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleAddAll}
-              disabled={isAddingAll}
-              className="bg-black hover:bg-gray-800 text-white relative"
-            >
-              {isAddingAll ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <>
-                  Add All
-                  {enterPressCount === 1 && (
-                    <CornerDownLeft className="h-4 w-4 ml-2 animate-pulse" />
-                  )}
-                </>
-              )}
-            </Button>
-          </div>
-        )}
+            </>
+          )}
+        </div>
       </form>
     </div>
   )
