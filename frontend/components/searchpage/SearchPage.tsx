@@ -69,10 +69,10 @@ export default function SearchPage() {
 
   // Transform our UI filter tree into the backend format
   const transformForBackend = (group: Group): BackendGroup => {
-    // For a group with a single operand, just use AND (it doesn't matter)
+    // For a group with a single operand, just use OR (it doesn't matter)
     if (group.operands.length <= 1) {
       return {
-        operator: "AND",
+        operator: "OR",
         operands: group.operands.map(op => 
           "adjacentOperators" in op ? transformForBackend(op) : op
         )
