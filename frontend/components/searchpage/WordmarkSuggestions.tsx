@@ -22,7 +22,7 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
   const [isAddingAll, setIsAddingAll] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [enterPressCount, setEnterPressCount] = useState(0)
-  const [optionsCount, setOptionsCount] = useState('12')
+  const [optionsCount, setOptionsCount] = useState('9')
   const [showSuggestions, setShowSuggestions] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,7 +88,7 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
   const handleOptionsChange = (value: string) => {
     const numValue = value.replace(/\D/g, '')
     if (numValue.length <= 2) {
-      setOptionsCount(numValue || '12')
+      setOptionsCount(numValue || '9')
     }
   }
 
@@ -120,7 +120,7 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
             value={optionsCount}
             onChange={(e) => handleOptionsChange(e.target.value)}
             className="w-16 text-center"
-            placeholder="12"
+            placeholder="9"
           />
           <Button 
             type="submit" 
