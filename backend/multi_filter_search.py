@@ -237,7 +237,12 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
                 final_results_query
                 .add_columns(func.coalesce(scoring_agg.c.combined_score, 0).label('combined_score'))
                 .outerjoin(scoring_agg, scoring_agg.c.sn == CaseFile.serial_number)
-                .filter(func.coalesce(scoring_agg.c.combined_score, 0) >= 15)
+                .filter(
+                    or_(
+                        scoring_agg.c.combined_score == None,  # Allow non-scoring matches
+                        func.coalesce(scoring_agg.c.combined_score, 0) >= 15
+                    )
+                )
                 .order_by(
                     desc('combined_score'),
                     desc(CaseFileHeader.filing_date)
