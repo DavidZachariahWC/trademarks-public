@@ -317,9 +317,19 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({
                   type="text"
                   placeholder={`Enter ${currentFilter.label?.toLowerCase()}...`}
                   value={currentFilter.query}
-                  onChange={(e) => setCurrentFilter({ ...currentFilter, query: e.target.value })}
+                  onChange={(e) => {
+                    let value = e.target.value;
+                    if (currentFilter.strategy === "international_class") {
+                      // Remove non-digits
+                      value = value.replace(/[^0-9]/g, '');
+                      // Limit to 3 digits
+                      value = value.slice(0, 3);
+                    }
+                    setCurrentFilter({ ...currentFilter, query: value });
+                  }}
                   onKeyPress={handleKeyPress}
                   className="h-12 text-base bg-gray-100"
+                  maxLength={currentFilter.strategy === "international_class" ? 3 : undefined}
                 />
                 {showWordmarkSuggestions && (
                   <WordmarkSuggestions 
@@ -327,6 +337,19 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({
                     onAddAllSuggestions={handleAddAllSuggestions}
                     onSearch={onSearch}
                   />
+                )}
+                {currentFilter.strategy === "international_class" && (
+                  <div className="text-sm text-gray-500">
+                    <p>
+                      Enter a 3-digit international class number. Or,{' '}
+                      <button 
+                        onClick={() => handleStrategySelect('coordinated_class', 'Classification', 'Coordinated Class')}
+                        className="text-blue-600 hover:text-blue-800 hover:underline"
+                      >
+                        use the Coordinated Class filter instead
+                      </button>
+                    </p>
+                  </div>
                 )}
               </div>
             )}
