@@ -104,7 +104,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({
     if (classes.length > 0) {
       setCurrentFilter({
         ...currentFilter,
-        query: `coord_class_${classes[0]}`,
+        query: `${classes[0]}`,
       });
     } else {
       setCurrentFilter({ ...currentFilter, query: "" });
