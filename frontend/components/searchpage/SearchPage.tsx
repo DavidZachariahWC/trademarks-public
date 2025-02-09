@@ -308,19 +308,26 @@ export default function SearchPage() {
         </div>
       </div>
 
-      <SearchResults
-        results={results}
-        isLoading={isLoading}
-        pagination={pagination}
-        onPageChange={handleSearch}
-      />
+      <div id="search-results" className="w-full">
+        <SearchResults
+          results={results}
+          isLoading={isLoading}
+          pagination={pagination}
+          onPageChange={handleSearch}
+        />
+      </div>
 
       {isLoading && (
         <div 
-          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center"
+          className="fixed inset-0 w-screen h-screen bg-gray-600/50 backdrop-blur-sm flex items-center justify-center"
           style={{ 
-            zIndex: 40,
-            pointerEvents: isLoading ? 'auto' : 'none'
+            zIndex: 9999,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            margin: 0,
           }}
         >
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>

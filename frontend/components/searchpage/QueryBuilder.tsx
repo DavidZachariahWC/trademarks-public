@@ -160,7 +160,23 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({
               </Button>
             </SheetTrigger>
             <SheetContent side="left">
-              <SheetTitle className="mb-4">Select Filter</SheetTitle>
+              <div className="flex justify-between items-center mb-4">
+                <SheetTitle>Select Filter</SheetTitle>
+                {filters.length > 0 && onClearAll && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      onClearAll();
+                      handleCloseSidebar();
+                    }}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Clear All
+                  </Button>
+                )}
+              </div>
               <div className="h-[calc(100vh-8rem)] overflow-y-auto pr-4">
                 <SearchOptions
                   onSelect={handleStrategySelect}
