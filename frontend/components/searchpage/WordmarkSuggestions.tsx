@@ -94,7 +94,7 @@ export default function WordmarkSuggestions({ onSuggestionSelect, onAddAllSugges
 
   return (
     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
-      <h3 className="text-sm font-medium text-gray-700 mb-3">Provide your term here to get the adjacent spellings necessary for a more comprehensive result</h3>
+      <h3 className="text-sm font-medium text-gray-700 mb-3">Provide your term here to get adjacent terms that can improve search results</h3>
       
       <form onSubmit={handleSubmit} className="space-y-3">
         <div className="flex gap-2">
