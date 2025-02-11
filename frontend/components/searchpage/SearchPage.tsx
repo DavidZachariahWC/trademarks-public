@@ -40,6 +40,7 @@ export default function SearchPage() {
   const [filterTree, setFilterTree] = useState<Group | null>(null);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState({
     current_page: 1,
@@ -193,6 +194,7 @@ export default function SearchPage() {
 
   const handleExport = async (type: 'current_page' | 'full') => {
     if (!filterTree) return;
+    setIsExporting(true);
 
     try {
       const response = await fetch(API_ENDPOINTS.exportSearch, {
@@ -228,6 +230,8 @@ export default function SearchPage() {
       document.body.removeChild(a);
     } catch (err) {
       console.error("Export error:", err);
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -290,17 +294,26 @@ export default function SearchPage() {
               <Button
                 variant="outline"
                 className="h-12 px-6 text-lg flex items-center gap-2"
-                disabled={!results.length}
+                disabled={!results.length || isExporting}
               >
-                <Download className="h-5 w-5" />
-                Export
+                {isExporting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-current" />
+                    <span className="ml-2">Exporting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-5 w-5" />
+                    Export
+                  </>
+                )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => handleExport('current_page')}>
+              <DropdownMenuItem onClick={() => handleExport('current_page')} disabled={isExporting}>
                 Export Current Page
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleExport('full')}>
+              <DropdownMenuItem onClick={() => handleExport('full')} disabled={isExporting}>
                 Export First 150 Results
               </DropdownMenuItem>
             </DropdownMenuContent>
