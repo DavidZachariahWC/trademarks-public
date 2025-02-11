@@ -236,7 +236,7 @@ export default function SearchPage() {
       <Toaster />
       <div className="w-full max-w-6xl space-y-8">
         <h2 className="text-3xl font-bold text-center text-gray-800">
-          Federal Trademark Database Search
+          Trademark Search
         </h2>
       </div>
 
