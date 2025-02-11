@@ -3,7 +3,7 @@
 "use client"
 
 import { useState } from "react"
-import { Chat } from "@/app/ai-chat/newComponents/chat"
+import { Chat } from "@/app/(app)/ai-chat/newComponents/chat"
 
 interface Message {
   id?: string
