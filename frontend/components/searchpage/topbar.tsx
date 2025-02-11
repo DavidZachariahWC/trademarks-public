@@ -5,7 +5,7 @@ export default function TopBar() {
   return (
     <header className="bg-[#111318] border-b border-gray-800">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold">
+        <Link href="/dashboard" className="text-xl font-bold">
           <span className="text-[#FF6B2C]">T</span>
           <span className="text-white">radeMark Pro</span>
         </Link>
@@ -14,7 +14,7 @@ export default function TopBar() {
             <li>
               <Link href="/dashboard">
                 <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-[#FF6B2C]/10">
-                  Home
+                  Search Interface
                 </Button>
               </Link>
             </li>
@@ -22,13 +22,6 @@ export default function TopBar() {
               <Link href="/design-code">
                 <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-[#FF6B2C]/10">
                   Design Code Assistant
-                </Button>
-              </Link>
-            </li>
-            <li>
-              <Link href="/about">
-                <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-[#FF6B2C]/10">
-                  About
                 </Button>
               </Link>
             </li>

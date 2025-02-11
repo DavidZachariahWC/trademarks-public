@@ -42,9 +42,9 @@ export function MessagesContainer({ messages, chatId, showThinking }: MessagesCo
       className="flex-1 overflow-y-auto scrollbar-none bg-zinc-50"
     >
       <div className="flex flex-col gap-6 min-h-full p-6">
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <MessageComponent
-            key={message.id}
+            key={message.id || `message-${index}`}
             chatId={chatId}
             role={message.role}
             content={message.isStreaming ? (
@@ -59,6 +59,7 @@ export function MessagesContainer({ messages, chatId, showThinking }: MessagesCo
         ))}
         {showThinking && (
           <MessageComponent
+            key="thinking-message"
             chatId={chatId}
             role="assistant"
             content={

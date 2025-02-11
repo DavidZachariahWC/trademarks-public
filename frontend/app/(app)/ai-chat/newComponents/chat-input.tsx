@@ -12,6 +12,7 @@ interface ChatInputProps {
   onChange: (value: string) => void
   onSubmit: (message?: string, isInitialMessage?: boolean) => void
   onFileSelect: (file: File) => Promise<void> | void
+  placeholder?: string
 }
 
 export function ChatInput({ 
@@ -21,7 +22,8 @@ export function ChatInput({
   isInitializing = false,
   onChange, 
   onSubmit,
-  onFileSelect
+  onFileSelect,
+  placeholder = "Ask a question about this trademark case..."
 }: ChatInputProps) {
   const isDisabled = isLoading || isProcessingFile || isInitializing;
 
@@ -65,7 +67,7 @@ export function ChatInput({
               onSubmit()
             }
           }}
-          placeholder="Ask a question about this trademark case..."
+          placeholder={placeholder}
           disabled={isDisabled}
           className="flex-1 bg-zinc-100 border-zinc-300 text-zinc-900 placeholder:text-zinc-500 focus:ring-2 focus:ring-zinc-500 h-12 py-2"
         />
