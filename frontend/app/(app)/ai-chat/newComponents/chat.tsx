@@ -43,7 +43,7 @@ export function Chat({
   const isDesignCodeChat = chatId === "design-code";
 
   return (
-    <div className="flex flex-col w-full h-[845px] min-h-[845px] max-h-[845px]">
+    <div className="flex flex-col w-full h-[835px] min-h-[835px] max-h-[835px]">
       <MessagesContainer
         messages={messages}
         chatId={chatId}
