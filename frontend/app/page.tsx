@@ -21,8 +21,6 @@ export default function Home() {
             <div className="space-x-6">
               <Link href="/features" className="text-gray-300 hover:text-white">Features</Link>
               <Link href="/pricing" className="text-gray-300 hover:text-white">Pricing</Link>
-              <Link href="/docs" className="text-gray-300 hover:text-white">Docs</Link>
-              <Link href="/blog" className="text-gray-300 hover:text-white">Blog</Link>
             </div>
           </div>
           <div className="flex items-center space-x-4">
