@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 import { Loader2 } from "lucide-react"
 import { useParams } from "next/navigation"
 import { Chat } from "../newComponents/chat"
+import { CaseInfoFloat } from "../newComponents/case-info-float"
 import { toast } from "sonner"
 import { Case } from "@/utils/types/case"
 
@@ -177,18 +178,36 @@ export default function ChatPage() {
   }
 
   return (
-    <Chat
-      messages={messages}
-      input={input}
-      isLoading={isLoading}
-      isInitializing={isInitializing}
-      error={error}
-      chatId={serialNumber}
-      onInputChange={setInput}
-      onSubmit={handleSendMessage}
-      onFileSelect={handleFileSelect}
-      showThinking={showThinking}
-      isFirstLoad={isFirstLoad}
-    />
+    <div className="flex-1 space-y-4 px-4 md:px-6 lg:px-8">
+      {error ? (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center space-y-2">
+            <p className="text-red-500">{getErrorMessage(error)}</p>
+          </div>
+        </div>
+      ) : (
+        <>
+          {caseData && (
+            <CaseInfoFloat
+              serialNumber={caseData.serial_number}
+              name={caseData.header.mark_identification}
+            />
+          )}
+          <Chat
+            messages={messages}
+            input={input}
+            isLoading={isLoading}
+            isInitializing={isInitializing}
+            error={error}
+            chatId={serialNumber}
+            onInputChange={setInput}
+            onSubmit={handleSendMessage}
+            onFileSelect={handleFileSelect}
+            showThinking={showThinking}
+            isFirstLoad={isFirstLoad}
+          />
+        </>
+      )}
+    </div>
   )
 }
