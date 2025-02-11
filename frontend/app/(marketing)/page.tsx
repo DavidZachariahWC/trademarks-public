@@ -5,39 +5,7 @@ import { ChevronRight } from 'lucide-react'
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#0A0C10] text-white">
-      {/* Top Banner */}
-      <div className="bg-[#111318] py-1 text-center text-sm">
-        <span className="text-gray-400">Try a better alternative to USPTO search - </span>
-        <span className="text-white">Start free</span>
-      </div>
-
-      {/* Navigation */}
-      <nav className="border-b border-gray-800">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-8">
-            <Link href="/" className="text-2xl font-bold">
-              <span className="text-[#FF6B2C]">T</span> Trademarks
-            </Link>
-            <div className="space-x-6">
-              <Link href="/features" className="text-gray-300 hover:text-white">Features</Link>
-              <Link href="/examples" className="text-gray-300 hover:text-white">Why We're Better</Link>
-              <Link href="/pricing" className="text-gray-300 hover:text-white">Pricing</Link>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Link href="/dashboard" className="text-gray-300 hover:text-white">
-              Dashboard
-            </Link>
-            <Link href="/get-started">
-              <Button className="bg-[#FF6B2C] hover:bg-[#FF8651] text-white">
-                Try it free
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
-
+    <main>
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-24">
         <div className="max-w-4xl mx-auto text-center mb-16">
