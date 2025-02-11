@@ -19,7 +19,7 @@ export function MarketingNav() {
             </Link>
             <div className="space-x-6">
               <Link href="/features" className="text-gray-300 hover:text-white">Features</Link>
-              <Link href="/examples" className="text-gray-300 hover:text-white">Why We're Better</Link>
+              <Link href="/examples" className="text-gray-300 hover:text-white">Why We&apos;re Better</Link>
               <Link href="/pricing" className="text-gray-300 hover:text-white">Pricing</Link>
             </div>
           </div>
