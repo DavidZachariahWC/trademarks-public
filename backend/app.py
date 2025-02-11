@@ -58,19 +58,51 @@ CACHE_TTL = 172800
 
 def fetch_uspto_pdf(registration_number: str, retries: int = 2, timeout: int = 30) -> Tuple[Optional[bytes], Optional[str]]:
     """
-    Fetch PDF from USPTO API with retries and improved error handling.
+    Fetch PDF from USPTO API with two API keys and retries.
     Returns (pdf_data, None) on success, or (None, error_message) on failure.
     """
     uspto_url = f"https://tsdrapi.uspto.gov/ts/cd/casedocs/bundle.pdf?rn={registration_number}"
     logger.info(f"Attempting to fetch PDF from USPTO: {uspto_url}")
     
+    # List of API keys to try in order
+    api_keys = [USPTO_API_KEY, USPTO_API_KEY_2]
+    
+    # Try each API key first
+    for key_index, api_key in enumerate(api_keys, 1):
+        try:
+            logger.info(f"Trying USPTO API key {key_index}")
+            uspto_response = httpx.get(
+                uspto_url,
+                headers={'USPTO-API-KEY': api_key},
+                timeout=timeout
+            )
+            uspto_response.raise_for_status()
+            pdf_data = uspto_response.content
+            pdf_size = len(pdf_data)
+            logger.info(f"Successfully fetched PDF using API key {key_index}. Size: {pdf_size} bytes")
+            
+            if pdf_size == 0:
+                logger.error("Received empty PDF from USPTO API")
+                continue  # Try next API key if PDF is empty
+                
+            return pdf_data, None
+            
+        except (httpx.TimeoutException, httpx.HTTPStatusError) as e:
+            logger.warning(f"Failed with API key {key_index}: {str(e)}")
+            continue  # Try next API key
+        except Exception as e:
+            logger.error(f"Unexpected error with API key {key_index}: {str(e)}", exc_info=True)
+            continue  # Try next API key
+    
+    # If both API keys failed, try exponential backoff with the first API key
+    logger.warning("Both API keys failed, attempting exponential backoff with primary key")
     for attempt in range(retries + 1):
         try:
             if attempt > 0:
-                logger.info(f"Retry attempt {attempt}/{retries} for registration number {registration_number}")
-                time.sleep(2 * attempt)  # Exponential backoff
+                backoff_time = 2 * attempt
+                logger.info(f"Retry attempt {attempt}/{retries} with {backoff_time}s backoff")
+                time.sleep(backoff_time)
             
-            logger.info(f"Making request to USPTO API (attempt {attempt + 1}/{retries + 1})")
             uspto_response = httpx.get(
                 uspto_url,
                 headers={'USPTO-API-KEY': USPTO_API_KEY},
@@ -79,7 +111,7 @@ def fetch_uspto_pdf(registration_number: str, retries: int = 2, timeout: int = 3
             uspto_response.raise_for_status()
             pdf_data = uspto_response.content
             pdf_size = len(pdf_data)
-            logger.info(f"Successfully fetched PDF on attempt {attempt + 1}. Size: {pdf_size} bytes")
+            logger.info(f"Successfully fetched PDF on backoff attempt {attempt + 1}. Size: {pdf_size} bytes")
             
             if pdf_size == 0:
                 logger.error("Received empty PDF from USPTO API")
@@ -88,10 +120,10 @@ def fetch_uspto_pdf(registration_number: str, retries: int = 2, timeout: int = 3
             return pdf_data, None
             
         except httpx.TimeoutException as e:
-            logger.warning(f"Timeout on attempt {attempt + 1}/{retries + 1}: {str(e)}")
+            logger.warning(f"Timeout on backoff attempt {attempt + 1}/{retries + 1}: {str(e)}")
             if attempt == retries:
                 logger.error(f"All retry attempts failed for registration {registration_number}: {str(e)}")
-                return None, f"USPTO API request timed out after {retries + 1} attempts"
+                return None, f"USPTO API request timed out after all attempts"
         except httpx.HTTPStatusError as e:
             logger.error(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
             return None, f"USPTO API returned error: {e.response.status_code}"
@@ -99,7 +131,7 @@ def fetch_uspto_pdf(registration_number: str, retries: int = 2, timeout: int = 3
             logger.error(f"Unexpected error fetching PDF: {str(e)}", exc_info=True)
             return None, f"Unexpected error: {str(e)}"
     
-    return None, "Failed to fetch PDF after all retry attempts"
+    return None, "Failed to fetch PDF after all attempts"
 
 @app.route('/api/ai_chat_eb', methods=['POST'])
 def ai_chat_eb():
