@@ -112,7 +112,7 @@ export default function DesignCodePage() {
       onInputChange={setInput}
       onSubmit={handleSendMessage}
       onFileSelect={async (file: File) => Promise.resolve()}
-      showThinking={isLoading}
+      showThinking={false}
       isFirstLoad={false}
     />
   )
