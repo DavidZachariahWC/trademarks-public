@@ -30,7 +30,7 @@ export function Chat({
   onSubmit
 }: ChatProps) {
   return (
-    <div className="flex flex-col h-full bg-zinc-50 rounded-lg">
+    <div className="flex flex-col h-[calc(100vh-64px)] bg-zinc-50 rounded-lg">
       <MessagesContainer
         messages={messages}
         chatId={chatId}

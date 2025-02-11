@@ -73,7 +73,7 @@ export default function ChatPage() {
     const requestInitialSummary = async () => {
       if (caseData && isFirstLoad && !isInitializing && !isLoading) {
         console.log("Requesting initial case summary...")
-        await handleSendMessage("Please provide a summary of this trademark case.", true)
+        await handleSendMessage("Please provide a summary of this trademark case based on the OCR data, if available.", true)
         setIsFirstLoad(false)
       }
     }
