@@ -3,21 +3,42 @@ import { Button } from '@/components/ui/button'
 
 export default function TopBar() {
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-[#111318] border-b border-gray-800">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold text-gray-800">
-          TradeMark Pro
+        <Link href="/" className="text-xl font-bold">
+          <span className="text-[#FF6B2C]">T</span>
+          <span className="text-white">radeMark Pro</span>
         </Link>
         <nav>
           <ul className="flex space-x-4">
-            <li><Button variant="ghost">Home</Button></li>
             <li>
-              <Link href="/design-code">
-                <Button variant="ghost">Design Code Assistant</Button>
+              <Link href="/dashboard">
+                <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-[#FF6B2C]/10">
+                  Home
+                </Button>
               </Link>
             </li>
-            <li><Button variant="ghost">About</Button></li>
-            <li><Button variant="ghost">Contact</Button></li>
+            <li>
+              <Link href="/design-code">
+                <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-[#FF6B2C]/10">
+                  Design Code Assistant
+                </Button>
+              </Link>
+            </li>
+            <li>
+              <Link href="/about">
+                <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-[#FF6B2C]/10">
+                  About
+                </Button>
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact">
+                <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-[#FF6B2C]/10">
+                  Contact
+                </Button>
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>

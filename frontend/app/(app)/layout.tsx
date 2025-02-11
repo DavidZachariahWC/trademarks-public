@@ -6,9 +6,11 @@ export default function AppLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#0A0C10]">
       <TopBar />
-      {children}
+      <div className="bg-gray-50">
+        {children}
+      </div>
     </div>
   )
 }

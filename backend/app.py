@@ -140,14 +140,24 @@ def ai_chat_eb():
         # Check Redis for a cached file reference.
         redis_key = f"pdf:{registration_number}"
         cached_file_ref = redis_client.get(redis_key)
+        file_obj = None
         
         if cached_file_ref:
             file_reference = cached_file_ref.decode('utf-8')
-            logger.info(f"Using cached file reference for registration number {registration_number}")
-            # Retrieve the file object from the File API using the reference.
-            file_obj = genai.get_file(name=file_reference)
-        else:
-            # Fetch PDF from USPTO with retries.
+            logger.info(f"Found cached file reference for registration number {registration_number}")
+            try:
+                # Try to get the file from Gemini
+                file_obj = genai.get_file(name=file_reference)
+                logger.info(f"Successfully retrieved file from Gemini for registration {registration_number}")
+            except Exception as e:
+                # If file not found in Gemini, clear the stale Redis entry
+                logger.warning(f"Cached file not found in Gemini for registration {registration_number}: {str(e)}")
+                redis_client.delete(redis_key)
+                file_obj = None
+
+        if not file_obj:
+            # Either no cache entry or stale cache - fetch from USPTO and upload
+            logger.info(f"Fetching and uploading new file for registration {registration_number}")
             pdf_data, error = fetch_uspto_pdf(registration_number)
             if error:
                 return jsonify({'error': error}), 500
@@ -241,6 +251,23 @@ User: {user_message}
 
     except Exception as e:
         logger.exception(f"Error in /api/ai_chat_eb: {e}")
+        return jsonify({'error': 'An internal server error occurred', 'details': str(e)}), 500
+
+@app.route('/api/ai_files', methods=['GET'])
+def list_ai_files():
+    """List all files currently stored in the Gemini API."""
+    try:
+        # List all files
+        files = genai.list_files()
+        
+        # Format the response
+        file_list = [{"name": f.name, "display_name": f.display_name} for f in files]
+        
+        logger.info(f"Retrieved {len(file_list)} files from Gemini API")
+        return jsonify({'files': file_list})
+        
+    except Exception as e:
+        logger.exception(f"Error in /api/ai_files: {e}")
         return jsonify({'error': 'An internal server error occurred', 'details': str(e)}), 500
 
 @app.route('/api/search')
