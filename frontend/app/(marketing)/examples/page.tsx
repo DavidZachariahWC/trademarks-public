@@ -16,7 +16,7 @@ export default function ExamplesPage() {
           </Link>
           <h1 className="text-4xl font-bold mb-4">Search Comparison Examples</h1>
           <p className="text-xl text-gray-400">
-            See how our platform simplifies trademark searches compared to USPTO's TESS system.
+            See how our platform simplifies trademark searches compared to USPTO&apos;s TESS system.
           </p>
         </div>
 

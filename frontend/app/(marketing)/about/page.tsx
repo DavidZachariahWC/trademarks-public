@@ -6,7 +6,7 @@ export default function AboutPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold mb-4">About Us</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            We're revolutionizing how legal professionals handle trademark searches and management
+            We&apos;re revolutionizing how legal professionals handle trademark searches and management
           </p>
         </div>
 
@@ -19,7 +19,7 @@ export default function AboutPage() {
             trademark protection more accessible, efficient, and accurate.
           </p>
           <p className="text-lg text-gray-600">
-            By combining advanced artificial intelligence with deep legal expertise, we've created a platform 
+            By combining advanced artificial intelligence with deep legal expertise, we&apos;ve created a platform 
             that transforms how trademark professionals work, saving time and reducing complexity while 
             improving accuracy and confidence in trademark decisions.
           </p>
@@ -35,7 +35,7 @@ export default function AboutPage() {
             </div>
             <h3 className="text-xl font-bold mb-2">Trust & Reliability</h3>
             <p className="text-gray-600">
-              We're committed to providing accurate, reliable results you can trust for your trademark decisions.
+              We&apos;re committed to providing accurate, reliable results you can trust for your trademark decisions.
             </p>
           </div>
 
@@ -47,7 +47,7 @@ export default function AboutPage() {
             </div>
             <h3 className="text-xl font-bold mb-2">Innovation</h3>
             <p className="text-gray-600">
-              We continuously push the boundaries of what's possible with AI in trademark search and management.
+              We continuously push the boundaries of what&apos;s possible with AI in trademark search and management.
             </p>
           </div>
 
@@ -59,7 +59,7 @@ export default function AboutPage() {
             </div>
             <h3 className="text-xl font-bold mb-2">Customer Success</h3>
             <p className="text-gray-600">
-              Your success is our success. We're dedicated to supporting our customers every step of the way.
+              Your success is our success. We&apos;re dedicated to supporting our customers every step of the way.
             </p>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function AboutPage() {
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
           <p className="text-lg text-gray-600 mb-8">
-            Want to learn more about how we can help your practice? We'd love to hear from you.
+            Want to learn more about how we can help your practice? We&apos;d love to hear from you.
           </p>
           <a 
             href="mailto:contact@example.com" 

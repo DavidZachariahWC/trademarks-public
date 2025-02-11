@@ -11,7 +11,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h1 className="text-6xl font-serif mb-4">
             Trademark Search <span className="italic">Made Simple</span>
-            <div className="text-4xl font-normal mt-2">Better than USPTO's TESS</div>
+            <div className="text-4xl font-normal mt-2">Better than USPTO&apos;s TESS</div>
           </h1>
           <p className="text-xl text-gray-400 mb-8">
             Search trademarks without complex syntax. Get more accurate results instantly.
@@ -216,7 +216,7 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-8">Ready to save hours on trademark searches?</h2>
           <p className="text-xl text-gray-400 mb-8">
-            Stop wrestling with USPTO's complex search system.
+            Stop wrestling with USPTO&apos;s complex search system.
             <br />
             Start finding trademark conflicts faster and more reliably.
           </p>
