@@ -23,6 +23,7 @@ interface ChatProps {
   onFileSelect: (file: File) => Promise<void> | void;
   showThinking: boolean;
   isFirstLoad: boolean;
+  placeholder?: string;
 }
 
 export function Chat({
@@ -36,7 +37,8 @@ export function Chat({
   onSubmit,
   onFileSelect,
   showThinking,
-  isFirstLoad
+  isFirstLoad,
+  placeholder
 }: ChatProps) {
   const isDesignCodeChat = chatId === "design-code";
 
@@ -68,6 +70,7 @@ export function Chat({
             onSubmit={onSubmit}
             onChange={onInputChange}
             onFileSelect={onFileSelect}
+            placeholder={placeholder}
           />
         )}
       </div>

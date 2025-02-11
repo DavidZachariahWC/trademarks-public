@@ -301,7 +301,7 @@ export default function SearchPage() {
                 Export Current Page
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleExport('full')}>
-                Export First 500 Results
+                Export First 150 Results
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

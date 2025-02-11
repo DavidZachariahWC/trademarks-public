@@ -625,7 +625,7 @@ def export_search():
             per_page = int(data.get('per_page', 60))
             results = multi_filter_search(filter_tree=filter_tree, page=page, per_page=per_page)
         else:  # 'full' export
-            results = multi_filter_search(filter_tree=filter_tree, page=1, per_page=500)
+            results = multi_filter_search(filter_tree=filter_tree, page=1, per_page=150)
 
         # Convert results to DataFrame
         df = pd.DataFrame(results['results'])

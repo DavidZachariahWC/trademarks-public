@@ -114,6 +114,7 @@ export default function DesignCodePage() {
       onFileSelect={async (file: File) => Promise.resolve()}
       showThinking={false}
       isFirstLoad={false}
+      placeholder="Describe your design here..."
     />
   )
 }
