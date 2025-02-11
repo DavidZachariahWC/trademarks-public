@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import { ChevronRight } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
             </Link>
             <div className="space-x-6">
               <Link href="/features" className="text-gray-300 hover:text-white">Features</Link>
+              <Link href="/examples" className="text-gray-300 hover:text-white">Why We're Better</Link>
               <Link href="/pricing" className="text-gray-300 hover:text-white">Pricing</Link>
             </div>
           </div>
@@ -82,7 +84,8 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-12">
+            {/* Basic Search Example */}
             <div className="bg-[#0A0C10] rounded-lg overflow-hidden border border-gray-800">
               <div className="p-4 border-b border-gray-800">
                 <h3 className="text-lg font-bold">USPTO TESS Search</h3>
@@ -112,12 +115,66 @@ export default function Home() {
                 />
               </div>
             </div>
+
+            {/* Advanced Search Example */}
+            <div className="bg-[#0A0C10] rounded-lg overflow-hidden border border-gray-800">
+              <div className="p-4 border-b border-gray-800">
+                <h3 className="text-lg font-bold">USPTO TESS Search</h3>
+                <p className="text-sm text-gray-400">Multiple fields, complex operators</p>
+              </div>
+              <div className="aspect-[4/3] relative">
+                <Image
+                  src="/uspto-advanced.png"
+                  alt="USPTO Advanced Search Example"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
+            <div className="bg-[#0A0C10] rounded-lg overflow-hidden border border-[#FF6B2C]">
+              <div className="p-4 border-b border-gray-800">
+                <h3 className="text-lg font-bold">Our Advanced Search</h3>
+                <p className="text-sm text-gray-400">Intuitive filters, visual builder</p>
+              </div>
+              <div className="aspect-[4/3] relative">
+                <Image
+                  src="/our-advanced.png"
+                  alt="Our Advanced Search Interface"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Link href="/examples">
+              <Button className="bg-[#FF6B2C] hover:bg-[#FF8651] text-white">
+                See More Examples
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Simple Search Section */}
       <section className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl font-bold mb-4">Simple Search</h2>
+            <p className="text-xl text-gray-400">
+              Just type your mark and get instant results.
+              <br />
+              No need to learn complex USPTO search syntax or operators.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Time-Saving Features Section */}
+      <section className="bg-[#111318] py-24">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
@@ -129,35 +186,59 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-12">
-              <div className="space-y-4">
-                <h3 className="text-2xl font-bold">Simple Search</h3>
-                <p className="text-gray-400">
-                  Just type your mark and get instant results. No need to learn complex USPTO search syntax or operators.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-2xl font-bold">Smart Query Generator</h3>
-                <p className="text-gray-400">
-                  Let our AI generate optimal search queries for you. Save time crafting complex search strings.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-2xl font-bold">AI Chat Assistant</h3>
-                <p className="text-gray-400">
-                  Get instant answers about trademark cases and registration documents. No more manual document review.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-2xl font-bold">Accurate Results</h3>
-                <p className="text-gray-400">
-                  Our advanced matching algorithm finds relevant results that USPTO might miss. Reduce the risk of overlooking conflicts.
-                </p>
+            {/* Smart Query Generator */}
+            <div className="mb-20">
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                  <h3 className="text-2xl font-bold mb-4">Smart Query Generator</h3>
+                  <p className="text-gray-400">
+                    Let our AI generate optimal search queries for you. Save time crafting complex search strings.
+                  </p>
+                </div>
+                <div className="relative aspect-[16/9]">
+                  <Image
+                    src="/query-generator.png"
+                    alt="Smart Query Generator Interface"
+                    fill
+                    className="rounded-lg object-cover"
+                  />
+                </div>
               </div>
             </div>
+
+            {/* AI Chat Assistant */}
+            <div>
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div className="relative aspect-[16/9]">
+                  <Image
+                    src="/ai-chat.png"
+                    alt="AI Chat Assistant Interface"
+                    fill
+                    className="rounded-lg object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold mb-4">AI Chat Assistant</h3>
+                  <p className="text-gray-400">
+                    Get instant answers about trademark cases and registration documents. No more manual document review.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Accurate Results Section */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl font-bold mb-4">Accurate Results</h2>
+            <p className="text-xl text-gray-400">
+              Our advanced matching algorithm finds relevant results that USPTO might miss.
+              <br />
+              Reduce the risk of overlooking conflicts.
+            </p>
           </div>
         </div>
       </section>
