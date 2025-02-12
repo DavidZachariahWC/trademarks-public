@@ -272,7 +272,7 @@ User: {user_message}
         logger.info(f"Constructed prompt. Length: {len(prompt)} characters")
 
         # Call Gemini API with the file object (cached or newly uploaded) and prompt.
-        model = genai.GenerativeModel(model_name="gemini-2.0-flash") # gemini-2.0-pro-exp
+        model = genai.GenerativeModel(model_name="gemini-1.5-pro") # gemini-2.0-pro-exp
         response = model.generate_content([
             prompt,  # Use the file object from the File API.
             file_obj
