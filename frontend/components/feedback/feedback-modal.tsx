@@ -59,7 +59,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
           <X size={20} />
         </button>
 
-        <h2 className="text-xl font-bold text-white mb-4">Send Feedback, We're listening!</h2>
+        <h2 className="text-xl font-bold text-white mb-4">Send Feedback, We&apos;re listening!</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
