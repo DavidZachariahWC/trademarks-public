@@ -22,7 +22,10 @@ export default function middleware(req: any) {
       const resolvedAuth = await auth();
 
       if (!resolvedAuth.userId && isProtectedRoute(req)) {
-        return resolvedAuth.redirectToSignIn();
+        return resolvedAuth.redirectToSignIn({
+          returnBackUrl: req.url,
+          redirectUrl: "/sign-in"
+        });
       } else {
         return NextResponse.next();
       }
