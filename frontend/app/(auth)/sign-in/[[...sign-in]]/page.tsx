@@ -1,45 +1,39 @@
 "use client"
-import PageWrapper from "@/components/wrapper/page-wrapper";
-import config from "@/config";
-import { SignIn } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+
 import Link from "next/link";
+import { SignIn } from "@clerk/nextjs";
 
 export default function SignInPage() {
-    const router = useRouter()
-
-    if (!config?.auth?.enabled) {
-        router.back()
-    }
-
-    return (
-        <div className="min-h-screen bg-[#0A0C10] flex flex-col items-center">
-            <Link href="/" className="text-2xl font-bold mt-8 mb-16">
-                <span className="text-[#FF6B2C]">T</span>
-                <span className="text-white">radeMark Pro</span>
-            </Link>
-            
-            <div className="w-full max-w-[400px] p-4">
-                <SignIn 
-                    appearance={{
-                        elements: {
-                            formButtonPrimary: 
-                                "bg-[#FF6B2C] hover:bg-[#FF6B2C]/90",
-                            footerActionLink: 
-                                "text-[#FF6B2C] hover:text-[#FF6B2C]/90",
-                            card: "bg-white rounded-lg shadow-none",
-                            headerTitle: "text-gray-900",
-                            headerSubtitle: "text-gray-600",
-                            socialButtonsBlockButton: "border border-gray-300",
-                            socialButtonsBlockButtonText: "text-gray-600",
-                            formFieldLabel: "text-gray-700",
-                            formFieldInput: "border-gray-300",
-                            dividerLine: "bg-gray-300",
-                            dividerText: "text-gray-600",
-                        },
-                    }}
-                />
-            </div>
+  return (
+    <div className="flex min-h-screen w-full">
+      {/* Left column */}
+      <div className="hidden w-1/2 flex-col justify-between p-10 lg:flex bg-zinc-900">
+        <Link href="/" className="flex items-center space-x-2">
+          <span className="text-3xl font-bold">
+            <span className="text-[#FF6B2C]">T</span>
+            <span className="text-white">radeMark Pro</span>
+          </span>
+        </Link>
+        <div className="space-y-2">
+          <p className="text-lg font-medium text-white">
+            &quot;Finally, a trademark search platform that makes sense. No more complex TESS queries - just simple, accurate results that help protect my clients&apos; brands.&quot;
+          </p>
+          <p className="text-sm text-gray-300">Sarah Chen, IP Attorney</p>
         </div>
-    );
+      </div>
+
+      {/* Right column */}
+      <div className="flex w-full items-center justify-center lg:w-1/2 bg-black">
+        <div className="w-full max-w-sm px-4">
+          <SignIn 
+            appearance={{
+              elements: {
+                socialButtonsBlockButton: "border border-gray-800",                
+              },
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
