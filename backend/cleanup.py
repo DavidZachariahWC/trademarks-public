@@ -92,6 +92,6 @@ def remove_case_files(input_file, output_file):
     parser.parse(input_file)
 
 if __name__ == '__main__':
-    input_xml_file = '/Users/davidzachariah/Desktop/trademarks/apc18840407-20231231-07.xml'
-    output_xml_file = '/Users/davidzachariah/Desktop/trademarks/apc18840407-20231231-07_cleaned.xml'
+    input_xml_file = '/Users/davidzachariah/downloads/apc18840407-20231231-33.xml'
+    output_xml_file = '/Users/davidzachariah/Desktop/apc18840407-20231231-33_cleaned.xml'
     remove_case_files(input_xml_file, output_xml_file)
