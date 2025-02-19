@@ -1,4 +1,4 @@
-# models.py
+#models.py
 from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String, Text, ARRAY, TIMESTAMP
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship
@@ -12,8 +12,8 @@ class ApplicationInformation(Base):
     application_information_id = Column(Integer, primary_key=True)
     creation_datetime = Column(TIMESTAMP)
     data_available_code = Column(String(1))
-    
-    case_files = relationship("CaseFile", back_populates="application_info")
+
+    case_files = relationship("CaseFile", back_populates="application_info", cascade="all, delete") # Correct
 
 class CaseFile(Base):
     __tablename__ = 'casefile'
@@ -21,26 +21,26 @@ class CaseFile(Base):
     serial_number = Column(Integer, primary_key=True)
     registration_number = Column(String(255))
     transaction_date = Column(Date)
-    application_information_id = Column(Integer, ForeignKey('applicationinformation.application_information_id'))
-    
-    application_info = relationship("ApplicationInformation", back_populates="case_files")
-    header = relationship("CaseFileHeader", back_populates="case_file", uselist=False)
-    statements = relationship("CaseFileStatement", back_populates="case_file")
-    event_statements = relationship("CaseFileEventStatement", back_populates="case_file")
-    prior_registrations = relationship("PriorRegistrationApplication", back_populates="case_file")
-    foreign_applications = relationship("ForeignApplication", back_populates="case_file")
-    classifications = relationship("Classification", back_populates="case_file")
-    correspondents = relationship("Correspondent", back_populates="case_file")
-    owners = relationship("Owner", back_populates="case_file")
-    design_searches = relationship("DesignSearch", back_populates="case_file")
-    international_registrations = relationship("InternationalRegistration", back_populates="case_file")
-    madrid_filings = relationship("MadridInternationalFilingRequest", back_populates="case_file")
+    application_information_id = Column(Integer, ForeignKey('applicationinformation.application_information_id', ondelete="CASCADE"))
+
+    application_info = relationship("ApplicationInformation", back_populates="case_files", cascade="all, delete") # CORRECTED: Added cascade
+    header = relationship("CaseFileHeader", back_populates="case_file", uselist=False, cascade="all, delete") # Correct
+    statements = relationship("CaseFileStatement", back_populates="case_file", cascade="all, delete") # Correct
+    event_statements = relationship("CaseFileEventStatement", back_populates="case_file", cascade="all, delete") # Correct
+    prior_registrations = relationship("PriorRegistrationApplication", back_populates="case_file", cascade="all, delete") # Correct
+    foreign_applications = relationship("ForeignApplication", back_populates="case_file", cascade="all, delete") # Correct
+    classifications = relationship("Classification", back_populates="case_file", cascade="all, delete") # Correct
+    correspondents = relationship("Correspondent", back_populates="case_file", cascade="all, delete") # Correct
+    owners = relationship("Owner", back_populates="case_file", cascade="all, delete") # Correct
+    design_searches = relationship("DesignSearch", back_populates="case_file", cascade="all, delete") # Correct
+    international_registrations = relationship("InternationalRegistration", back_populates="case_file", cascade="all, delete") # Correct
+    madrid_filings = relationship("MadridInternationalFilingRequest", back_populates="case_file", cascade="all, delete") # Correct
 
 class CaseFileHeader(Base):
     __tablename__ = 'casefileheader'
 
     case_file_header_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     filing_date = Column(Date)
     registration_date = Column(Date)
     status_code = Column(String(3))
@@ -110,47 +110,47 @@ class CaseFileHeader(Base):
     employee_name = Column(String(255))
     mark_identification_soundex = Column(ARRAY(Text))
 
-    case_file = relationship("CaseFile", back_populates="header")
+    case_file = relationship("CaseFile", back_populates="header") # Correct
 
 class CaseFileStatement(Base):
     __tablename__ = 'casefilestatement'
 
     case_file_statement_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     type_code = Column(String(6))
     statement_text = Column(Text)
 
-    case_file = relationship("CaseFile", back_populates="statements")
+    case_file = relationship("CaseFile", back_populates="statements") # Correct
 
 class CaseFileEventStatement(Base):
     __tablename__ = 'casefileeventstatement'
 
     case_file_event_statement_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     event_code = Column(String(4))
     event_type = Column(String(1))
     description_text = Column(Text)
     event_date = Column(Date)
     event_number = Column(Integer)
 
-    case_file = relationship("CaseFile", back_populates="event_statements")
+    case_file = relationship("CaseFile", back_populates="event_statements") # Correct
 
 class PriorRegistrationApplication(Base):
     __tablename__ = 'priorregistrationapplication'
 
     prior_registration_application_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     other_related_in = Column(Boolean)
     relationship_type = Column(String(1))
     number = Column(String(8))
 
-    case_file = relationship("CaseFile", back_populates="prior_registrations")
+    case_file = relationship("CaseFile", back_populates="prior_registrations") # Correct
 
 class ForeignApplication(Base):
     __tablename__ = 'foreignapplication'
 
     foreign_application_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     foreign_filing_date = Column(Date)
     foreign_registration_date = Column(Date)
     registration_expiration_date = Column(Date)
@@ -164,13 +164,13 @@ class ForeignApplication(Base):
     renewal_number = Column(String(12))
     foreign_priority_claim_in = Column(Boolean)
 
-    case_file = relationship("CaseFile", back_populates="foreign_applications")
+    case_file = relationship("CaseFile", back_populates="foreign_applications") # Correct
 
 class Classification(Base):
     __tablename__ = 'classification'
 
     classification_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     international_code_total_no = Column(Integer)
     us_code_total_no = Column(Integer)
     international_code = Column(String(3))
@@ -181,26 +181,26 @@ class Classification(Base):
     first_use_in_commerce_date = Column(Date)
     primary_code = Column(String(3))
 
-    case_file = relationship("CaseFile", back_populates="classifications")
+    case_file = relationship("CaseFile", back_populates="classifications") # Correct
 
 class Correspondent(Base):
     __tablename__ = 'correspondent'
 
     correspondent_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     address_1 = Column(Text)
     address_2 = Column(Text)
     address_3 = Column(Text)
     address_4 = Column(Text)
     address_5 = Column(Text)
 
-    case_file = relationship("CaseFile", back_populates="correspondents")
+    case_file = relationship("CaseFile", back_populates="correspondents") # Correct
 
 class Owner(Base):
     __tablename__ = 'owner'
 
     owner_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     owner_entry_number = Column(Integer)
     party_type = Column(Integer)
     nationality_country = Column(String(3))
@@ -220,22 +220,22 @@ class Owner(Base):
     composed_of_statement = Column(Text)
     name_change_explanation = Column(Text)
 
-    case_file = relationship("CaseFile", back_populates="owners")
+    case_file = relationship("CaseFile", back_populates="owners") # Correct
 
 class DesignSearch(Base):
     __tablename__ = 'designsearch'
 
     design_search_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     design_search_code = Column(Integer)
 
-    case_file = relationship("CaseFile", back_populates="design_searches")
+    case_file = relationship("CaseFile", back_populates="design_searches") # Correct
 
 class InternationalRegistration(Base):
     __tablename__ = 'internationalregistration'
 
     international_registration_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     international_registration_number = Column(Integer)
     international_registration_date = Column(Date)
     international_publication_date = Column(Date)
@@ -249,13 +249,13 @@ class InternationalRegistration(Base):
     first_refusal_in = Column(Boolean)
     notification_date = Column(Date)
 
-    case_file = relationship("CaseFile", back_populates="international_registrations")
+    case_file = relationship("CaseFile", back_populates="international_registrations") # Correct
 
 class MadridInternationalFilingRequest(Base):
     __tablename__ = 'madridinternationalfilingrequest'
 
     madrid_international_filing_id = Column(Integer, primary_key=True)
-    serial_number = Column(Integer, ForeignKey('casefile.serial_number'))
+    serial_number = Column(Integer, ForeignKey('casefile.serial_number', ondelete="CASCADE"))
     madrid_filing_entry_number = Column(Integer)
     reference_number = Column(Integer)
     original_filing_date_uspto = Column(Date)
@@ -266,17 +266,17 @@ class MadridInternationalFilingRequest(Base):
     irregularity_reply_by_date = Column(Date)
     madrid_international_filing_renewal_date = Column(Date)
 
-    case_file = relationship("CaseFile", back_populates="madrid_filings")
-    history_events = relationship("MadridHistoryEvent", back_populates="filing_request")
+    case_file = relationship("CaseFile", back_populates="madrid_filings") # Correct
+    history_events = relationship("MadridHistoryEvent", back_populates="filing_request", cascade="all, delete") # Correct
 
 class MadridHistoryEvent(Base):
     __tablename__ = 'madridhistoryevent'
 
     madrid_history_event_id = Column(Integer, primary_key=True)
-    madrid_international_filing_id = Column(Integer, ForeignKey('madridinternationalfilingrequest.madrid_international_filing_id'))
+    madrid_international_filing_id = Column(Integer, ForeignKey('madridinternationalfilingrequest.madrid_international_filing_id', ondelete="CASCADE"))
     madrid_history_event_code = Column(Text)
     madrid_history_event_date = Column(Date)
     event_description_text = Column(Text)
     madrid_history_entry_number = Column(Integer)
 
-    filing_request = relationship("MadridInternationalFilingRequest", back_populates="history_events") 
+    filing_request = relationship("MadridInternationalFilingRequest", back_populates="history_events") # Correct

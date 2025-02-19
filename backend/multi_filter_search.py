@@ -260,11 +260,23 @@ def multi_filter_search(filter_tree: Dict, page: int = 1, per_page: int = 10) ->
         offset = (page - 1) * per_page
         final_results_query = final_results_query.limit(per_page).offset(offset)
 
-        # Log final SQL
+        # Log final SQL with detailed parameters
         try:
-            logger.info(f"Final query SQL:\n{str(final_results_query.statement.compile(compile_kwargs={'literal_binds': True}))}")
-        except:
-            pass
+            compiled_query = final_results_query.statement.compile(
+                compile_kwargs={'literal_binds': True}
+            )
+            logger.info("Final SQL Query with parameters:")
+            logger.info("-" * 80)
+            logger.info(str(compiled_query))
+            logger.info("-" * 80)
+            
+            # Also log query parameters separately for clarity
+            if compiled_query.params:
+                logger.info("Query parameters:")
+                for key, value in compiled_query.params.items():
+                    logger.info(f"{key}: {value}")
+        except Exception as sql_log_error:
+            logger.warning(f"Could not log complete SQL query: {str(sql_log_error)}")
 
         # E. Execute and assemble results
         rows = final_results_query.all()
