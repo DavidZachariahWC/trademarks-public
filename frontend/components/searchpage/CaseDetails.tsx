@@ -18,6 +18,7 @@ import MiscellaneousStatements from './MiscellaneousStatements'
 import AttorneyOfRecord from './AttorneyOfRecord'
 import RestrictionOnScope from './RestrictionOnScope'
 import PseudoMarks from './PseudoMarks'
+import MadridInfo from './MadridInfo'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { MessageSquare, Sparkles } from "lucide-react"
@@ -92,6 +93,13 @@ export default function CaseDetails({ case: caseData }: CaseDetailsProps) {
         
         {caseData.international_registrations && caseData.international_registrations.length > 0 && (
           <InternationalRegistration registrations={caseData.international_registrations} />
+        )}
+
+        {caseData.madrid_filings && caseData.madrid_filings.length > 0 && (
+          <MadridInfo 
+            filings={caseData.madrid_filings}
+            historyEvents={caseData.madrid_history_events}
+          />
         )}
         
         <PriorRegistrations priorRegistrations={caseData.prior_registrations} />

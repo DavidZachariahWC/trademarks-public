@@ -61,10 +61,12 @@ export default function Classifications({ classifications, statements = [] }: Cl
           <tbody>
             {classifications.map((classification, index) => {
               const paddedClass = padClassNumber(classification.international_code);
+              const paddedUSClass = padClassNumber(classification.us_code);
               const matchingStatements = statements
                 ?.filter(stmt => 
                   stmt.type_code.startsWith('GS') && 
-                  stmt.type_code.substring(2, 5) === paddedClass
+                  (stmt.type_code.substring(2, 5) === paddedClass || 
+                   stmt.type_code.substring(2, 5) === paddedUSClass)
                 ) || [];
 
               const hasStatement = matchingStatements.length > 0;
