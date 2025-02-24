@@ -6,7 +6,7 @@ class CaseFileHandler(xml.sax.ContentHandler):
     def __init__(self, output_file):
         self.output_file = open(output_file, 'w', encoding='utf-8')
         self.status_codes_to_remove = set(str(code) for code in (
-            list(range(400, 418)) + list(range(600, 611)) + list(range(612, 615)) +
+            list(range(400, 418)) + [601] + list(range(603, 607)) + list(range(609, 615)) +
             [618, 626, 632] + list(range(709, 715)) + [781, 782, 900, 901, 968]
         ))
         self.international_status_codes_to_remove = {'100', '101', '102'}
@@ -92,6 +92,11 @@ def remove_case_files(input_file, output_file):
     parser.parse(input_file)
 
 if __name__ == '__main__':
-    input_xml_file = '/Users/davidzachariah/downloads/apc18840407-20231231-06.xml'
-    output_xml_file = '/Users/davidzachariah/Desktop/trademarks/apc18840407-20231231-06_cleaned.xml'
+    import sys
+    if len(sys.argv) == 3:
+        input_xml_file = sys.argv[1]
+        output_xml_file = sys.argv[2]
+    else:
+        input_xml_file = '/Users/davidzachariah/downloads/apc18840407-20231231-00.xml'
+        output_xml_file = '/Users/davidzachariah/Desktop/trademarks/apc18840407-20231231-00_cleaned.xml'
     remove_case_files(input_xml_file, output_xml_file)
